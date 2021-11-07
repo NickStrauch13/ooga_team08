@@ -1,0 +1,3 @@
+#0=wall, 1=open, 2=pacman, 3=ghostSpawn
+Game=Pacman
+Board=basic_board.csv
