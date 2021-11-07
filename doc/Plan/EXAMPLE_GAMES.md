@@ -1,0 +1,1 @@
+Our selected game is Pac-Man.
