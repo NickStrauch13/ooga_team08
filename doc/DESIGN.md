@@ -19,7 +19,7 @@
 #### What Features are Easy to Add
 
 Creating moving Pacman and ghost objects, stationary pickups and wall objects. Tracking Collisions between moving objects and stationary ones.
-Drawing Initial board based on input csv files.
+Drawing Initial board based on input csv files. Adding additional power-ups with new rules should be an easy addition to our code. 
 
 ## High-level Design
 
@@ -28,9 +28,14 @@ Drawing Initial board based on input csv files.
 BACKEND
 
 CREATURE- Abstract to implemented by child classes. This consists of pacman objects and ghosts. \
-PACMAN- 
-BOARD- grid of cell objects where each will have a state\
-CELL- can be a wall, contain power up or be empty\
+PACMAN- Child class of creature, will contain pacman functions such as pickup, die etc.\
+CPUPACMAN- child class of pacman, movement controlled by cpu algorithm, implements cpu move interface.\
+USERPACMAN- child class of pacman, movement controlled by user, implements user move interface.\
+GHOST- Child class of creature, encapsulates ghost and all properties therein.\
+CPUGHOST- child class of ghost, movement controlled by cpu algorithm,implements cpu move interface.\
+USERGHOST- child class of ghost, movement controlled by user, implements user move interface.\
+BOARD- grid of cell objects where each will have a state corresponding to wall, pickup or empty. Passed once to view upon initialization.\
+CELL- can be a wall, contain power up or be empty, essentially one space on game board.\
 GAME- class dictates the running/starting/endgame of the game, has step function to update moving creatures\
 
 FRONTEND
