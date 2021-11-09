@@ -8,4 +8,8 @@ public interface CreatureView {
 
     void poweredUp();
 
+    double[] findBoardLocation();
+
+    void sendHome();
+
 }
