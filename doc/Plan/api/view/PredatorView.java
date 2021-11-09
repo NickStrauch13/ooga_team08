@@ -1,7 +1,9 @@
 public interface PredatorView {
 
-    ghostAnimation();
+    void ghostAnimation();
 
-    poweredUp();
+    void poweredUp();
+
+    void updateEffect(Effect e);
 
 }

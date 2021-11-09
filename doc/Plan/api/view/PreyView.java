@@ -1,7 +1,9 @@
 public interface PreyView {
 
-    mouthAnimation();
+    void mouthAnimation();
 
-    poweredUp();
+    void poweredUp();
+
+    void updateEffect(Effect e);
 
 }

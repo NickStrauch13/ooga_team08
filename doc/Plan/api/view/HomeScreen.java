@@ -12,4 +12,10 @@ public interface HomeScreen {
 
     void pacManExtreme();
 
+    void updateHighScore(int amount);
+
+    void updateScore(int amount);
+
+    void updateLives(int lives);
+
 }
