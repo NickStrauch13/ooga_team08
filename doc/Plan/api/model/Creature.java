@@ -11,4 +11,9 @@ public abstract interface Creature {
      * location.
      */
     void abstract move();
+
+    /**
+     * Returns true if the after the move the creature is still inside the grid and not inside a wall or outside the grid. Otherwise false.
+     */
+    abstract boolean inBounds();
 }

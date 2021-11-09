@@ -47,8 +47,9 @@ public interface SimulationManager {
 
     /**
      * Called in the step function. This will check if the win criteria (all dots collected) has been fulfilled.
+     * @return true if game won false otherwise
      */
-    void gameWon();
+    boolean gameWon();
 
     /**
      * Checks no more lives remain. Called after a collision with a ghost.
