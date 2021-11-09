@@ -68,3 +68,36 @@
 * Ghost is trying to chase Pacman but a wall is inbetween the ghost and pacman
 ```java
 ```
+* Restart game is clicked and game board is reset to it’s initial state on level one.
+```java
+```
+* User decides to switch game type
+```java
+```
+* User runs into creature that is not a ghost in extreme pacman
+```java
+```
+* User loses life and should be sent back to starting position
+```java
+```
+* User beats a level and the speeds of everything should increase for the next level
+```java
+```
+* User wants to change color of walls
+```java
+```
+* Pacman picks up energy dot and score is incremented by the value of the energy dot.
+```java
+```
+* Pacman picks up energy dot and it is the last energy dot so gameWon() is triggered.
+```java
+```
+* Pacman runs into a ghost while not in a powered up state and should lose a life
+```java
+```
+* Pacman runs into a ghost while powered up and should kill the ghost and get a certain amount of points
+```java
+```
+* Pacman intersects with a power-up and should begin blinking 
+```java
+```
