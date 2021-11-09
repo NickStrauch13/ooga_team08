@@ -16,6 +16,9 @@
 ```java
 
 ```
+* Invalid Data file is loaded in and a random (valid) game should be created
+```java
+```
 * Pacman tries to move forward and the space in front of him is empty.
 ```java
 
@@ -46,3 +49,22 @@
 ```
 * Pacman reaches target score and should move to next level. 
 ```java
+```
+* Pacman reaches 0 lives in Anti-Pacman and user should move to next level
+```java
+```
+* Pacman reaches the edge of the board but there is no wall and should wrap around to the other side like a torus
+```java
+```
+* Pacman is inbetween two cells but its image intersects with a powerup in a different cell
+```java
+```
+* Pacman runs out of lives and the game should end displaying the final score
+```java
+```
+* Pacman reaches power-up and a ghost reaches pacman on the same update cycle
+```java
+```
+* Ghost is trying to chase Pacman but a wall is inbetween the ghost and pacman
+```java
+```
