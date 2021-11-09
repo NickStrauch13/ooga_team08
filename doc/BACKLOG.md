@@ -1,40 +1,26 @@
-#Use Cases
+#Use Cases to complete in later stages of the project
 
-##Frontend Use Cases
-* The user starts a new basic pacman variant game by loading in the correct data file.
+* Data file is loaded in with basic pacman game variant.
 ```java
-    pacmanDisplay.setupDisplay();
-    pacmanDisplay.newGame();
+
 ```
-* The user presses the up arrow key when there is empty space in front of the controlled creature.
+* Data file is loaded in with mrs.pacman game variant.
 ```java
-    location = pacman.findBoardLocation();
-    pacman.forwad();
+
 ```
-* The user presses the right arrow key when there is a wall directly to the right.
+* Data file is loaded in with anti pacman game variant.
 ```java
-  location = pacman.findBoardLocation();
-  pacman.right();
+
 ```
-* The Pacman picks up a power-up item that makes it become the predator temporarily.
+* Data file is loaded in with extreme pacman game variant.
 ```java
-  effect = powerUp.getEffect();
-  pacman.poweredUp();
-  pacman.updateEffect(effect);
-  ghosts.updateEffect(effect);
+
 ```
-* The user loses their first life.
+* Pacman tries to move forward and the space in front of him is empty.
 ```java
-    lies = controller.getLives();
-    homeScreen.updateLives(lives);
-    pacman.sendHome();
-    ghosts.sendHome();
+
 ```
-* The user loses all of their lives.
+* Pacman tries to move forward and the space in front of him is a wall.
 ```java
-    lives = controller.getLives();
-    homeScreen.updateLives(lives);
-    simulationManager.stopAnimation();
-    simulationManager.gameOver();
-    pacmanDisplay.newGame();
+
 ```
