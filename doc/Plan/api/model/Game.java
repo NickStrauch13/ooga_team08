@@ -1,22 +1,27 @@
 public interface Game {
 
-    void run();
-
-    void setUpBoard();
-
-    void createCreature(String creatureType);
-
-    void createPickup(String pickupType);
-
-    void step();
-
+    /**
+     * Subtracts a life from the number of Pacman lives which is defined in this class. (maybe controller)
+     */
     void loseLife();
 
+    /**
+     * Adds points to the score which is housed in this class.
+     */
     void addScore();
 
-    void resetCreatures();
+    /**
+     * Resets the lives and score if the user restarts the game etc.
+     */
+    void resetCreatureStates();
 
+    /**
+     * Increments the level.
+     */
     void nextLevel();
 
+    /**
+     * Gets the score and level and returns it
+     */
     void endGame();
 }
