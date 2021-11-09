@@ -29,4 +29,10 @@ public interface Board {
      */
     void updateCellState();
 
+    /**
+     * gets the current state of the cell
+     * @return integer that represents the state of the cell
+     */
+    int getCellState();
+
 }

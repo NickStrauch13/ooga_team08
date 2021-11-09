@@ -11,13 +11,13 @@ public interface PacManDisplay {
      *This will update the displayed score text. It will get changes in the score from the controller based on
      * what happens in the game.
      */
-    void updateScore();
+    double updateScore();
 
     /**
      * Update high score only updates the highscore if the current score is greater than the highscore. If so,
      * then the high score and current score will be the same and both update on the screen.
      */
-    void updateHighScore();
+    double updateHighScore();
 
     /**
      * Update lives will update the lives text based on collisions with the ghosts during the game.
