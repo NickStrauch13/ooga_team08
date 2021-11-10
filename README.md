@@ -3,12 +3,12 @@ ooga
 
 This project implements a player for multiple related games.
 
-Names:
+Names: Nick Strauch, Nicholas Conterno
 
 
 ### Timeline
 
-Start Date: 
+Start Date: 11/1/21
 
 Finish Date: 
 
