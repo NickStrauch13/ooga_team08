@@ -1,4 +1,8 @@
-
+.root{
+  -fx-font-family: Arial;
+  -fx-background-color: AliceBlue;
+  font_color: #444444;
+}
 
 .homeRowFormat {
   -fx-alignment: center;
