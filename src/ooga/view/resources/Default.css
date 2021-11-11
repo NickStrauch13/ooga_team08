@@ -1,4 +1,8 @@
-
+.root{
+  -fx-font-family: "Arial";
+  -fx-background-color: AliceBlue;
+  text_color: #444444;
+}
 
 .homeButtonsRow {
   -fx-alignment: center;
