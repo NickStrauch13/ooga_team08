@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.gameDisplay.GameDisplay;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -44,35 +45,62 @@ public class HomeScreen {
    */
   public Scene setScene(){
     Scene scene = new Scene(root, myWidth, myHeight);
+    scene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
     setupScene();
-
-    root.getStyleClass().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
     //Add css styling
     return scene;
   }
 
   private void setupScene() {
-    Node row = makeFileButtons();
+    Node row = homeButtons();
     root.setCenter(row);
     root.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(0), Insets.EMPTY)));
 
 }
-  private Node makeButtons(Node ... nodes) {
+  private Node makeButtons(String buttonStyle, Node ... nodes) {
     HBox row = new HBox();
     row.getChildren().addAll(nodes);
-    row.getStyleClass().add("button-row");
+    row.setSpacing(5.0);
+    row.getStyleClass().add(buttonStyle);
     return row;
   }
 
-
-  private Node makeFileButtons(){
+  private Node homeButtons(){
     Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("LoadFile"), e -> readFile());
-    return makeButtons(loadFileButton);
+    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), e -> startNewGame());
+    return makeButtons("homeButtonsRow", loadFileButton, newGameButton);
   }
 
   private void readFile(){
     System.out.println("read file");
   }
 
+  private void startNewGame() {
+    GameDisplay gameDisplay = new GameDisplay(myWidth, myHeight, "Default", language,  "Pacman");
+    gameDisplay.setMainDisplay(myStage, "Pacman");
+  }
 
+
+
+  /*
+   * public Scene setupDisplay(int width, int height, String viewMode) {
+    STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + viewMode + ".css";
+    root = new BorderPane();
+    createCellGrid();
+    buttonPane = new GridPane();
+    buttonPane.getStyleClass().add("button-box");
+    FileChooser csvFileChooser = new FileChooser();
+    FileChooser simFileChooser = new FileChooser();
+    csvFileChooser.getExtensionFilters().add(new ExtensionFilter("CSV File", "*.csv"));
+    createButtonRow1(csvFileChooser, simFileChooser);
+    createButtonRow2();
+    createButtonRow3();
+    createButtonRow4();
+    root.setCenter(cellPane);
+    root.setBottom(buttonPane);
+    myScene = new Scene(root, width, height);
+    myScene.getStylesheets().add(getClass().getResource(STYLESHEET).toExternalForm());
+    return myScene;
+  }
+   */
 }

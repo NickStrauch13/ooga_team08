@@ -1,5 +1,6 @@
 
 
-.button-row {
+.homeButtonsRow {
   -fx-alignment: center;
+  -fx-padding: 5px;
 }
