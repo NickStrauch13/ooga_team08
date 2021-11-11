@@ -20,11 +20,8 @@ import ooga.view.gameDisplay.GameDisplay;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-
   private static final String DEFAULT_STYLESHEET =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
-
-
   private BorderPane root;
   private int myWidth;
   private int myHeight;
