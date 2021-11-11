@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 
 public class UINodeBuilder {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -24,13 +25,13 @@ public class UINodeBuilder {
    * @param response
    * @return Button node
    */
-  public Button makeButton(String property, String buttonStyle, EventHandler<ActionEvent> response) {
-    Button result = new Button();
-    result.setText(property);
+  public Button makeButton(String property, ImageView icon, String buttonStyle, EventHandler<ActionEvent> response) {
+    Button result = new Button(property, icon);
     result.setOnAction(response);
     result.getStyleClass().add(buttonStyle);
     return (Button)setID(property, result);
   }
+
 
   private Node setID(String id, Node node) {
     node.setId(id);

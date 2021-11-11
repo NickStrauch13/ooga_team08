@@ -20,11 +20,8 @@ import ooga.view.gameDisplay.GameDisplay;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-
   private static final String DEFAULT_STYLESHEET =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
-
-
   private BorderPane root;
   private int myWidth;
   private int myHeight;
@@ -50,7 +47,7 @@ public class HomeScreen {
     Scene scene = new Scene(root, myWidth, myHeight);
     scene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
     setupScene();
-    //Add css styling
+    //Add css styling?
     return scene;
   }
 
@@ -67,8 +64,8 @@ public class HomeScreen {
   }
 
   private Node homeButtons(){
-    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("LoadFile"), "homeScreenButton" ,e -> readFile());
-    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), "homeScreenButton",e -> startNewGame());
+    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("LoadFile"), null, "homeScreenButton" ,e -> readFile());
+    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null, "homeScreenButton",e -> startNewGame());
     return makeButtons("homeRowFormat", loadFileButton, newGameButton);
   }
 
@@ -80,7 +77,7 @@ public class HomeScreen {
     if (selectedFile == null) {
       return;
     }
-    //TODO link controller myController.openSIMFile(selectedFile);
+    //TODO have controller deal with file myController.openJSONFile(selectedFile);
   }
 
   private void startNewGame() {
@@ -89,26 +86,4 @@ public class HomeScreen {
   }
 
 
-
-  /*
-   * public Scene setupDisplay(int width, int height, String viewMode) {
-    STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + viewMode + ".css";
-    root = new BorderPane();
-    createCellGrid();
-    buttonPane = new GridPane();
-    buttonPane.getStyleClass().add("button-box");
-    FileChooser csvFileChooser = new FileChooser();
-    FileChooser simFileChooser = new FileChooser();
-    csvFileChooser.getExtensionFilters().add(new ExtensionFilter("CSV File", "*.csv"));
-    createButtonRow1(csvFileChooser, simFileChooser);
-    createButtonRow2();
-    createButtonRow3();
-    createButtonRow4();
-    root.setCenter(cellPane);
-    root.setBottom(buttonPane);
-    myScene = new Scene(root, width, height);
-    myScene.getStylesheets().add(getClass().getResource(STYLESHEET).toExternalForm());
-    return myScene;
-  }
-   */
 }
