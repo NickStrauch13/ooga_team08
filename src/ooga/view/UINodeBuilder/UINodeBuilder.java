@@ -1,17 +1,19 @@
 package ooga.view.UINodeBuilder;
 
 
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 
 public class UINodeBuilder {
-  private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.view.resources.";
-
-
-
+  private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
+  private static final String DEFAULT_STYLESHEET =
+      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
+  private ResourceBundle myResources;
   public UINodeBuilder(){
+    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English"); //TODO add language here
 
   }
 
@@ -22,15 +24,13 @@ public class UINodeBuilder {
    * @param response
    * @return Button node
    */
-  public Node makeButton(String property, EventHandler<ActionEvent> response) {
+  public Button makeButton(String property, EventHandler<ActionEvent> response) {
     Button result = new Button();
-    //result.setText(resources.getString(property));
+    result.setText(property);
     result.setOnAction(response);
     result.getStyleClass().add("button");
-    return setID(property, result);
+    return (Button)setID(property, result);
   }
-
-
 
   private Node setID(String id, Node node) {
     node.setId(id);
