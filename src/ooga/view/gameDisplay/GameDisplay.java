@@ -23,7 +23,6 @@ public class GameDisplay {
         stage.setTitle(title);
         stage.setScene(myScene);
         root.setCenter(new Text("HI"));
-
     }
 
 

@@ -4,7 +4,16 @@
   text_color: #444444;
 }
 
-.homeButtonsRow {
+.homeRowFormat {
   -fx-alignment: center;
   -fx-padding: 5px;
+}
+
+.homeScreenButton {
+    -fx-border-color: black;
+    -fx-border-width: 5px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 30px;
+    -fx-font-size: 30px;
 }
