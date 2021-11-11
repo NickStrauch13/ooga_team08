@@ -1,5 +1,6 @@
 package ooga.view.home;
 
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -11,6 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import ooga.view.UINodeBuilder.UINodeBuilder;
 import ooga.view.gameDisplay.GameDisplay;
@@ -72,7 +75,14 @@ public class HomeScreen {
   }
 
   private void readFile(){
-    System.out.println("read file");
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle(myResources.getString("LoadFile"));
+    fileChooser.getExtensionFilters().addAll(new ExtensionFilter("JSON", "*.json"));
+    File selectedFile = fileChooser.showOpenDialog(myStage);
+    if (selectedFile == null) {
+      return;
+    }
+    //TODO have controller deal with file myController.openJSONFile(selectedFile);
   }
 
   private void startNewGame() {
