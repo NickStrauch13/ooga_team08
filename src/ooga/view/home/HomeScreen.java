@@ -57,18 +57,18 @@ public class HomeScreen {
     root.setBackground(new Background(new BackgroundFill(Color.GREEN, new CornerRadii(0), Insets.EMPTY)));
 
 }
-  private Node makeButtons(String buttonStyle, Node ... nodes) {
+  private Node makeButtons(String rowFormatting, Node ... nodes) {
     HBox row = new HBox();
     row.getChildren().addAll(nodes);
     row.setSpacing(5.0);
-    row.getStyleClass().add(buttonStyle);
+    row.getStyleClass().add(rowFormatting);
     return row;
   }
 
   private Node homeButtons(){
-    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("LoadFile"), e -> readFile());
-    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), e -> startNewGame());
-    return makeButtons("homeButtonsRow", loadFileButton, newGameButton);
+    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("LoadFile"), "homeScreenButton" ,e -> readFile());
+    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), "homeScreenButton",e -> startNewGame());
+    return makeButtons("homeRowFormat", loadFileButton, newGameButton);
   }
 
   private void readFile(){
