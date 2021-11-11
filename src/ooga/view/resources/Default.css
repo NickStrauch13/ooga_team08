@@ -1,7 +1,11 @@
-.root {
 
-    NewGameColor: #00069C ;
-    HighScoresButtonColor: #AA0000 ;
+.root{
+  -fx-font-family: "Arial";
+  -fx-background-color: AliceBlue;
+  text_color: #444444;
+  NewGameColor: #00069C ;
+  HighScoresButtonColor: #AA0000 ;
+
 }
 
 .homeRowFormat {
@@ -31,3 +35,8 @@
 .newGameButton {
     -fx-background-color: NewGameColor;
 }
+
+.BottomGameButtons{
+  -fx-alignment: center;
+}
+

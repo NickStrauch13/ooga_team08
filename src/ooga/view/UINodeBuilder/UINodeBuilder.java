@@ -1,9 +1,7 @@
 package ooga.view.UINodeBuilder;
 
-
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -12,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+
 
 public class UINodeBuilder {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -25,19 +25,19 @@ public class UINodeBuilder {
 
   /**
    * Creates buttons for the UI.
-   * @param text
-   * @param cssClass
-   * @param cssId
+   * @param property
+   * @param icon
+   * @param buttonStyle
+   * @param cssID
    * @param response
    * @return
    */
-  public Button makeButton(String text, String cssClass, String cssId, EventHandler<ActionEvent> response) {
-    Button result = new Button();
-    result.setText(text);
+  public Button makeButton(String property, ImageView icon, String buttonStyle, String cssID, EventHandler<ActionEvent> response) {
+    Button result = new Button(property, icon);
     result.setOnAction(response);
-    result.getStyleClass().add(cssClass);
-    result.getStyleClass().add(cssId);
-    return (Button)setID(text, result);
+    result.getStyleClass().add(buttonStyle);
+    result.getStyleClass().add(cssID);
+    return (Button)setID(property, result);
   }
 
   public TextField makeInputField(String ID, Consumer<String> response, String initial) {
@@ -69,6 +69,7 @@ public class UINodeBuilder {
     col.getStyleClass().add(rowFormatting);
     return col;
   }
+
 
   private Node setID(String id, Node node) {
     node.setId(id);
