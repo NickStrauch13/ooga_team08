@@ -17,3 +17,7 @@
     -fx-padding: 30px;
     -fx-font-size: 30px;
 }
+
+.BottomGameButtons{
+  -fx-alignment: center;
+}

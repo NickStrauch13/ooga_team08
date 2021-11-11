@@ -64,8 +64,8 @@ public class HomeScreen {
   }
 
   private Node homeButtons(){
-    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("LoadFile"), "homeScreenButton" ,e -> readFile());
-    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), "homeScreenButton",e -> startNewGame());
+    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("LoadFile"), null, "homeScreenButton" ,e -> readFile());
+    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null, "homeScreenButton",e -> startNewGame());
     return makeButtons("homeRowFormat", loadFileButton, newGameButton);
   }
 

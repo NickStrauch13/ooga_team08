@@ -3,15 +3,14 @@ package ooga.view.gameDisplay;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-//import ooga.view.gameDisplay.bottom.GameButtons;
+import ooga.view.gameDisplay.bottom.*;
 import javafx.scene.Scene;
 import ooga.view.UINodeBuilder.UINodeBuilder;
 
 public class GameDisplay {
     private Scene myScene;
     private BorderPane root;
-    private UINodeBuilder myNodeBuilder;
-    //private GameButtons myGameButtons;
+    private GameButtons myGameButtons;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
     private static final String DEFAULT_STYLESHEET =
             "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
@@ -20,7 +19,7 @@ public class GameDisplay {
         root = new BorderPane();
         myScene = new Scene(root, width, height);
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-        myNodeBuilder = new UINodeBuilder();
+        myGameButtons = new GameButtons();
     }
 
     /**
@@ -29,6 +28,7 @@ public class GameDisplay {
      * @param title
      */
     public void setMainDisplay(Stage stage, String title) {
+        setupScene();
         stage.setTitle(title);
         stage.setScene(myScene);
     }
@@ -37,7 +37,7 @@ public class GameDisplay {
     private void setupScene(){
         //root.setTop(myGameStats.makeLabels());
         //root.setCenter(myBoardView.makeBoard());
-        //root.setBottom(myGameButtons.makeButtons());
+        root.setBottom(myGameButtons.makeButtonBox());
     }
 
 }
