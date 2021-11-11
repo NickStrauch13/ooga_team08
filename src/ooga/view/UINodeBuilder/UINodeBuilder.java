@@ -1,12 +1,17 @@
 package ooga.view.UINodeBuilder;
 
-
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
+
 
 public class UINodeBuilder {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -20,16 +25,49 @@ public class UINodeBuilder {
 
   /**
    * Creates buttons for the UI.
-   * Adapted from previous project.
    * @param property
+   * @param icon
+   * @param buttonStyle
+   * @param cssID
    * @param response
-   * @return Button node
+   * @return
    */
-  public Button makeButton(String property, ImageView icon, String buttonStyle, EventHandler<ActionEvent> response) {
+  public Button makeButton(String property, ImageView icon, String buttonStyle, String cssID, EventHandler<ActionEvent> response) {
     Button result = new Button(property, icon);
     result.setOnAction(response);
     result.getStyleClass().add(buttonStyle);
+    result.getStyleClass().add(cssID);
     return (Button)setID(property, result);
+  }
+
+  public TextField makeInputField(String ID, Consumer<String> response, String initial) {
+    TextField result = new TextField();
+    result.getStyleClass().add("input-field");
+    result.setOnKeyReleased(e -> response.accept(result.getText()));
+    result.setText(initial);
+    result.setId(ID);
+    return result;
+  }
+
+  public Label makeLabel(String property) {
+    Label label = new Label(myResources.getString(property));
+    return (Label)setID(property, label);
+  }
+
+  public Node makeRow(String rowFormatting, Node ... nodes) {
+    HBox row = new HBox();
+    row.getChildren().addAll(nodes);
+    row.setSpacing(5.0);
+    row.getStyleClass().add(rowFormatting);
+    return row;
+  }
+
+  public Node makeCol(String rowFormatting, Node ... nodes) {
+    VBox col = new VBox();
+    col.getChildren().addAll(nodes);
+    col.setSpacing(5.0);
+    col.getStyleClass().add(rowFormatting);
+    return col;
   }
 
 

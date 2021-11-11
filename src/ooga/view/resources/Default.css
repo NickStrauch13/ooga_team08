@@ -1,12 +1,21 @@
+
 .root{
   -fx-font-family: "Arial";
   -fx-background-color: AliceBlue;
   text_color: #444444;
+  NewGameColor: #00069C ;
+  HighScoresButtonColor: #AA0000 ;
+
 }
 
 .homeRowFormat {
   -fx-alignment: center;
   -fx-padding: 5px;
+}
+
+.homeColFormat {
+    -fx-padding: 5px;
+    -fx-alignment: center;
 }
 
 .homeScreenButton {
@@ -16,8 +25,18 @@
     -fx-background-radius: 20px;
     -fx-padding: 30px;
     -fx-font-size: 30px;
+    -fx-text-fill: white;
+}
+
+.highScoresButton {
+    -fx-background-color: HighScoresButtonColor;
+}
+
+.newGameButton {
+    -fx-background-color: NewGameColor;
 }
 
 .BottomGameButtons{
   -fx-alignment: center;
 }
+

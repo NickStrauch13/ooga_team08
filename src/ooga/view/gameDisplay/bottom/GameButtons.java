@@ -25,9 +25,9 @@ public class GameButtons {
   public Node makeButtonBox(){
     HBox buttonBox = new HBox();
     buttonBox.setSpacing(SPACING);
-    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("GoHomeButton"), null, "GoHomeButton", e -> goHome()));
-    buttonBox.getChildren().add(myNodeBuilder.makeButton("",PLAY_ICON, "PausePlayButton", e -> playPause()));
-    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton", e -> reset()));
+    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("GoHomeButton"), null, "GoHomeButton","HomeButtonID" ,e -> goHome()));
+    buttonBox.getChildren().add(myNodeBuilder.makeButton("",PLAY_ICON, "PausePlayButton", "PlayButtonID",e -> playPause()));
+    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> reset()));
     buttonBox.getStyleClass().add("BottomGameButtons");
     return buttonBox;
   }

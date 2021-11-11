@@ -2,16 +2,12 @@ package ooga.view.home;
 
 import java.io.File;
 import java.util.ResourceBundle;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -29,6 +25,7 @@ public class HomeScreen {
   private UINodeBuilder myNodeBuilder;
   private ResourceBundle myResources;
   private static final String language = "English"; //TODO add to prop file
+  private String userName;
 
   public HomeScreen(Stage stage, int width, int height){
     root = new BorderPane();
@@ -55,18 +52,19 @@ public class HomeScreen {
     Node row = homeButtons();
     root.setCenter(row);
 }
-  private Node makeButtons(String rowFormatting, Node ... nodes) {
-    HBox row = new HBox();
-    row.getChildren().addAll(nodes);
-    row.setSpacing(5.0);
-    row.getStyleClass().add(rowFormatting);
-    return row;
-  }
 
   private Node homeButtons(){
-    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("LoadFile"), null, "homeScreenButton" ,e -> readFile());
-    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null, "homeScreenButton",e -> startNewGame());
-    return makeButtons("homeRowFormat", loadFileButton, newGameButton);
+    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> readFile());
+    Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
+    Label inputText = myNodeBuilder.makeLabel("userNameText");
+    TextField userName = myNodeBuilder.makeInputField("userName", e -> setUserName(e), "");
+    Node row1 = myNodeBuilder.makeRow("homeColFormat", loadFileButton, newGameButton);
+    Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
+    return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
   }
 
   private void readFile(){
