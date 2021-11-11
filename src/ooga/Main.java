@@ -1,21 +1,24 @@
 package ooga;
 
+import java.awt.Dimension;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import ooga.view.home.HomeScreen;
 
-/**
- * Feel free to completely change this code or delete it entirely. 
- */
-public class Main {
-    /**
-     * A method to test (and a joke :).
-     */
-    public double getVersion () {
-        return 0.001;
-    }
+public class Main extends Application {
+
+    public static final Dimension DEFAULT_SIZE = new Dimension(1400, 800);
+    public static final String TITLE = "Start Screen";
 
     /**
-     * Start of the program.
+     * Initializes the display, launches window with initial properties
      */
-    public static void main (String[] args) {
-        System.out.println("Hello world");
+    @Override
+    public void start(Stage stage) {
+        HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height);
+        stage.setTitle(TITLE);
+        stage.setScene(startScreen.setScene());
+        stage.show();
     }
 }
+
