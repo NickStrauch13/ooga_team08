@@ -24,11 +24,11 @@ public class UINodeBuilder {
    * @param response
    * @return Button node
    */
-  public Button makeButton(String property, EventHandler<ActionEvent> response) {
+  public Button makeButton(String property, String buttonStyle, EventHandler<ActionEvent> response) {
     Button result = new Button();
     result.setText(property);
     result.setOnAction(response);
-    result.getStyleClass().add("button");
+    result.getStyleClass().add(buttonStyle);
     return (Button)setID(property, result);
   }
 
