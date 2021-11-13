@@ -28,16 +28,16 @@ public class UINodeBuilder {
    * @param property
    * @param icon
    * @param buttonStyle
-   * @param cssID
+   * @param ID
    * @param response
    * @return
    */
-  public Button makeButton(String property, ImageView icon, String buttonStyle, String cssID, EventHandler<ActionEvent> response) {
+  public Button makeButton(String property, ImageView icon, String buttonStyle, String ID, EventHandler<ActionEvent> response) {
     Button result = new Button(property, icon);
     result.setOnAction(response);
     result.getStyleClass().add(buttonStyle);
-    result.getStyleClass().add(cssID);
-    return (Button)setID(property, result);
+    result.getStyleClass().add(ID);
+    return (Button)setID(ID, result);
   }
 
   public TextField makeInputField(String ID, Consumer<String> response, String initial) {
