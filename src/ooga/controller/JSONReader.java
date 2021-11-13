@@ -1,18 +1,25 @@
 package ooga.controller;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.List;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class JSONReader {
     public JSONReader(BufferedReader reader) {
+
     }
 
     /**
      * reads data from CSV file to CSV container
      *
-     * @param file is the file containing a configuration
+     * @param args is the file containing a configuration
      * @return properly initialized CSV file
      */
 //    public JSONReader readAllDataCSV(File file) {
@@ -47,4 +54,30 @@ public class JSONReader {
 //            return null;
 //        }
 //    }
+    public static void main(String[] args) throws IOException, ParseException {
+        final String FILE_PATH = "data/test/vanillaTest.json";
+
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader(FILE_PATH));
+        JSONObject jo = (JSONObject) obj;
+
+        String rows = (String) jo.get("rows");
+        System.out.println(rows);
+
+        String cols = (String) jo.get("columns");
+        System.out.println(cols);
+
+        JSONArray board = (JSONArray) jo.get("BOARD");
+        System.out.println(board);
+
+        // https://stackoverflow.com/questions/31285885/how-to-parse-a-two-dimensional-json-array-in-java
+        Iterator<JSONArray> iterator = board.iterator();
+        while (iterator.hasNext()){
+            Iterator<String> innerIterator = iterator.next().iterator();
+            while (innerIterator.hasNext()) {
+                System.out.print(innerIterator.next() + "   ");
+            }
+            System.out.println("\n");
+        }
+    }
 }
