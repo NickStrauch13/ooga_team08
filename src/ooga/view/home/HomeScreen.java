@@ -54,11 +54,11 @@ public class HomeScreen {
 }
 
   private Node homeButtons(){
-    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> readFile());
+    Button highScoresButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> displayHighScores());
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
     Label inputText = myNodeBuilder.makeLabel("userNameText");
     TextField userName = myNodeBuilder.makeInputField("userName", e -> setUserName(e), "");
-    Node row1 = myNodeBuilder.makeRow("homeColFormat", loadFileButton, newGameButton);
+    Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton);
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
   }
@@ -79,9 +79,13 @@ public class HomeScreen {
   }
 
   private void startNewGame() {
+    readFile();
     GameDisplay gameDisplay = new GameDisplay(myWidth, myHeight, "Default", language,  "Pacman");
     gameDisplay.setMainDisplay(myStage, "Pacman");
   }
 
+  private void displayHighScores(){
+    //TODO
+  }
 
 }

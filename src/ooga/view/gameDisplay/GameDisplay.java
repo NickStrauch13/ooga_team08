@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import ooga.view.gameDisplay.bottom.*;
+import ooga.view.gameDisplay.center.*;
 import javafx.scene.Scene;
 import ooga.view.UINodeBuilder.UINodeBuilder;
 
@@ -11,6 +12,7 @@ public class GameDisplay {
     private Scene myScene;
     private BorderPane root;
     private GameButtons myGameButtons;
+    private BoardView myBoardView;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
     private static final String DEFAULT_STYLESHEET =
             "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
@@ -20,6 +22,7 @@ public class GameDisplay {
         myScene = new Scene(root, width, height);
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myGameButtons = new GameButtons();
+        myBoardView = new BoardView();
     }
 
     /**
@@ -36,7 +39,7 @@ public class GameDisplay {
 
     private void setupScene(){
         //root.setTop(myGameStats.makeLabels());
-        //root.setCenter(myBoardView.makeBoard());
+        root.setCenter(myBoardView.makeBoard());
         root.setBottom(myGameButtons.makeButtonBox());
     }
 
