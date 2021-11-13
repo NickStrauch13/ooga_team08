@@ -41,16 +41,15 @@ public class Game {
 
     private void moveCreatures(){
         for (Creature currentCreature :activeCreatures){
-            int possibleNewPositionX = ((currentCreature.getHomeX()+currentCreature.getSpeed()*generateDirectionArray(lastDirection)[0])%boardXSize);
-            int possibleNewPositionY = ((currentCreature.getHomeY()+currentCreature.getSpeed()*generateDirectionArray(lastDirection)[1])%boardYSize);
+            int xDirection = generateDirectionArray(lastDirection)[0];
+            int yDirection = generateDirectionArray(lastDirection)[1];
+            int possibleNewPositionX = ((currentCreature.getHomeX()+xDirection)%boardXSize);
+            int possibleNewPositionY = ((currentCreature.getHomeY()+yDirection)%boardYSize);
 
-            int row = getCellCoordinate(possibleNewPositionX);
-            int col = getCellCoordinate(possibleNewPositionY);
+            int row = getCellCoordinate(possibleNewPositionX+xDirection*currentCreature.getSize()/2);
+            int col = getCellCoordinate(possibleNewPositionY+yDirection*currentCreature.getSize()/2);
 
             if (myBoard.getCellState(row,col)!=WALL_STATE){
-                currentCreature.moveTo(possibleNewPositionX,possibleNewPositionY);
-            }
-            else{
                 currentCreature.moveTo(possibleNewPositionX,possibleNewPositionY);
             }
         }
