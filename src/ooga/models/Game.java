@@ -12,6 +12,7 @@ public class Game {
     private String lastDirection;
     private int boardXSize=400;
     private int boardYSize=400;
+    private int CELL_SIZE = 30;
     private static final int WALL_STATE = 1;
     private ResourceBundle myCreatureResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE+"directions");
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.creatures.resources";
@@ -46,8 +47,8 @@ public class Game {
             int row = getCellCoordinate(possibleNewPositionX);
             int col = getCellCoordinate(possibleNewPositionY);
 
-            if (myBoard.getCellState(row,col)==WALL_STATE){
-
+            if (myBoard.getCellState(row,col)!=WALL_STATE){
+                currentCreature.moveTo(possibleNewPositionX,possibleNewPositionY);
             }
             else{
                 currentCreature.moveTo(possibleNewPositionX,possibleNewPositionY);
@@ -55,8 +56,8 @@ public class Game {
         }
     }
 
-    private int getCellCoordinate(double pixels){
-        return 1;
+    private int getCellCoordinate(int pixels){
+        return pixels/CELL_SIZE;
     }
 
     private boolean checkPickUps(){return pickUpsLeft ==0;}
@@ -69,6 +70,10 @@ public class Game {
     private void loseLife(){
         lives-=1;
     };
+
+    private void dealWithCollision(CollisionManager cm){
+
+    }
 
     /**
      * Adds points to the score which is housed in this class.
