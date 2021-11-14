@@ -1,7 +1,9 @@
 package ooga.models;
 
-public class Board {
+import ooga.models.creatures.userControl.UserCreature;
+import ooga.models.pickups.pickup;
 
+public class Board {
     public Board(){
 
     }
@@ -47,5 +49,17 @@ public class Board {
      */
     public int getCellState(int row, int col){
         return 0;
+    };
+    /**
+     * gets the current state of the cell
+     * @return integer that represents the state of the cell
+     */
+    public pickup getPickup(int row, int col){
+        return new pickup() {
+            @Override
+            public int pickUp(UserCreature userCreature) {
+                return 0;
+            }
+        };
     };
 }

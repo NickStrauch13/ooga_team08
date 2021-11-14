@@ -8,6 +8,16 @@ public abstract class Creature {
     int size;
     String image;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    String id;
+
     public int getSpeed() {
         return speed;
     }
