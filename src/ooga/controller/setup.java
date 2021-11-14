@@ -21,10 +21,9 @@ public class setup {
     }
 
     /**
-     * reads data from CSV file to CSV container
-     * setup
+     * reads data from JSON file into a JSONReader
      */
-    public void readJSONConfig() throws IOException, ParseException {
+    public JSONReader readJSONConfig() throws IOException, ParseException {
 
         JSONObject jsonData = extractJSONObject();
 
@@ -32,6 +31,7 @@ public class setup {
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
 
+        return new JSONReader(numOfRows, numOfCols, boardInfo);
     }
 
     /**
@@ -39,12 +39,12 @@ public class setup {
      * @param jsonData
      */
     private List<List<Integer>> getBoardInfo(JSONObject jsonData) {
+
         List<List<Integer>> boardInfo = new ArrayList<>();
         JSONArray JSONBoard = (JSONArray) jsonData.get("BOARD");
-
         Iterator<JSONArray> iterator = JSONBoard.iterator();
-        while (iterator.hasNext()){
 
+        while (iterator.hasNext()){
             List<Integer> innerList = new ArrayList<>();
             Iterator<String> innerIterator = iterator.next().iterator();
             while (innerIterator.hasNext()) {
@@ -73,6 +73,10 @@ public class setup {
         final String FILE_PATH = "data/test/vanillaTest.json";
 
         setup setup = new setup(FILE_PATH);
-        setup.readJSONConfig();
+        JSONReader reader = setup.readJSONConfig();
+
+        System.out.println(reader.getMyNumOfRows());
+        System.out.println(reader.getMyNumOfCols());
+        System.out.println(reader.getMyInfo());
     }
 }
