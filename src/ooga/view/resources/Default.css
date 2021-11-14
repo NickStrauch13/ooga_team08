@@ -40,3 +40,17 @@
   -fx-alignment: center;
 }
 
+.gameGridPane{
+  -fx-alignment: center;
+}
+
+.wallPiece{
+  -fx-alignment: center;
+  -fx-fill: DarkBlue;
+}
+
+.dotPickup{
+  -fx-alignment: center;
+  -fx-fill: DarkGoldenRod;
+}
+
