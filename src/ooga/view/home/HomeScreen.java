@@ -24,6 +24,7 @@ public class HomeScreen {
   private Stage myStage;
   private UINodeBuilder myNodeBuilder;
   private ResourceBundle myResources;
+  private Scene myScene;
   private static final String language = "English"; //TODO add to prop file
   private String userName;
 
@@ -32,6 +33,8 @@ public class HomeScreen {
     myWidth = width;
     myHeight = height;
     myStage = stage;
+    myScene = new Scene(root, myWidth, myHeight);
+    myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
     myNodeBuilder = new UINodeBuilder();
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
   }
@@ -40,6 +43,7 @@ public class HomeScreen {
    * Creates the home screen scene.
    * @return the created scene object
    */
+<<<<<<< HEAD
   public Scene setScene(){
     Scene scene = new Scene(root, myWidth, myHeight);
     scene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
@@ -49,10 +53,36 @@ public class HomeScreen {
 
   private Node homeButtons(){
     Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> viewHighScores());
+=======
+  public Scene createScene(){
+    setupScene();
+    //Add css styling?
+    return myScene;
+  }
+
+  /**
+   * Sets the new scene which will show the home screen.
+   * @param title title for the stage.
+   */
+  public void setMainDisplay(String title) {
+    setupScene();
+    myStage.setTitle(title);
+    myStage.setScene(myScene);
+  }
+
+  private void setupScene() {
+    //Add code here to add more features to the home screen...
+    Node row = homeButtons();
+    root.setCenter(row);
+}
+
+  private Node homeButtons(){
+    Button highScoresButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> displayHighScores());
+>>>>>>> master
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
     Label inputText = myNodeBuilder.makeLabel("userNameText");
     TextField userName = myNodeBuilder.makeInputField("userName", e -> setUserName(e), "");
-    Node row1 = myNodeBuilder.makeRow("homeColFormat", loadFileButton, newGameButton);
+    Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton);
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
   }
@@ -70,6 +100,7 @@ public class HomeScreen {
 
   private void startNewGame() {
     readFile();
+<<<<<<< HEAD
     GameDisplay gameDisplay = new GameDisplay(myWidth, myHeight, "Default", language,  "Pacman");
     gameDisplay.setMainDisplay(myStage, "Pacman");
   }
@@ -82,5 +113,14 @@ public class HomeScreen {
     this.userName = userName;
   }
 
+=======
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman");
+    gameDisplay.setMainDisplay("Pacman");
+  }
+
+  private void displayHighScores(){
+    //TODO
+  }
+>>>>>>> master
 
 }

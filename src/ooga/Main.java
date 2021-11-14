@@ -17,7 +17,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height);
         stage.setTitle(TITLE);
-        stage.setScene(startScreen.setScene());
+        stage.setScene(startScreen.createScene());
         stage.show();
     }
 }
