@@ -56,7 +56,7 @@ public class JSONReader {
 
     private Map<Integer, String> getConversionMap(JSONObject jsonData) {
         Map<Integer, String> conversionMap = new HashMap();
-        Map JSONMap = ((HashMap) jsonData.get("map"));
+        Map JSONMap = ((HashMap) jsonData.get("MAP"));
 
         for (Object keyObject : JSONMap.keySet()) {
             String keyString = keyObject.toString().trim();
