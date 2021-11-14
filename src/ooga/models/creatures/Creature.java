@@ -1,8 +1,22 @@
 package ooga.models.creatures;
 
 public abstract class Creature {
+    public int getSize() {
+        return size;
+    }
+
     int size;
     String image;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    String id;
 
     public int getSpeed() {
         return speed;

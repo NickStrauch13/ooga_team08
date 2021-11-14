@@ -9,7 +9,15 @@ import java.util.ResourceBundle;
 
 public class UserCreature extends Creature {
 
+    public boolean isPoweredUp() {
+        return isPoweredUp;
+    }
 
+    public void setPoweredUp(boolean poweredUp) {
+        isPoweredUp = poweredUp;
+    }
+
+    private boolean isPoweredUp;
 
     @Override
     public void moveTo(int newXPos,int newYPos) {
