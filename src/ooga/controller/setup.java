@@ -1,5 +1,6 @@
 package ooga.controller;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,11 @@ public class setup {
 
     private final String myPath;
 
+    /**
+     * The constructor of setup.
+     * Currently, setup takes the file path of the game config file as the input
+     * @param filePath directory of the JSON file
+     */
     public setup(String filePath) {
         myPath = filePath;
     }
@@ -27,7 +33,6 @@ public class setup {
      * @throws ParseException
      */
     public JSONReader readJSONConfig() throws IOException, ParseException {
-
         JSONObject jsonData = extractJSONObject();
 
         int numOfRows = getDimension(jsonData, "ROW_NUMBER");
@@ -88,6 +93,7 @@ public class setup {
 
         System.out.println(reader.getMyNumOfRows());
         System.out.println(reader.getMyNumOfCols());
-        System.out.println(reader.getMyInfo());
+        System.out.println(reader.getMyInfo().size() == reader.getMyNumOfRows());
+        System.out.println(reader.getMyInfo().get(0).size() == reader.getMyNumOfCols());
     }
 }
