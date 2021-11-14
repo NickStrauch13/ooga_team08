@@ -2,10 +2,7 @@ package ooga.controller;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -38,7 +35,36 @@ public class JSONReader {
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
 
-        return new JSONContainer(numOfRows, numOfCols, boardInfo);
+        Map<Integer, String> conversionMap = getConversionMap(jsonData);
+        List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap);
+
+        return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard);
+    }
+
+    private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap) {
+        List<List<String>> stringBoard = new ArrayList<>();
+        for (int i = 0; i < boardInfo.size(); i++) {
+            List<String> innerList = new ArrayList<>();
+            for (int j = 0; j < boardInfo.get(0).size(); j++) {
+                int currentValue = boardInfo.get(i).get(j);
+                innerList.add(conversionMap.get(currentValue));
+            }
+            stringBoard.addAll(Collections.singleton(innerList));
+        }
+        return stringBoard;
+    }
+
+    private Map<Integer, String> getConversionMap(JSONObject jsonData) {
+        Map<Integer, String> conversionMap = new HashMap();
+        Map JSONMap = ((HashMap) jsonData.get("map"));
+
+        for (Object keyObject : JSONMap.keySet()) {
+            String keyString = keyObject.toString().trim();
+            int key = Integer.parseInt(keyString.trim());
+            String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
+            conversionMap.put(key, stringValue);
+        }
+        return conversionMap;
     }
 
     /**
@@ -82,17 +108,17 @@ public class JSONReader {
         return (JSONObject) jsonContent;
     }
 
-//    //TODO: Will be moved to test later
-//    public static void main(String[] args) throws IOException, ParseException {
-//        // TODO: add this into json file or an enums as well. Try not to have any constant values at all
-//        final String FILE_PATH = "data/test/vanillaTest.json";
-//
-//        setup setup = new setup(FILE_PATH);
-//        JSONReader reader = setup.readJSONConfig();
-//
-//        System.out.println(reader.getMyNumOfRows());
-//        System.out.println(reader.getMyNumOfCols());
-//        System.out.println(reader.getMyInfo().size() == reader.getMyNumOfRows());
-//        System.out.println(reader.getMyInfo().get(0).size() == reader.getMyNumOfCols());
-//    }
+    //TODO: Will be moved to test later
+    public static void main(String[] args) throws IOException, ParseException {
+        // TODO: add this into json file or an enums as well. Try not to have any constant values at all
+        final String FILE_PATH = "data/test/vanillaTest.json";
+
+        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONContainer container = reader.readJSONConfig();
+
+        System.out.println(container.getMyNumOfRows());
+        System.out.println(container.getMyNumOfCols());
+        System.out.println(container.getMyInfo());
+        System.out.println(container.getMyStringBoard());
+    }
 }

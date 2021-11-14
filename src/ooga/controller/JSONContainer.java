@@ -5,6 +5,8 @@ import java.util.List;
 public class JSONContainer {
 
     private List<List<Integer>> myInfo;
+    private List<List<String>> myStringBoard;
+
     private int myNumOfRows;
     private int myNumOfCols;
 
@@ -13,11 +15,13 @@ public class JSONContainer {
      * @param rows number of rows of the board
      * @param cols number of columns of the board
      * @param boardInfo A 2-d list that contains a status value for each cell
+     * @param stringBoard A 2-d list that contains a string value for each cell
      */
-    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo) {
+    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard) {
         myNumOfRows = rows;
         myNumOfCols = cols;
         myInfo = boardInfo;
+        myStringBoard = stringBoard;
     }
 
     /**
@@ -42,6 +46,14 @@ public class JSONContainer {
      */
     public List<List<Integer>> getMyInfo() {
         return myInfo;
+    }
+
+    /**
+     * Access a 2-D list that contains the string value of all cells on the board
+     * @return the string values of all cells in the board
+     */
+    public List<List<String>> getMyStringBoard() {
+        return myStringBoard;
     }
 
     /**
