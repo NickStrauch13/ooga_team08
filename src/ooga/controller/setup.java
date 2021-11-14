@@ -83,17 +83,17 @@ public class setup {
         return (JSONObject) jsonContent;
     }
 
-    //TODO: Will be moved to test later
-    public static void main(String[] args) throws IOException, ParseException {
-        // TODO: add this into json file or an enums as well. Try not to have any constant values at all
-        final String FILE_PATH = "data/test/vanillaTest.json";
-
-        setup setup = new setup(FILE_PATH);
-        JSONReader reader = setup.readJSONConfig();
-
-        System.out.println(reader.getMyNumOfRows());
-        System.out.println(reader.getMyNumOfCols());
-        System.out.println(reader.getMyInfo().size() == reader.getMyNumOfRows());
-        System.out.println(reader.getMyInfo().get(0).size() == reader.getMyNumOfCols());
-    }
+//    //TODO: Will be moved to test later
+//    public static void main(String[] args) throws IOException, ParseException {
+//        // TODO: add this into json file or an enums as well. Try not to have any constant values at all
+//        final String FILE_PATH = "data/test/vanillaTest.json";
+//
+//        setup setup = new setup(FILE_PATH);
+//        JSONReader reader = setup.readJSONConfig();
+//
+//        System.out.println(reader.getMyNumOfRows());
+//        System.out.println(reader.getMyNumOfCols());
+//        System.out.println(reader.getMyInfo().size() == reader.getMyNumOfRows());
+//        System.out.println(reader.getMyInfo().get(0).size() == reader.getMyNumOfCols());
+//    }
 }

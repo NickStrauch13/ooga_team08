@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class JSONReaderTest {
 
     final String FILE_PATH = "data/test/vanillaTest.json";
-    final String WRONG_PATH = "data/test/vanillaTet.json";
 
     @Test
     void checkNumOfRows() throws IOException, ParseException {
