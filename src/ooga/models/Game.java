@@ -7,7 +7,7 @@ import ooga.models.pickups.pickup;
 
 import java.util.*;
 
-public class Game {
+public class Game implements PickupGame{
 
     public void setLastDirection(String lastDirection) {
         this.lastDirection = lastDirection;
@@ -46,6 +46,15 @@ public class Game {
         pickUpsLeft = numPickUps;
         myUserControlled = userPlayer;
         myCreatureResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "directions");
+    }
+    public UserCreature getUser(){
+        return myUserControlled;
+    }
+    public GameObject getGameObject(int row, int col){
+        return myBoard.getGameObject(row,col);
+    }
+    public List<CPUCreature> getCPUs(){
+        return activeCPUCreatures;
     }
 
     public void step(){
@@ -118,8 +127,8 @@ public class Game {
 
     private void creatureVSPickupCollision(CollisionManager cm) {
         int[] collisionIndex = Arrays.stream(cm.getCurrentCollision().split(",")).mapToInt(Integer::parseInt).toArray();
-        pickup collidingPickup=myBoard.getPickup(getCellCoordinate(collisionIndex[0]),getCellCoordinate(collisionIndex[1]));
-        addScore(collidingPickup.pickUp(myUserControlled));
+        GameObject collidingPickup=myBoard.getGameObject(getCellCoordinate(collisionIndex[0]),getCellCoordinate(collisionIndex[1]));
+        collidingPickup.interact(this);
     }
 
     private void creatureVsCreatureCollision(CollisionManager cm){
