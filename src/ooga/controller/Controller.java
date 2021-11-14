@@ -20,7 +20,7 @@ public class Controller {
 
     public Controller(Stage stage) {
         HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
-        myBoard = new Board();
+        myBoard = new Board(100, 100);
         myGame = new Game(myBoard);
         stage.setTitle(TITLE);
         stage.setScene(startScreen.createScene());
