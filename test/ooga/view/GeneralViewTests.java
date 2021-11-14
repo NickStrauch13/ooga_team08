@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
-public class HomeScreenTests extends DukeApplicationTest {
+public class GeneralViewTests extends DukeApplicationTest {
   public static final Dimension DEFAULT_SIZE = new Dimension(1400, 800);
   public static final String TITLE = "Start Screen";
 
@@ -17,7 +17,7 @@ public class HomeScreenTests extends DukeApplicationTest {
   public void start(Stage stage) {
     HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height);
     stage.setTitle(TITLE);
-    stage.setScene(startScreen.setScene());
+    stage.setScene(startScreen.createScene());
     stage.show();
   }
 
@@ -44,9 +44,11 @@ public class HomeScreenTests extends DukeApplicationTest {
     TextField userNameBox = lookup("#userName").query();
     writeInputTo(userNameBox, username);
   }
-
-  /*@Test
+/*
+  @Test
   public void testClickingOnGoHomeButton(){
+    Button newGameButton = lookup("#newGameButton").query();
+    clickOn(newGameButton);
     Button goHome = lookup("#goHomeButton").query();
     clickOn(goHome);
   }

@@ -5,11 +5,16 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.home.HomeScreen;
 
 public class GameButtons {
   private static final int SPACING = 5;
   private UINodeBuilder myNodeBuilder;
+  private Stage myStage;
+  private int myWidth;
+  private int myHeight;
   private ResourceBundle myResources;
   private String language = "English";
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -17,7 +22,10 @@ public class GameButtons {
   private final ImageView PLAY_ICON = new ImageView(String.format("%splay.png", ICONS));
   private final ImageView PAUSE_ICON = new ImageView(String.format("%spause.png", ICONS));
 
-  public GameButtons(){
+  public GameButtons(Stage stage, int width, int height){
+    myStage = stage;
+    myWidth = width;
+    myHeight = height;
     myNodeBuilder = new UINodeBuilder();
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
   }
@@ -34,7 +42,8 @@ public class GameButtons {
 
 
   private void goHome(){
-
+    HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight);
+    homeScreen.setMainDisplay("Home");
   }
 
   private void playPause(){
