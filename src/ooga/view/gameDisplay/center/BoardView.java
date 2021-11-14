@@ -1,18 +1,18 @@
 package ooga.view.gameDisplay.center;
 
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
+import ooga.view.gameDisplay.gamePieces.DotPiece;
 import ooga.view.gameDisplay.gamePieces.GamePiece;
 import ooga.view.gameDisplay.gamePieces.WallPiece;
 
 public class BoardView {
   public static final int CELL_SIZE = 25;
   private GridPane myGrid;
-  private GamePiece myPiece;
+  private GamePiece myPieces;
   private static final int[][] fakeControllerBoard = {{0,0,0,0,0,0}, {0,1,1,1,1,0}, {0,0,0,1,0,0}, {0,1,1,2,1,0}, {0,1,0,1,1,0}, {0,0,0,0,0,0}};
 
   public BoardView(){
@@ -31,12 +31,12 @@ public class BoardView {
         currentState = fakeControllerBoard[r][c]; //TODO replace with a myController.getState(r,c) method
         //TODO Refactor conditionals out. Maybe make an abstraction of 'game pieces' then use reflection?
         if(currentState == 0){ //Wall
-          myPiece = new WallPiece();  //example of using the GamePiece abstraction. Obviously still need to remove conditionals (replace with refection)
-          myGrid.add(myPiece.getPiece(), c, r);
+          myPieces = new WallPiece();  //example of using the GamePiece abstraction. Obviously still need to remove conditionals (replace with refection)
+          myGrid.add(myPieces.getPiece(), c, r);
         }
         if(currentState == 1){ //empty with dot pickup
-          Circle dot = new Circle(5);
-          dot.getStyleClass().add("dotPickup");
+          myPieces = new DotPiece();
+          Node dot = myPieces.getPiece();
           myGrid.add(dot, c, r);
           myGrid.setHalignment(dot, HPos.CENTER);
         }
