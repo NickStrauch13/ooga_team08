@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import ooga.controller.Controller;
 import ooga.view.home.HomeScreen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,13 +13,11 @@ import util.DukeApplicationTest;
 public class GeneralViewTests extends DukeApplicationTest {
   public static final Dimension DEFAULT_SIZE = new Dimension(1400, 800);
   public static final String TITLE = "Start Screen";
+  public Controller myController;
 
   @Override
   public void start(Stage stage) {
-    HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height);
-    stage.setTitle(TITLE);
-    stage.setScene(startScreen.createScene());
-    stage.show();
+    Controller myController = new Controller(stage);
   }
 
   @BeforeEach

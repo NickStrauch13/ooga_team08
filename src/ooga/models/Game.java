@@ -22,7 +22,7 @@ public class Game implements PickupGame{
     private static final String[] POSSIBLE_DIRECTIONS= new String[]{
             "left","down","up","right"
     };
-    private ResourceBundle myCreatureResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE+"directions");
+    private ResourceBundle myCreatureResources;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.creatures.resources";
     private int lives;
     private int score;
@@ -45,6 +45,7 @@ public class Game implements PickupGame{
         myBoard=board;
         pickUpsLeft = numPickUps;
         myUserControlled = userPlayer;
+        myCreatureResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "directions");
     }
     public UserCreature getUser(){
         return myUserControlled;
