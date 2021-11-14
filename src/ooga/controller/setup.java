@@ -21,7 +21,10 @@ public class setup {
     }
 
     /**
-     * reads data from JSON file into a JSONReader
+     * Read data from JSON file into a JSONReader object
+     * @return the returned JSONReader object with info from the JSON game configuration file
+     * @throws IOException
+     * @throws ParseException
      */
     public JSONReader readJSONConfig() throws IOException, ParseException {
 
@@ -35,6 +38,7 @@ public class setup {
     }
 
     /**
+     * Extract status information of the board from the JSON file
      * Credit: https://stackoverflow.com/questions/31285885/how-to-parse-a-two-dimensional-json-array-in-java
      * @param jsonData
      */
@@ -57,17 +61,24 @@ public class setup {
         return boardInfo;
     }
 
+    /*
+    Extract information about the number of rows/columns from the json file
+     */
     private int getDimension(JSONObject jsonData, String row_number) {
         String rowString = (String) jsonData.get(row_number);
         return Integer.parseInt(rowString.trim());
     }
 
+    /*
+    Extract the entire JSON object for further parsing
+     */
     private JSONObject extractJSONObject() throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         Object jsonContent = parser.parse(new FileReader(myPath));
         return (JSONObject) jsonContent;
     }
 
+    //TODO: Will be moved to test later
     public static void main(String[] args) throws IOException, ParseException {
         // TODO: add this into json file or an enums as well. Try not to have any constant values at all
         final String FILE_PATH = "data/test/vanillaTest.json";
