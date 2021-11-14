@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import ooga.controller.Controller;
 import ooga.view.UINodeBuilder.UINodeBuilder;
 import ooga.view.home.HomeScreen;
 
@@ -21,8 +22,10 @@ public class GameButtons {
   private final String ICONS = String.format("/%sicons/", DEFAULT_RESOURCE_PACKAGE.replace(".", "/"));
   private final ImageView PLAY_ICON = new ImageView(String.format("%splay.png", ICONS));
   private final ImageView PAUSE_ICON = new ImageView(String.format("%spause.png", ICONS));
+  private Controller myController;
 
-  public GameButtons(Stage stage, int width, int height){
+  public GameButtons(Stage stage, int width, int height, Controller controller){
+    myController = controller;
     myStage = stage;
     myWidth = width;
     myHeight = height;
@@ -42,7 +45,7 @@ public class GameButtons {
 
 
   private void goHome(){
-    HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight);
+    HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight, myController);
     homeScreen.setMainDisplay("Home");
   }
 

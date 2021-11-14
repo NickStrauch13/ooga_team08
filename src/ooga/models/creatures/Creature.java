@@ -1,12 +1,24 @@
 package ooga.models.creatures;
 
 public abstract class Creature {
+
+    int speed;
+    int myXpos;
+    int myYpos;
+    int homeX;
+    int homeY;
+    int size;
+    String image;
+    String id;
+
+    public Creature(int xPos, int yPos){
+        myXpos = xPos;
+        myYpos = yPos;
+    }
+
     public int getSize() {
         return size;
     }
-
-    int size;
-    String image;
 
     public String getId() {
         return id;
@@ -16,16 +28,9 @@ public abstract class Creature {
         this.id = id;
     }
 
-    String id;
-
     public int getSpeed() {
         return speed;
     }
-
-    int speed;
-    int xpos;
-    int ypos;
-    
 
     public int getHomeX() {
         return homeX;
@@ -35,24 +40,21 @@ public abstract class Creature {
         return homeY;
     }
 
-    int homeX;
-    int homeY;
-
     public abstract void moveTo(int newXPos,int newYPos);
     public abstract void die();
     public int getXpos() {
-       return xpos;
+       return myXpos;
     }
 
     public int getYpos() {
-        return ypos;
+        return myYpos;
     }
     public void setXpos(int xpos) {
-        this.xpos = xpos;
+        this.myXpos = xpos;
     }
 
     public void setYpos(int ypos) {
-        this.ypos = ypos;
+        this.myYpos = ypos;
     }
 
     public void setSize(int size){
