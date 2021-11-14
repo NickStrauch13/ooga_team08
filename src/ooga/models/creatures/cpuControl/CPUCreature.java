@@ -14,7 +14,8 @@ public class CPUCreature extends Creature {
     int[] currentDirection;
     @Override
     public void moveTo(int newXPos,int newYPos) {
-
+        setXpos(newXPos);
+        setYpos(newYPos);
     }
 
     @Override
