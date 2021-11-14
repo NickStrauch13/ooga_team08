@@ -19,7 +19,7 @@ public class GameButtons {
   private ResourceBundle myResources;
   private String language = "English";
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-  private final String ICONS = String.format("/%sicons/", DEFAULT_RESOURCE_PACKAGE.replace(".", "/"));
+  private final String ICONS = String.format("/%sviewIcons/", DEFAULT_RESOURCE_PACKAGE.replace(".", "/"));
   private final ImageView PLAY_ICON = new ImageView(String.format("%splay.png", ICONS));
   private final ImageView PAUSE_ICON = new ImageView(String.format("%spause.png", ICONS));
   private Controller myController;
