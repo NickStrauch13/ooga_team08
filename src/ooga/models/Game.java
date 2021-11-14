@@ -29,15 +29,22 @@ public class Game {
     private int level;
     private int pickUpsLeft;
     private Board myBoard;
-    private List<Creature> activeCreatures = new ArrayList<>();
+    private List<CPUCreature> activeCPUCreatures = new ArrayList<>();
+
+    public UserCreature getMyUserControlled() {
+        return myUserControlled;
+    }
+
+    private UserCreature myUserControlled;
 
     public Game(Board board){
         myBoard=board;
     }
 
-    public Game(Board board,int numPickUps){
+    public Game(Board board, int numPickUps, UserCreature userPlayer){
         myBoard=board;
         pickUpsLeft = numPickUps;
+        myUserControlled = userPlayer;
     }
 
     public void step(){
@@ -141,7 +148,7 @@ public class Game {
      * Resets the lives and score if the user restarts the game etc.
      */
     private void resetCreatureStates(){
-        for (Creature currentCreature : activeCreatures){
+        for (Creature currentCreature : activeCPUCreatures){
             currentCreature.die();
         }
         lives=0;
@@ -187,7 +194,7 @@ public class Game {
         return myBoard;
     }
 
-    public List<Creature> getActiveCreatures() {
-        return activeCreatures;
+    public List<CPUCreature> getActiveCreatures() {
+        return activeCPUCreatures;
     }
 }
