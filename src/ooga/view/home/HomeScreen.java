@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import ooga.controller.Controller;
 import ooga.view.UINodeBuilder.UINodeBuilder;
 import ooga.view.gameDisplay.GameDisplay;
 
@@ -27,9 +28,11 @@ public class HomeScreen {
   private Scene myScene;
   private static final String language = "English"; //TODO add to prop file
   private String userName;
+  private Controller myController;
 
-  public HomeScreen(Stage stage, int width, int height){
+  public HomeScreen(Stage stage, int width, int height, Controller controller) {
     root = new BorderPane();
+    myController = controller;
     myWidth = width;
     myHeight = height;
     myStage = stage;
@@ -43,6 +46,7 @@ public class HomeScreen {
    * Creates the home screen scene.
    * @return the created scene object
    */
+
   public Scene createScene(){
     setupScene();
     //Add css styling?
@@ -75,9 +79,7 @@ public class HomeScreen {
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
+  public void setUserName(String userName) {this.userName = userName; }
 
   private void readFile(){
     FileChooser fileChooser = new FileChooser();
@@ -92,7 +94,7 @@ public class HomeScreen {
 
   private void startNewGame() {
     readFile();
-    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman");
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController);
     gameDisplay.setMainDisplay("Pacman");
   }
 

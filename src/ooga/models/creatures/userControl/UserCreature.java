@@ -9,6 +9,10 @@ import java.util.ResourceBundle;
 
 public class UserCreature extends Creature {
 
+    public UserCreature(int xPos, int yPos) {
+        super(xPos, yPos);
+    }
+
     public boolean isPoweredUp() {
         return isPoweredUp;
     }
