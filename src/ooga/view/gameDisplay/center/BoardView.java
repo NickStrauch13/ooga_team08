@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import ooga.view.gameDisplay.gamePieces.DotPiece;
 import ooga.view.gameDisplay.gamePieces.GamePiece;
+import ooga.view.gameDisplay.gamePieces.PacmanPiece;
 import ooga.view.gameDisplay.gamePieces.WallPiece;
 
 public class BoardView {
@@ -41,8 +42,10 @@ public class BoardView {
           myGrid.setHalignment(dot, HPos.CENTER);
         }
         if(currentState == 2){ //Pacman
-          Circle testPacman = new Circle(12.5, Color.YELLOW);
-          myGrid.add(testPacman, c,r);
+          myPieces = new PacmanPiece();
+          Node pacman = myPieces.getPiece();
+          myGrid.add(pacman, c,r);
+          myGrid.setHalignment(pacman, HPos.CENTER);
         }
       }
     }

@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import ooga.controller.Controller;
 import ooga.view.UINodeBuilder.UINodeBuilder;
 import ooga.view.gameDisplay.GameDisplay;
 
@@ -27,9 +28,11 @@ public class HomeScreen {
   private Scene myScene;
   private static final String language = "English"; //TODO add to prop file
   private String userName;
+  private Controller myController;
 
-  public HomeScreen(Stage stage, int width, int height){
+  public HomeScreen(Stage stage, int width, int height, Controller controller) {
     root = new BorderPane();
+    myController = controller;
     myWidth = width;
     myHeight = height;
     myStage = stage;
@@ -43,17 +46,7 @@ public class HomeScreen {
    * Creates the home screen scene.
    * @return the created scene object
    */
-<<<<<<< HEAD
-  public Scene setScene(){
-    Scene scene = new Scene(root, myWidth, myHeight);
-    scene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-    root.setCenter(homeButtons());
-    return scene;
-  }
 
-  private Node homeButtons(){
-    Button loadFileButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> viewHighScores());
-=======
   public Scene createScene(){
     setupScene();
     //Add css styling?
@@ -78,7 +71,6 @@ public class HomeScreen {
 
   private Node homeButtons(){
     Button highScoresButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> displayHighScores());
->>>>>>> master
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
     Label inputText = myNodeBuilder.makeLabel("userNameText");
     TextField userName = myNodeBuilder.makeInputField("userName", e -> setUserName(e), "");
@@ -86,6 +78,8 @@ public class HomeScreen {
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
   }
+
+  public void setUserName(String userName) {this.userName = userName; }
 
   private void readFile(){
     FileChooser fileChooser = new FileChooser();
@@ -100,27 +94,12 @@ public class HomeScreen {
 
   private void startNewGame() {
     readFile();
-<<<<<<< HEAD
-    GameDisplay gameDisplay = new GameDisplay(myWidth, myHeight, "Default", language,  "Pacman");
-    gameDisplay.setMainDisplay(myStage, "Pacman");
-  }
-
-  private void viewHighScores() {
-    System.out.println("High Scores");
-  }
-
-  private void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-=======
-    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman");
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController);
     gameDisplay.setMainDisplay("Pacman");
   }
 
   private void displayHighScores(){
     //TODO
   }
->>>>>>> master
 
 }

@@ -50,7 +50,7 @@ public class UINodeBuilder {
   }
 
   public Label makeLabel(String property) {
-    Label label = new Label(myResources.getString(property));
+    Label label = new Label(property);
     return (Label)setID(property, label);
   }
 
