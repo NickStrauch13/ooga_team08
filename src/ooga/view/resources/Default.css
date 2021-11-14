@@ -5,6 +5,9 @@
   text_color: #444444;
   NewGameColor: #00069C ;
   HighScoresButtonColor: #AA0000 ;
+  HomeButtonColor: #AA0000;
+  PlayButtonColor: #47ea00;
+  ResetButtonColor: #efeb14
 
 }
 
@@ -38,5 +41,49 @@
 
 .BottomGameButtons{
   -fx-alignment: center;
+}
+
+.HomeButtonID{
+  -fx-border-color: black;
+  -fx-border-width: 3px;
+  -fx-border-radius: 5px;
+  -fx-background-radius: 7px;
+  -fx-padding: 25px;
+  -fx-background-color: HomeButtonColor;
+  -fx-text-fill: white;
+  -fx-font-size: 22px;
+}
+
+.PlayButtonID{
+  -fx-border-color: black;
+  -fx-border-width: 3px;
+  -fx-border-radius: 5px;
+  -fx-background-radius: 7px;
+  -fx-padding: 15px;
+  -fx-background-color: PlayButtonColor;
+}
+
+.ResetButtonID{
+  -fx-border-color: black;
+  -fx-border-width: 3px;
+  -fx-border-radius: 5px;
+  -fx-background-radius: 7px;
+  -fx-padding: 25px;
+  -fx-background-color: ResetButtonColor;
+  -fx-font-size: 22px;
+}
+
+.gameGridPane{
+  -fx-alignment: center;
+}
+
+.wallPiece{
+  -fx-alignment: center;
+  -fx-fill: DarkBlue;
+}
+
+.dotPiece{
+  -fx-alignment: center;
+  -fx-fill: DarkGoldenRod;
 }
 
