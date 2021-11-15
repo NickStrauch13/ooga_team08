@@ -19,8 +19,6 @@ public class Controller {
 
     //TODO: probably another properties/json file to store the directory
     final String FILE_PATH = "data/test/vanillaTest.json";
-    JSONReader myReader;
-    JSONContainer myContainer;
 
     public Game myGame;
     public Board myBoard;
@@ -35,18 +33,17 @@ public class Controller {
         stage.setTitle(TITLE);
         stage.setScene(startScreen.createScene());
         stage.show();
-
-        myReader = new JSONReader(FILE_PATH);
-        myContainer = myReader.readJSONConfig();
-
     }
 
-    private Board initializeBoard() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        int numOfRows = myContainer.getMyNumOfRows();
-        int numOfCols = myContainer.getMyNumOfCols();
+    private Board initializeBoard() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, ParseException {
+        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONContainer container = reader.readJSONConfig();
+
+        int numOfRows = container.getMyNumOfRows();
+        int numOfCols = container.getMyNumOfCols();
         Board newBoard = new Board(numOfRows, numOfCols);
 
-        List<List<String>> stringBoard = myContainer.getMyStringBoard();
+        List<List<String>> stringBoard = container.getMyStringBoard();
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);

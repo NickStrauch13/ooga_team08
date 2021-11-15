@@ -13,7 +13,7 @@ public class Board {
     private int rows;
     private int cols;
     private static final int WALL_STATE = 1;
-    private static final String DEFAULT_RESOURCE_PATH = "ooga.resources";
+    private static final String DEFAULT_RESOURCE_PATH = "ooga.models.resources.";
     private ResourceBundle myGameObjects = ResourceBundle.getBundle(DEFAULT_RESOURCE_PATH+"gameObjects");
     public Board(int numRows, int numCols){
         myBoardObjects = new GameObject[numRows][numCols];
