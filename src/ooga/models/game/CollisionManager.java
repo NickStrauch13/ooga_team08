@@ -1,11 +1,15 @@
-package ooga.models;
+package ooga.models.game;
 
 public class CollisionManager {
+    private String currentCollision;
+    public CollisionManager(){
+
+    }
     public String getCurrentCollision() {
         return currentCollision;
     }
 
-    String currentCollision;
+
     public void setCollision(String objectID){
         currentCollision=objectID;
     }
@@ -13,7 +17,7 @@ public class CollisionManager {
         return currentCollision!=null;
     }
     public boolean isCreature(){
-        return(currentCollision.contains("Creature"));
+        return(currentCollision.contains("CREATURE"));
     }
 
 

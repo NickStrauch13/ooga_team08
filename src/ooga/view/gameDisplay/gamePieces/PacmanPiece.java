@@ -13,4 +13,6 @@ public class PacmanPiece extends MovingPiece {
         setIDs(testPacman, CSS_ID, getCellIndexID());
         return testPacman;
     }
+
+
 }

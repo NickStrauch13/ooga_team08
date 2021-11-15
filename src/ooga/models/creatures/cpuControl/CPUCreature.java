@@ -3,8 +3,9 @@ package ooga.models.creatures.cpuControl;
 import ooga.models.creatures.Creature;
 
 public class CPUCreature extends Creature {
-    public CPUCreature(int xPos, int yPos) {
+    public CPUCreature(Integer xPos, Integer yPos) {
         super(xPos, yPos);
+
     }
 
     public int[] getCurrentDirection() {

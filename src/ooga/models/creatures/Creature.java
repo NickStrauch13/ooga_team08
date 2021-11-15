@@ -11,9 +11,11 @@ public abstract class Creature {
     String image;
     String id;
 
-    public Creature(int xPos, int yPos){
+    public Creature(Integer xPos, Integer yPos){
         myXpos = xPos;
         myYpos = yPos;
+        homeX = xPos;
+        homeY = yPos;
     }
 
     public int getSize() {

@@ -1,9 +1,12 @@
-package ooga.models;
+package ooga.models.gameObjects;
+
+import ooga.models.game.PickupGame;
 
 public abstract class GameObject {
     private int myRow;
     private int myCol;
     private boolean isWall;
+
     public GameObject(int row, int col){
         myCol=col;
         myRow=row;

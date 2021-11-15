@@ -27,10 +27,10 @@ public class GameStats {
 
 
     public HBox makeStatLabels(){
-        Label numLivesText = nodeBuilder.makeLabel("" + myController.getLives());
+        Label numLivesText = nodeBuilder.makeLabel("   " + myController.getLives());
         Label livesText = nodeBuilder.makeLabel(myResources.getString("LivesText"));
         Node livesVBox = nodeBuilder.makeCol("statsFormat", livesText, numLivesText);
-        Label numScoreText = nodeBuilder.makeLabel("" + myController.getScore());
+        Label numScoreText = nodeBuilder.makeLabel("    " + myController.getScore());
         Label scoreText = nodeBuilder.makeLabel(myResources.getString("ScoreText"));
         Node scoreVBox = nodeBuilder.makeCol("statsFormat", scoreText, numScoreText);
         Label gameType = nodeBuilder.makeLabel("" + myController.getGameType());

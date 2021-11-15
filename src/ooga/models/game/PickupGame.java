@@ -1,5 +1,6 @@
-package ooga.models;
+package ooga.models.game;
 
+import ooga.models.gameObjects.GameObject;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
 
@@ -13,5 +14,7 @@ public interface PickupGame {
     public List<CPUCreature> getCPUs();
 
     public void addScore(int score);
+
+    public void updatePickupsLeft();
 
 }
