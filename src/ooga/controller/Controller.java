@@ -25,8 +25,6 @@ public class Controller {
     private Game myGame;
     private Board myBoard;
     private BoardView myBoardView;
-    private Map<Integer, String> gameObjectMap;
-    private Map<Integer, String> creatureMap; //TODO: Currently creatureMap is never accessed
     private double animationSpeed;
 
 
@@ -49,12 +47,13 @@ public class Controller {
             JSONContainer container = reader.readJSONConfig();
             numOfRows = container.getMyNumOfRows();
             numOfCols = container.getMyNumOfCols();
+            Map<Integer, String> gameObjectMap = container.getMyConversionMap();
+            Map<Integer, String> creatureMap = container.getMyCreatureMap(); //TODO: Currently creatureMap is never accessed
 //            Board newBoard = new Board(numOfRows, numOfCols);
             myBoard = new Board(numOfRows, numOfCols);
             myBoardView = new BoardView(this);
             myBoardView.makeBoard(numOfRows, numOfCols);
-            gameObjectMap = reader.getMyConversionMap();
-            creatureMap = reader.getMyCreatureMap();
+
             List<List<String>> stringBoard = container.getMyStringBoard();
             for (int row = 0; row < numOfRows; row++) {
                 for (int col = 0; col < numOfCols; col ++) {

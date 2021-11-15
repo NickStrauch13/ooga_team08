@@ -1,6 +1,7 @@
 package ooga.controller;
 
 import java.util.List;
+import java.util.Map;
 
 public class JSONContainer {
 
@@ -9,6 +10,8 @@ public class JSONContainer {
 
     private int myNumOfRows;
     private int myNumOfCols;
+    private Map<Integer, String> myConversionMap;
+    private Map<Integer, String> myCreatureMap;
 
     /**
      * The constructor of a JSON Reader object that holds all info from the json configuration file
@@ -17,11 +20,13 @@ public class JSONContainer {
      * @param boardInfo A 2-d list that contains a status value for each cell
      * @param stringBoard A 2-d list that contains a string value for each cell
      */
-    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard) {
+    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) {
         myNumOfRows = rows;
         myNumOfCols = cols;
         myInfo = boardInfo;
         myStringBoard = stringBoard;
+        myConversionMap = conversionMap;
+        myCreatureMap = creatureMap;
     }
 
     /**
@@ -70,5 +75,13 @@ public class JSONContainer {
      */
     public int getMyNumOfCols() {
         return myNumOfCols;
+    }
+
+    public Map<Integer, String> getMyConversionMap() {
+        return myConversionMap;
+    }
+
+    public Map<Integer, String> getMyCreatureMap() {
+        return myCreatureMap;
     }
 }
