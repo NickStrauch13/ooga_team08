@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.gameDisplay.SimulationManager;
 import ooga.view.home.HomeScreen;
 
 public class GameButtons {
@@ -23,9 +24,12 @@ public class GameButtons {
   private final ImageView PLAY_ICON = new ImageView(String.format("%splay.png", ICONS));
   private final ImageView PAUSE_ICON = new ImageView(String.format("%spause.png", ICONS));
   private Controller myController;
+  private SimulationManager mySimManager;
+  private Button playPauseButton;
 
-  public GameButtons(Stage stage, int width, int height, Controller controller){
+  public GameButtons(Stage stage, int width, int height, Controller controller, SimulationManager simManager){
     myController = controller;
+    mySimManager = simManager;
     myStage = stage;
     myWidth = width;
     myHeight = height;
@@ -37,7 +41,8 @@ public class GameButtons {
     HBox buttonBox = new HBox();
     buttonBox.setSpacing(SPACING);
     buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("GoHomeButton"), null, "GoHomeButton","HomeButtonID" ,e -> goHome()));
-    buttonBox.getChildren().add(myNodeBuilder.makeButton("",PLAY_ICON, "PausePlayButton", "PlayButtonID",e -> playPause()));
+    playPauseButton = myNodeBuilder.makeButton("",PLAY_ICON, "PausePlayButton", "PlayButtonID",e -> playPause());
+    buttonBox.getChildren().add(playPauseButton);
     buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> reset()));
     buttonBox.getStyleClass().add("BottomGameButtons");
     return buttonBox;
@@ -50,7 +55,12 @@ public class GameButtons {
   }
 
   private void playPause(){
-
+    if(mySimManager.playPause()){
+      playPauseButton.setGraphic(PAUSE_ICON);
+    }
+    else{
+      playPauseButton.setGraphic(PLAY_ICON);
+    }
   }
 
   private void reset(){
