@@ -2,6 +2,7 @@ package ooga.view.gameDisplay;
 
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.bottom.*;
@@ -9,6 +10,8 @@ import ooga.view.gameDisplay.center.*;
 import javafx.scene.Scene;
 import ooga.view.UINodeBuilder.UINodeBuilder;
 import ooga.view.gameDisplay.top.GameStats;
+
+import java.util.Arrays;
 
 public class GameDisplay {
     private Stage myStage;
@@ -22,7 +25,7 @@ public class GameDisplay {
             "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
     private Controller myController;
 
-    public GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, Controller controller) {
+    public GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, Controller controller, BoardView myBoardView) {
         myController = controller;
         myGameStats = new GameStats(myController);
         myStage = stage;
@@ -30,7 +33,7 @@ public class GameDisplay {
         myScene = new Scene(root, width, height);
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myGameButtons = new GameButtons(stage, width, height, myController);
-        myBoardView = new BoardView();
+        this.myBoardView = myBoardView;
     }
 
     /**
@@ -43,11 +46,12 @@ public class GameDisplay {
         myStage.setScene(myScene);
     }
 
-
     private void setupScene(){
         root.setTop(myGameStats.makeStatLabels());
-        root.setCenter(myBoardView.makeBoard());
+        System.out.println(Arrays.toString(myBoardView.getInitialBoard().getChildren().toArray()));
+        root.setCenter(myBoardView.getInitialBoard());
         root.setBottom(myGameButtons.makeButtonBox());
     }
+
 
 }
