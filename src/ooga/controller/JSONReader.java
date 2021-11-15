@@ -12,8 +12,8 @@ import org.json.simple.parser.ParseException;
 public class JSONReader {
 
     private final String myPath;
-    private Map<Integer, String> conversionMap;
-    private Map<Integer, String> creatureMap;
+    private Map<Integer, String> myConversionMap;
+    private Map<Integer, String> myCreatureMap;
 
     /**
      * The constructor of setup.
@@ -36,38 +36,43 @@ public class JSONReader {
         int numOfRows = getDimension(jsonData, "ROW_NUMBER");
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
-        conversionMap = getConversionMap(jsonData);
-        creatureMap = getCreatureMap(jsonData);
-        List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap);
+
+//        Map<Integer, String> conversionMap = getConversionMap(jsonData);
+        myConversionMap = getConversionMap(jsonData, "OBJECT_MAP");
+        myCreatureMap = getConversionMap(jsonData, "CREATURE_MAP");
+        List<List<String>> stringBoard = getStringBoard(boardInfo, myConversionMap, myCreatureMap);
 
         return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard);
     }
 
+    /*
+    Extract the name of each game object using the conversion map
+     */
     private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) {
         List<List<String>> stringBoard = new ArrayList<>();
         for (int i = 0; i < boardInfo.size(); i++) {
             List<String> innerList = new ArrayList<>();
             for (int j = 0; j < boardInfo.get(0).size(); j++) {
                 int currentValue = boardInfo.get(i).get(j);
-                if (conversionMap.containsKey(currentValue)) {
-                    innerList.add(conversionMap.get(currentValue));
-                }
-                else {
-                    innerList.add(creatureMap.get(currentValue));
-                }
+
+//                innerList.add(conversionMap.get(currentValue));
+                // TODO: Wait for refactoring from the backend
+                innerList.add(conversionMap.containsKey(currentValue) ? conversionMap.get(currentValue) : creatureMap.get(currentValue));
+
             }
             stringBoard.addAll(Collections.singleton(innerList));
         }
         return stringBoard;
     }
 
-    private Map<Integer, String> getConversionMap(JSONObject jsonData) {
-        Map<Integer, String> conversionMap = new HashMap();
-        Map JSONMap = ((HashMap) jsonData.get("ObjectMap"));
-        return readMap(conversionMap, JSONMap);
-    }
+    /*
+    Extract information about the translation from integer values to object names
+     */
+    private Map<Integer, String> getConversionMap(JSONObject jsonData, String objectType) {
 
-    private Map<Integer, String> readMap(Map<Integer, String> conversionMap, Map JSONMap) {
+        Map<Integer, String> conversionMap = new HashMap();
+        Map JSONMap = ((HashMap) jsonData.get(objectType));
+
         for (Object keyObject : JSONMap.keySet()) {
             String keyString = keyObject.toString().trim();
             int key = Integer.parseInt(keyString.trim());
@@ -77,16 +82,11 @@ public class JSONReader {
         return conversionMap;
     }
 
-    private Map<Integer, String> getCreatureMap(JSONObject jsonData) {
-        Map<Integer, String> conversionMap = new HashMap();
-        Map JSONMap = ((HashMap) jsonData.get("CreatureMap"));
-        return readMap(conversionMap, JSONMap);
-    }
 
     /**
      * Extract status information of the board from the JSON file
      * Credit: https://stackoverflow.com/questions/31285885/how-to-parse-a-two-dimensional-json-array-in-java
-     * @param jsonData
+     * @param jsonData JSONObject that is extracted from the json file
      */
     private List<List<Integer>> getBoardInfo(JSONObject jsonData) {
 
@@ -124,12 +124,15 @@ public class JSONReader {
         return (JSONObject) jsonContent;
     }
 
-    public Map<Integer, String> getConversionMap() {
-        return conversionMap;
+
+    public Map<Integer, String> getMyConversionMap() {
+        return myConversionMap;
     }
-    public Map<Integer, String> getCreaturesMap() {
-        return creatureMap;
+
+    public Map<Integer, String> getMyCreatureMap() {
+        return myCreatureMap;
     }
+
     //TODO: Will be moved to test later
     public static void main(String[] args) throws IOException, ParseException {
         // TODO: add this into json file or an enums as well. Try not to have any constant values at all

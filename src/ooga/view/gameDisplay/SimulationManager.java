@@ -1,5 +1,6 @@
 package ooga.view.gameDisplay;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -27,9 +28,21 @@ public class SimulationManager {
         animation.play();
     }
 
+    /**
+     * Pause method adapted from one of Professor Duvall's earlier projects
+     */
+    protected void togglePause() {
+        if (animation != null) {
+            if (animation.getStatus() == Animation.Status.PAUSED) {
+                animation.play();
+            } else {
+                animation.pause();
+            }
+        }
+    }
+
     private void step() {
         //get positions from model, update positions in view, remove noes that need to be removed, update labels
     }
-
 
 }
