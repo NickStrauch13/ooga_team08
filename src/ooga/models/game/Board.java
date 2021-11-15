@@ -1,6 +1,5 @@
 package ooga.models.game;
 
-import ooga.models.creatures.Creature;
 import ooga.models.gameObjects.GameObject;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,9 +25,10 @@ public class Board {
         Class<?> gameObjectClass = Class.forName(myGameObjects.getString(gameObjectType));
         GameObject gameObject = (GameObject) gameObjectClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
         myBoardObjects[row][col] = gameObject;
-        if (gameObjectType.equals("WALL")){
+        if (gameObjectType.contains("WALL")){
             myBoardObjects[row][col].setWall(true);
         }
+
     }
 
 
@@ -36,18 +36,19 @@ public class Board {
      * Adds a Pacman to the board when launching the game.
      * @param creatureType
      */
-    private void createCreature(int xPos, int yPos, String creatureType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
-        Class<?> creatureClass = Class.forName(myGameObjects.getString(creatureType));
-        Creature creature = (Creature)  creatureClass.getDeclaredConstructor(Integer.class,Integer.class).newInstance(xPos,yPos);
-    };
+//    private boolean createCreature(int xPos, int yPos, String creatureType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
+//        Class<?> creatureClass = Class.forName(myGameObjects.getString(creatureType));
+//        Creature creature = (Creature)  creatureClass.getDeclaredConstructor(Integer.class,Integer.class).newInstance(xPos,yPos);
+//        return true;
+//    };
 
 
     /**
      * gets the current state of the cell
      * @return integer that represents the state of the cell
      */
-    public int getCellState(int row, int col) {
-        return 0;
+    public boolean getisWallAtCell(int row, int col) {
+        return myBoardObjects[row][col].isWall();
     }
 
     public GameObject getGameObject(int row, int col){

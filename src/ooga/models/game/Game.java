@@ -78,7 +78,7 @@ public class Game implements PickupGame {
         int row = getCellCoordinate(possibleNewPositionX+xDirection*currentCreature.getSize()/2);
         int col = getCellCoordinate(possibleNewPositionY+yDirection*currentCreature.getSize()/2);
 
-        if (myBoard.getCellState(row,col)!=WALL_STATE){
+        if (!myBoard.getisWallAtCell(row,col)){
             currentCreature.moveTo(possibleNewPositionX,possibleNewPositionY);
             return true;
         }
