@@ -1,6 +1,7 @@
 package ooga.view.gameDisplay;
 
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -24,15 +25,18 @@ public class GameDisplay {
     private static final String DEFAULT_STYLESHEET =
             "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
     private Controller myController;
+    private SimulationManager mySimManager;
 
     public GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, Controller controller, BoardView myBoardView) {
         myController = controller;
+        mySimManager = new SimulationManager(myController);
         myGameStats = new GameStats(myController);
         myStage = stage;
         root = new BorderPane();
         myScene = new Scene(root, width, height);
+        myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-        myGameButtons = new GameButtons(stage, width, height, myController);
+        myGameButtons = new GameButtons(stage, width, height, myController, mySimManager);
         this.myBoardView = myBoardView;
     }
 
@@ -52,6 +56,7 @@ public class GameDisplay {
         root.setCenter(myBoardView.getInitialBoard());
         root.setBottom(myGameButtons.makeButtonBox());
     }
+
 
 
 }
