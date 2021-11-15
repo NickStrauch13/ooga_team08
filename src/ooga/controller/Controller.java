@@ -117,4 +117,13 @@ public class Controller {
     public double getAnimationSpeed() {
         return animationSpeed;
     }
+
+
+    /**
+     * Returns the hashmap containing the moving game objects "creatures"
+     * @return the creature map
+     */
+    public Map getCreatureMap(){
+        return creatureMap;
+    }
 }

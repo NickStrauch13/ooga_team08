@@ -42,7 +42,7 @@ public class SimulationManager {
     }
 
     private void step() {
-
+        //get positions from model, update positions in view, remove noes that need to be removed, update labels
     }
 
 }
