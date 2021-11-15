@@ -29,25 +29,15 @@ public class BoardView {
   public void addBoardPiece(int row, int col, String objectName) {
 
       if(objectName.equals("WALL")){ //Wall
-        System.out.println(objectName);
         myPieces = new WallPiece();  //example of using the GamePiece abstraction. Obviously still need to remove conditionals (replace with refection)
         myGrid.add(myPieces.getPiece(), col, row);
       }
       if(objectName.equals("POWERUP1")){ //empty with dot pickup
-        System.out.println(objectName);
         myPieces = new DotPiece();
         Node dot = myPieces.getPiece();
         myGrid.add(dot, col, row);
         myGrid.setHalignment(dot, HPos.CENTER);
       }
-
-    /*
-    if(currentState == 2){ //Pacman
-      myPieces = new PacmanPiece();
-      Node pacman = myPieces.getPiece();
-      myGrid.add(pacman, c,r);
-      myGrid.setHalignment(pacman, HPos.CENTER);
-    }*/
 
   }
 
