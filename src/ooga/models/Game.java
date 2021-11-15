@@ -3,12 +3,11 @@ package ooga.models;
 import ooga.models.creatures.Creature;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
-import ooga.models.pickups.pickup;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Game implements PickupGame{
-
     public void setLastDirection(String lastDirection) {
         this.lastDirection = lastDirection;
     }
@@ -46,6 +45,11 @@ public class Game implements PickupGame{
         pickUpsLeft = numPickUps;
         myUserControlled = userPlayer;
         myCreatureResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "directions");
+        lives = 0;
+        score = 0;
+        level = 1;
+        myUserControlled = myBoard.getMyUser();
+        activeCPUCreatures = myBoard.getMyCPUCreatures();
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -63,6 +67,8 @@ public class Game implements PickupGame{
 
         moveCreatures();
     }
+
+
 
     private void moveCreatures(){
         for (CPUCreature currentCreature : activeCPUCreatures){

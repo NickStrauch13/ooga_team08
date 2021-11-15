@@ -4,6 +4,7 @@ public abstract class GameObject {
     private int myRow;
     private int myCol;
     private boolean isWall;
+
     public GameObject(int row, int col){
         myCol=col;
         myRow=row;

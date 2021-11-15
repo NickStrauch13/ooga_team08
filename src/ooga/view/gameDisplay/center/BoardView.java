@@ -5,20 +5,22 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import ooga.controller.Controller;
 import ooga.view.gameDisplay.gamePieces.DotPiece;
 import ooga.view.gameDisplay.gamePieces.GamePiece;
 import ooga.view.gameDisplay.gamePieces.PacmanPiece;
 import ooga.view.gameDisplay.gamePieces.WallPiece;
 
 public class BoardView {
-  public static final int CELL_SIZE = 25;
   private GridPane myGrid;
   private GamePiece myPieces;
   private int[][] controllerBoard;
+  private Controller myController;
 
-  public BoardView(){
+  public BoardView(Controller controller){
+    myController = controller;
     myGrid = new GridPane();
-    myGrid.setMaxSize(CELL_SIZE, CELL_SIZE);
+    myGrid.setMaxSize(myController.getCellSize(), myController.getCellSize());
     //myGrid.setGridLinesVisible(true);
     myGrid.getStyleClass().add("gameGridPane");
 
@@ -49,6 +51,15 @@ public class BoardView {
 
   }
 
+  public void addCreature(int row, int col, String objectName) {
+    if(objectName.equals("PACMAN")){ //Pacman
+      myPieces = new PacmanPiece();
+      Node pacman = myPieces.getPiece();
+      myGrid.add(pacman, col,row);
+      myGrid.setHalignment(pacman, HPos.CENTER);
+    }
+  }
+
   public void makeBoard(int rows, int cols){
     controllerBoard = new int[rows][cols];
   }
@@ -56,5 +67,6 @@ public class BoardView {
   public GridPane getInitialBoard() {
     return myGrid;
   }
+
 
 }

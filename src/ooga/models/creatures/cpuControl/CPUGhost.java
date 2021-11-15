@@ -1,7 +1,7 @@
 package ooga.models.creatures.cpuControl;
 
 public class CPUGhost extends CPUCreature {
-    public CPUGhost(int xPos, int yPos) {
+    public CPUGhost(Integer xPos, Integer yPos) {
         super(xPos, yPos);
     }
 }

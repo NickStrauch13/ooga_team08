@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 public class UserCreature extends Creature {
 
-    public UserCreature(int xPos, int yPos) {
+    public UserCreature(Integer xPos, Integer yPos) {
         super(xPos, yPos);
     }
 
