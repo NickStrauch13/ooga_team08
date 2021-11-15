@@ -1,13 +1,14 @@
-package ooga.models;
+package ooga.models.game;
 
+import ooga.models.Board;
+import ooga.models.GameObject;
 import ooga.models.creatures.Creature;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
-import ooga.models.pickups.pickup;
 
 import java.util.*;
 
-public class Game implements PickupGame{
+public class Game implements PickupGame {
 
     public void setLastDirection(String lastDirection) {
         this.lastDirection = lastDirection;

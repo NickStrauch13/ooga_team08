@@ -1,7 +1,7 @@
 package ooga.models.pickups;
 
 import ooga.models.GameObject;
-import ooga.models.PickupGame;
+import ooga.models.game.PickupGame;
 
 public abstract class pickup extends GameObject {
 

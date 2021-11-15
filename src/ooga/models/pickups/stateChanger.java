@@ -1,6 +1,6 @@
 package ooga.models.pickups;
 
-import ooga.models.PickupGame;
+import ooga.models.game.PickupGame;
 
 public class stateChanger extends pickup{
     private static final int SCORE_TO_ADD=100;

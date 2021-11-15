@@ -1,6 +1,8 @@
-package ooga.models;
+package ooga.models.walls;
 
-public class BasicWall extends Wall{
+import ooga.models.game.PickupGame;
+
+public class BasicWall extends Wall {
 
   public BasicWall(Integer row, Integer col){
     super(row, col);

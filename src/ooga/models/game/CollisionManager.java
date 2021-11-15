@@ -1,4 +1,4 @@
-package ooga.models;
+package ooga.models.game;
 
 public class CollisionManager {
     public String getCurrentCollision() {
