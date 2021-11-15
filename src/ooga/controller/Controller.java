@@ -37,7 +37,7 @@ public class Controller {
         animationSpeed = 0.3;
     }
 
-    public Board initializeBoard(String path) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, ParseException {
+    public void initializeBoard(String path) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, ParseException {
         int numOfRows, numOfCols = 0;
         try {
             JSONReader reader = new JSONReader(path);
@@ -65,11 +65,9 @@ public class Controller {
                 }
             }
             myGame = new Game(myBoard);
-            return newBoard;
         }
         catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
@@ -112,5 +110,14 @@ public class Controller {
 
     public double getAnimationSpeed() {
         return animationSpeed;
+    }
+
+
+    /**
+     * Returns the hashmap containing the moving game objects "creatures"
+     * @return the creature map
+     */
+    public Map getCreatureMap(){
+        return creatureMap;
     }
 }

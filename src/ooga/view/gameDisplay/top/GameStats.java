@@ -35,7 +35,7 @@ public class GameStats {
         Node scoreVBox = nodeBuilder.makeCol("statsFormat", scoreText, numScoreText);
         Label gameType = nodeBuilder.makeLabel("" + myController.getGameType());
         Label gameText = nodeBuilder.makeLabel(myResources.getString("GameText"));
-        Node gameTypeVBox = nodeBuilder.makeCol("statsFormat", gameType, gameText);
+        Node gameTypeVBox = nodeBuilder.makeCol("statsFormat", gameText, gameType);
         Node myHbox = nodeBuilder.makeRow("statsHolder", livesVBox,scoreVBox,gameTypeVBox);
         return (HBox) myHbox;
     }

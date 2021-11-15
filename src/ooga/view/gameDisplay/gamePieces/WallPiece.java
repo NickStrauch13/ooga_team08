@@ -11,7 +11,8 @@ public class WallPiece extends GamePiece{
   private static final String CSS_ID = "wallPiece";
 
 
-  public WallPiece(){
+  public WallPiece(int cellSize){
+    super(cellSize);
   }
 
   @Override
