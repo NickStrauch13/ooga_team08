@@ -5,7 +5,7 @@ import ooga.models.PickupGame;
 
 public abstract class pickup extends GameObject {
 
-    public pickup(int row, int col) {
+    public pickup(Integer row, Integer col) {
         super(row, col);
     }
 

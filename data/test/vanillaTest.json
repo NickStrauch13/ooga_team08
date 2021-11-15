@@ -16,8 +16,8 @@
   ],
   "MAP": {
     "0 " : "WAll",
-    "1" : "PICKUP",
-    "2" : "POWERUP1",
-    "3" : "POWERUP2"
+    "1" : "POWERUP1",
+    "2" : "POWERUP2",
+    "3" : "POWERUP3"
   }
 }

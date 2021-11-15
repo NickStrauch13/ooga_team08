@@ -5,7 +5,7 @@ import ooga.models.PickupGame;
 public class bigScoreBooster extends pickup{
     private static final int SCORE_TO_ADD=200;
 
-    public bigScoreBooster(int row, int col) {
+    public bigScoreBooster(Integer row, Integer col) {
         super(row, col);
     }
 
