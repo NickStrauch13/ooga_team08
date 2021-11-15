@@ -1,11 +1,8 @@
-package ooga.models;
+package ooga.models.game;
 
-import ooga.models.creatures.Creature;
-import ooga.models.pickups.pickup;
+import ooga.models.gameObjects.GameObject;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 public class Board {
@@ -28,28 +25,30 @@ public class Board {
         Class<?> gameObjectClass = Class.forName(myGameObjects.getString(gameObjectType));
         GameObject gameObject = (GameObject) gameObjectClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
         myBoardObjects[row][col] = gameObject;
-        if (gameObjectType.equals("WALL")){
+        if (gameObjectType.contains("WALL")){
             myBoardObjects[row][col].setWall(true);
         }
+
     }
+
 
     /**
      * Adds a Pacman to the board when launching the game.
      * @param creatureType
      */
-    private void createCreature(int xPos, int yPos, String creatureType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
-        Class<Creature> creatureClass = (Class<Creature>)Class.forName(myGameObjects.getString(creatureType));
-        Constructor<Creature> construct = creatureClass.getDeclaredConstructor();
-        construct.newInstance(xPos, yPos);
-    };
+//    private boolean createCreature(int xPos, int yPos, String creatureType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
+//        Class<?> creatureClass = Class.forName(myGameObjects.getString(creatureType));
+//        Creature creature = (Creature)  creatureClass.getDeclaredConstructor(Integer.class,Integer.class).newInstance(xPos,yPos);
+//        return true;
+//    };
 
 
     /**
      * gets the current state of the cell
      * @return integer that represents the state of the cell
      */
-    public int getCellState(int row, int col) {
-        return 0;
+    public boolean getisWallAtCell(int row, int col) {
+        return myBoardObjects[row][col].isWall();
     }
 
     public GameObject getGameObject(int row, int col){

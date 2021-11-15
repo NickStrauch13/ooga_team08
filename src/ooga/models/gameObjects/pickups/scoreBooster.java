@@ -1,6 +1,6 @@
-package ooga.models.pickups;
+package ooga.models.gameObjects.pickups;
 
-import ooga.models.PickupGame;
+import ooga.models.game.PickupGame;
 
 public class scoreBooster extends pickup{
     private static final int SCORE_TO_ADD=100;
@@ -11,5 +11,6 @@ public class scoreBooster extends pickup{
 
     public void interact(PickupGame pickupGame){
         pickupGame.addScore(SCORE_TO_ADD);
+        super.interact(pickupGame);
     }
 }

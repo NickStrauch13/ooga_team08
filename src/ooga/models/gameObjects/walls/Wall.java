@@ -1,7 +1,7 @@
-package ooga.models;
+package ooga.models.gameObjects.walls;
 
-import ooga.models.GameObject;
-import ooga.models.PickupGame;
+import ooga.models.gameObjects.GameObject;
+import ooga.models.game.PickupGame;
 
 public abstract class Wall extends GameObject {
     public Wall(int row, int col) {
