@@ -5,7 +5,9 @@ import ooga.models.creatures.Creature;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
 
 public class Game implements PickupGame {
 
@@ -73,6 +75,8 @@ public class Game implements PickupGame {
 
         moveCreatures();
     }
+
+
 
     private void moveCreatures(){
         for (CPUCreature currentCreature : activeCPUCreatures){

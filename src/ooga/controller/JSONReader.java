@@ -12,6 +12,8 @@ import org.json.simple.parser.ParseException;
 public class JSONReader {
 
     private final String myPath;
+    private Map<Integer, String> conversionMap;
+    private Map<Integer, String> creatureMap;
 
     /**
      * The constructor of setup.
@@ -34,20 +36,25 @@ public class JSONReader {
         int numOfRows = getDimension(jsonData, "ROW_NUMBER");
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
-
-        Map<Integer, String> conversionMap = getConversionMap(jsonData);
-        List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap);
+        conversionMap = getConversionMap(jsonData);
+        creatureMap = getCreatureMap(jsonData);
+        List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap);
 
         return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard);
     }
 
-    private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap) {
+    private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) {
         List<List<String>> stringBoard = new ArrayList<>();
         for (int i = 0; i < boardInfo.size(); i++) {
             List<String> innerList = new ArrayList<>();
             for (int j = 0; j < boardInfo.get(0).size(); j++) {
                 int currentValue = boardInfo.get(i).get(j);
-                innerList.add(conversionMap.get(currentValue));
+                if (conversionMap.containsKey(currentValue)) {
+                    innerList.add(conversionMap.get(currentValue));
+                }
+                else {
+                    innerList.add(creatureMap.get(currentValue));
+                }
             }
             stringBoard.addAll(Collections.singleton(innerList));
         }
@@ -56,8 +63,11 @@ public class JSONReader {
 
     private Map<Integer, String> getConversionMap(JSONObject jsonData) {
         Map<Integer, String> conversionMap = new HashMap();
-        Map JSONMap = ((HashMap) jsonData.get("MAP"));
+        Map JSONMap = ((HashMap) jsonData.get("ObjectMap"));
+        return readMap(conversionMap, JSONMap);
+    }
 
+    private Map<Integer, String> readMap(Map<Integer, String> conversionMap, Map JSONMap) {
         for (Object keyObject : JSONMap.keySet()) {
             String keyString = keyObject.toString().trim();
             int key = Integer.parseInt(keyString.trim());
@@ -65,6 +75,12 @@ public class JSONReader {
             conversionMap.put(key, stringValue);
         }
         return conversionMap;
+    }
+
+    private Map<Integer, String> getCreatureMap(JSONObject jsonData) {
+        Map<Integer, String> conversionMap = new HashMap();
+        Map JSONMap = ((HashMap) jsonData.get("CreatureMap"));
+        return readMap(conversionMap, JSONMap);
     }
 
     /**
@@ -108,6 +124,12 @@ public class JSONReader {
         return (JSONObject) jsonContent;
     }
 
+    public Map<Integer, String> getConversionMap() {
+        return conversionMap;
+    }
+    public Map<Integer, String> getCreaturesMap() {
+        return creatureMap;
+    }
     //TODO: Will be moved to test later
     public static void main(String[] args) throws IOException, ParseException {
         // TODO: add this into json file or an enums as well. Try not to have any constant values at all
