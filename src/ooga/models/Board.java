@@ -33,14 +33,14 @@ public class Board {
         }
     }
 
+
     /**
      * Adds a Pacman to the board when launching the game.
      * @param creatureType
      */
     private void createCreature(int xPos, int yPos, String creatureType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
-        Class<Creature> creatureClass = (Class<Creature>)Class.forName(myGameObjects.getString(creatureType));
-        Constructor<Creature> construct = creatureClass.getDeclaredConstructor();
-        construct.newInstance(xPos, yPos);
+        Class<?> creatureClass = Class.forName(myGameObjects.getString(creatureType));
+        Creature creature = (Creature)  creatureClass.getDeclaredConstructor(Integer.class,Integer.class).newInstance(xPos,yPos);
     };
 
 
