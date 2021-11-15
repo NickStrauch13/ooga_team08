@@ -47,8 +47,8 @@ public class Controller {
             Board newBoard = new Board(numOfRows, numOfCols);
             myBoardView = new BoardView(this);
             myBoardView.makeBoard(numOfRows, numOfCols);
-            gameObjectMap = reader.getConversionMap();
-            creatureMap = reader.getCreaturesMap();
+            gameObjectMap = reader.getMyConversionMap();
+            creatureMap = reader.getMyCreatureMap();
             List<List<String>> stringBoard = container.getMyStringBoard();
             for (int row = 0; row < numOfRows; row++) {
                 for (int col = 0; col < numOfCols; col ++) {
