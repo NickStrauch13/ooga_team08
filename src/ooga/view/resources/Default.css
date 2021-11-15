@@ -87,3 +87,10 @@
   -fx-fill: DarkGoldenRod;
 }
 
+.statsHolder {
+    -fx-alignment: center;
+    -fx-font-size: 22px;
+    -fx-spacing: 20px;
+    -fx-padding: 10px;
+}
+

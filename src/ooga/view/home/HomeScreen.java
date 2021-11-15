@@ -89,12 +89,19 @@ public class HomeScreen {
     if (selectedFile == null) {
       return;
     }
-    //TODO have controller deal with file myController.openJSONFile(selectedFile);
+    else {
+      try {
+        myController.initializeBoard(selectedFile.getPath());
+      }
+      catch (Exception e)  {
+        e.printStackTrace(); //TODO update this error handling
+      }
+    }
   }
 
   private void startNewGame() {
     readFile();
-    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController);
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");
   }
 
