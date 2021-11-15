@@ -46,6 +46,7 @@ public class Controller {
         List<List<String>> stringBoard = container.getMyStringBoard();
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
+                System.out.println(row+","+col);
                 String objectName = stringBoard.get(row).get(col);
                 newBoard.createGameObject(row, col, objectName);
             }
