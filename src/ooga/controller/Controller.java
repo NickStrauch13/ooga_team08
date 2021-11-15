@@ -5,7 +5,6 @@ import javafx.stage.Stage;
 
 import ooga.models.game.Board;
 import ooga.models.game.Game;
-import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;
@@ -16,19 +15,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Controller {
+
+    // TODO: Constant values should be in a file probably - enum?
     public static final Dimension DEFAULT_SIZE = new Dimension(1400, 800);
     public static final String TITLE = "Start Screen";
     public static final String gameType = "Pacman"; //TODO update gameType variable
     public static final int CELL_SIZE = 25;
-    public Game myGame;
-    public Board myBoard;
-    public BoardView myBoardView;
+
+    private Game myGame;
+    private Board myBoard;
+    private BoardView myBoardView;
     private Map<Integer, String> gameObjectMap;
-    private Map<Integer, String> creatureMap;
+    private Map<Integer, String> creatureMap; //TODO: Currently creatureMap is never accessed
     private double animationSpeed;
 
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
+    // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         stage.setTitle(TITLE);
@@ -37,14 +40,17 @@ public class Controller {
         animationSpeed = 0.3;
     }
 
-    public Board initializeBoard(String path) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, ParseException {
-        int numOfRows, numOfCols = 0;
+    // TODO: I think this should be private, and I definitely need to refactor this as well
+    // TODO: Throw vs. try/catch here
+    public void initializeBoard(String path) {
+        int numOfRows, numOfCols;
         try {
             JSONReader reader = new JSONReader(path);
             JSONContainer container = reader.readJSONConfig();
             numOfRows = container.getMyNumOfRows();
             numOfCols = container.getMyNumOfCols();
-            Board newBoard = new Board(numOfRows, numOfCols);
+//            Board newBoard = new Board(numOfRows, numOfCols);
+            myBoard = new Board(numOfRows, numOfCols);
             myBoardView = new BoardView(this);
             myBoardView.makeBoard(numOfRows, numOfCols);
             gameObjectMap = reader.getMyConversionMap();
@@ -54,22 +60,20 @@ public class Controller {
                 for (int col = 0; col < numOfCols; col ++) {
                     String objectName = stringBoard.get(row).get(col);
                     if (gameObjectMap.containsValue(objectName)) {
-                        newBoard.createGameObject(row, col, objectName);
+                        myBoard.createGameObject(row, col, objectName);
                         myBoardView.addBoardPiece(row, col, objectName);
                     }
                     else {
-                        newBoard.createCreature(row, col, objectName);
+                        myBoard.createCreature(row, col, objectName);
                         myBoardView.addCreature(row, col, objectName);
                     }
 
                 }
             }
             myGame = new Game(myBoard);
-            return newBoard;
         }
-        catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
-            e.printStackTrace();
-            return null;
+        catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | IOException | ParseException | InstantiationException e) {
+            e.printStackTrace();     // TODO: Need better exception handling if we are going with try/catch
         }
     }
 
