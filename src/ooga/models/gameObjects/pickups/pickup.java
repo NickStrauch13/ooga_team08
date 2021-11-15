@@ -9,5 +9,7 @@ public abstract class pickup extends GameObject {
         super(row, col);
     }
 
-    abstract public void interact(PickupGame pickupGame);
+    public void interact(PickupGame pickupGame){
+        pickupGame.updatePickupsLeft();
+    };
 }
