@@ -1,10 +1,14 @@
 package ooga;
 
 import java.awt.Dimension;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.view.home.HomeScreen;
+import org.json.simple.parser.ParseException;
 
 public class Main extends Application {
 
@@ -12,7 +16,7 @@ public class Main extends Application {
      * Initializes the display, launches window with initial properties
      */
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Controller myController = new Controller(stage);
 
 
