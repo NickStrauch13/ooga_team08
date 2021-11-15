@@ -25,9 +25,9 @@ public class Board {
     }
 
     public void createGameObject(int row, int col, String gameObjectType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
-        Class<GameObject> gameObjectClass = (Class<GameObject>)Class.forName(myGameObjects.getString(gameObjectType));
-        Constructor<GameObject> construct = gameObjectClass.getDeclaredConstructor();
-        construct.newInstance(row, col);
+        Class<?> gameObjectClass = Class.forName("ooga.models.pickups.pickup");
+        GameObject gameObject = (GameObject) gameObjectClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
+        myBoardObjects[row][col] = gameObject;
         if (gameObjectType.equals("WALL")){
             myBoardObjects[row][col].setWall(true);
         }

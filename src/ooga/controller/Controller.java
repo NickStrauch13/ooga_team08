@@ -44,6 +44,7 @@ public class Controller {
         Board newBoard = new Board(numOfRows, numOfCols);
 
         List<List<String>> stringBoard = container.getMyStringBoard();
+
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);
