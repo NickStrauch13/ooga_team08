@@ -1,6 +1,6 @@
 package ooga.models.game;
 
-import ooga.models.GameObject;
+import ooga.models.gameObjects.GameObject;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
 

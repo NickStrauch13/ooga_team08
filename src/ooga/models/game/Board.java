@@ -1,11 +1,9 @@
-package ooga.models;
+package ooga.models.game;
 
 import ooga.models.creatures.Creature;
-import ooga.models.pickups.pickup;
+import ooga.models.gameObjects.GameObject;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 public class Board {

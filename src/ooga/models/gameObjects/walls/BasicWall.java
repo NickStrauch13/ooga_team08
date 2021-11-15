@@ -1,4 +1,4 @@
-package ooga.models.walls;
+package ooga.models.gameObjects.walls;
 
 import ooga.models.game.PickupGame;
 
