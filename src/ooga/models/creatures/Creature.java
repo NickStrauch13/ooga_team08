@@ -14,6 +14,8 @@ public abstract class Creature {
     public Creature(Integer xPos, Integer yPos){
         myXpos = xPos;
         myYpos = yPos;
+        homeX = xPos;
+        homeY = yPos;
     }
 
     public int getSize() {

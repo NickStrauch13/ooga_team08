@@ -1,5 +1,6 @@
-package ooga.models;
+package ooga.models.game;
 
+import ooga.models.gameObjects.GameObject;
 import ooga.models.creatures.Creature;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
@@ -7,10 +8,16 @@ import ooga.models.creatures.userControl.UserCreature;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-public class Game implements PickupGame{
-    public void setLastDirection(String lastDirection) {
+
+public class Game implements PickupGame {
+
+    public boolean setLastDirection(String lastDirection) {
         this.lastDirection = lastDirection;
+        return true;
     }
+
+
+
     private boolean gameOver=false;
     private String lastDirection;
     private int boardXSize=400;
@@ -22,7 +29,7 @@ public class Game implements PickupGame{
             "left","down","up","right"
     };
     private ResourceBundle myCreatureResources;
-    private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.creatures.resources";
+    private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.creatures.resources.";
     private int lives;
     private int score;
     private int level;
@@ -30,9 +37,6 @@ public class Game implements PickupGame{
     private Board myBoard;
     private List<CPUCreature> activeCPUCreatures = new ArrayList<>();
 
-    public UserCreature getMyUserControlled() {
-        return myUserControlled;
-    }
 
     private UserCreature myUserControlled;
 
@@ -45,11 +49,9 @@ public class Game implements PickupGame{
         pickUpsLeft = numPickUps;
         myUserControlled = userPlayer;
         myCreatureResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "directions");
-        lives = 0;
-        score = 0;
-        level = 1;
-        myUserControlled = myBoard.getMyUser();
-        activeCPUCreatures = myBoard.getMyCPUCreatures();
+        level=1;
+        lives=3;
+        score=0;
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -62,8 +64,14 @@ public class Game implements PickupGame{
     }
 
     public void step(){
-        if (checkPickUps()){nextLevel();}
-        if (checkLives()){ endGame();}
+        if (checkPickUps()){
+            nextLevel();
+            return;
+        }
+        if (checkLives()){
+            endGame();
+            return;
+        }
 
         moveCreatures();
     }
@@ -84,7 +92,7 @@ public class Game implements PickupGame{
         int row = getCellCoordinate(possibleNewPositionX+xDirection*currentCreature.getSize()/2);
         int col = getCellCoordinate(possibleNewPositionY+yDirection*currentCreature.getSize()/2);
 
-        if (myBoard.getCellState(row,col)!=WALL_STATE){
+        if (!myBoard.getisWallAtCell(row,col)){
             currentCreature.moveTo(possibleNewPositionX,possibleNewPositionY);
             return true;
         }
@@ -109,7 +117,9 @@ public class Game implements PickupGame{
         return pixels/CELL_SIZE;
     }
 
-    private boolean checkPickUps(){return pickUpsLeft ==0;}
+    private boolean checkPickUps(){
+        return pickUpsLeft ==0;
+    }
 
     private boolean checkLives(){return lives == 0;}
     /**
@@ -129,12 +139,19 @@ public class Game implements PickupGame{
                 creatureVSPickupCollision(cm);
             }
         }
+        cm.setCollision(null);
+    }
+    public void updatePickupsLeft(){
+        pickUpsLeft--;
     }
 
     private void creatureVSPickupCollision(CollisionManager cm) {
         int[] collisionIndex = Arrays.stream(cm.getCurrentCollision().split(",")).mapToInt(Integer::parseInt).toArray();
         GameObject collidingPickup=myBoard.getGameObject(getCellCoordinate(collisionIndex[0]),getCellCoordinate(collisionIndex[1]));
         collidingPickup.interact(this);
+    }
+    public void setActiveCPUCreatures(List<CPUCreature> cpuCreatures){
+        activeCPUCreatures=cpuCreatures;
     }
 
     private void creatureVsCreatureCollision(CollisionManager cm){
@@ -159,6 +176,9 @@ public class Game implements PickupGame{
     public void addScore(int scoreToBeAdded){
         score+=scoreToBeAdded;
     };
+    public void resetGame(){
+        resetCreatureStates();
+    }
 
     /**
      * Resets the lives and score if the user restarts the game etc.
@@ -167,8 +187,12 @@ public class Game implements PickupGame{
         for (Creature currentCreature : activeCPUCreatures){
             currentCreature.die();
         }
-        lives=0;
+        myUserControlled.die();
+        lives=3;
         score=0;
+        level=1;
+        gameOver=false;
+
     };
 
     /**
@@ -190,9 +214,7 @@ public class Game implements PickupGame{
         return directionArray;
     }
 
-    private String getLastDirection() {
-        return lastDirection;
-    }
+
 
     public int getLives() {
         return lives;
@@ -210,7 +232,9 @@ public class Game implements PickupGame{
         return myBoard;
     }
 
-    public List<CPUCreature> getActiveCreatures() {
-        return activeCPUCreatures;
+    public boolean isGameOver() {
+        return gameOver;
     }
+
+
 }

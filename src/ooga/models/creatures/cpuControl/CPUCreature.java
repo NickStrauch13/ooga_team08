@@ -5,6 +5,7 @@ import ooga.models.creatures.Creature;
 public class CPUCreature extends Creature {
     public CPUCreature(Integer xPos, Integer yPos) {
         super(xPos, yPos);
+
     }
 
     public int[] getCurrentDirection() {

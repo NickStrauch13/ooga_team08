@@ -1,8 +1,11 @@
 package ooga.controller;
 
 import javafx.stage.Stage;
-import ooga.models.Board;
-import ooga.models.Game;
+
+
+import ooga.models.game.Board;
+import ooga.models.game.Game;
+import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;

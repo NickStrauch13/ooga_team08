@@ -1,4 +1,6 @@
-package ooga.models;
+package ooga.models.gameObjects;
+
+import ooga.models.game.PickupGame;
 
 public abstract class GameObject {
     private int myRow;
