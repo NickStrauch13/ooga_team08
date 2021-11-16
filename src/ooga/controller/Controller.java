@@ -3,6 +3,7 @@ package ooga.controller;
 import javafx.stage.Stage;
 
 
+import ooga.models.creatures.Creature;
 import ooga.models.game.Board;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
 public class Controller {
 
@@ -28,6 +31,7 @@ public class Controller {
     private Map<Integer, String> gameObjectMap;
     private Map<Integer, String> creatureMap; //TODO: Currently creatureMap is never accessed
     private double animationSpeed;
+    private ArrayList<MovingPiece> myMovingPieces;
 
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -64,13 +68,14 @@ public class Controller {
                         myBoardView.addBoardPiece(row, col, objectName);
                     }
                     else {
-                        myBoard.createCreature(row, col, objectName);
+                        myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName);
                         myBoardView.addCreature(row, col, objectName);
                     }
 
                 }
             }
-            myGame = new Game(myBoard);
+            myGame = new Game(myBoard, 47, myBoard.getMyUser(), CELL_SIZE); //TODO assigning pickups manually assign from file!!
+            //TODO get lives from JSON file
         }
         catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | IOException | ParseException | InstantiationException e) {
             e.printStackTrace();     // TODO: Need better exception handling if we are going with try/catch
@@ -126,4 +131,16 @@ public class Controller {
     public Map getCreatureMap(){
         return creatureMap;
     }
+
+    public void step(String direction) {
+        myGame.setLastDirection(direction);
+        myGame.step();
+    }
+
+    public int[] getUserPosition() {
+        int [] newPosition = {myBoard.getMyUser().getXpos(), myBoard.getMyUser().getYpos()};
+        return newPosition;
+    }
+
+
 }

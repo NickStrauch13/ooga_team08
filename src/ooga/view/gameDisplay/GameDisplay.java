@@ -27,9 +27,10 @@ public class GameDisplay {
     private Controller myController;
     private SimulationManager mySimManager;
 
-    public GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, Controller controller, BoardView myBoardView) {
+    public GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, Controller controller, BoardView boardView) {
         myController = controller;
-        mySimManager = new SimulationManager(myController);
+        myBoardView = boardView;
+        mySimManager = new SimulationManager(myController, boardView);
         myGameStats = new GameStats(myController);
         myStage = stage;
         root = new BorderPane();
@@ -37,7 +38,6 @@ public class GameDisplay {
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myGameButtons = new GameButtons(stage, width, height, myController, mySimManager);
-        this.myBoardView = myBoardView;
     }
 
     /**
