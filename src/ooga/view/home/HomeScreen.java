@@ -109,4 +109,13 @@ public class HomeScreen {
     //TODO
   }
 
+  /**
+   *METHOD ONLY FOR TESTFX TESTS. Needed some way to load in a file in the testfx tests...
+   */
+  public void startNewGameForViewTests(String filePath){
+    myController.initializeBoard(filePath);
+    GameDisplay gd = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
+    gd.setMainDisplay("Test");
+  }
+
 }

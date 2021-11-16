@@ -1,5 +1,6 @@
 package ooga.controller;
 
+import java.io.File;
 import javafx.stage.Stage;
 
 
@@ -29,6 +30,7 @@ public class Controller {
     private BoardView myBoardView;
     private double animationSpeed;
     private ArrayList<MovingPiece> myMovingPieces;
+    private HomeScreen myStartScreen;
 
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -45,9 +47,9 @@ public class Controller {
      * @throws IllegalAccessException
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
+        myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         stage.setTitle(TITLE);
-        stage.setScene(startScreen.createScene());
+        stage.setScene(myStartScreen.createScene());
         stage.show();
         animationSpeed = 0.3;
     }
@@ -208,6 +210,13 @@ public class Controller {
     public int[] getUserPosition() {
         int [] newPosition = {myBoard.getMyUser().getXpos(), myBoard.getMyUser().getYpos()};
         return newPosition;
+    }
+
+    /**
+     * METHOD ONLY FOR TESTFX TESTS. Needed some way to load in a file into the file chooser.
+     */
+    public void changeToGameScreen(String filePath){
+        myStartScreen.startNewGameForViewTests(filePath);
     }
 
 
