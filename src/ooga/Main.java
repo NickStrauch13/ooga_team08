@@ -19,7 +19,6 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Controller myController = new Controller(stage);
 
-
     }
 }
 
