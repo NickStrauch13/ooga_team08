@@ -10,7 +10,8 @@ public class DotPiece extends GamePiece{
   public static final int DOT_RAD = 4;
   private static final String CSS_ID = "dotPiece";
 
-  public DotPiece(){
+  public DotPiece(int cellSize){
+    super(cellSize);
   }
 
   @Override

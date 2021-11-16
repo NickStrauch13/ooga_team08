@@ -37,6 +37,7 @@ public class UINodeBuilder {
     result.setOnAction(response);
     result.getStyleClass().add(buttonStyle);
     result.getStyleClass().add(ID);
+    result.setFocusTraversable(false);
     return (Button)setID(ID, result);
   }
 
