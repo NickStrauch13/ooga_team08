@@ -33,6 +33,17 @@ public class Controller {
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
+    /**
+     * The constructor of the game controller that starts and controls the overall communication between the frontend and backend
+     * @param stage the Stage object for the view
+     * @throws IOException
+     * @throws ParseException
+     * @throws ClassNotFoundException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         stage.setTitle(TITLE);
@@ -43,6 +54,10 @@ public class Controller {
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
     // TODO: Throw vs. try/catch here
+    /**
+     * Initialize a Pacman game
+     * @param path The directory of a layout file
+     */
     public void initializeGame(String path) {
         int numOfRows, numOfCols;
         try {
@@ -72,6 +87,9 @@ public class Controller {
         }
     }
 
+    /*
+    Initialize all game objects within the Board object
+     */
     private void initializeBoard(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
@@ -86,6 +104,9 @@ public class Controller {
         }
     }
 
+    /*
+    Initialize all pieces within the BoardView object
+     */
     private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) {
         myBoardView.makeBoard(numOfRows, numOfCols);
         for (int row = 0; row < numOfRows; row++) {
@@ -110,22 +131,42 @@ public class Controller {
 //        this.animationSpeed = animationSpeed;
 //    }
 
+    /**
+     * Get the number of lives remained
+     * @return the number of lives remained
+     */
     public int getLives() {
         return myGame.getLives(); //TODO change this to the model's get lives
     }
 
+    /**
+     * Get the current game scores
+     * @return the current game scores
+     */
     public int getScore() {
         return myGame.getScore();
     }
 
+    /**
+     * Get the game category
+     * @return the game category
+     */
     public String getGameType() {
         return gameType;
     }
 
+    /**
+     * Get the BoardView object of the game
+     * @return the Boardview object
+     */
     public BoardView getBoardView() {
         return myBoardView;
     }
 
+    /**
+     * Get the dimension of each cell
+     * @return the size of a cell in the board
+     */
     public int getCellSize() {
         return CELL_SIZE;
     }
@@ -151,11 +192,19 @@ public class Controller {
 //        return creatureMap;
 //    }
 
+    /**
+     * Update and sync each frame of the game with the last direction used
+     * @param direction the string value for the direction
+     */
     public void step(String direction) {
         myGame.setLastDirection(direction);
         myGame.step();
     }
 
+    /**
+     * Access the current coordinates of the user
+     * @return (x,y) of the current position
+     */
     public int[] getUserPosition() {
         int [] newPosition = {myBoard.getMyUser().getXpos(), myBoard.getMyUser().getYpos()};
         return newPosition;
