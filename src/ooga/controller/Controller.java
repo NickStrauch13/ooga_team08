@@ -3,7 +3,6 @@ package ooga.controller;
 import javafx.stage.Stage;
 
 
-import ooga.models.creatures.Creature;
 import ooga.models.game.Board;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
@@ -44,7 +43,7 @@ public class Controller {
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
     // TODO: Throw vs. try/catch here
-    public void initializeBoard(String path) {
+    public void initializeGame(String path) {
         int numOfRows, numOfCols;
         try {
             JSONReader reader = new JSONReader(path);
@@ -52,32 +51,53 @@ public class Controller {
             numOfRows = container.getMyNumOfRows();
             numOfCols = container.getMyNumOfCols();
             Map<Integer, String> gameObjectMap = container.getMyConversionMap();
-            Map<Integer, String> creatureMap = container.getMyCreatureMap(); //TODO: Currently creatureMap is never accessed
+
+            //TODO: Currently creatureMap is never accessed
+            Map<Integer, String> creatureMap = container.getMyCreatureMap();
+            List<List<String>> stringBoard = container.getMyStringBoard();
 
             myBoard = new Board(numOfRows, numOfCols);
+            initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
+
             myBoardView = new BoardView(this);
-            myBoardView.makeBoard(numOfRows, numOfCols);
+            initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard);
 
-            List<List<String>> stringBoard = container.getMyStringBoard();
-            for (int row = 0; row < numOfRows; row++) {
-                for (int col = 0; col < numOfCols; col ++) {
-                    String objectName = stringBoard.get(row).get(col);
-                    if (gameObjectMap.containsValue(objectName)) {
-                        myBoard.createGameObject(row, col, objectName);
-                        myBoardView.addBoardPiece(row, col, objectName);
-                    }
-                    else {
-                        myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName);
-                        myBoardView.addCreature(row, col, objectName);
-                    }
-
-                }
-            }
             myGame = new Game(myBoard, 47, myBoard.getMyUser(), CELL_SIZE); //TODO assigning pickups manually assign from file!!
+
+
             //TODO get lives from JSON file
         }
         catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | IOException | ParseException | InstantiationException e) {
             e.printStackTrace();     // TODO: Need better exception handling if we are going with try/catch
+        }
+    }
+
+    private void initializeBoard(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        for (int row = 0; row < numOfRows; row++) {
+            for (int col = 0; col < numOfCols; col ++) {
+                String objectName = stringBoard.get(row).get(col);
+                if (gameObjectMap.containsValue(objectName)) {
+                    myBoard.createGameObject(row, col, objectName);
+                }
+                else {
+                    myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName);
+                }
+            }
+        }
+    }
+
+    private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) {
+        myBoardView.makeBoard(numOfRows, numOfCols);
+        for (int row = 0; row < numOfRows; row++) {
+            for (int col = 0; col < numOfCols; col ++) {
+                String objectName = stringBoard.get(row).get(col);
+                if (gameObjectMap.containsValue(objectName)) {
+                    myBoardView.addBoardPiece(row, col, objectName);
+                }
+                else {
+                    myBoardView.addCreature(row, col, objectName);
+                }
+            }
         }
     }
 

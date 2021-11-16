@@ -91,7 +91,7 @@ public class HomeScreen {
     }
     else {
       try {
-        myController.initializeBoard(selectedFile.getPath());
+        myController.initializeGame(selectedFile.getPath());
       }
       catch (Exception e)  {
         e.printStackTrace(); //TODO update this error handling
