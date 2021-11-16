@@ -77,10 +77,18 @@ public class JSONContainer {
         return myNumOfCols;
     }
 
+    /**
+     * Returns the hashmap containing the stationary game objects
+     * @return the map of game objects
+     */
     public Map<Integer, String> getMyConversionMap() {
         return myConversionMap;
     }
 
+    /**
+     * Returns the hashmap containing the moving game objects "creatures"
+     * @return the creature map
+     */
     public Map<Integer, String> getMyCreatureMap() {
         return myCreatureMap;
     }

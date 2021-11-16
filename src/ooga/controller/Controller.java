@@ -53,7 +53,7 @@ public class Controller {
             numOfCols = container.getMyNumOfCols();
             Map<Integer, String> gameObjectMap = container.getMyConversionMap();
             Map<Integer, String> creatureMap = container.getMyCreatureMap(); //TODO: Currently creatureMap is never accessed
-//            Board newBoard = new Board(numOfRows, numOfCols);
+
             myBoard = new Board(numOfRows, numOfCols);
             myBoardView = new BoardView(this);
             myBoardView.makeBoard(numOfRows, numOfCols);
@@ -81,14 +81,14 @@ public class Controller {
         }
     }
 
-    /**
-     * Sets speed of animation
-     *
-     * @param animationSpeed
-     */
-    public void setAnimationSpeed(double animationSpeed) {
-        this.animationSpeed = animationSpeed;
-    }
+//    /**
+//     * Sets speed of animation
+//     *
+//     * @param animationSpeed
+//     */
+//    public void setAnimationSpeed(double animationSpeed) {
+//        this.animationSpeed = animationSpeed;
+//    }
 
     public int getLives() {
         return myGame.getLives(); //TODO change this to the model's get lives
@@ -110,26 +110,26 @@ public class Controller {
         return CELL_SIZE;
     }
 
-    public int getRows() {
-        return myBoard.getRows();
-    }
-
-    public int getCols() {
-        return myBoard.getCols();
-    }
-
-    public double getAnimationSpeed() {
-        return animationSpeed;
-    }
+//    public int getRows() {
+//        return myBoard.getRows();
+//    }
+//
+//    public int getCols() {
+//        return myBoard.getCols();
+//    }
+//
+//    public double getAnimationSpeed() {
+//        return animationSpeed;
+//    }
 
 
     /**
      * Returns the hashmap containing the moving game objects "creatures"
      * @return the creature map
      */
-    public Map getCreatureMap(){
-        return creatureMap;
-    }
+//    public Map getCreatureMap(){
+//        return creatureMap;
+//    }
 
     public void step(String direction) {
         myGame.setLastDirection(direction);

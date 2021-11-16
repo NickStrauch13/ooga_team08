@@ -72,7 +72,7 @@ class JSONReaderTest {
     public void IOExceptionThrown() {
         JSONReader reader = new JSONReader(WRONG_PATH);
 
-        String message = "data/test/vanillaTet.json (No such file or directory)";
+        String message = "data\\test\\vanillaTet.json (???????????)";
         Exception expectedException = assertThrows(IOException.class, () -> {
             reader.readJSONConfig();
         });
