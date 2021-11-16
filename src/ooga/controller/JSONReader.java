@@ -12,8 +12,6 @@ import org.json.simple.parser.ParseException;
 public class JSONReader {
 
     private final String myPath;
-    private Map<Integer, String> myConversionMap;
-    private Map<Integer, String> myCreatureMap;
 
     /**
      * The constructor of setup.
@@ -38,11 +36,11 @@ public class JSONReader {
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
 
 //        Map<Integer, String> conversionMap = getConversionMap(jsonData);
-        myConversionMap = getConversionMap(jsonData, "OBJECT_MAP");
-        myCreatureMap = getConversionMap(jsonData, "CREATURE_MAP");
-        List<List<String>> stringBoard = getStringBoard(boardInfo, myConversionMap, myCreatureMap);
+        Map<Integer, String> conversionMap = getConversionMap(jsonData, "OBJECT_MAP");
+        Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
+        List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap);
 
-        return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard);
+        return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard, conversionMap, creatureMap);
     }
 
     /*
@@ -81,7 +79,6 @@ public class JSONReader {
         }
         return conversionMap;
     }
-
 
     /**
      * Extract status information of the board from the JSON file
@@ -125,25 +122,17 @@ public class JSONReader {
     }
 
 
-    public Map<Integer, String> getMyConversionMap() {
-        return myConversionMap;
-    }
-
-    public Map<Integer, String> getMyCreatureMap() {
-        return myCreatureMap;
-    }
-
-    //TODO: Will be moved to test later
-    public static void main(String[] args) throws IOException, ParseException {
-        // TODO: add this into json file or an enums as well. Try not to have any constant values at all
-        final String FILE_PATH = "data/test/vanillaTest.json";
-
-        JSONReader reader = new JSONReader(FILE_PATH);
-        JSONContainer container = reader.readJSONConfig();
-
-        System.out.println(container.getMyNumOfRows());
-        System.out.println(container.getMyNumOfCols());
-        System.out.println(container.getMyInfo());
-        System.out.println(container.getMyStringBoard());
-    }
+//    //TODO: Will be moved to test later
+//    public static void main(String[] args) throws IOException, ParseException {
+//        // TODO: add this into json file or an enums as well. Try not to have any constant values at all
+//        final String FILE_PATH = "data/test/vanillaTest.json";
+//
+//        JSONReader reader = new JSONReader(FILE_PATH);
+//        JSONContainer container = reader.readJSONConfig();
+//
+//        System.out.println(container.getMyNumOfRows());
+//        System.out.println(container.getMyNumOfCols());
+//        System.out.println(container.getMyInfo());
+//        System.out.println(container.getMyStringBoard());
+//    }
 }
