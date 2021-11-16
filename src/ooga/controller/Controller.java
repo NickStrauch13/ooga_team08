@@ -4,7 +4,6 @@ import java.io.File;
 import javafx.stage.Stage;
 
 
-import ooga.models.creatures.Creature;
 import ooga.models.game.Board;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
@@ -29,8 +28,6 @@ public class Controller {
     private Game myGame;
     private Board myBoard;
     private BoardView myBoardView;
-    private Map<Integer, String> gameObjectMap;
-    private Map<Integer, String> creatureMap; //TODO: Currently creatureMap is never accessed
     private double animationSpeed;
     private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
@@ -38,6 +35,17 @@ public class Controller {
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
+    /**
+     * The constructor of the game controller that starts and controls the overall communication between the frontend and backend
+     * @param stage the Stage object for the view
+     * @throws IOException
+     * @throws ParseException
+     * @throws ClassNotFoundException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         stage.setTitle(TITLE);
@@ -48,34 +56,32 @@ public class Controller {
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
     // TODO: Throw vs. try/catch here
-    public void initializeBoard(String path) {
+    /**
+     * Initialize a Pacman game
+     * @param path The directory of a layout file
+     */
+    public void initializeGame(String path) {
         int numOfRows, numOfCols;
         try {
             JSONReader reader = new JSONReader(path);
             JSONContainer container = reader.readJSONConfig();
             numOfRows = container.getMyNumOfRows();
             numOfCols = container.getMyNumOfCols();
-//            Board newBoard = new Board(numOfRows, numOfCols);
-            myBoard = new Board(numOfRows, numOfCols);
-            myBoardView = new BoardView(this);
-            myBoardView.makeBoard(numOfRows, numOfCols);
-            gameObjectMap = reader.getMyConversionMap();
-            creatureMap = reader.getMyCreatureMap();
+            Map<Integer, String> gameObjectMap = container.getMyConversionMap();
+
+            //TODO: Currently creatureMap is never accessed
+            Map<Integer, String> creatureMap = container.getMyCreatureMap();
             List<List<String>> stringBoard = container.getMyStringBoard();
-            for (int row = 0; row < numOfRows; row++) {
-                for (int col = 0; col < numOfCols; col++) {
-                    String objectName = stringBoard.get(row).get(col);
-                    if (gameObjectMap.containsValue(objectName)) {
-                        myBoard.createGameObject(row, col, objectName);
-                        myBoardView.addBoardPiece(row, col, objectName);
-                    }
-                    else {
-                        myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName);
-                        myBoardView.addCreature(row, col, objectName);
-                    }
-                }
-            }
+
+            myBoard = new Board(numOfRows, numOfCols);
+            initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
+
+            myBoardView = new BoardView(this);
+            initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard);
+
             myGame = new Game(myBoard, 47, myBoard.getMyUser(), CELL_SIZE); //TODO assigning pickups manually assign from file!!
+
+
             //TODO get lives from JSON file
         }
         catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | IOException | ParseException | InstantiationException e) {
@@ -83,61 +89,124 @@ public class Controller {
         }
     }
 
-    /**
-     * Sets speed of animation
-     *
-     * @param animationSpeed
+    /*
+    Initialize all game objects within the Board object
      */
-    public void setAnimationSpeed(double animationSpeed) {
-        this.animationSpeed = animationSpeed;
+    private void initializeBoard(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        for (int row = 0; row < numOfRows; row++) {
+            for (int col = 0; col < numOfCols; col ++) {
+                String objectName = stringBoard.get(row).get(col);
+                if (gameObjectMap.containsValue(objectName)) {
+                    myBoard.createGameObject(row, col, objectName);
+                }
+                else {
+                    myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName);
+                }
+            }
+        }
     }
 
+    /*
+    Initialize all pieces within the BoardView object
+     */
+    private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) {
+        myBoardView.makeBoard(numOfRows, numOfCols);
+        for (int row = 0; row < numOfRows; row++) {
+            for (int col = 0; col < numOfCols; col ++) {
+                String objectName = stringBoard.get(row).get(col);
+                if (gameObjectMap.containsValue(objectName)) {
+                    myBoardView.addBoardPiece(row, col, objectName);
+                }
+                else {
+                    myBoardView.addCreature(row, col, objectName);
+                }
+            }
+        }
+    }
+
+//    /**
+//     * Sets speed of animation
+//     *
+//     * @param animationSpeed
+//     */
+//    public void setAnimationSpeed(double animationSpeed) {
+//        this.animationSpeed = animationSpeed;
+//    }
+
+    /**
+     * Get the number of lives remained
+     * @return the number of lives remained
+     */
     public int getLives() {
         return myGame.getLives(); //TODO change this to the model's get lives
     }
 
+    /**
+     * Get the current game scores
+     * @return the current game scores
+     */
     public int getScore() {
         return myGame.getScore();
     }
 
+    /**
+     * Get the game category
+     * @return the game category
+     */
     public String getGameType() {
         return gameType;
     }
 
+    /**
+     * Get the BoardView object of the game
+     * @return the Boardview object
+     */
     public BoardView getBoardView() {
         return myBoardView;
     }
 
+    /**
+     * Get the dimension of each cell
+     * @return the size of a cell in the board
+     */
     public int getCellSize() {
         return CELL_SIZE;
     }
 
-    public int getRows() {
-        return myBoard.getRows();
-    }
-
-    public int getCols() {
-        return myBoard.getCols();
-    }
-
-    public double getAnimationSpeed() {
-        return animationSpeed;
-    }
+//    public int getRows() {
+//        return myBoard.getRows();
+//    }
+//
+//    public int getCols() {
+//        return myBoard.getCols();
+//    }
+//
+//    public double getAnimationSpeed() {
+//        return animationSpeed;
+//    }
 
 
     /**
      * Returns the hashmap containing the moving game objects "creatures"
      * @return the creature map
      */
-    public Map getCreatureMap(){
-        return creatureMap;
-    }
+//    public Map getCreatureMap(){
+//        return creatureMap;
+//    }
 
+    /**
+     * Update and sync each frame of the game with the last direction used
+     * @param direction the string value for the direction
+     */
     public void step(String direction) {
         myGame.setLastDirection(direction);
         myGame.step();
     }
 
+    /**
+     * Access the current coordinates of the user
+     * @return (x,y) of the current position
+     */
     public int[] getUserPosition() {
         int [] newPosition = {myBoard.getMyUser().getXpos(), myBoard.getMyUser().getYpos()};
         return newPosition;

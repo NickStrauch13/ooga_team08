@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,10 +54,25 @@ class JSONReaderTest {
     }
 
     @Test
+    void testMapConversion() throws IOException, ParseException {
+        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONContainer container = reader.readJSONConfig();
+        Map<Integer, String> conversionMap = container.getMyConversionMap();
+        Map<Integer, String> creatureMap = container.getMyCreatureMap();
+
+        String expectedObject = "POWERUP1";
+        String expectedCreature = "CPUGHOST";
+
+
+        assertEquals(expectedObject, conversionMap.get(1));
+        assertEquals(expectedCreature, creatureMap.get(5));
+    }
+
+    @Test
     public void IOExceptionThrown() {
         JSONReader reader = new JSONReader(WRONG_PATH);
 
-        String message = "data/test/vanillaTet.json (No such file or directory)";
+        String message = "data\\test\\vanillaTet.json (???????????)";
         Exception expectedException = assertThrows(IOException.class, () -> {
             reader.readJSONConfig();
         });
