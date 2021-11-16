@@ -8,15 +8,22 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import ooga.controller.Controller;
+import ooga.view.gameDisplay.center.BoardView;
+
+import java.util.Arrays;
 
 public class SimulationManager {
     private Controller myController;
     private Timeline myAnimation;
     private double myAnimationRate;
     private static final double DELAY = .1;
+    private String currentDirection;
+    private BoardView myBoardView;
 
-    public SimulationManager(Controller controller) {
+    public SimulationManager(Controller controller, BoardView boardView) {
         myController = controller;
+        myBoardView = boardView;
+        myAnimationRate = 10;
     }
 
 
@@ -32,11 +39,14 @@ public class SimulationManager {
             myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
             myAnimation.setRate(myAnimationRate);
             myAnimation.play();
+            currentDirection = "RIGHT";
         }
         else if(myAnimation.getStatus() == Status.PAUSED){
+            System.out.println("playing");
             myAnimation.play();
         }
         else{
+            System.out.println("paused");
             myAnimation.pause();
         }
         return myAnimation.getStatus() != Status.PAUSED;
@@ -44,12 +54,14 @@ public class SimulationManager {
 
     private void step() {
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
-            //get positions from model, update positions in view, remove noes that need to be removed, update labels
+           myController.step(currentDirection);
+           int[] newPacmanPosition = myController.getUserPosition();
+           myBoardView.getPacman().updatePosition(newPacmanPosition[0], newPacmanPosition[1]);
         }
     }
 
     public void handleKeyInput(KeyCode code){
-        System.out.println(code);
+        currentDirection = code.toString();
     }
 
 }
