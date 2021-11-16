@@ -29,6 +29,7 @@ public class Board {
     }
 
     public void createGameObject(int row, int col, String gameObjectType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
+
         Class<?> gameObjectClass = Class.forName(myGameObjects.getString(gameObjectType));
         GameObject gameObject = (GameObject) gameObjectClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
         myBoardObjects[row][col] = gameObject;

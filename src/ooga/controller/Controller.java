@@ -61,7 +61,7 @@ public class Controller {
             creatureMap = reader.getMyCreatureMap();
             List<List<String>> stringBoard = container.getMyStringBoard();
             for (int row = 0; row < numOfRows; row++) {
-                for (int col = 0; col < numOfCols; col ++) {
+                for (int col = 0; col < numOfCols; col++) {
                     String objectName = stringBoard.get(row).get(col);
                     if (gameObjectMap.containsValue(objectName)) {
                         myBoard.createGameObject(row, col, objectName);
@@ -71,7 +71,6 @@ public class Controller {
                         myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName);
                         myBoardView.addCreature(row, col, objectName);
                     }
-
                 }
             }
             myGame = new Game(myBoard, 47, myBoard.getMyUser(), CELL_SIZE); //TODO assigning pickups manually assign from file!!
