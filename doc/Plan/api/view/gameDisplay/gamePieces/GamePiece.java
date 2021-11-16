@@ -5,12 +5,7 @@ public interface GamePiece {
      * creature view objects
      * @param cellSize - size of a square cell in view grid
      */
-    GamePiece(int cellSize){
-        myCellSize = cellSize;
-        myRow = 0;
-        myCol = 0;
-        myPiece = makeNode();
-    }
+    GamePiece(int cellSize);
 
     /**
      * Returns the node representing the specific view game piece.
