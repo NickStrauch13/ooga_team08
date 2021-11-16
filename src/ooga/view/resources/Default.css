@@ -7,6 +7,7 @@
   HighScoresButtonColor: #AA0000 ;
   HomeButtonColor: #AA0000;
   PlayButtonColor: #47ea00;
+  PauseButtonColor: #838383;
   ResetButtonColor: #efeb14
 
 }
@@ -62,6 +63,16 @@
   -fx-padding: 15px;
   -fx-background-color: PlayButtonColor;
 }
+.PauseButtonID{
+  -fx-border-color: black;
+  -fx-border-width: 3px;
+  -fx-border-radius: 5px;
+  -fx-background-radius: 7px;
+  -fx-padding: 15px;
+  -fx-background-color: PauseButtonColor;
+}
+
+
 
 .ResetButtonID{
   -fx-border-color: black;

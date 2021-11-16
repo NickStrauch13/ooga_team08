@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
-public class GeneralViewTests extends DukeApplicationTest {
+public class HomeScreenTests extends DukeApplicationTest {
   public static final Dimension DEFAULT_SIZE = new Dimension(1400, 800);
   public static final String TITLE = "Start Screen";
   public Controller myController;
@@ -47,17 +47,4 @@ public class GeneralViewTests extends DukeApplicationTest {
     TextField userNameBox = lookup("#userName").query();
     writeInputTo(userNameBox, username);
   }
-/*
-  @Test
-  public void testClickingOnGoHomeButton(){
-    Button newGameButton = lookup("#newGameButton").query();
-    clickOn(newGameButton);
-    Button goHome = lookup("#goHomeButton").query();
-    clickOn(goHome);
-  }
-
-  @Test
-  public void testClickingOnPlayButton(){
-  }
-   */
 }
