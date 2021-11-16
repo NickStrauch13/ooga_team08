@@ -1,59 +1,29 @@
 public interface SimulationManager {
 
     /**
+     * Simulation manager controls the funcitoning and properties of the game animation
+     * @param controller
+     * @param boardView
+     */
+    void SimulationManager(Controller controller, BoardView boardView);
+
+
+    /**
+     * Toggles the animation. This will be the method associated with the play/pause button.
+     * @return false if the animation is paused.
+     */
+    boolean playPause();
+
+    /**
      * Runs the step function that governs how each creature's position is updated. Updates pickups, highscore,
      * score, and lives. Checks if game is won or lost.
      */
     void step();
 
     /**
-     * Starts the simulation and resets the game to it's initial starting point. It will take a parameter currently
-     * of unkown type that will determine which level to start the game at. If just starting the game or restarting
-     * it will start the game at level one.
+     * Governs what happens when a key is pressed
+     * @param code
      */
-    void run();
-
-    /**
-     * Starts the animation with the default speed and sets the Timeline to INDEFINITE.
-     */
-    void startSimulation();
-
-    /**
-     * Pauses the animation and brings up a pause screen.
-     */
-    void pause();
-
-    /**
-     * Restarts the game by clearing the game board, reseting nodes to their initial values, and likely calling
-     * run at the end (or step).
-     */
-    void restart();
-
-    /**
-     * Quits out of the game and returns to the HomeScreen.java page.
-     */
-    void quit();
-
-    /**
-     * Stops the animation when the game is won or lost.
-     */
-    void stopAnimation();
-
-    /**
-     * Similar to restart so we may extract a method for the commonalities. However rather than restarting at
-     * level one it will restart the game but at the next level.
-     */
-    void nextLevel();
-
-    /**
-     * Called in the step function. This will check if the win criteria (all dots collected) has been fulfilled.
-     * @return true if game won false otherwise
-     */
-    boolean gameWon();
-
-    /**
-     * Checks no more lives remain. Called after a collision with a ghost.
-     */
-    void gameOver();
+     void handleKeyInput(KeyCode code);
 
 }
