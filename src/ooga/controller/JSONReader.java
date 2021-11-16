@@ -13,7 +13,6 @@ public class JSONReader {
 
     private final String myPath;
 
-
     /**
      * The constructor of setup.
      * Currently, setup takes the file path of the game config file as the input
