@@ -54,7 +54,7 @@ public class Board {
         else {
             myUserControlled = (UserCreature) newCreature;
         }
-
+        newCreature.setSize(25);
     }
 
     /**
