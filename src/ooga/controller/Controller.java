@@ -100,7 +100,7 @@ public class Controller {
                     myBoard.createGameObject(row, col, objectName);
                 }
                 else {
-                    myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName);
+                    myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName,CELL_SIZE-5);
                 }
             }
         }

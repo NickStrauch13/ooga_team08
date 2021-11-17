@@ -88,21 +88,22 @@ public class Game implements PickupGame {
     private boolean moveToNewPossiblePosition(Creature currentCreature, int[] direction){
         int xDirection = direction[0];
         int yDirection = direction[1];
+        int xCorner = (xDirection+1)%2;
+        int yCorner = (yDirection+1)%2;
 
-        int possibleNewPositionX = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize;
-        int possibleNewPositionY = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize;
+        int corner1X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize+xCorner*currentCreature.getSize()/2;
+        int corner1Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize+yCorner*currentCreature.getSize()/2;
 
+        int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize-xCorner*currentCreature.getSize()/2;
+        int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize-yCorner*currentCreature.getSize()/2;
 
-        int actualNewX = (currentCreature.getXpos()+xDirection)%boardXSize;
-        int actualNewY = (currentCreature.getYpos()+yDirection)%boardYSize;
-        int col = getCellCoordinate(possibleNewPositionX);
-        int row = getCellCoordinate(possibleNewPositionY);
+        int actualNewPositionX = (currentCreature.getXpos()+xDirection)%boardXSize;
+        int actualNewPositionY = (currentCreature.getYpos()+yDirection)%boardYSize;
 
-        if (!myBoard.getisWallAtCell(row,col)){
-            currentCreature.moveTo(actualNewX,actualNewY);
+        if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
+            currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
             return true;
         }
-
         return false;
     }
 
@@ -118,7 +119,11 @@ public class Game implements PickupGame {
 
     }
 
-
+    private boolean getIsWallAtPosition(double xPos, double yPos){
+        int row = getCellCoordinate(yPos);
+        int col = getCellCoordinate(xPos);
+        return myBoard.getisWallAtCell(row, col);
+    }
 
     private int getCellCoordinate(double pixels){
         return ((int)pixels)/myCellSize;
