@@ -88,16 +88,21 @@ public class Game implements PickupGame {
     private boolean moveToNewPossiblePosition(Creature currentCreature, int[] direction){
         int xDirection = direction[0];
         int yDirection = direction[1];
-        int possibleNewPositionX = ((currentCreature.getXpos()+xDirection)%boardXSize);
-        int possibleNewPositionY = ((currentCreature.getYpos()+yDirection)%boardYSize);
 
-        int col = getCellCoordinate(possibleNewPositionX+xDirection*currentCreature.getSize()/2.0);
-        int row = getCellCoordinate(possibleNewPositionY+yDirection*currentCreature.getSize()/2.0);
+        int possibleNewPositionX = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize;
+        int possibleNewPositionY = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize;
+
+
+        int actualNewX = (currentCreature.getXpos()+xDirection)%boardXSize;
+        int actualNewY = (currentCreature.getYpos()+yDirection)%boardYSize;
+        int col = getCellCoordinate(possibleNewPositionX);
+        int row = getCellCoordinate(possibleNewPositionY);
 
         if (!myBoard.getisWallAtCell(row,col)){
-            currentCreature.moveTo(possibleNewPositionX,possibleNewPositionY);
+            currentCreature.moveTo(actualNewX,actualNewY);
             return true;
         }
+
         return false;
     }
 
@@ -116,7 +121,7 @@ public class Game implements PickupGame {
 
 
     private int getCellCoordinate(double pixels){
-        return (int)Math.ceil(pixels/myCellSize);
+        return ((int)pixels)/myCellSize;
     }
 
     private boolean checkPickUps(){

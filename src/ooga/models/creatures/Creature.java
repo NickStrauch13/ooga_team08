@@ -51,6 +51,9 @@ public abstract class Creature {
     public int getYpos() {
         return myYpos;
     }
+
+    public int getCenterX(){return myXpos+size/2;}
+    public int getCenterY(){return myYpos+size/2;}
     public void setXpos(int xpos) {
         this.myXpos = xpos;
     }
