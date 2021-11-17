@@ -35,6 +35,7 @@ public class Board {
         myBoardObjects[row][col] = gameObject;
         if (gameObjectType.contains("WALL")){
             myBoardObjects[row][col].setWall(true);
+            System.out.println((row+","+col));
         }
 
     }
@@ -61,6 +62,9 @@ public class Board {
      * @return integer that represents the state of the cell
      */
     public boolean getisWallAtCell(int row, int col) {
+        if (myBoardObjects[row][col]==null){
+            return false;
+        }
         return myBoardObjects[row][col].isWall();
     }
 

@@ -5,7 +5,7 @@ import ooga.models.game.PickupGame;
 public abstract class GameObject {
     private int myRow;
     private int myCol;
-    private boolean isWall;
+    private boolean isWall=false;
 
     public GameObject(int row, int col){
         myCol=col;

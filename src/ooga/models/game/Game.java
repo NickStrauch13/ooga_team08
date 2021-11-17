@@ -116,7 +116,7 @@ public class Game implements PickupGame {
 
 
     private int getCellCoordinate(double pixels){
-        return (int)Math.ceil(pixels/myCellSize);
+        return (int)Math.ceil((int)pixels/myCellSize);
     }
 
     private boolean checkPickUps(){

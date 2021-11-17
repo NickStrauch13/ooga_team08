@@ -20,7 +20,7 @@ import ooga.view.gameDisplay.gamePieces.MovingPiece;
 public class Controller {
 
     // TODO: Constant values should be in a file probably - enum?
-    public static final Dimension DEFAULT_SIZE = new Dimension(1400, 800);
+    public static final Dimension DEFAULT_SIZE = new Dimension(1000, 600);
     public static final String TITLE = "Start Screen";
     public static final String gameType = "Pacman"; //TODO update gameType variable
     public static final int CELL_SIZE = 25;
