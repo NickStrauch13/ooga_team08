@@ -8,7 +8,7 @@
  * Move the pacman around to show backend-frontend connectivity.
  * Discuss fucture plans for the game.
  * Discuss try catching in controller and plans to soon throw custom exceptions in the frontend
- * Walk throug hthe basics.json file.
+ * Walk through the basics.json file.
  * Show the GameScreen view tests.
  * Show Board tests and Game tests.
 
