@@ -1,6 +1,6 @@
 #TEST DEMONSTRATION
 
-##Things to run through in Test demo:
+##Elements to highlight:
  * Run from master and start on the home screen.
  * Talk about the current features in the home screen as well as the features that will be added soon.
  * Start the basic game (basics.json) and discuss the board generation.
