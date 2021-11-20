@@ -16,7 +16,8 @@ import org.testfx.api.FxRobot;
 import util.DukeApplicationTest;
 
 public class GameScreenTests extends DukeApplicationTest {
-  public Controller myController;
+  private Controller myController;
+  private Button playButton;
 
   @Override
   public void start(Stage stage)
@@ -27,17 +28,18 @@ public class GameScreenTests extends DukeApplicationTest {
 
   @BeforeEach
   public void setUp() {
+    playButton = lookup("#PlayButtonID").query();
   }
 
   @Test
   public void clickOnGoHomeButton(){
     Button goHomeButton = lookup("#HomeButtonID").query();
     clickOn(goHomeButton);
+    sleep(400);
   }
 
   @Test
   public void clickOnPlayButtonAndLetPacmanMoveInGameBoard(){
-    Button playButton = lookup("#PlayButtonID").query();
     clickOn(playButton);
     sleep(2000);
     clickOn(playButton);
@@ -45,8 +47,8 @@ public class GameScreenTests extends DukeApplicationTest {
 
   @Test
   public void clickOnPlayButtonTwiceToPauseAnimation(){
-    Button playButton = lookup("#PlayButtonID").query();
     clickOn(playButton);
+    sleep(300);
     clickOn(playButton);
   }
 
@@ -54,12 +56,12 @@ public class GameScreenTests extends DukeApplicationTest {
   public void clickOnResetButton(){
     Button resetButton = lookup("#ResetButtonID").query();
     clickOn(resetButton);
+    //TODO improve test when reset button functionality is added.
   }
 
   @Test
   public void clickOnPlayThenMovePacmanAndCheckIfPositionChanged(){
     int[] startPos = myController.getUserPosition();
-    Button playButton = lookup("#PlayButtonID").query();
     clickOn(playButton);
     FxRobot robot = new FxRobot();
     sleep(700);
