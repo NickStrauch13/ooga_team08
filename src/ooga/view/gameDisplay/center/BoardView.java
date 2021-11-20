@@ -3,7 +3,6 @@ package ooga.view.gameDisplay.center;
 import javafx.geometry.HPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.gamePieces.DotPiece;
@@ -19,7 +18,7 @@ public class BoardView {
   private int[][] controllerBoard;
   private int myCellSize;
   private Controller myController;
-  private MovingPiece myPacman;
+  private MovingPiece myUserPiece;
 
   public BoardView(Controller controller){
     myController = controller;
@@ -52,11 +51,11 @@ public class BoardView {
   }
 
   public void addCreature(int row, int col, String objectName) {
-    if(objectName.equals("PACMAN")){ //Pacman
-      myPacman = new PacmanPiece(myController.getCellSize());
-      Node pacmanNode = myPacman.getPiece();
+    if(objectName.equals("PACMAN")){ //Pacman   //TODO Bad... Refactor with reflection
+      myUserPiece = new PacmanPiece(myController.getCellSize());
+      Node pacmanNode = myUserPiece.getPiece();
       myGroup.getChildren().add(pacmanNode);
-      myPacman.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
+      myUserPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
     }
   }
 
@@ -70,11 +69,12 @@ public class BoardView {
 
 
   /**
-   * Getter method that will return the pacman movingPiece instance
+   * Getter method that will return the user controlled movingPiece instance.
    * @return movingPiece instance
    */
-  public MovingPiece getPacman(){
-    return myPacman;
+  //TODO refactor to allow multiple controlled pieces at once?
+  public MovingPiece getUserPiece(){
+    return myUserPiece;
   }
 
 }
