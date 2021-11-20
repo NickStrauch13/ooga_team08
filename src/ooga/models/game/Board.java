@@ -45,7 +45,7 @@ public class Board {
      * Adds a Pacman to the board when launching the game.
      * @param creatureType
      */
-    public void createCreature(int xPos, int yPos, String creatureType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
+    public void createCreature(int xPos, int yPos, String creatureType, int creatureSize) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
         Class<Creature> creatureClass = (Class<Creature>)Class.forName(myGameObjects.getString(creatureType));
         Creature newCreature = (Creature) creatureClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(xPos, yPos);
         if (newCreature instanceof CPUCreature) { //TODO get rid of instance of
@@ -54,9 +54,8 @@ public class Board {
         else {
             myUserControlled = (UserCreature) newCreature;
         }
-        newCreature.setSize(25);
+        newCreature.setSize(creatureSize);
     }
-
     /**
      * gets the current state of the cell
      * @return integer that represents the state of the cell
