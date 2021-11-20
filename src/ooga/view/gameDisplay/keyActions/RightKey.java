@@ -1,6 +1,5 @@
 package ooga.view.gameDisplay.keyActions;
 
-import javafx.scene.input.KeyCode;
 import ooga.view.gameDisplay.center.BoardView;
 
 public class RightKey extends KeyViewAction{
@@ -11,10 +10,12 @@ public class RightKey extends KeyViewAction{
     myBoardView = boardView;
   }
 
+  /**
+   * Rotates the creature to RIGHT (0 degrees).
+   */
   @Override
   public void doAction(){
-    double currentHeading = myBoardView.getUserPiece().getCurrentAngle();
-    myBoardView.getUserPiece().rotatePiece(FULL_ROTATION - currentHeading);
+    myBoardView.getUserPiece().rotatePiece(0);
   }
 
 }

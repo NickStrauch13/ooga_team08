@@ -173,6 +173,7 @@ public class Controller {
         return CELL_SIZE;
     }
 
+
 //    public int getRows() {
 //        return myBoard.getRows();
 //    }

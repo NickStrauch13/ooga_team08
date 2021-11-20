@@ -23,7 +23,7 @@ public class SimulationManager {
     public SimulationManager(Controller controller, BoardView boardView) {
         myController = controller;
         myBoardView = boardView;
-        myAnimationRate = 10;
+        myAnimationRate = 10; //TODO link to json
         currentDirection = "RIGHT";//TODO allow user to set this value. Call the json key "Starting direction"
     }
 

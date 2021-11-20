@@ -9,9 +9,9 @@ import ooga.view.gameDisplay.center.BoardView;
  * new subclass).
  */
 public abstract class KeyViewAction {
-  protected static final int FULL_ROTATION = 360;
-  protected static final int THREE_QUART_ROTATION = 270;
   protected static final int QUART_ROTATION = 90;
+  protected static final int HALF_ROTATION = 180;
+  protected static final int THREE_QUART_ROTATION = 270;
 
   public KeyViewAction(BoardView boardView){
   }

@@ -2,19 +2,20 @@ package ooga.view.gameDisplay.keyActions;
 
 import ooga.view.gameDisplay.center.BoardView;
 
-public class UpKey extends KeyViewAction{
+public class DownKey extends KeyViewAction{
   private BoardView myBoardView;
 
-  public UpKey(BoardView boardView){
+  public DownKey(BoardView boardView){
     super(boardView);
     myBoardView = boardView;
   }
 
   /**
-   * Rotates the creature to UP (270 degrees).
+   * Rotates the creature to DOWN (90 degrees).
    */
   @Override
   public void doAction(){
-    myBoardView.getUserPiece().rotatePiece(THREE_QUART_ROTATION);
+    myBoardView.getUserPiece().rotatePiece(QUART_ROTATION);
   }
+
 }

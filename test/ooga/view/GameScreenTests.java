@@ -1,17 +1,18 @@
 package ooga.view;
 
-import java.awt.Dimension;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testfx.api.FxRobot;
 import util.DukeApplicationTest;
 
 public class GameScreenTests extends DukeApplicationTest {
@@ -20,7 +21,7 @@ public class GameScreenTests extends DukeApplicationTest {
   @Override
   public void start(Stage stage)
       throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-    Controller myController = new Controller(stage);
+    myController = new Controller(stage);
     myController.changeToGameScreen("data/game/basics.json");
   }
 
@@ -55,8 +56,23 @@ public class GameScreenTests extends DukeApplicationTest {
     clickOn(resetButton);
   }
 
-
-
+  @Test
+  public void clickOnPlayThenMovePacmanAndCheckIfPositionChanged(){
+    int[] startPos = myController.getUserPosition();
+    Button playButton = lookup("#PlayButtonID").query();
+    clickOn(playButton);
+    FxRobot robot = new FxRobot();
+    sleep(700);
+    robot.press(KeyCode.UP).release(KeyCode.UP);
+    sleep(2300);
+    robot.press(KeyCode.LEFT).release(KeyCode.LEFT);
+    sleep(620);
+    robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
+    sleep(340);
+    robot.press(KeyCode.RIGHT).release(KeyCode.RIGHT);
+    sleep(500);
+    assertNotEquals(myController.getUserPosition(), startPos);
+  }
 
 }
 
