@@ -1,18 +1,18 @@
 package ooga.view.gameDisplay;
 
-import javafx.animation.Animation;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Locale;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.center.BoardView;
-
-import java.util.Arrays;
+import ooga.view.gameDisplay.keyActions.KeyViewAction;
 
 public class SimulationManager {
+    private static final String KEY_PATH = "ooga.view.gameDisplay.keyActions.%sKey";
     private Controller myController;
     private Timeline myAnimation;
     private double myAnimationRate;
@@ -24,6 +24,7 @@ public class SimulationManager {
         myController = controller;
         myBoardView = boardView;
         myAnimationRate = 10;
+        currentDirection = "RIGHT";//TODO allow user to set this value. Call the json key "Starting direction"
     }
 
 
@@ -39,7 +40,7 @@ public class SimulationManager {
             myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
             myAnimation.setRate(myAnimationRate);
             myAnimation.play();
-            currentDirection = "RIGHT";
+            currentDirection = "RIGHT"; //TODO allow user to set this value. Call the json key "Starting direction"
         }
         else if(myAnimation.getStatus() == Status.PAUSED){
             System.out.println("playing");
@@ -55,13 +56,22 @@ public class SimulationManager {
     private void step() {
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
-           int[] newPacmanPosition = myController.getUserPosition();
-           myBoardView.getPacman().updatePosition(newPacmanPosition[0], newPacmanPosition[1]);
+           int[] newUserPosition = myController.getUserPosition();
+           myBoardView.getUserPiece().updatePosition(newUserPosition[0], newUserPosition[1]);
         }
     }
 
     public void handleKeyInput(KeyCode code){
         currentDirection = code.toString();
+        try {
+            String reflectionCode =
+                code.toString().substring(0, 1) + code.toString().toLowerCase().substring(1);
+            Class<?> clazz = Class.forName(String.format(KEY_PATH, reflectionCode));
+            KeyViewAction keyAction = (KeyViewAction) clazz.getDeclaredConstructor(BoardView.class).newInstance(myBoardView);
+            keyAction.doAction();
+        }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e){
+            //Unknown key pressed. No view action required.
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package ooga.view.gameDisplay.gamePieces;
 
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
 /**
@@ -8,7 +7,7 @@ import javafx.scene.image.ImageView;
  * pieces like pacman and ghosts.
  */
 public abstract class MovingPiece extends GamePiece{
-  ImageView creature;
+  private ImageView myCreature;
 
   public MovingPiece(int cellSize){
     super(cellSize);
@@ -20,20 +19,43 @@ public abstract class MovingPiece extends GamePiece{
    * @param y y location in the Group.
    */
   public void updatePosition(double x, double y){
-    creature = (ImageView) getPiece();
-    creature.setX(x);
-    creature.setY(y);
+    myCreature = (ImageView) getPiece();
+    myCreature.setX(x);
+    myCreature.setY(y);
   }
 
+  /**
+   * Returns the X position in pixels of the moving piece
+   * @return pixel value
+   */
   public double getX() {
-    creature = (ImageView) getPiece();
-    return creature.getLayoutX();
+    myCreature = (ImageView) getPiece();
+    return myCreature.getLayoutX();
   }
 
+
+  /**
+   * Returns the Y position in pixels of the moving piece
+   * @return pixel value
+   */
   public double getY() {
-    creature = (ImageView) getPiece();
-    return creature.getLayoutX();
+    myCreature = (ImageView) getPiece();
+    return myCreature.getLayoutX();
   }
 
+  /**
+   * Rotates the moving piece. Positive input angle rotates clockwise, negative--ccw. (angle in degrees)
+   * @param rotationAngle angle the moving piece should turn clockwise.
+   */
+  public void rotatePiece(double rotationAngle){
+    myCreature.setRotate(rotationAngle);
+  }
 
+  /**
+   * Returns the current angle of the moving piece.
+   * @return double value representing the current angle of the moving piece.
+   */
+  public double getCurrentAngle(){
+    return myCreature.getRotate();
+  }
 }
