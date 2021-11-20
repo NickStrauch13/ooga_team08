@@ -220,5 +220,10 @@ public class Controller {
         myStartScreen.startNewGameForViewTests(filePath);
     }
 
+    public void setCollision(String nodeID){
+        //TODO pass to backend to handle collision action depending o nthe node type
+        System.out.println(nodeID);
+    }
+
 
 }

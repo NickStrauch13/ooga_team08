@@ -1,5 +1,7 @@
 package ooga.view.gameDisplay.gamePieces;
 
+import java.util.List;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
 /**
@@ -52,10 +54,16 @@ public abstract class MovingPiece extends GamePiece{
   }
 
   /**
-   * Returns the current angle of the moving piece.
-   * @return double value representing the current angle of the moving piece.
+   * Checks if the current user creature is colliding with a node in the game group.
+   * @param nodeList Nodes to check for collisions with.
+   * @return The ID of the collided node if there is a collision, null otherwise.
    */
-  public double getCurrentAngle(){
-    return myCreature.getRotate();
+  public String getCollision(List<Node> nodeList){
+    for(Node node: nodeList){
+      if(myCreature.getBoundsInParent().intersects(node.getBoundsInParent())){
+        return node.getId();
+      }
+    }
+    return null;
   }
 }

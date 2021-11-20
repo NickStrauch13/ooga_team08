@@ -58,6 +58,8 @@ public class SimulationManager {
            myController.step(currentDirection);
            int[] newUserPosition = myController.getUserPosition();
            myBoardView.getUserPiece().updatePosition(newUserPosition[0], newUserPosition[1]);
+           String nodeCollision = myBoardView.getUserCollision(); //TODO only do this every 10ish steps and dont include nonpassible nodes in list
+           myController.setCollision(nodeCollision);
         }
     }
 
