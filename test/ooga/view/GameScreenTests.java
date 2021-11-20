@@ -71,7 +71,9 @@ public class GameScreenTests extends DukeApplicationTest {
     sleep(340);
     robot.press(KeyCode.RIGHT).release(KeyCode.RIGHT);
     sleep(500);
-    assertNotEquals(myController.getUserPosition(), startPos);
+
+    assertNotEquals(myController.getUserPosition()[0], startPos[0]);
+    assertNotEquals(myController.getUserPosition()[1], startPos[1]);
   }
 
 }
