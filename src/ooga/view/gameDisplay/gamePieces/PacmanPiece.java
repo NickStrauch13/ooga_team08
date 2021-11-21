@@ -7,6 +7,7 @@ import javafx.scene.shape.Circle;
 
 public class PacmanPiece extends MovingPiece {
     private static final String CSS_ID = "pacmanPiece";
+    private static final int CREATURE_SLOP = 5;
 
     public PacmanPiece(int cellSize){
         super(cellSize);
@@ -15,8 +16,8 @@ public class PacmanPiece extends MovingPiece {
     @Override
     protected Node makeNode(){
         ImageView pacman = new ImageView("ooga/view/resources/viewIcons/pacmanImage.png");
-        pacman.setFitWidth(getCellSize());
-        pacman.setFitHeight(getCellSize());
+        pacman.setFitWidth(getCellSize()-CREATURE_SLOP);
+        pacman.setFitHeight(getCellSize()-CREATURE_SLOP);
         setIDs(pacman, CSS_ID, getCellIndexID());
         System.out.println(getCellSize());
         return pacman;

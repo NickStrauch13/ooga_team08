@@ -220,5 +220,25 @@ public class Controller {
         myStartScreen.startNewGameForViewTests(filePath);
     }
 
+    /**
+     * Used by frontend to report the most recent node collision.
+     * @param nodeID The ID of the most recently collided node.
+     */
+    public void setCollision(String nodeID){
+        //TODO pass to backend to handle collision action depending on the node type
+        System.out.println(nodeID);
+    }
+
+    /**
+     * Used by the frontend to get the ID of a node that should be removed from the view. If nothing
+     * is to be removed, this method returns null.
+     * @return ID of node that should be removed from the view on the current step.
+     */
+    public String getRemovedNodeID(){
+        //return (some call to backend that gets the node ID that should be removed on this step. If nothing
+        //should be removed this step, rust return null.
+        return "1,3"; //Temporary placeholder for the return.
+    }
+
 
 }
