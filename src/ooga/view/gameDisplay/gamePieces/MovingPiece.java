@@ -60,7 +60,7 @@ public abstract class MovingPiece extends GamePiece{
    */
   public String getCollision(List<Node> nodeList){
     for(Node node: nodeList){
-      if(myCreature.getBoundsInParent().intersects(node.getBoundsInParent())){
+      if(myCreature.getBoundsInParent().intersects(node.getBoundsInParent()) && myCreature != node){
         return node.getId();
       }
     }

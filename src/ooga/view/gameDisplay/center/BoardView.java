@@ -92,4 +92,21 @@ public class BoardView {
   public String getUserCollision(){
     return myUserPiece.getCollision(myNodeList);
   }
+
+  /**
+   * Removes the node specified by the backend from the boardView.
+   */
+  public void removeNode(){
+    String removedID = "#" + myController.getRemovedNodeID();
+    Node nodeInGrid = myGrid.lookup(removedID);
+    Node nodeInGroup = myGroup.lookup(removedID);
+    if(myGrid.getChildren().remove(nodeInGrid)){
+      myNodeList.remove(nodeInGrid);
+    }
+    if(myGroup.getChildren().remove(nodeInGroup)){
+      myNodeList.remove(nodeInGroup);
+    }
+
+
+  }
 }
