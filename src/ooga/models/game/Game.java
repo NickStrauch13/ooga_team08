@@ -156,12 +156,18 @@ public class Game implements PickupGame {
         pickUpsLeft--;
     }
 
-    private void creatureVSPickupCollision(CollisionManager cm) {
-        int[] collisionIndex = Arrays.stream(cm.getCurrentCollision().split(",")).mapToInt(Integer::parseInt).toArray();
-        GameObject collidingPickup=myBoard.getGameObject(getCellCoordinate(collisionIndex[0]),getCellCoordinate(collisionIndex[1]));
-        collidingPickup.interact(this);
-        updatePickupsLeft();
+
+    public boolean creatureVSPickupCollision(CollisionManager cm) {
+        String[] collisionIndex = cm.getCurrentCollision().split(",");
+        GameObject collidingPickup = myBoard.getGameObject(Integer.parseInt(collisionIndex[0]) , Integer.parseInt(collisionIndex[1]));
+        if (!collidingPickup.isWall()) {
+            collidingPickup.interact(this);
+            updatePickupsLeft();
+            return true;
+        }
+        return false;
     }
+
     public void setActiveCPUCreatures(List<CPUCreature> cpuCreatures){
         activeCPUCreatures=cpuCreatures;
     }

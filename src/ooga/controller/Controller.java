@@ -2,11 +2,12 @@ package ooga.controller;
 
 import java.io.File;
 import javafx.stage.Stage;
-
+import java.lang.Integer;
 
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
+import ooga.models.gameObjects.GameObject;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;
@@ -33,7 +34,7 @@ public class Controller {
     private double animationSpeed;
     private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
-    CollisionManager cm = new CollisionManager();
+    private CollisionManager collisionManager;
 
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -51,6 +52,7 @@ public class Controller {
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
+        collisionManager = new CollisionManager();
         stage.setTitle(TITLE);
         stage.setScene(myStartScreen.createScene());
         stage.show();
@@ -229,8 +231,8 @@ public class Controller {
      */
     public void setCollision(String nodeID){
         //TODO pass to backend to handle collision action depending on the node type
-        cm.setCollision(nodeID);
-        myGame.dealWithCollision(cm);
+        collisionManager.setCollision(nodeID);
+        myGame.dealWithCollision(collisionManager);
     }
 
     /**
@@ -238,11 +240,17 @@ public class Controller {
      * is to be removed, this method returns null.
      * @return ID of node that should be removed from the view on the current step.
      */
-    public String getRemovedNodeID(){
+    public String getRemovedNodeID() {
         //return (some call to backend that gets the node ID that should be removed on this step. If nothing
         //should be removed this step, rust return null.
-        return cm.getCurrentCollision(); //Temporary placeholder for the return.
+        return collisionManager.getCurrentCollision(); //Temporary placeholder for the return.
     }
 
-
+    public boolean handleCollision(String nodeID){
+        if (nodeID != null) {
+            collisionManager.setCollision(nodeID);
+            return myGame.creatureVSPickupCollision(collisionManager);
+        }
+        return false;
+    }
 }

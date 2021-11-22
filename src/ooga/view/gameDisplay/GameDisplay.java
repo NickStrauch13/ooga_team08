@@ -30,8 +30,8 @@ public class GameDisplay {
     public GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, Controller controller, BoardView boardView) {
         myController = controller;
         myBoardView = boardView;
-        mySimManager = new SimulationManager(myController, boardView);
         myGameStats = new GameStats(myController);
+        mySimManager = new SimulationManager(myController,myGameStats, boardView);
         myStage = stage;
         root = new BorderPane();
         myScene = new Scene(root, width, height);
