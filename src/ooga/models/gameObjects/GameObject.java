@@ -19,8 +19,7 @@ public abstract class GameObject {
     public void setWall(boolean wall) {
         isWall = wall;
     }
+
     public abstract void interact(PickupGame pickupGame);
-
-
 
 }

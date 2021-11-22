@@ -29,15 +29,12 @@ public class Board {
     }
 
     public void createGameObject(int row, int col, String gameObjectType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
-
         Class<?> gameObjectClass = Class.forName(myGameObjects.getString(gameObjectType));
         GameObject gameObject = (GameObject) gameObjectClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
         myBoardObjects[row][col] = gameObject;
         if (gameObjectType.contains("WALL")){
             myBoardObjects[row][col].setWall(true);
-            System.out.println((row+","+col));
         }
-
     }
 
 
@@ -58,7 +55,7 @@ public class Board {
     }
     /**
      * gets the current state of the cell
-     * @return integer that represents the state of the cell
+     * @return true if it's a wall
      */
     public boolean getisWallAtCell(int row, int col) {
         if (myBoardObjects[row][col]==null){
@@ -67,7 +64,9 @@ public class Board {
         return myBoardObjects[row][col].isWall();
     }
 
+
     public GameObject getGameObject(int row, int col){
+
         return myBoardObjects[row][col];
     }
 
@@ -86,4 +85,5 @@ public class Board {
     public UserCreature getMyUser() {
         return myUserControlled;
     }
+
 }
