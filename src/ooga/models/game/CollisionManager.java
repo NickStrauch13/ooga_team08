@@ -9,7 +9,6 @@ public class CollisionManager {
         return currentCollision;
     }
 
-
     public void setCollision(String objectID){
         currentCollision=objectID;
     }

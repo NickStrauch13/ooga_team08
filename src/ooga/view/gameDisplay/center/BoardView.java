@@ -6,6 +6,7 @@ import javafx.geometry.HPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Shape;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.gamePieces.DotPiece;
 import ooga.view.gameDisplay.gamePieces.GamePiece;
@@ -96,8 +97,8 @@ public class BoardView {
   /**
    * Removes the node specified by the backend from the boardView.
    */
-  public void removeNode(){
-    String removedID = "#" + myController.getRemovedNodeID();
+  public void removeNode(String nodeID){
+    String removedID = "#" + nodeID;
     Node nodeInGrid = myGrid.lookup(removedID);
     Node nodeInGroup = myGroup.lookup(removedID);
     if(myGrid.getChildren().remove(nodeInGrid)){
@@ -106,7 +107,10 @@ public class BoardView {
     if(myGroup.getChildren().remove(nodeInGroup)){
       myNodeList.remove(nodeInGroup);
     }
-
-
   }
+
+  public Node isWall(String nodeCollision) {
+    return myGrid.lookup("#" + nodeCollision);
+  }
+
 }
