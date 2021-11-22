@@ -91,11 +91,11 @@ public class Game implements PickupGame {
         int xCorner = (xDirection+1)%2;
         int yCorner = (yDirection+1)%2;
 
-        int corner1X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize+xCorner*currentCreature.getSize()/2;
-        int corner1Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize+yCorner*currentCreature.getSize()/2;
+        int corner1X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection*2)%boardXSize+xCorner*currentCreature.getSize()/2;
+        int corner1Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection*2)%boardYSize+yCorner*currentCreature.getSize()/2;
 
-        int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize-xCorner*currentCreature.getSize()/2;
-        int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize-yCorner*currentCreature.getSize()/2;
+        int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection*2)%boardXSize-xCorner*currentCreature.getSize()/2;
+        int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection*2)%boardYSize-yCorner*currentCreature.getSize()/2;
 
         int actualNewPositionX = (currentCreature.getXpos()+xDirection)%boardXSize;
         int actualNewPositionY = (currentCreature.getYpos()+yDirection)%boardYSize;
@@ -151,7 +151,6 @@ public class Game implements PickupGame {
                 creatureVSPickupCollision(cm);
             }
         }
-        cm.setCollision(null);
     }
     public void updatePickupsLeft(){
         pickUpsLeft--;
@@ -161,6 +160,7 @@ public class Game implements PickupGame {
         int[] collisionIndex = Arrays.stream(cm.getCurrentCollision().split(",")).mapToInt(Integer::parseInt).toArray();
         GameObject collidingPickup=myBoard.getGameObject(getCellCoordinate(collisionIndex[0]),getCellCoordinate(collisionIndex[1]));
         collidingPickup.interact(this);
+        updatePickupsLeft();
     }
     public void setActiveCPUCreatures(List<CPUCreature> cpuCreatures){
         activeCPUCreatures=cpuCreatures;

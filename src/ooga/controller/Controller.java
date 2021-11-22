@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 
 
 import ooga.models.game.Board;
+import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.home.HomeScreen;
@@ -12,6 +13,7 @@ import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class Controller {
     private double animationSpeed;
     private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
+    CollisionManager cm = new CollisionManager();
 
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -100,7 +103,7 @@ public class Controller {
                     myBoard.createGameObject(row, col, objectName);
                 }
                 else {
-                    myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName,CELL_SIZE-5);
+                    myBoard.createCreature(col*CELL_SIZE+3, row*CELL_SIZE+3, objectName,CELL_SIZE-5);
                 }
             }
         }
@@ -226,7 +229,8 @@ public class Controller {
      */
     public void setCollision(String nodeID){
         //TODO pass to backend to handle collision action depending on the node type
-        System.out.println(nodeID);
+        cm.setCollision(nodeID);
+        myGame.dealWithCollision(cm);
     }
 
     /**
@@ -237,7 +241,7 @@ public class Controller {
     public String getRemovedNodeID(){
         //return (some call to backend that gets the node ID that should be removed on this step. If nothing
         //should be removed this step, rust return null.
-        return "1,3"; //Temporary placeholder for the return.
+        return cm.getCurrentCollision(); //Temporary placeholder for the return.
     }
 
 
