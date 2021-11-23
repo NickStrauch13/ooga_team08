@@ -3,6 +3,8 @@ package ooga.models.creatures.cpuControl;
 import ooga.models.creatures.Creature;
 
 public class CPUCreature extends Creature {
+    int[] currentDirection;
+
     public CPUCreature(Integer xPos, Integer yPos) {
         super(xPos, yPos);
 
@@ -16,7 +18,7 @@ public class CPUCreature extends Creature {
         this.currentDirection = currentDirection;
     }
 
-    int[] currentDirection;
+
     @Override
     public void moveTo(int newXPos,int newYPos) {
         setXpos(newXPos);

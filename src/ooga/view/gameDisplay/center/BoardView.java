@@ -8,11 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Shape;
 import ooga.controller.Controller;
-import ooga.view.gameDisplay.gamePieces.DotPiece;
-import ooga.view.gameDisplay.gamePieces.GamePiece;
-import ooga.view.gameDisplay.gamePieces.MovingPiece;
-import ooga.view.gameDisplay.gamePieces.PacmanPiece;
-import ooga.view.gameDisplay.gamePieces.WallPiece;
+import ooga.view.gameDisplay.gamePieces.*;
 
 public class BoardView {
   private GridPane myGrid;
@@ -22,8 +18,11 @@ public class BoardView {
   private int myCellSize;
   private Controller myController;
   private MovingPiece myUserPiece;
+  private MovingPiece myCPUPiece;
   private List<Node> myNodeList;
+  private List<MovingPiece> myCreatureList;
   private static final String ID_FORMAT = "%s,%s";
+  private int cpuCount = 0;
 
   public BoardView(Controller controller){
     myController = controller;
@@ -35,6 +34,7 @@ public class BoardView {
     //myGrid.setGridLinesVisible(true);
     myGrid.getStyleClass().add("gameGridPane");
     myNodeList = new ArrayList<>();
+    myCreatureList = new ArrayList<>();
   }
 
   //TODO change to reflection instead of conditionals
@@ -64,7 +64,16 @@ public class BoardView {
       pacmanNode.setId(objectName);
       myGroup.getChildren().add(pacmanNode);
       myUserPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
-      myNodeList.add(pacmanNode);
+      myCreatureList.add(myUserPiece);
+    }
+    if(objectName.equals("CPUGHOST")) {
+      myCPUPiece = new GhostPiece(myController.getCellSize());
+      Node ghostNode = myCPUPiece.getPiece();
+      ghostNode.setId(objectName + cpuCount);
+      myGroup.getChildren().add(ghostNode);
+      myCPUPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
+      myCreatureList.add(myCPUPiece);
+      cpuCount++;
     }
   }
 
@@ -86,12 +95,13 @@ public class BoardView {
     return myUserPiece;
   }
 
-  /**
-   * Checks if the current userPiece is colliding with a node in the game group.
-   * @return The ID of the collided node if there is a collision, null otherwise.
-   */
+
   public String getUserCollision(){
-    return myUserPiece.getCollision(myNodeList);
+    String creatureID = myUserPiece.getCreatureCollision(myCreatureList);
+    if (creatureID == null) {
+      creatureID = myUserPiece.getCollision(myNodeList);
+    }
+    return creatureID;
   }
 
   /**
@@ -109,8 +119,9 @@ public class BoardView {
     }
   }
 
-  public Node isWall(String nodeCollision) {
-    return myGrid.lookup("#" + nodeCollision);
+  public List<MovingPiece> getCreatureList() {
+    return myCreatureList;
   }
+
 
 }

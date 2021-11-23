@@ -14,10 +14,11 @@ public class Board {
     private GameObject[][] myBoardObjects;
     private int rows;
     private int cols;
+    private int numPickupsAtStart=0;
     private static final int WALL_STATE = 1;
     private List<CPUCreature> activeCPUCreatures = new ArrayList<>();
     private UserCreature myUserControlled;
-
+    private int cpuCount = 0;
     private ResourceBundle myGameObjects;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.resources.";
 
@@ -35,8 +36,10 @@ public class Board {
         if (gameObjectType.contains("WALL")){
             myBoardObjects[row][col].setWall(true);
         }
+        else{
+            numPickupsAtStart++;
+        }
     }
-
 
     /**
      * Adds a Pacman to the board when launching the game.
@@ -46,7 +49,9 @@ public class Board {
         Class<Creature> creatureClass = (Class<Creature>)Class.forName(myGameObjects.getString(creatureType));
         Creature newCreature = (Creature) creatureClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(xPos, yPos);
         if (newCreature instanceof CPUCreature) { //TODO get rid of instance of
+            newCreature.setId(creatureType + cpuCount);
             activeCPUCreatures.add((CPUCreature)newCreature);
+            cpuCount++;
         }
         else {
             myUserControlled = (UserCreature) newCreature;
@@ -66,7 +71,6 @@ public class Board {
 
 
     public GameObject getGameObject(int row, int col){
-
         return myBoardObjects[row][col];
     }
 
@@ -84,6 +88,20 @@ public class Board {
 
     public UserCreature getMyUser() {
         return myUserControlled;
+    }
+
+
+    public CPUCreature getMyCPU(String myID) {
+        for (CPUCreature cpu : activeCPUCreatures) {
+            if (cpu.getId().equals(myID)) {
+                return cpu;
+            }
+        }
+        return null;
+    }
+
+    public int getNumPickupsAtStart() {
+        return numPickupsAtStart;
     }
 
 }
