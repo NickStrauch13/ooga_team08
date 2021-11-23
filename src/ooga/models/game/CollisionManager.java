@@ -16,7 +16,7 @@ public class CollisionManager {
         return currentCollision!=null;
     }
     public boolean isCreature(){
-        return(currentCollision.contains("CREATURE"));
+        return(!currentCollision.contains(","));
     }
 
 

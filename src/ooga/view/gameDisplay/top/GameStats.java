@@ -19,6 +19,7 @@ public class GameStats {
     private ResourceBundle myResources;
     private static final String language = "English"; //TODO
     private Label numScoreText;
+    private Label numLivesText;
 
     public GameStats(Controller controller) {
         myController = controller;
@@ -28,7 +29,7 @@ public class GameStats {
 
 
     public HBox makeStatLabels(){
-        Label numLivesText = nodeBuilder.makeLabel("   " + myController.getLives());
+        numLivesText = nodeBuilder.makeLabel("   " + myController.getLives());
         Label livesText = nodeBuilder.makeLabel(myResources.getString("LivesText"));
         Node livesVBox = nodeBuilder.makeCol("statsFormat", livesText, numLivesText);
         numScoreText = nodeBuilder.makeLabel("    " + myController.getScore());
@@ -43,5 +44,8 @@ public class GameStats {
 
     public void setScoreText(int score) {
         numScoreText.setText(String.format("%d",score));
+    }
+    public void setLivesText(int lives) {
+        numLivesText.setText(String.format("%d",lives));
     }
 }

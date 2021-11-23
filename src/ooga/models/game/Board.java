@@ -17,7 +17,7 @@ public class Board {
     private static final int WALL_STATE = 1;
     private List<CPUCreature> activeCPUCreatures = new ArrayList<>();
     private UserCreature myUserControlled;
-
+    private int cpuCount = 0;
     private ResourceBundle myGameObjects;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.resources.";
 
@@ -37,7 +37,6 @@ public class Board {
         }
     }
 
-
     /**
      * Adds a Pacman to the board when launching the game.
      * @param creatureType
@@ -46,7 +45,9 @@ public class Board {
         Class<Creature> creatureClass = (Class<Creature>)Class.forName(myGameObjects.getString(creatureType));
         Creature newCreature = (Creature) creatureClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(xPos, yPos);
         if (newCreature instanceof CPUCreature) { //TODO get rid of instance of
+            newCreature.setId("creatureType" + cpuCount);
             activeCPUCreatures.add((CPUCreature)newCreature);
+            cpuCount++;
         }
         else {
             myUserControlled = (UserCreature) newCreature;
@@ -66,7 +67,6 @@ public class Board {
 
 
     public GameObject getGameObject(int row, int col){
-
         return myBoardObjects[row][col];
     }
 

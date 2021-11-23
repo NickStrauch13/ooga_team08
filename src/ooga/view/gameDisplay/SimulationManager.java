@@ -63,8 +63,12 @@ public class SimulationManager {
            myController.step(currentDirection);
            int[] newUserPosition = myController.getUserPosition();
            myBoardView.getUserPiece().updatePosition(newUserPosition[0], newUserPosition[1]);
+
            String nodeCollision = myBoardView.getUserCollision(); //TODO if too slow, only do this every 10ish steps and dont include nonpassible nodes in list
-            if (myController.handleCollision(nodeCollision)) {
+           if (nodeCollision != null) {
+               System.out.println(nodeCollision);
+           }
+            if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
             updateStats();
@@ -73,6 +77,7 @@ public class SimulationManager {
 
     private void updateStats() {
         myGameStats.setScoreText(myController.getScore());
+        myGameStats.setLivesText(myController.getLives());
     }
 
     public void handleKeyInput(KeyCode code){
