@@ -14,6 +14,7 @@ public class Board {
     private GameObject[][] myBoardObjects;
     private int rows;
     private int cols;
+    private int numPickupsAtStart=0;
     private static final int WALL_STATE = 1;
     private List<CPUCreature> activeCPUCreatures = new ArrayList<>();
     private UserCreature myUserControlled;
@@ -34,6 +35,9 @@ public class Board {
         myBoardObjects[row][col] = gameObject;
         if (gameObjectType.contains("WALL")){
             myBoardObjects[row][col].setWall(true);
+        }
+        else{
+            numPickupsAtStart++;
         }
     }
 
@@ -86,14 +90,18 @@ public class Board {
         return myUserControlled;
     }
 
+
     public CPUCreature getMyCPU(String myID) {
         for (CPUCreature cpu : activeCPUCreatures) {
-            System.out.println(cpu.getId());
             if (cpu.getId().equals(myID)) {
                 return cpu;
             }
         }
         return null;
+    }
+
+    public int getNumPickupsAtStart() {
+        return numPickupsAtStart;
     }
 
 }
