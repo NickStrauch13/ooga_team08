@@ -49,7 +49,7 @@ public class Board {
         Class<Creature> creatureClass = (Class<Creature>)Class.forName(myGameObjects.getString(creatureType));
         Creature newCreature = (Creature) creatureClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(xPos, yPos);
         if (newCreature instanceof CPUCreature) { //TODO get rid of instance of
-            newCreature.setId("creatureType" + cpuCount);
+            newCreature.setId(creatureType + cpuCount);
             activeCPUCreatures.add((CPUCreature)newCreature);
             cpuCount++;
         }
@@ -90,7 +90,18 @@ public class Board {
         return myUserControlled;
     }
 
+
+    public CPUCreature getMyCPU(String myID) {
+        for (CPUCreature cpu : activeCPUCreatures) {
+            if (cpu.getId().equals(myID)) {
+                return cpu;
+            }
+        }
+        return null;
+    }
+
     public int getNumPickupsAtStart() {
         return numPickupsAtStart;
     }
+
 }

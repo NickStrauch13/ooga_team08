@@ -2,10 +2,13 @@ package ooga.controller;
 
 import javafx.stage.Stage;
 import java.lang.Integer;
+
+import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
+import ooga.view.gameDisplay.gamePieces.GhostPiece;
 import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;
 import java.awt.*;
@@ -206,6 +209,15 @@ public class Controller {
     public int[] getUserPosition() {
         int [] newPosition = {myBoard.getMyUser().getXpos(), myBoard.getMyUser().getYpos()};
         return newPosition;
+    }
+
+    public int[] getGhostPosition(String nodeID) {
+        if (myBoard.getMyCPU(nodeID) != null) {
+            int[] newPosition = {myBoard.getMyCPU(nodeID).getXpos(), myBoard.getMyCPU(nodeID).getYpos()};
+            return newPosition;
+        }
+        //System.out.print("NOT FOUND IN CREATURE ARRAY");
+        return null;
     }
 
     /**

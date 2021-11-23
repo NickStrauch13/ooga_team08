@@ -20,7 +20,7 @@ public class BoardView {
   private MovingPiece myUserPiece;
   private MovingPiece myCPUPiece;
   private List<Node> myNodeList;
-  private List<Node> myCreatureList;
+  private List<MovingPiece> myCreatureList;
   private static final String ID_FORMAT = "%s,%s";
   private int cpuCount = 0;
 
@@ -64,7 +64,7 @@ public class BoardView {
       pacmanNode.setId(objectName);
       myGroup.getChildren().add(pacmanNode);
       myUserPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
-      myCreatureList.add(pacmanNode);
+      myCreatureList.add(myUserPiece);
     }
     if(objectName.equals("CPUGHOST")) {
       myCPUPiece = new GhostPiece(myController.getCellSize());
@@ -72,7 +72,7 @@ public class BoardView {
       ghostNode.setId(objectName + cpuCount);
       myGroup.getChildren().add(ghostNode);
       myCPUPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
-      myCreatureList.add(ghostNode);
+      myCreatureList.add(myCPUPiece);
       cpuCount++;
     }
   }
@@ -119,8 +119,9 @@ public class BoardView {
     }
   }
 
-  public Node isWall(String nodeCollision) {
-    return myGrid.lookup("#" + nodeCollision);
+  public List<MovingPiece> getCreatureList() {
+    return myCreatureList;
   }
+
 
 }
