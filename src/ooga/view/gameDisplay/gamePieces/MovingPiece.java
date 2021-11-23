@@ -59,10 +59,10 @@ public abstract class MovingPiece extends GamePiece{
    * @param nodeList Nodes to check for collisions with.
    * @return The ID of the collided node if there is a collision, null otherwise.
    */
-  public String getCreatureCollision(List<Node> nodeList){
-    for(Node node: nodeList){
-      if(myCreature.getBoundsInParent().contains(node.getBoundsInParent().getCenterX(), node.getBoundsInParent().getCenterY()) && myCreature != node){
-        return node.getId();
+  public String getCreatureCollision(List<MovingPiece> nodeList){
+    for(MovingPiece node: nodeList){
+      if(myCreature.getBoundsInParent().contains(node.getPiece().getBoundsInParent().getCenterX(), node.getPiece().getBoundsInParent().getCenterY()) && myCreature != node.getPiece()){
+        return node.getPiece().getId();
       }
     }
     return null;

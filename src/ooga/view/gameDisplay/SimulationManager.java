@@ -5,12 +5,16 @@ import java.util.Locale;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import ooga.controller.Controller;
+import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.view.gameDisplay.center.BoardView;
+import ooga.view.gameDisplay.gamePieces.GhostPiece;
+import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
 
@@ -62,8 +66,17 @@ public class SimulationManager {
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
            int[] newUserPosition = myController.getUserPosition();
-           myBoardView.getUserPiece().updatePosition(newUserPosition[0], newUserPosition[1]);
-
+           for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+               if (movingPiece.equals(myBoardView.getUserPiece())) {
+                   movingPiece.updatePosition(newUserPosition[0], newUserPosition[1]);
+               }
+               else {
+                   int[] newGhostPosition = myController.getGhostPosition(movingPiece.getPiece().getId());
+                   if (newGhostPosition != null) {
+                       movingPiece.updatePosition(newGhostPosition[0], newGhostPosition[1]);
+                   }
+               }
+           }
            String nodeCollision = myBoardView.getUserCollision(); //TODO if too slow, only do this every 10ish steps and dont include nonpassible nodes in list
            if (nodeCollision != null) {
                System.out.println(nodeCollision);
