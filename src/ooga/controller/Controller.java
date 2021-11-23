@@ -79,7 +79,7 @@ public class Controller {
             myBoardView = new BoardView(this);
             initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard);
 
-            myGame = new Game(myBoard, 47, myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
+            myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
 
 
             //TODO get lives from JSON file
