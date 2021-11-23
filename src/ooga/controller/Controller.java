@@ -1,13 +1,10 @@
 package ooga.controller;
 
-import java.io.File;
 import javafx.stage.Stage;
 import java.lang.Integer;
-
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
-import ooga.models.gameObjects.GameObject;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;
@@ -82,7 +79,7 @@ public class Controller {
             myBoardView = new BoardView(this);
             initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard);
 
-            myGame = new Game(myBoard, 47, myBoard.getMyUser(), CELL_SIZE); //TODO assigning pickups manually assign from file!!
+            myGame = new Game(myBoard, 47, myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
 
 
             //TODO get lives from JSON file
@@ -127,14 +124,9 @@ public class Controller {
         }
     }
 
-//    /**
-//     * Sets speed of animation
-//     *
-//     * @param animationSpeed
-//     */
-//    public void setAnimationSpeed(double animationSpeed) {
-//        this.animationSpeed = animationSpeed;
-//    }
+    public int getCellCoordinate(double pixels){
+        return ((int)pixels)/CELL_SIZE;
+    }
 
     /**
      * Get the number of lives remained
@@ -228,11 +220,8 @@ public class Controller {
      * @param nodeID The ID of the most recently collided node.
      */
     public boolean handleCollision(String nodeID){
-        if (nodeID != null) {
-            collisionManager.setCollision(nodeID);
-            return myGame.creatureVSPickupCollision(collisionManager);
-        }
-        return false;
+        collisionManager.setCollision(nodeID);
+        return myGame.dealWithCollision(collisionManager);
     }
 
 }

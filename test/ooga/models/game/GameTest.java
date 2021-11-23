@@ -50,7 +50,7 @@ public class GameTest {
     }
     @Test
     public void testGetUserControlled(){
-        g=new Game(newBoard,numPickups,userPacman, 25);
+        g=new Game(newBoard,numPickups,userPacman,creatureList, 25);
         UserCreature a = g.getUser();
         assert(a.equals(userPacman));
     }
@@ -62,26 +62,26 @@ public class GameTest {
     }
     @Test
     public void testGetCPUCreatures(){
-        g=new Game(newBoard,numPickups,userPacman, 25);
+        g=new Game(newBoard,numPickups,userPacman,creatureList, 25);
         assert(g.getCPUs().equals((new ArrayList<>())));
     }
     @Test
     public void testAddScore(){
-        g=new Game(newBoard,numPickups,userPacman, 25);
+        g=new Game(newBoard,numPickups,userPacman,creatureList, 25);
         g.addScore(2000);
         g.addScore(200);
         assert (g.getScore()==2200);
     }
     @Test
     public void testGetScore(){
-        g=new Game(newBoard,numPickups,userPacman, 25);
+        g=new Game(newBoard,numPickups,userPacman,creatureList, 25);
         g.addScore(2000);
         int num=g.getScore();
         assert (num==2000);
     }
     @Test
     public void testPickupsLeft(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman,creatureList, 25);
 
         g.updatePickupsLeft();
         g.step();
@@ -89,7 +89,7 @@ public class GameTest {
     }
     @Test
     public void testGetLevel(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman,creatureList, 25);
         assert(g.getLevel()==1);
         g.updatePickupsLeft();
         g.step();
@@ -97,7 +97,7 @@ public class GameTest {
     }
     @Test
     public void testDealWithCollisionCreatureNotPoweredUp(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman, creatureList,25);
         CollisionManager cm = new CollisionManager();
         cm.setCollision("CREATURE123");
         g.dealWithCollision(cm);
@@ -105,17 +105,16 @@ public class GameTest {
     }
     @Test
     public void testDealWithCollisionCreaturePoweredUp(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman, creatureList,25);
         userPacman.setPoweredUp(true);
         CollisionManager cm = new CollisionManager();
         cm.setCollision("CREATURE123");
-        g.setActiveCPUCreatures(creatureList);
         g.dealWithCollision(cm);
         assert (g.getScore()==400);
     }
     @Test
     public void testGameOver(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman,creatureList, 25);
         CollisionManager cm = new CollisionManager();
         for(int i=0;i<3;i++) {
             cm.setCollision("CREATURE123");
@@ -126,21 +125,19 @@ public class GameTest {
     }
     @Test
     public void testDealWithCollisionPickup(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman,creatureList, 25);
         userPacman.setPoweredUp(true);
         CollisionManager cm = new CollisionManager();
         cm.setCollision("91,91");
-        g.setActiveCPUCreatures(creatureList);
         g.dealWithCollision(cm);
         assert (g.getScore()==100);
     }
     @Test
     public void resetGame(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman,creatureList, 25);
         userPacman.setPoweredUp(true);
         CollisionManager cm = new CollisionManager();
         cm.setCollision("91,91");
-        g.setActiveCPUCreatures(creatureList);
         g.dealWithCollision(cm);
         g.resetGame();
         assert(g.getScore()==0);
@@ -150,7 +147,7 @@ public class GameTest {
     }
     @Test
     public void testLevel(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman,creatureList, 25);
         assert (g.getLevel()==1);
         g.updatePickupsLeft();
         g.step();
@@ -160,15 +157,14 @@ public class GameTest {
     }
     @Test
     public void testSetLastDirection(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman,creatureList, 25);
         assert (g.setLastDirection("down"));
 
     }
     @Test
     public void testMove(){
-        g=new Game(newBoard,1,userPacman, 25);
+        g=new Game(newBoard,1,userPacman, creatureList,25);
         g.setLastDirection("up");
-        g.setActiveCPUCreatures(creatureList);
         g.step();
         assert(g.getUser().getXpos()==15);
         assert(g.getUser().getYpos()==99);
@@ -176,9 +172,8 @@ public class GameTest {
     @Test
     public void testMoveIntoWall(){
         UserPacman temp = new UserPacman(90,65);
-        g=new Game(newBoard,1,temp, 25);
+        g=new Game(newBoard,1,temp,creatureList, 25);
         g.setLastDirection("left");
-        g.setActiveCPUCreatures(creatureList);
         g.step();
 
         assert(g.getUser().getXpos()==90);
@@ -192,9 +187,8 @@ public class GameTest {
         creatureList=new ArrayList<CPUCreature>();
         creatureList.add(c2);
         UserPacman temp = new UserPacman(90,65);
-        g=new Game(newBoard,1,temp, 25);
+        g=new Game(newBoard,1,temp, creatureList,25);
         g.setLastDirection("left");
-        g.setActiveCPUCreatures(creatureList);
         g.step();
         System.out.println(c2.getXpos());
         System.out.println(c2.getYpos());
@@ -206,7 +200,7 @@ public class GameTest {
 
     @Test
     public void testGetMyBoard(){
-        g=new Game(newBoard,numPickups,userPacman, 25);
+        g=new Game(newBoard,numPickups,userPacman, creatureList,25);
         assert (g.getMyBoard().equals(newBoard));
     }
 

@@ -3,6 +3,7 @@ package ooga.view.gameDisplay.gamePieces;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import ooga.controller.Controller;
 
 /**
  * Abstract class that still extends the GamePiece class, but it is the common ancestor for moving
@@ -51,6 +52,20 @@ public abstract class MovingPiece extends GamePiece{
    */
   public void rotatePiece(double rotationAngle){
     myCreature.setRotate(rotationAngle);
+  }
+
+  /**
+   * Checks if the current user creature is colliding with a node in the game group.
+   * @param nodeList Nodes to check for collisions with.
+   * @return The ID of the collided node if there is a collision, null otherwise.
+   */
+  public String getCreatureCollision(List<Node> nodeList){
+    for(Node node: nodeList){
+      if(myCreature.getBoundsInParent().contains(node.getBoundsInParent().getCenterX(), node.getBoundsInParent().getCenterY()) && myCreature != node){
+        return node.getId();
+      }
+    }
+    return null;
   }
 
   /**
