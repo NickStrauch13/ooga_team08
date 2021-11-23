@@ -18,8 +18,8 @@ public class Game implements PickupGame {
 
     private boolean gameOver=false;
     private String lastDirection;
-    private int boardXSize=400;
-    private int boardYSize=400;
+    private int boardXSize;
+    private int boardYSize;
     private static final int WALL_STATE = 1;
     private static final int EAT_CREATURE_SCORE = 400;
     private static final String[] POSSIBLE_DIRECTIONS= new String[]{
@@ -51,6 +51,8 @@ public class Game implements PickupGame {
         score=0;
         myCellSize = cellSize;
         initializeGhosts();
+        boardXSize=cellSize*board.getCols();
+        boardYSize=cellSize*board.getRows();
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -124,8 +126,8 @@ public class Game implements PickupGame {
             creature.setCurrentDirection(generateDirectionArray(randomDirection));
         }
     }
-        
-    
+
+
     private boolean getIsWallAtPosition(double xPos, double yPos){
         int row = getCellCoordinate(yPos);
         int col = getCellCoordinate(xPos);
