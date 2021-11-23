@@ -116,7 +116,6 @@ public class Game implements PickupGame {
             currentCreature.setCurrentDirection(generateDirectionArray(randomDirection));
             moveCPUCreature(currentCreature);
         }
-
     }
 
     private boolean getIsWallAtPosition(double xPos, double yPos){
