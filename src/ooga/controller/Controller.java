@@ -8,6 +8,7 @@ import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.home.HomeScreen;
+import ooga.view.popups.ErrorView;
 import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.IOException;
@@ -26,6 +27,16 @@ public class Controller {
     public static final String gameType = "Pacman"; //TODO update gameType variable
     public static final int CELL_SIZE = 25;
 
+    // TODO: Should be put into a properties file?
+    public static final String IOE_EXCEPTION = "IOE exceptions";
+    public static final String PARSE_EXCEPTION = "Parse exception!";
+    public static final String CLASS_NOT_FOUND = "Class not found!";
+    public static final String INVOCATION_TARGET = "Invocation target error!";
+    public static final String NO_SUCH_METHOD = "There is no such method! ";
+    public static final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
+    public static final String ILLEGAL_ACCESS = "Access illegal! ";
+    public static final String EXCEPTION = "Something is wrong here!";
+
     private Game myGame;
     private Board myBoard;
     private BoardView myBoardView;
@@ -34,7 +45,7 @@ public class Controller {
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
 
-
+    private ErrorView exceptionHandler;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
     /**
@@ -88,7 +99,7 @@ public class Controller {
             //TODO get lives from JSON file
         }
         catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | IOException | ParseException | InstantiationException e) {
-            e.printStackTrace();     // TODO: Need better exception handling if we are going with try/catch
+            exceptionHandler.showError(EXCEPTION);     // TODO: Need better exception handling if we are going with try/catch
         }
     }
 
@@ -176,28 +187,6 @@ public class Controller {
         return CELL_SIZE;
     }
 
-
-//    public int getRows() {
-//        return myBoard.getRows();
-//    }
-//
-//    public int getCols() {
-//        return myBoard.getCols();
-//    }
-//
-//    public double getAnimationSpeed() {
-//        return animationSpeed;
-//    }
-
-
-    /**
-     * Returns the hashmap containing the moving game objects "creatures"
-     * @return the creature map
-     */
-//    public Map getCreatureMap(){
-//        return creatureMap;
-//    }
-
     /**
      * Update and sync each frame of the game with the last direction used
      * @param direction the string value for the direction
@@ -268,8 +257,11 @@ public class Controller {
         return myGame.dealWithCollision(collisionManager);
     }
 
+    /**
+     * Receive the backend's command to reset the entire game
+     */
     public void resetGame() {
-        myGame.resetGame();;
+        myGame.resetGame();
     }
 
 }
