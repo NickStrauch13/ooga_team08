@@ -11,6 +11,7 @@ public class scoreBooster extends pickup{
 
     public void interact(PickupGame pickupGame){
         pickupGame.addScore(SCORE_TO_ADD);
+        System.out.println("ADDED SCORE");
         super.interact(pickupGame);
     }
 }
