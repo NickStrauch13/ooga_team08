@@ -8,6 +8,7 @@ import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.home.HomeScreen;
+import ooga.view.popups.ErrorView;
 import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.IOException;
@@ -26,6 +27,15 @@ public class Controller {
     public static final String gameType = "Pacman"; //TODO update gameType variable
     public static final int CELL_SIZE = 25;
 
+    // TODO: Should be put into a properties file?
+    public static final String IOE_EXCEPTION = "IOE exceptions";
+    public static final String PARSE_EXCEPTION = "Parse exception!";
+    public static final String CLASS_NOT_FOUND = "Class not found!";
+    public static final String INVOCATION_TARGET = "Invocation target error!";
+    public static final String NO_SUCH_METHOD = "There is no such method! ";
+    public static final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
+    public static final String ILLEGAL_ACCESS = "Access illegal! ";
+
     private Game myGame;
     private Board myBoard;
     private BoardView myBoardView;
@@ -34,7 +44,7 @@ public class Controller {
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
 
-
+    private ErrorView exceptionHandler;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
     /**
