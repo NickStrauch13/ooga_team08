@@ -37,22 +37,24 @@ public class SimulationManager {
      */
     public boolean playPause() {
         if(myAnimation == null) {
-            myAnimation = new Timeline();
-            myAnimation.setCycleCount(Timeline.INDEFINITE);
-            myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
-            myAnimation.setRate(myAnimationRate);
-            myAnimation.play();
-            currentDirection = "RIGHT"; //TODO allow user to set this value. Call the json key "Starting direction"
+            setupAnimation();
         }
         else if(myAnimation.getStatus() == Status.PAUSED){
-            System.out.println("playing");
             myAnimation.play();
         }
         else{
-            System.out.println("paused");
             myAnimation.pause();
         }
         return myAnimation.getStatus() != Status.PAUSED;
+    }
+
+    private void setupAnimation() {
+        myAnimation = new Timeline();
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
+        myAnimation.setRate(myAnimationRate);
+        myAnimation.play();
+        currentDirection = "RIGHT"; //TODO allow user to set this value. Call the json key "Starting direction"
     }
 
     /**
@@ -66,26 +68,27 @@ public class SimulationManager {
     private void step() {
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
-           int[] newUserPosition = myController.getUserPosition();
-           for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-               if (movingPiece.equals(myBoardView.getUserPiece())) {
-                   movingPiece.updatePosition(newUserPosition[0], newUserPosition[1]);
-               }
-               else {
-                   int[] newGhostPosition = myController.getGhostPosition(movingPiece.getPiece().getId());
-                   if (newGhostPosition != null) {
-                       movingPiece.updatePosition(newGhostPosition[0], newGhostPosition[1]);
-                   }
-               }
-           }
-           String nodeCollision = myBoardView.getUserCollision(); //TODO if too slow, only do this every 10ish steps and dont include nonpassible nodes in list
-           if (nodeCollision != null) {
-
-           }
+            updateMovingPiecePositions();
+            String nodeCollision = myBoardView.getUserCollision();
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
             updateStats();
+        }
+    }
+
+    private void updateMovingPiecePositions() {
+        int[] newUserPosition = myController.getUserPosition();
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+            if (movingPiece.equals(myBoardView.getUserPiece())) {
+                movingPiece.updatePosition(newUserPosition[0], newUserPosition[1]);
+            }
+            else {
+                int[] newGhostPosition = myController.getGhostPosition(movingPiece.getPiece().getId());
+                if (newGhostPosition != null) {
+                    movingPiece.updatePosition(newGhostPosition[0], newGhostPosition[1]);
+                }
+            }
         }
     }
 

@@ -216,6 +216,11 @@ public class Controller {
         return newPosition;
     }
 
+    /**
+     * Gets the new ghost position of the ghost identified by the given ID
+     * @param nodeID
+     * @return
+     */
     public int[] getGhostPosition(String nodeID) {
         if (myBoard.getMyCPU(nodeID) != null) {
             int[] newPosition = {myBoard.getMyCPU(nodeID).getXpos(), myBoard.getMyCPU(nodeID).getYpos()};
@@ -253,8 +258,18 @@ public class Controller {
         return collisionManager.getCurrentCollision(); //Temporary placeholder for the return.
     }
 
+    /**
+     * Sends information about the collision to the backend
+     * @param nodeID
+     * @return
+     */
     public boolean handleCollision(String nodeID){
         collisionManager.setCollision(nodeID);
         return myGame.dealWithCollision(collisionManager);
     }
+
+    public void resetGame() {
+        myGame.resetGame();;
+    }
+
 }
