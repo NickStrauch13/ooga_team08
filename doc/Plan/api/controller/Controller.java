@@ -62,17 +62,36 @@ public interface Controller {
      * Get the dimension of each cell
      * @return the size of a cell in the board
      */
-    public int getCellSize();
+     int getCellSize();
 
     /**
      * Update and sync each frame of the game with the last direction used
      * @param direction the string value for the direction
      */
-    public void step(String direction);
+     void step(String direction);
 
     /**
      * Access the current coordinates of the user
      * @return (x,y) of the current position
      */
-    public int[] getUserPosition();
+    int[] getUserPosition();
+
+    /**
+     * Gets the new ghost position of the ghost identified by the given ID
+     * @param nodeID
+     * @return
+     */
+    int[] getGhostPosition(String nodeID);
+
+    /**
+     * Sends information about the collision to the backend
+     * @param nodeID
+     * @return
+     */
+    boolean handleCollision(String nodeID);
+
+    /**
+     * Resets game stats and states
+     */
+    void resetGame()
 }

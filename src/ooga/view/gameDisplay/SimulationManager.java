@@ -1,19 +1,13 @@
 package ooga.view.gameDisplay;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Locale;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import ooga.controller.Controller;
-import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.view.gameDisplay.center.BoardView;
-import ooga.view.gameDisplay.gamePieces.GhostPiece;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
@@ -42,49 +36,59 @@ public class SimulationManager {
      * @return false if the animation is paused.
      */
     public boolean playPause() {
-        //TODO make toggleable with the pause
         if(myAnimation == null) {
-            myAnimation = new Timeline();
-            myAnimation.setCycleCount(Timeline.INDEFINITE);
-            myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
-            myAnimation.setRate(myAnimationRate);
-            myAnimation.play();
-            currentDirection = "RIGHT"; //TODO allow user to set this value. Call the json key "Starting direction"
+            setupAnimation();
         }
         else if(myAnimation.getStatus() == Status.PAUSED){
-            System.out.println("playing");
             myAnimation.play();
         }
         else{
-            System.out.println("paused");
             myAnimation.pause();
         }
         return myAnimation.getStatus() != Status.PAUSED;
     }
 
+    private void setupAnimation() {
+        myAnimation = new Timeline();
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
+        myAnimation.setRate(myAnimationRate);
+        myAnimation.play();
+        currentDirection = "RIGHT"; //TODO allow user to set this value. Call the json key "Starting direction"
+    }
+
+    /**
+     * Stops the game animation. Typically, called when the user wants to return to the home screen.
+     * This is a more 'permanent' version of pause.
+     */
+    public void stopAnimation(){
+        myAnimation.stop();
+    }
+
     private void step() {
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
-           int[] newUserPosition = myController.getUserPosition();
-           for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-               if (movingPiece.equals(myBoardView.getUserPiece())) {
-                   movingPiece.updatePosition(newUserPosition[0], newUserPosition[1]);
-               }
-               else {
-                   int[] newGhostPosition = myController.getGhostPosition(movingPiece.getPiece().getId());
-                   if (newGhostPosition != null) {
-                       movingPiece.updatePosition(newGhostPosition[0], newGhostPosition[1]);
-                   }
-               }
-           }
-           String nodeCollision = myBoardView.getUserCollision(); //TODO if too slow, only do this every 10ish steps and dont include nonpassible nodes in list
-           if (nodeCollision != null) {
-               System.out.println(nodeCollision);
-           }
+            updateMovingPiecePositions();
+            String nodeCollision = myBoardView.getUserCollision();
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
             updateStats();
+        }
+    }
+
+    private void updateMovingPiecePositions() {
+        int[] newUserPosition = myController.getUserPosition();
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+            if (movingPiece.equals(myBoardView.getUserPiece())) {
+                movingPiece.updatePosition(newUserPosition[0], newUserPosition[1]);
+            }
+            else {
+                int[] newGhostPosition = myController.getGhostPosition(movingPiece.getPiece().getId());
+                if (newGhostPosition != null) {
+                    movingPiece.updatePosition(newGhostPosition[0], newGhostPosition[1]);
+                }
+            }
         }
     }
 
