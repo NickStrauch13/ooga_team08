@@ -3,12 +3,10 @@ package ooga.controller;
 import javafx.stage.Stage;
 import java.lang.Integer;
 
-import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
-import ooga.view.gameDisplay.gamePieces.GhostPiece;
 import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;
 import java.awt.*;
@@ -123,7 +121,12 @@ public class Controller {
                     myBoardView.addBoardPiece(row, col, objectName);
                 }
                 else {
-                    myBoardView.addCreature(row, col, objectName);
+                    if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
+                        myBoardView.addUserCreature(row, col, objectName);
+                    }
+                    else{
+                        myBoardView.addCPUCreature(row, col, objectName);
+                    }
                 }
             }
         }

@@ -1,19 +1,13 @@
 package ooga.view.gameDisplay;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Locale;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import ooga.controller.Controller;
-import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.view.gameDisplay.center.BoardView;
-import ooga.view.gameDisplay.gamePieces.GhostPiece;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
