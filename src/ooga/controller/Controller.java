@@ -28,14 +28,15 @@ public class Controller {
     public static final int CELL_SIZE = 25;
 
     // TODO: Should be put into a properties file?
-    public static final String IOE_EXCEPTION = "IOE exceptions";
-    public static final String PARSE_EXCEPTION = "Parse exception!";
-    public static final String CLASS_NOT_FOUND = "Class not found!";
-    public static final String INVOCATION_TARGET = "Invocation target error!";
-    public static final String NO_SUCH_METHOD = "There is no such method! ";
-    public static final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
-    public static final String ILLEGAL_ACCESS = "Access illegal! ";
-    public static final String EXCEPTION = "Something is wrong here!";
+    private final String IOE_EXCEPTION = "IOE exceptions";
+    private final String NULL_POINTER_EXCEPTION = "Null pointer exception";
+    private final String PARSE_EXCEPTION = "Parse exception!";
+    private final String CLASS_NOT_FOUND = "Class not found!";
+    private final String INVOCATION_TARGET = "Invocation target error!";
+    private final String NO_SUCH_METHOD = "There is no such method! ";
+    private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
+    private final String ILLEGAL_ACCESS = "Access illegal! ";
+    private final String EXCEPTION = "Something is wrong here!";
 
     private Game myGame;
     private Board myBoard;
@@ -45,7 +46,7 @@ public class Controller {
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
 
-    private ErrorView exceptionHandler;
+    private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
     /**
@@ -66,6 +67,8 @@ public class Controller {
         stage.setScene(myStartScreen.createScene());
         stage.show();
         animationSpeed = 0.3;
+
+        myErrorView = new ErrorView();
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -94,12 +97,31 @@ public class Controller {
             initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard);
 
             myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
-
-
             //TODO get lives from JSON file
         }
-        catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | IOException | ParseException | InstantiationException e) {
-            exceptionHandler.showError(EXCEPTION);     // TODO: Need better exception handling if we are going with try/catch
+        catch (ClassNotFoundException e) {
+            myErrorView.showError(CLASS_NOT_FOUND);     // TODO: Need better exception handling if we are going with try/catch
+        }
+        catch (InvocationTargetException e) {
+            myErrorView.showError(INVOCATION_TARGET);
+        }
+        catch (IllegalAccessException e) {
+            myErrorView.showError(ILLEGAL_ACCESS);
+        }
+        catch (NoSuchMethodException e) {
+            myErrorView.showError(NO_SUCH_METHOD);
+        }
+        catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION);
+        }
+        catch (InstantiationException e) {
+            myErrorView.showError(INSTANTIATION_EXCEPTION);
+        }
+        catch (ParseException e) {
+            myErrorView.showError(PARSE_EXCEPTION);
+        }
+        catch (NullPointerException e) {
+            myErrorView.showError(NULL_POINTER_EXCEPTION);
         }
     }
 
