@@ -1,5 +1,6 @@
 package ooga.controller;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -14,6 +15,9 @@ public class JSONReader {
     private final String NULL_POINTER_EXCEPTION = "Check your variable names in the json file!";
     private final String NUMBER_FORMAT_EXCEPTION = "Check the number format!";
     private final String INDEX_OUT_BOUNDS_EXCEPTION = "Check if the dimension of the board is correct!";
+    private final String IOE_EXCEPTION = "IOE exceptions";
+    private final String PARSE_EXCEPTION = "Parse exceptions";
+    private final String CLASS_CAST_EXCEPTION = "Make sure the data type is correct!";
 
     private final String myPath;
     private ErrorView myErrorView;
@@ -80,14 +84,20 @@ public class JSONReader {
     private Map<Integer, String> getConversionMap(JSONObject jsonData, String objectType) {
 
         Map<Integer, String> conversionMap = new HashMap();
-        Map JSONMap = ((HashMap) jsonData.get(objectType));
+        try {
+            Map JSONMap = ((HashMap) jsonData.get(objectType));
 
-        for (Object keyObject : JSONMap.keySet()) {
-            String keyString = keyObject.toString().trim();
-            int key = Integer.parseInt(keyString.trim());
-            String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
-            conversionMap.put(key, stringValue);
+            for (Object keyObject : JSONMap.keySet()) {
+                String keyString = keyObject.toString().trim();
+                int key = Integer.parseInt(keyString.trim());
+                String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
+                conversionMap.put(key, stringValue);
+            }
         }
+        catch (NullPointerException e) {
+            myErrorView.showError(NULL_POINTER_EXCEPTION);
+        }
+
         return conversionMap;
     }
 
@@ -108,33 +118,53 @@ public class JSONReader {
                 while (innerIterator.hasNext()) {
                     String nextToken = innerIterator.next();
                     try { innerList.add(Integer.parseInt(nextToken.trim())); }
-                    catch (NumberFormatException e){ myErrorView.showError(NUMBER_FORMAT_EXCEPTION); }
+                    catch (NumberFormatException ee){ myErrorView.showError(NUMBER_FORMAT_EXCEPTION); }
                 }
                 boardInfo.addAll(Collections.singleton(innerList));
             }
-            return boardInfo;
         }
         catch (NullPointerException e) {
             myErrorView.showError(NULL_POINTER_EXCEPTION);
         }
-        return null;
+        return boardInfo;
     }
 
     /*
     Extract information about the number of rows/columns from the json file
      */
     private int getDimension(JSONObject jsonData, String row_number) {
-        String rowString = (String) jsonData.get(row_number);
-        return Integer.parseInt(rowString.trim());
+        String rowString = "";
+        try {
+            rowString = (String) jsonData.get(row_number);
+            return Integer.parseInt(rowString.trim());
+        }
+        catch (NullPointerException e){
+            myErrorView.showError(NULL_POINTER_EXCEPTION);
+        }
+        catch (NumberFormatException e) {
+            myErrorView.showError(NUMBER_FORMAT_EXCEPTION);
+        }
+        catch (ClassCastException e) {
+            myErrorView.showError(CLASS_CAST_EXCEPTION);
+        }
+        return 0;
     }
 
     /*
     Extract the entire JSON object for further parsing
      */
-    private JSONObject extractJSONObject() throws IOException, ParseException {
+    private JSONObject extractJSONObject() {
         JSONParser parser = new JSONParser();
-        Object jsonContent = parser.parse(new FileReader(myPath));
-        return (JSONObject) jsonContent;
+        try {
+            Object jsonContent = parser.parse(new FileReader(myPath));
+            return (JSONObject) jsonContent;
+        }
+        catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION);
+        }
+        catch (ParseException e) {
+            myErrorView.showError(PARSE_EXCEPTION);
+        }
+        return null;
     }
-
 }

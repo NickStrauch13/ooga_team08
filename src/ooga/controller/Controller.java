@@ -187,28 +187,6 @@ public class Controller {
         return CELL_SIZE;
     }
 
-
-//    public int getRows() {
-//        return myBoard.getRows();
-//    }
-//
-//    public int getCols() {
-//        return myBoard.getCols();
-//    }
-//
-//    public double getAnimationSpeed() {
-//        return animationSpeed;
-//    }
-
-
-    /**
-     * Returns the hashmap containing the moving game objects "creatures"
-     * @return the creature map
-     */
-//    public Map getCreatureMap(){
-//        return creatureMap;
-//    }
-
     /**
      * Update and sync each frame of the game with the last direction used
      * @param direction the string value for the direction
@@ -280,7 +258,7 @@ public class Controller {
     }
 
     public void resetGame() {
-        myGame.resetGame();;
+        myGame.resetGame();
     }
 
 }
