@@ -15,7 +15,7 @@ public class PacmanPiece extends MovingPiece {
 
     @Override
     protected Node makeNode(){
-        ImageView pacman = new ImageView("ooga/view/resources/viewIcons/pacmanImage.png");
+        ImageView pacman = new ImageView("ooga/view/resources/viewIcons/yellow square.png");
         pacman.setFitWidth(getCellSize()-CREATURE_SLOP);
         pacman.setFitHeight(getCellSize()-CREATURE_SLOP);
         setIDs(pacman, CSS_ID, getCellIndexID());

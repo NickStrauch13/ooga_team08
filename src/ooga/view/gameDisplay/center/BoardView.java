@@ -41,7 +41,7 @@ public class BoardView {
   public void addBoardPiece(int row, int col, String objectName) {
 
       if(objectName.equals("WALL")){ //Wall
-        myPiece = new WallPiece(myController.getCellSize());  //example of using the GamePiece abstraction. Obviously still need to remove conditionals (replace with refection)
+        myPiece = new WallPiece((myController.getCellSize()));  //example of using the GamePiece abstraction. Obviously still need to remove conditionals (replace with refection)
         myPiece.getPiece().setId(String.format(ID_FORMAT, row, col));
         myGrid.add(myPiece.getPiece(), col, row);
         myNodeList.add(myPiece.getPiece());

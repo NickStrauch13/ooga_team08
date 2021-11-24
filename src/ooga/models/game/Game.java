@@ -35,7 +35,8 @@ public class Game implements PickupGame {
     private List<CPUCreature> activeCPUCreatures;
     private int myCellSize;
     private UserCreature myUserControlled;
-
+    private Set<String> visitedNodes = new HashSet<>();
+    private Queue<String> queue = new ArrayDeque<String>();
     public Game(Board board){
         myBoard=board;
     }
@@ -84,6 +85,9 @@ public class Game implements PickupGame {
         }
         moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
     }
+    private String getNodeSignature(int x, int y){
+        return x+","+y;
+    }
 
     private boolean moveToNewPossiblePosition(Creature currentCreature, int[] direction){
         int xDirection = direction[0];
@@ -91,23 +95,61 @@ public class Game implements PickupGame {
         int xCorner = (xDirection+1)%2;
         int yCorner = (yDirection+1)%2;
 
-        int corner1X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection*2)%boardXSize+xCorner*currentCreature.getSize()/2;
-        int corner1Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection*2)%boardYSize+yCorner*currentCreature.getSize()/2;
+        int corner1X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize+xCorner*currentCreature.getSize()/2;
+        int corner1Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize+yCorner*currentCreature.getSize()/2;
 
-        int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection*2)%boardXSize-xCorner*currentCreature.getSize()/2;
-        int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection*2)%boardYSize-yCorner*currentCreature.getSize()/2;
+        int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize-xCorner*currentCreature.getSize()/2;
+        int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize-yCorner*currentCreature.getSize()/2;
 
         int actualNewPositionX = (currentCreature.getXpos()+xDirection)%boardXSize;
         int actualNewPositionY = (currentCreature.getYpos()+yDirection)%boardYSize;
 
         if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
             currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
+            System.out.println("current position: (" + actualNewPositionX +","+actualNewPositionY+")");
             return true;
         }
+        System.out.println("hit wall at"+ corner1X+ ","+corner1Y+"or"+corner2X+ ","+corner2Y);
         return false;
     }
 
+    private ArrayList<String> findPathToUser(int x, int y, ArrayList<String> path){
+        queue = new ArrayDeque<>();
+        queue.add(getNodeSignature(x,y));
+        while(!queue.isEmpty()){
+            String current = queue.remove();
+            int currentX =Integer.parseInt( current.split(",")[0]);
+            int currentY =Integer.parseInt( current.split(",")[1]);
+            path.add(current);
+            System.out.println(current);
+            if(current.equals(getNodeSignature(getCellCoordinate(myUserControlled.getXpos()),getCellCoordinate(myUserControlled.getYpos())))){
+                return path;
+            }
+            else{
+                if(!myBoard.getisWallAtCell(currentY,currentX-1)){
+                    queue.add(getNodeSignature(currentX-1,currentY));
+                }
+                if(!myBoard.getisWallAtCell(currentY,currentX+1)){
+                    queue.add(getNodeSignature(currentX+1,currentY));
+                }
+                if(!myBoard.getisWallAtCell(currentY-1,currentX)){
+                    queue.add(getNodeSignature(currentX,currentY-1));
+                }
+                if(!myBoard.getisWallAtCell(currentY+1,currentX)){
+                    queue.add(getNodeSignature(currentX,currentY+1));
+                }
+            }
+        }
+        return null;
+    }
+
+    private
+
     private void moveCPUCreature(CPUCreature currentCreature) {
+        int startingX= getCellCoordinate(currentCreature.getCenterX());
+        int startingY= getCellCoordinate(currentCreature.getCenterY());
+        //visitedNodes.add(getNodeSignature(startingX,startingY));
+        //findPathToUser(startingX,startingY,new ArrayList<>());
         int[] direction = currentCreature.getCurrentDirection();
         if(moveToNewPossiblePosition(currentCreature,direction));
         else {
@@ -116,6 +158,7 @@ public class Game implements PickupGame {
             currentCreature.setCurrentDirection(generateDirectionArray(randomDirection));
             moveCPUCreature(currentCreature);
         }
+
     }
 
     private void initializeGhosts() {
@@ -159,7 +202,6 @@ public class Game implements PickupGame {
                 return creatureVSPickupCollision(cm);
             }
         }
-
         cm.setCollision(null);
         return false;
     }
@@ -167,13 +209,11 @@ public class Game implements PickupGame {
         pickUpsLeft--;
     }
 
-
     public boolean creatureVSPickupCollision(CollisionManager cm) {
         String[] collisionIndex = cm.getCurrentCollision().split(",");
         GameObject collidingPickup = myBoard.getGameObject(Integer.parseInt(collisionIndex[0]) , Integer.parseInt(collisionIndex[1]));
         if (!collidingPickup.isWall()) {
             collidingPickup.interact(this);
-            updatePickupsLeft();
             return true;
         }
         return false;
