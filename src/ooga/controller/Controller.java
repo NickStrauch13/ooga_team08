@@ -3,17 +3,16 @@ package ooga.controller;
 import javafx.stage.Stage;
 import java.lang.Integer;
 
-import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
-import ooga.view.gameDisplay.gamePieces.GhostPiece;
 import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public class Controller {
     private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
+
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
@@ -103,7 +103,7 @@ public class Controller {
                     myBoard.createGameObject(row, col, objectName);
                 }
                 else {
-                    myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName,CELL_SIZE-5);
+                    myBoard.createCreature(col*CELL_SIZE+3, row*CELL_SIZE+3, objectName,CELL_SIZE-5);
                 }
             }
         }
@@ -121,7 +121,12 @@ public class Controller {
                     myBoardView.addBoardPiece(row, col, objectName);
                 }
                 else {
-                    myBoardView.addCreature(row, col, objectName);
+                    if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
+                        myBoardView.addUserCreature(row, col, objectName);
+                    }
+                    else{
+                        myBoardView.addCPUCreature(row, col, objectName);
+                    }
                 }
             }
         }
@@ -211,6 +216,11 @@ public class Controller {
         return newPosition;
     }
 
+    /**
+     * Gets the new ghost position of the ghost identified by the given ID
+     * @param nodeID
+     * @return
+     */
     public int[] getGhostPosition(String nodeID) {
         if (myBoard.getMyCPU(nodeID) != null) {
             int[] newPosition = {myBoard.getMyCPU(nodeID).getXpos(), myBoard.getMyCPU(nodeID).getYpos()};
@@ -231,6 +241,28 @@ public class Controller {
      * Used by frontend to report the most recent node collision.
      * @param nodeID The ID of the most recently collided node.
      */
+    public void setCollision(String nodeID){
+        //TODO pass to backend to handle collision action depending on the node type
+        collisionManager.setCollision(nodeID);
+        myGame.dealWithCollision(collisionManager);
+    }
+
+    /**
+     * Used by the frontend to get the ID of a node that should be removed from the view. If nothing
+     * is to be removed, this method returns null.
+     * @return ID of node that should be removed from the view on the current step.
+     */
+    public String getRemovedNodeID() {
+        //return (some call to backend that gets the node ID that should be removed on this step. If nothing
+        //should be removed this step, rust return null.
+        return collisionManager.getCurrentCollision(); //Temporary placeholder for the return.
+    }
+
+    /**
+     * Sends information about the collision to the backend
+     * @param nodeID
+     * @return
+     */
     public boolean handleCollision(String nodeID){
         collisionManager.setCollision(nodeID);
         return myGame.dealWithCollision(collisionManager);
@@ -239,4 +271,5 @@ public class Controller {
     public void resetGame() {
         myGame.resetGame();;
     }
+
 }

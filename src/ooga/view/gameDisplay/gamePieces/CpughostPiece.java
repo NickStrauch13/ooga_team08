@@ -5,11 +5,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class GhostPiece extends MovingPiece {
+public class CpughostPiece extends MovingPiece {
     private static final String CSS_ID = "pacmanPiece";
     private static final int CREATURE_SLOP = 5;
 
-    public GhostPiece(int cellSize){
+    public CpughostPiece(Integer cellSize){
         super(cellSize);
     }
 

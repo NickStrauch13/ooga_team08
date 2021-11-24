@@ -1,19 +1,19 @@
 package ooga.view.gameDisplay.center;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.HPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Shape;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.gamePieces.*;
+
 
 public class BoardView {
   private GridPane myGrid;
   private Group myGroup;
-  private GamePiece myPiece;
   private int[][] controllerBoard;
   private int myCellSize;
   private Controller myController;
@@ -23,6 +23,7 @@ public class BoardView {
   private List<MovingPiece> myCreatureList;
   private static final String ID_FORMAT = "%s,%s";
   private int cpuCount = 0;
+  private static final String PIECE_PATH = "ooga.view.gameDisplay.gamePieces.%sPiece";
 
   public BoardView(Controller controller){
     myController = controller;
@@ -31,56 +32,85 @@ public class BoardView {
     myGroup.getChildren().add(myGrid);
     myCellSize = myController.getCellSize();
     myGrid.setMaxSize(myCellSize, myCellSize);
-    //myGrid.setGridLinesVisible(true);
     myGrid.getStyleClass().add("gameGridPane");
     myNodeList = new ArrayList<>();
     myCreatureList = new ArrayList<>();
   }
 
-  //TODO change to reflection instead of conditionals
+  /**
+   * Adds a static board piece to the game
+   * @param row
+   * @param col
+   * @param objectName
+   */
   public void addBoardPiece(int row, int col, String objectName) {
-
-      if(objectName.equals("WALL")){ //Wall
-        myPiece = new WallPiece(myController.getCellSize());  //example of using the GamePiece abstraction. Obviously still need to remove conditionals (replace with refection)
-        myPiece.getPiece().setId(String.format(ID_FORMAT, row, col));
-        myGrid.add(myPiece.getPiece(), col, row);
-        myNodeList.add(myPiece.getPiece());
-      }
-      if(objectName.equals("POWERUP1")){ //empty with dot pickup
-        myPiece = new DotPiece(myController.getCellSize());
-        Node dot = myPiece.getPiece();
-        dot.setId(String.format(ID_FORMAT, row, col));
-        myGrid.add(dot, col, row);
-        myGrid.setHalignment(dot, HPos.CENTER);
-        myNodeList.add(dot);
-      }
-
+    Node pieceNode = pieceReflection(objectName);
+    pieceNode.setId(String.format(ID_FORMAT, row, col));
+    myGrid.add(pieceNode, col, row);
+    myGrid.setHalignment(pieceNode, HPos.CENTER);
+    myNodeList.add(pieceNode);
   }
 
-  public void addCreature(int row, int col, String objectName) {
-    if(objectName.equals("PACMAN")){ //Pacman   //TODO Bad... Refactor with reflection
-      myUserPiece = new PacmanPiece(myController.getCellSize());
-      Node pacmanNode = myUserPiece.getPiece();
-      pacmanNode.setId(objectName);
-      myGroup.getChildren().add(pacmanNode);
-      myUserPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
-      myCreatureList.add(myUserPiece);
-    }
-    if(objectName.equals("CPUGHOST")) {
-      myCPUPiece = new GhostPiece(myController.getCellSize());
-      Node ghostNode = myCPUPiece.getPiece();
-      ghostNode.setId(objectName + cpuCount);
-      myGroup.getChildren().add(ghostNode);
-      myCPUPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
-      myCreatureList.add(myCPUPiece);
-      cpuCount++;
-    }
+
+  /**
+   * Adds any type of user controlled creature to the game.
+   * @param row user creature starting row.
+   * @param col user creature starting column.
+   * @param creatureName name of the user creature
+   */
+  public void addUserCreature(int row, int col, String creatureName) {
+    myUserPiece = creatureReflection(creatureName);
+    Node pieceNode = myUserPiece.getPiece();
+    pieceNode.setId(creatureName);
+    myGroup.getChildren().add(pieceNode);
+    myUserPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
+    myCreatureList.add(myUserPiece);
   }
 
+
+  /**
+   * Adds any type of CPU creature to the game.
+   * @param row CPU starting row
+   * @param col CPU starting col
+   * @param creatureName name of the creature
+   */
+  public void addCPUCreature(int row, int col, String creatureName){
+    myCPUPiece = creatureReflection(creatureName);
+    Node cpuNode = myCPUPiece.getPiece();
+    cpuNode.setId(creatureName + cpuCount);
+    myGroup.getChildren().add(cpuNode);
+    myCPUPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
+    myCreatureList.add(myCPUPiece);
+    cpuCount++;
+  }
+
+  private Node pieceReflection(String objectName) {
+    String refString = objectName.substring(0, 1) + objectName.toLowerCase().substring(1);
+    GamePiece gamePiece = null;
+    try {
+      Class<?> clazz = Class.forName(String.format(PIECE_PATH, refString));
+      gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class)
+          .newInstance(myController.getCellSize());
+    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
+      //TODO I think this is already checked in the controller parsing of the json file..
+      e.printStackTrace(); //TODO make better
+    }
+    return gamePiece.getPiece();
+  }
+
+  /**
+   * Created the board.
+   * @param rows
+   * @param cols
+   */
   public void makeBoard(int rows, int cols){
     controllerBoard = new int[rows][cols];
   }
 
+  /**
+   * Getter method for the javaFX group holding the board.
+   * @return javaFX Group
+   */
   public Group getInitialBoard() {
     return myGroup;
   }
@@ -96,6 +126,10 @@ public class BoardView {
   }
 
 
+  /**
+   * Returns the ID of the node that the user is colliding with.
+   * @return String representing the collision node.
+   */
   public String getUserCollision(){
     String creatureID = myUserPiece.getCreatureCollision(myCreatureList);
     if (creatureID == null) {
@@ -119,9 +153,22 @@ public class BoardView {
     }
   }
 
+  /**
+   * Gets the list of the current view creatures.
+   */
   public List<MovingPiece> getCreatureList() {
     return myCreatureList;
   }
 
-
+  private MovingPiece creatureReflection(String creatureName){
+    MovingPiece creaturePiece = null;
+    try {
+      Class<?> clazz = Class.forName(String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1)));
+      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class)
+          .newInstance(myController.getCellSize());
+    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
+      e.printStackTrace(); //TODO improve? or is this already handled in controller
+    }
+    return creaturePiece;
+  }
 }

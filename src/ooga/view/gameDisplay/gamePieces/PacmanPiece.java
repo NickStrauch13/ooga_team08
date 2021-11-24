@@ -9,7 +9,7 @@ public class PacmanPiece extends MovingPiece {
     private static final String CSS_ID = "pacmanPiece";
     private static final int CREATURE_SLOP = 5;
 
-    public PacmanPiece(int cellSize){
+    public PacmanPiece(Integer cellSize){
         super(cellSize);
     }
 
