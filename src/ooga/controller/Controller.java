@@ -257,6 +257,9 @@ public class Controller {
         return myGame.dealWithCollision(collisionManager);
     }
 
+    /**
+     * Receive the backend's command to reset the entire game
+     */
     public void resetGame() {
         myGame.resetGame();
     }

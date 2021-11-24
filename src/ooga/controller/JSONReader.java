@@ -12,20 +12,31 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JSONReader {
-    private final String NULL_POINTER_EXCEPTION = "Check your variable names in the json file!";
-    private final String NUMBER_FORMAT_EXCEPTION = "Check the number format!";
+
+    // TODO: Should be placed into properties files or enum?
+    private static final String NUMBER_FORMAT_EXCEPTION_DIM = "Check the number format for the dimension value!";
+    private static final String NUMBER_FORMAT_EXCEPTION_BOARD = "Check the number format for values within the board!";
+    private static final String NUMBER_FORMAT_EXCEPTION_MAP = "Check the number format for keys in the map!";
+
+    private static final String CLASS_CAST_EXCEPTION_DIM = "Make sure the data type for the dimension is correct!";
+    private static final String CLASS_CAST_EXCEPTION_BOARD = "Make sure the data type within the board is correct!";
+    private static final String CLASS_CAST_EXCEPTION_MAP = "Make sure the data type for the map is correct!";
+
+    private final String NULL_POINTER_EXCEPTION_DIM = "Check your dimension names in the json file!";
+    private final String NULL_POINTER_EXCEPTION_BOARD = "Check your board name in the json file!";
+    private final String NULL_POINTER_EXCEPTION_MAP = "Check your names for maps in the json file!";
+
     private final String INDEX_OUT_BOUNDS_EXCEPTION = "Check if the dimension of the board is correct!";
     private final String IOE_EXCEPTION = "IOE exceptions";
     private final String PARSE_EXCEPTION = "Parse exceptions";
-    private final String CLASS_CAST_EXCEPTION = "Make sure the data type is correct!";
 
     /*
     TODO: Other exceptions maybe for the frontend or controller?
     MissingResourceException -> Wrong values in map,
     myGame NullPointer,
     ClassNotFoundException for wrong key in map
+    How to handle values on board but not in map keys?
      */
-
 
     private final String myPath;
     private ErrorView myErrorView;
@@ -103,13 +114,13 @@ public class JSONReader {
             }
         }
         catch (NullPointerException e) {
-            myErrorView.showError(NULL_POINTER_EXCEPTION);
+            myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);
         }
         catch (NumberFormatException e){
-            myErrorView.showError(NUMBER_FORMAT_EXCEPTION);
+            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_MAP);
         }
         catch (ClassCastException e) {
-            myErrorView.showError(CLASS_CAST_EXCEPTION);
+            myErrorView.showError(CLASS_CAST_EXCEPTION_MAP);
         }
 
         return conversionMap;
@@ -137,13 +148,13 @@ public class JSONReader {
             }
         }
         catch (NullPointerException e) {
-            myErrorView.showError(NULL_POINTER_EXCEPTION);
+            myErrorView.showError(NULL_POINTER_EXCEPTION_BOARD);
         }
         catch (NumberFormatException e){
-            myErrorView.showError(NUMBER_FORMAT_EXCEPTION);
+            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_BOARD);
         }
         catch (ClassCastException e) {
-            myErrorView.showError(CLASS_CAST_EXCEPTION);
+            myErrorView.showError(CLASS_CAST_EXCEPTION_BOARD);
         }
         return boardInfo;
     }
@@ -158,13 +169,13 @@ public class JSONReader {
             return Integer.parseInt(rowString.trim());
         }
         catch (NullPointerException e){
-            myErrorView.showError(NULL_POINTER_EXCEPTION);
+            myErrorView.showError(NULL_POINTER_EXCEPTION_DIM);
         }
         catch (NumberFormatException e) {
-            myErrorView.showError(NUMBER_FORMAT_EXCEPTION);
+            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_DIM);
         }
         catch (ClassCastException e) {
-            myErrorView.showError(CLASS_CAST_EXCEPTION);
+            myErrorView.showError(CLASS_CAST_EXCEPTION_DIM);
         }
         return 0;
     }
