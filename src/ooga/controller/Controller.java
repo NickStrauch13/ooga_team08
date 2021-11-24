@@ -236,4 +236,7 @@ public class Controller {
         return myGame.dealWithCollision(collisionManager);
     }
 
+    public void resetGame() {
+        myGame.resetGame();;
+    }
 }

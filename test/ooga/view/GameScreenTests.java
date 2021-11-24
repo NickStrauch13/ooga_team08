@@ -75,8 +75,10 @@ public class GameScreenTests extends DukeApplicationTest {
     sleep(500);
 
     assertNotEquals(myController.getUserPosition()[0], startPos[0]);
-    assertNotEquals(myController.getUserPosition()[1], startPos[1]);
+
   }
+
+
 
 }
 
