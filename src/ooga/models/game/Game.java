@@ -16,16 +16,14 @@ public class Game implements PickupGame {
         return true;
     }
 
-
-
     private boolean gameOver=false;
     private String lastDirection;
-    private int boardXSize=400;
-    private int boardYSize=400;
+    private int boardXSize;
+    private int boardYSize;
     private static final int WALL_STATE = 1;
     private static final int EAT_CREATURE_SCORE = 400;
     private static final String[] POSSIBLE_DIRECTIONS= new String[]{
-            "left","down","up","right"
+            "LEFT","DOWN","UP","RIGHT"
     };
     private ResourceBundle myCreatureResources;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.creatures.resources.";
@@ -34,25 +32,27 @@ public class Game implements PickupGame {
     private int level;
     private int pickUpsLeft;
     private Board myBoard;
-    private List<CPUCreature> activeCPUCreatures = new ArrayList<>();
+    private List<CPUCreature> activeCPUCreatures;
     private int myCellSize;
-
-
     private UserCreature myUserControlled;
 
     public Game(Board board){
         myBoard=board;
     }
 
-    public Game(Board board, int numPickUps, UserCreature userPlayer, int cellSize){
+    public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize){
         myBoard=board;
         pickUpsLeft = numPickUps;
         myUserControlled = userPlayer;
+        activeCPUCreatures = CPUCreatures;
         myCreatureResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "directions");
         level=1;
         lives=3;
         score=0;
         myCellSize = cellSize;
+        initializeGhosts();
+        boardXSize=cellSize*board.getCols();
+        boardYSize=cellSize*board.getRows();
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -119,13 +119,22 @@ public class Game implements PickupGame {
 
     }
 
+    private void initializeGhosts() {
+        for (CPUCreature creature : activeCPUCreatures) {
+            Random r = new Random();
+            String randomDirection = POSSIBLE_DIRECTIONS[r.nextInt(POSSIBLE_DIRECTIONS.length)];
+            creature.setCurrentDirection(generateDirectionArray(randomDirection));
+        }
+    }
+
+
     private boolean getIsWallAtPosition(double xPos, double yPos){
         int row = getCellCoordinate(yPos);
         int col = getCellCoordinate(xPos);
         return myBoard.getisWallAtCell(row, col);
     }
 
-    private int getCellCoordinate(double pixels){
+    public int getCellCoordinate(double pixels){
         return ((int)pixels)/myCellSize;
     }
 
@@ -142,16 +151,17 @@ public class Game implements PickupGame {
         lives-=1;
     };
 
-    public void dealWithCollision(CollisionManager cm){
+    public boolean dealWithCollision(CollisionManager cm){
         if(cm.checkIfCollision()){
             if(cm.isCreature()){
-                creatureVsCreatureCollision(cm);
+                return creatureVsCreatureCollision(cm);
             }
             else{
-                creatureVSPickupCollision(cm);
+                return creatureVSPickupCollision(cm);
             }
         }
         cm.setCollision(null);
+        return false;
     }
     public void updatePickupsLeft(){
         pickUpsLeft--;
@@ -167,11 +177,7 @@ public class Game implements PickupGame {
         return false;
     }
 
-    public void setActiveCPUCreatures(List<CPUCreature> cpuCreatures){
-        activeCPUCreatures=cpuCreatures;
-    }
-
-    private void creatureVsCreatureCollision(CollisionManager cm){
+    private boolean creatureVsCreatureCollision(CollisionManager cm){
         if(myUserControlled.isPoweredUp()){
             addScore(EAT_CREATURE_SCORE);
             for(Creature c:activeCPUCreatures){
@@ -182,9 +188,11 @@ public class Game implements PickupGame {
             }
         }
         else{
+            System.out.println("DIE DIE DIE DIE DIE");
             myUserControlled.die();
             loseLife();
         }
+        return true;
     }
 
     /**
