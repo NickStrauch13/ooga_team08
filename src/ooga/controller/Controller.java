@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class Controller {
     private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
+
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
@@ -101,7 +103,7 @@ public class Controller {
                     myBoard.createGameObject(row, col, objectName);
                 }
                 else {
-                    myBoard.createCreature(col*CELL_SIZE, row*CELL_SIZE, objectName,CELL_SIZE-5);
+                    myBoard.createCreature(col*CELL_SIZE+3, row*CELL_SIZE+3, objectName,CELL_SIZE-5);
                 }
             }
         }
@@ -234,9 +236,25 @@ public class Controller {
      * Used by frontend to report the most recent node collision.
      * @param nodeID The ID of the most recently collided node.
      */
+    public void setCollision(String nodeID){
+        //TODO pass to backend to handle collision action depending on the node type
+        collisionManager.setCollision(nodeID);
+        myGame.dealWithCollision(collisionManager);
+    }
+
+    /**
+     * Used by the frontend to get the ID of a node that should be removed from the view. If nothing
+     * is to be removed, this method returns null.
+     * @return ID of node that should be removed from the view on the current step.
+     */
+    public String getRemovedNodeID() {
+        //return (some call to backend that gets the node ID that should be removed on this step. If nothing
+        //should be removed this step, rust return null.
+        return collisionManager.getCurrentCollision(); //Temporary placeholder for the return.
+    }
+
     public boolean handleCollision(String nodeID){
         collisionManager.setCollision(nodeID);
         return myGame.dealWithCollision(collisionManager);
     }
-
 }

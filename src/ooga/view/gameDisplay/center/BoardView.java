@@ -51,6 +51,7 @@ public class BoardView {
     myNodeList.add(pieceNode);
   }
 
+
   /**
    * Adds any type of user controlled creature to the game.
    * @param row user creature starting row.
@@ -65,6 +66,7 @@ public class BoardView {
     myUserPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
     myCreatureList.add(myUserPiece);
   }
+
 
   /**
    * Adds any type of CPU creature to the game.
