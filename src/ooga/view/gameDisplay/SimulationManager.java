@@ -42,7 +42,6 @@ public class SimulationManager {
      * @return false if the animation is paused.
      */
     public boolean playPause() {
-        //TODO make toggleable with the pause
         if(myAnimation == null) {
             myAnimation = new Timeline();
             myAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -60,6 +59,14 @@ public class SimulationManager {
             myAnimation.pause();
         }
         return myAnimation.getStatus() != Status.PAUSED;
+    }
+
+    /**
+     * Stops the game animation. Typically, called when the user wants to return to the home screen.
+     * This is a more 'permanent' version of pause.
+     */
+    public void stopAnimation(){
+        myAnimation.stop();
     }
 
     private void step() {
