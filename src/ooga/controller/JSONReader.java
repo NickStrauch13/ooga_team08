@@ -19,6 +19,14 @@ public class JSONReader {
     private final String PARSE_EXCEPTION = "Parse exceptions";
     private final String CLASS_CAST_EXCEPTION = "Make sure the data type is correct!";
 
+    /*
+    TODO: Other exceptions maybe for the frontend or controller?
+    MissingResourceException -> Wrong values in map,
+    myGame NullPointer,
+    ClassNotFoundException for wrong key in map
+     */
+
+
     private final String myPath;
     private ErrorView myErrorView;
 
@@ -97,6 +105,12 @@ public class JSONReader {
         catch (NullPointerException e) {
             myErrorView.showError(NULL_POINTER_EXCEPTION);
         }
+        catch (NumberFormatException e){
+            myErrorView.showError(NUMBER_FORMAT_EXCEPTION);
+        }
+        catch (ClassCastException e) {
+            myErrorView.showError(CLASS_CAST_EXCEPTION);
+        }
 
         return conversionMap;
     }
@@ -117,14 +131,19 @@ public class JSONReader {
                 Iterator<String> innerIterator = iterator.next().iterator();
                 while (innerIterator.hasNext()) {
                     String nextToken = innerIterator.next();
-                    try { innerList.add(Integer.parseInt(nextToken.trim())); }
-                    catch (NumberFormatException ee){ myErrorView.showError(NUMBER_FORMAT_EXCEPTION); }
+                    innerList.add(Integer.parseInt(nextToken.trim()));
                 }
                 boardInfo.addAll(Collections.singleton(innerList));
             }
         }
         catch (NullPointerException e) {
             myErrorView.showError(NULL_POINTER_EXCEPTION);
+        }
+        catch (NumberFormatException e){
+            myErrorView.showError(NUMBER_FORMAT_EXCEPTION);
+        }
+        catch (ClassCastException e) {
+            myErrorView.showError(CLASS_CAST_EXCEPTION);
         }
         return boardInfo;
     }
