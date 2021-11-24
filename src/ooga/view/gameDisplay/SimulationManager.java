@@ -80,7 +80,7 @@ public class SimulationManager {
            }
            String nodeCollision = myBoardView.getUserCollision(); //TODO if too slow, only do this every 10ish steps and dont include nonpassible nodes in list
            if (nodeCollision != null) {
-               System.out.println(nodeCollision);
+
            }
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);

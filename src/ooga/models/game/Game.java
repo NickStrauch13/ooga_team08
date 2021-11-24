@@ -106,10 +106,8 @@ public class Game implements PickupGame {
 
         if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
             currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
-            System.out.println("current position: (" + actualNewPositionX +","+actualNewPositionY+")");
             return true;
         }
-        System.out.println("hit wall at"+ corner1X+ ","+corner1Y+"or"+corner2X+ ","+corner2Y);
         return false;
     }
 
@@ -142,8 +140,7 @@ public class Game implements PickupGame {
         }
         return null;
     }
-
-
+    
     private void moveCPUCreature(CPUCreature currentCreature) {
         int startingX= getCellCoordinate(currentCreature.getCenterX());
         int startingY= getCellCoordinate(currentCreature.getCenterY());
@@ -229,13 +226,12 @@ public class Game implements PickupGame {
             }
         }
         else{
-            System.out.println("DIE DIE DIE DIE DIE");
             myUserControlled.die();
             loseLife();
         }
         return true;
     }
-
+    //System.out
     /**
      * Adds points to the score which is housed in this class.
      */
