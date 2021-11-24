@@ -35,6 +35,7 @@ public class Controller {
     public static final String NO_SUCH_METHOD = "There is no such method! ";
     public static final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     public static final String ILLEGAL_ACCESS = "Access illegal! ";
+    public static final String EXCEPTION = "Something is wrong here!";
 
     private Game myGame;
     private Board myBoard;
@@ -98,7 +99,7 @@ public class Controller {
             //TODO get lives from JSON file
         }
         catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | IOException | ParseException | InstantiationException e) {
-            e.printStackTrace();     // TODO: Need better exception handling if we are going with try/catch
+            exceptionHandler.showError(EXCEPTION);     // TODO: Need better exception handling if we are going with try/catch
         }
     }
 

@@ -4,14 +4,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import ooga.view.popups.ErrorView;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JSONReader {
+    private final String NULL_POINTER_EXCEPTION = "Check your variable names in the json file!";
+    private final String NUMBER_FORMAT_EXCEPTION = "Check the number format!";
+    private final String INDEX_OUT_BOUNDS_EXCEPTION = "Check if the dimension of the board is correct!";
 
     private final String myPath;
+    private ErrorView myErrorView;
 
     /**
      * The constructor of setup.
@@ -20,6 +25,7 @@ public class JSONReader {
      */
     public JSONReader(String filePath) {
         myPath = filePath;
+        myErrorView = new ErrorView();
     }
 
     /**
@@ -48,17 +54,22 @@ public class JSONReader {
      */
     private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) {
         List<List<String>> stringBoard = new ArrayList<>();
-        for (int i = 0; i < boardInfo.size(); i++) {
-            List<String> innerList = new ArrayList<>();
-            for (int j = 0; j < boardInfo.get(0).size(); j++) {
-                int currentValue = boardInfo.get(i).get(j);
+        try {
+            for (int i = 0; i < boardInfo.size(); i++) {
+                List<String> innerList = new ArrayList<>();
+                for (int j = 0; j < boardInfo.get(0).size(); j++) {
+                    int currentValue = boardInfo.get(i).get(j);
 
 //                innerList.add(conversionMap.get(currentValue));
-                // TODO: Wait for refactoring from the backend
-                innerList.add(conversionMap.containsKey(currentValue) ? conversionMap.get(currentValue) : creatureMap.get(currentValue));
+                    // TODO: Wait for refactoring from the backend
+                    innerList.add(conversionMap.containsKey(currentValue) ? conversionMap.get(currentValue) : creatureMap.get(currentValue));
 
+                }
+                stringBoard.addAll(Collections.singleton(innerList));
             }
-            stringBoard.addAll(Collections.singleton(innerList));
+        }
+        catch (IndexOutOfBoundsException e) {
+            myErrorView.showError(INDEX_OUT_BOUNDS_EXCEPTION);
         }
         return stringBoard;
     }
@@ -86,22 +97,27 @@ public class JSONReader {
      * @param jsonData JSONObject that is extracted from the json file
      */
     private List<List<Integer>> getBoardInfo(JSONObject jsonData) {
-
         List<List<Integer>> boardInfo = new ArrayList<>();
-        JSONArray JSONBoard = (JSONArray) jsonData.get("BOARD");
-        Iterator<JSONArray> iterator = JSONBoard.iterator();
+        try {
+            JSONArray JSONBoard = (JSONArray) jsonData.get("BOARD");
+            Iterator<JSONArray> iterator = JSONBoard.iterator();
 
-        while (iterator.hasNext()){
-            List<Integer> innerList = new ArrayList<>();
-            Iterator<String> innerIterator = iterator.next().iterator();
-            while (innerIterator.hasNext()) {
-                String nextToken = innerIterator.next();
-                int nextNumber = Integer.parseInt(nextToken.trim());
-                innerList.add(nextNumber);
+            while (iterator.hasNext()){
+                List<Integer> innerList = new ArrayList<>();
+                Iterator<String> innerIterator = iterator.next().iterator();
+                while (innerIterator.hasNext()) {
+                    String nextToken = innerIterator.next();
+                    try { innerList.add(Integer.parseInt(nextToken.trim())); }
+                    catch (NumberFormatException e){ myErrorView.showError(NUMBER_FORMAT_EXCEPTION); }
+                }
+                boardInfo.addAll(Collections.singleton(innerList));
             }
-            boardInfo.addAll(Collections.singleton(innerList));
+            return boardInfo;
         }
-        return boardInfo;
+        catch (NullPointerException e) {
+            myErrorView.showError(NULL_POINTER_EXCEPTION);
+        }
+        return null;
     }
 
     /*
@@ -121,18 +137,4 @@ public class JSONReader {
         return (JSONObject) jsonContent;
     }
 
-
-//    //TODO: Will be moved to test later
-//    public static void main(String[] args) throws IOException, ParseException {
-//        // TODO: add this into json file or an enums as well. Try not to have any constant values at all
-//        final String FILE_PATH = "data/test/vanillaTest.json";
-//
-//        JSONReader reader = new JSONReader(FILE_PATH);
-//        JSONContainer container = reader.readJSONConfig();
-//
-//        System.out.println(container.getMyNumOfRows());
-//        System.out.println(container.getMyNumOfCols());
-//        System.out.println(container.getMyInfo());
-//        System.out.println(container.getMyStringBoard());
-//    }
 }
