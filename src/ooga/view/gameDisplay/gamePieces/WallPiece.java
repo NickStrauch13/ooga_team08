@@ -1,6 +1,7 @@
 package ooga.view.gameDisplay.gamePieces;
 
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -16,9 +17,10 @@ public class WallPiece extends GamePiece{
   }
 
   @Override
-  protected Node makeNode(){
+  protected Rectangle makeNode(){
     Rectangle wall = new Rectangle(WALL_SIZE, WALL_SIZE);
-    setIDs(wall, CSS_ID, getCellIndexID());
+    wall.setId(getCellIndexID());
+    wall.setFill(Color.rgb(33, 33, 222));
     return wall;
   }
 

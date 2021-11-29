@@ -4,6 +4,7 @@
   -fx-background-color: AliceBlue;
   text_color: #444444;
   NewGameColor: #00069C ;
+  BuildBoardButtonColor: #008C1E;
   HighScoresButtonColor: #AA0000 ;
   HomeButtonColor: #AA0000;
   PlayButtonColor: #47ea00;
@@ -38,6 +39,10 @@
 
 .newGameButton {
     -fx-background-color: NewGameColor;
+}
+
+.buildBoardButton {
+    -fx-background-color: BuildBoardButtonColor;
 }
 
 .BottomGameButtons{
@@ -105,3 +110,23 @@
     -fx-padding: 10px;
 }
 
+.boardBuilderHolder {
+    -fx-alignment: center;
+    -fx-font-size: 30px;
+    -fx-padding: 20px;
+}
+
+.gridSpacing {
+     -fx-padding: 5px;
+}
+
+.button-box .color-picker {
+  -fx-background-color: lightgray;
+  -fx-min-width: 150px;
+  -fx-max-width: 150px;
+  -fx-alignment: center;
+}
+
+.color-picker:hover {
+  -fx-background-color: #a1a1a1;
+}
