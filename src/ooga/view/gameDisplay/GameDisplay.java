@@ -7,7 +7,6 @@ import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
 import javafx.scene.Scene;
 import ooga.view.gameDisplay.top.GameStats;
-
 import java.util.Arrays;
 
 public class GameDisplay {

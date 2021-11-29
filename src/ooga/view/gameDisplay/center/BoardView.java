@@ -7,6 +7,7 @@ import javafx.geometry.HPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.gamePieces.*;
 
@@ -43,14 +44,14 @@ public class BoardView {
    * @param col
    * @param objectName
    */
-  public void addBoardPiece(int row, int col, String objectName) {
-    Node pieceNode = pieceReflection(objectName);
-    pieceNode.setId(String.format(ID_FORMAT, row, col));
-    myGrid.add(pieceNode, col, row);
-    myGrid.setHalignment(pieceNode, HPos.CENTER);
-    myNodeList.add(pieceNode);
+  public Node addBoardPiece(int row, int col, String objectName) {
+      Node pieceNode = pieceReflection(String.format(PIECE_PATH, objectName.substring(0, 1) + objectName.toLowerCase().substring(1))).getPiece();
+      pieceNode.setId(String.format(ID_FORMAT, row, col));
+      myGrid.add(pieceNode, col, row);
+      myGrid.setHalignment(pieceNode, HPos.CENTER);
+      myNodeList.add(pieceNode);
+      return pieceNode;
   }
-
 
   /**
    * Adds any type of user controlled creature to the game.
@@ -59,14 +60,13 @@ public class BoardView {
    * @param creatureName name of the user creature
    */
   public void addUserCreature(int row, int col, String creatureName) {
-    myUserPiece = creatureReflection(creatureName);
+    myUserPiece = creatureReflection(String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1)));
     Node pieceNode = myUserPiece.getPiece();
     pieceNode.setId(creatureName);
     myGroup.getChildren().add(pieceNode);
     myUserPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());
     myCreatureList.add(myUserPiece);
   }
-
 
   /**
    * Adds any type of CPU creature to the game.
@@ -75,7 +75,7 @@ public class BoardView {
    * @param creatureName name of the creature
    */
   public void addCPUCreature(int row, int col, String creatureName){
-    myCPUPiece = creatureReflection(creatureName);
+    myCPUPiece = creatureReflection(String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1)));
     Node cpuNode = myCPUPiece.getPiece();
     cpuNode.setId(creatureName + cpuCount);
     myGroup.getChildren().add(cpuNode);
@@ -84,18 +84,17 @@ public class BoardView {
     cpuCount++;
   }
 
-  private Node pieceReflection(String objectName) {
-    String refString = objectName.substring(0, 1) + objectName.toLowerCase().substring(1);
+  public GamePiece pieceReflection(String objectName) {
     GamePiece gamePiece = null;
     try {
-      Class<?> clazz = Class.forName(String.format(PIECE_PATH, refString));
+      Class<?> clazz = Class.forName(objectName);
       gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class)
           .newInstance(myController.getCellSize());
     }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
       //TODO I think this is already checked in the controller parsing of the json file..
       e.printStackTrace(); //TODO make better
     }
-    return gamePiece.getPiece();
+    return gamePiece;
   }
 
   /**
@@ -160,10 +159,18 @@ public class BoardView {
     return myCreatureList;
   }
 
-  private MovingPiece creatureReflection(String creatureName){
+  public List<Node> getNodeList() {
+    return myNodeList;
+  }
+
+  public GridPane getMyGrid() {
+    return myGrid;
+  }
+
+  public MovingPiece creatureReflection(String creatureName){
     MovingPiece creaturePiece = null;
     try {
-      Class<?> clazz = Class.forName(String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1)));
+      Class<?> clazz = Class.forName(creatureName);
       creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class)
           .newInstance(myController.getCellSize());
     }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {

@@ -6,11 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 
 public class UINodeBuilder {
@@ -71,6 +73,13 @@ public class UINodeBuilder {
     return col;
   }
 
+  public ColorPicker makeColorPicker(String id, Consumer<Color> response, Color color) {
+    ColorPicker cp = new ColorPicker(color);
+    cp.setOnAction(e -> response.accept(cp.getValue()));
+    cp.getStyleClass().add("color-picker");
+    cp.setMaxWidth(150.0);
+    return (ColorPicker) setID(id, cp);
+  }
 
   private Node setID(String id, Node node) {
     node.setId(id);

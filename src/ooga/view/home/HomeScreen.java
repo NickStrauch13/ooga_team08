@@ -11,9 +11,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.util.Builder;
 import ooga.controller.Controller;
 import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
+import ooga.view.gameDisplay.center.BoardView;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -72,9 +75,10 @@ public class HomeScreen {
   private Node homeButtons(){
     Button highScoresButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> displayHighScores());
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
+    Button buildBoardButton = myNodeBuilder.makeButton(myResources.getString("BuildBoard"), null,"homeScreenButton","buildBoardButton",e -> startBoardBuilder());
     Label inputText = myNodeBuilder.makeLabel(myResources.getString("userNameText"));
     TextField userName = myNodeBuilder.makeInputField("userName", e -> setUserName(e), "");
-    Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton);
+    Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton, buildBoardButton);
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
   }
@@ -103,6 +107,11 @@ public class HomeScreen {
     readFile();
     GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");
+  }
+
+  private void startBoardBuilder() {
+    BuilderDisplay builderDisplay = new BuilderDisplay(myStage, myWidth, myHeight, myController);
+    builderDisplay.setMainDisplay("Board Builder");
   }
 
   private void displayHighScores(){

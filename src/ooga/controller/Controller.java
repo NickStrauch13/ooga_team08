@@ -45,6 +45,7 @@ public class Controller {
     private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
+    private Map<Integer, String> creatureMap;
 
     private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -87,7 +88,7 @@ public class Controller {
             Map<Integer, String> gameObjectMap = container.getMyConversionMap();
 
             //TODO: Currently creatureMap is never accessed
-            Map<Integer, String> creatureMap = container.getMyCreatureMap();
+            creatureMap = container.getMyCreatureMap();
             List<List<String>> stringBoard = container.getMyStringBoard();
 
             myBoard = new Board(numOfRows, numOfCols);
@@ -132,10 +133,10 @@ public class Controller {
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);
-                if (gameObjectMap.containsValue(objectName)) {
+                if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
                     myBoard.createGameObject(row, col, objectName);
                 }
-                else {
+                else if (creatureMap.containsValue(objectName)){
                     myBoard.createCreature(col*CELL_SIZE+3, row*CELL_SIZE+3, objectName,CELL_SIZE-5);
                 }
             }
@@ -150,14 +151,14 @@ public class Controller {
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);
-                if (gameObjectMap.containsValue(objectName)) {
+                if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
                     myBoardView.addBoardPiece(row, col, objectName);
                 }
                 else {
                     if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
                         myBoardView.addUserCreature(row, col, objectName);
                     }
-                    else{
+                    else if (objectName.equals("CPUGHOST")){
                         myBoardView.addCPUCreature(row, col, objectName);
                     }
                 }
