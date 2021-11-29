@@ -140,7 +140,7 @@ public class Game implements PickupGame {
         }
         return null;
     }
-    
+
     private void moveCPUCreature(CPUCreature currentCreature) {
         int startingX= getCellCoordinate(currentCreature.getCenterX());
         int startingY= getCellCoordinate(currentCreature.getCenterY());
