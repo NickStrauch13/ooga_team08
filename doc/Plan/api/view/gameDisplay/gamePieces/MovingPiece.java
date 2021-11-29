@@ -25,4 +25,23 @@ public interface MovingPiece {
      */
     double getY();
 
+    /**
+     * Rotates the moving piece. Positive input angle rotates clockwise, negative--ccw. (angle in degrees)
+     * @param rotationAngle angle the moving piece should turn clockwise.
+     */
+    void rotatePiece(double rotationAngle);
+
+    /**
+     * Checks if the current user creature is colliding with a node in the game group.
+     * @param nodeList Nodes to check for collisions with.
+     * @return The ID of the collided node if there is a collision, null otherwise.
+     */
+    String getCreatureCollision(List<MovingPiece> nodeList);
+
+    /**
+     * Checks if the current user creature is colliding with a node in the game group.
+     * @param nodeList Nodes to check for collisions with.
+     * @return The ID of the collided node if there is a collision, null otherwise.
+     */
+    String getCollision(List<Node> nodeList);
 }

@@ -1,6 +1,7 @@
 package ooga.view.gameDisplay.gamePieces;
 
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
@@ -15,9 +16,10 @@ public class Powerup1Piece extends GamePiece{
   }
 
   @Override
-  protected Node makeNode(){
+  protected Circle makeNode(){
     Circle dot = new Circle(DOT_RAD);
-    setIDs(dot, CSS_ID, getCellIndexID());
+    dot.setId(getCellIndexID());
+    dot.setFill(Color.rgb(184,134, 11));
     return dot;
   }
 }

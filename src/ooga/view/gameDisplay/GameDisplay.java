@@ -1,17 +1,12 @@
 package ooga.view.gameDisplay;
 
-import javafx.scene.Node;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
 import javafx.scene.Scene;
-import ooga.view.UINodeBuilder.UINodeBuilder;
 import ooga.view.gameDisplay.top.GameStats;
-
 import java.util.Arrays;
 
 public class GameDisplay {
@@ -38,6 +33,7 @@ public class GameDisplay {
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myGameButtons = new GameButtons(stage, width, height, myController, mySimManager);
+        myController.resetGame();
     }
 
     /**

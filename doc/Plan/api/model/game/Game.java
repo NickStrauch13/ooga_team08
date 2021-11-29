@@ -10,6 +10,12 @@ public interface Game {
      */
     void addScore();
 
+
+    /**
+     * Rests the creature states of the game
+     */
+     void resetGame();
+
     /**
      * Resets the lives and score if the user restarts the game etc.
      */
@@ -47,6 +53,11 @@ public interface Game {
     GameObject getGameObject(int row, int col);
 
     /**
+     * returns the id of a stationary node
+     */
+     String getNodeSignature(int x, int y);
+
+    /**
      * gets the list of all CPUCreatures in the game
      * @return list containing all CPU Creatures in the game
      */
@@ -68,6 +79,12 @@ public interface Game {
     void moveCPUCreatures();
 
     /**
+     * Moves current cpu creature to its new position
+     * @param currentCreature
+     */
+     void moveCPUCreature(CPUCreature currentCreature);
+
+    /**
      * moves creatures to its new possible position if wall is not encountered
      */
     void moveToNewPossiblePosition();
@@ -84,6 +101,15 @@ public interface Game {
      * @return return true if there are 0 pickups left
      */
     boolean checkPickups();
+
+
+    /**
+     * Determines whether the collision is a creature or gameObject collision and makes necessary
+     * method calls
+     * @param cm
+     * @return
+     */
+    public boolean dealWithCollision(CollisionManager cm);
 
     /**
      * checks if the user has lives left
@@ -113,6 +139,29 @@ public interface Game {
      * @param cm collision manager instance to assist in handling
      */
     void creatureVsCreatureCollision(CollisionManager cm);
+
+
+    /**
+     * Checks if there is a wall at the current pixel positions
+     * @param xPos
+     * @param yPos
+     * @return
+     */
+     boolean getIsWallAtPosition(double xPos, double yPos);
+
+    /**
+     * sets an initial random direction for all the ghosts
+     */
+    void initializeGhosts();
+
+    /**
+     * Determines the best path for the ghost to take to the user then amends it for randomization
+     * @param x
+     * @param y
+     * @param path
+     * @return
+     */
+     ArrayList<String> findPathToUser(int x, int y, ArrayList<String> path);
 
     /**
      * sets new list of activeCPUcreatures

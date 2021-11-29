@@ -56,4 +56,16 @@ public interface Board {
      */
     UserCreature getMyUser();
 
+    /**
+     * Gets the cpu that is identified by a certain string ID
+     * @param myID
+     * @return
+     */
+     CPUCreature getMyCPU(String myID);
+
+    /**
+     * gets the number of pickups at the start of the game
+     * @return
+     */
+     int getNumPickupsAtStart()
 }

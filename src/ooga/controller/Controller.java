@@ -8,6 +8,7 @@ import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.home.HomeScreen;
+import ooga.view.popups.ErrorView;
 import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.IOException;
@@ -26,6 +27,17 @@ public class Controller {
     public static final String gameType = "Pacman"; //TODO update gameType variable
     public static final int CELL_SIZE = 25;
 
+    // TODO: Should be put into a properties file?
+    private final String IOE_EXCEPTION = "IOE exceptions";
+    private final String NULL_POINTER_EXCEPTION = "Null pointer exception";
+    private final String PARSE_EXCEPTION = "Parse exception!";
+    private final String CLASS_NOT_FOUND = "Class not found!";
+    private final String INVOCATION_TARGET = "Invocation target error!";
+    private final String NO_SUCH_METHOD = "There is no such method! ";
+    private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
+    private final String ILLEGAL_ACCESS = "Access illegal! ";
+    private final String EXCEPTION = "Something is wrong here!";
+
     private Game myGame;
     private Board myBoard;
     private BoardView myBoardView;
@@ -33,8 +45,9 @@ public class Controller {
     private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
+    private Map<Integer, String> creatureMap;
 
-
+    private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
     /**
@@ -55,6 +68,8 @@ public class Controller {
         stage.setScene(myStartScreen.createScene());
         stage.show();
         animationSpeed = 0.3;
+
+        myErrorView = new ErrorView();
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -73,7 +88,7 @@ public class Controller {
             Map<Integer, String> gameObjectMap = container.getMyConversionMap();
 
             //TODO: Currently creatureMap is never accessed
-            Map<Integer, String> creatureMap = container.getMyCreatureMap();
+            creatureMap = container.getMyCreatureMap();
             List<List<String>> stringBoard = container.getMyStringBoard();
 
             myBoard = new Board(numOfRows, numOfCols);
@@ -83,12 +98,31 @@ public class Controller {
             initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard);
 
             myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
-
-
             //TODO get lives from JSON file
         }
-        catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | NoSuchMethodException | IOException | ParseException | InstantiationException e) {
-            e.printStackTrace();     // TODO: Need better exception handling if we are going with try/catch
+        catch (ClassNotFoundException e) {
+            myErrorView.showError(CLASS_NOT_FOUND);     // TODO: Need better exception handling if we are going with try/catch
+        }
+        catch (InvocationTargetException e) {
+            myErrorView.showError(INVOCATION_TARGET);
+        }
+        catch (IllegalAccessException e) {
+            myErrorView.showError(ILLEGAL_ACCESS);
+        }
+        catch (NoSuchMethodException e) {
+            myErrorView.showError(NO_SUCH_METHOD);
+        }
+        catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION);
+        }
+        catch (InstantiationException e) {
+            myErrorView.showError(INSTANTIATION_EXCEPTION);
+        }
+        catch (ParseException e) {
+            myErrorView.showError(PARSE_EXCEPTION);
+        }
+        catch (NullPointerException e) {
+            myErrorView.showError(NULL_POINTER_EXCEPTION);
         }
     }
 
@@ -99,10 +133,10 @@ public class Controller {
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);
-                if (gameObjectMap.containsValue(objectName)) {
+                if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
                     myBoard.createGameObject(row, col, objectName);
                 }
-                else {
+                else if (creatureMap.containsValue(objectName)){
                     myBoard.createCreature(col*CELL_SIZE+3, row*CELL_SIZE+3, objectName,CELL_SIZE-5);
                 }
             }
@@ -117,14 +151,14 @@ public class Controller {
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);
-                if (gameObjectMap.containsValue(objectName)) {
+                if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
                     myBoardView.addBoardPiece(row, col, objectName);
                 }
                 else {
                     if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
                         myBoardView.addUserCreature(row, col, objectName);
                     }
-                    else{
+                    else if (objectName.equals("CPUGHOST")){
                         myBoardView.addCPUCreature(row, col, objectName);
                     }
                 }
@@ -176,28 +210,6 @@ public class Controller {
         return CELL_SIZE;
     }
 
-
-//    public int getRows() {
-//        return myBoard.getRows();
-//    }
-//
-//    public int getCols() {
-//        return myBoard.getCols();
-//    }
-//
-//    public double getAnimationSpeed() {
-//        return animationSpeed;
-//    }
-
-
-    /**
-     * Returns the hashmap containing the moving game objects "creatures"
-     * @return the creature map
-     */
-//    public Map getCreatureMap(){
-//        return creatureMap;
-//    }
-
     /**
      * Update and sync each frame of the game with the last direction used
      * @param direction the string value for the direction
@@ -216,6 +228,11 @@ public class Controller {
         return newPosition;
     }
 
+    /**
+     * Gets the new ghost position of the ghost identified by the given ID
+     * @param nodeID
+     * @return
+     */
     public int[] getGhostPosition(String nodeID) {
         if (myBoard.getMyCPU(nodeID) != null) {
             int[] newPosition = {myBoard.getMyCPU(nodeID).getXpos(), myBoard.getMyCPU(nodeID).getYpos()};
@@ -253,8 +270,21 @@ public class Controller {
         return collisionManager.getCurrentCollision(); //Temporary placeholder for the return.
     }
 
+    /**
+     * Sends information about the collision to the backend
+     * @param nodeID
+     * @return
+     */
     public boolean handleCollision(String nodeID){
         collisionManager.setCollision(nodeID);
         return myGame.dealWithCollision(collisionManager);
     }
+
+    /**
+     * Receive the backend's command to reset the entire game
+     */
+    public void resetGame() {
+        myGame.resetGame();
+    }
+
 }
