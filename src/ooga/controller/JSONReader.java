@@ -197,4 +197,8 @@ public class JSONReader {
         }
         return null;
     }
+
+    public String getMostRecentPath() {
+        return myPath;
+    }
 }

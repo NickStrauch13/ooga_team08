@@ -5,9 +5,12 @@ import ooga.models.creatures.Creature;
 public class CPUCreature extends Creature {
     int[] currentDirection;
 
+    int homeX;
+    int homeY;
     public CPUCreature(Integer xPos, Integer yPos) {
         super(xPos, yPos);
-
+        homeX = xPos;
+        homeY = yPos;
     }
 
     public int[] getCurrentDirection() {
@@ -18,7 +21,15 @@ public class CPUCreature extends Creature {
         this.currentDirection = currentDirection;
     }
 
+    @Override
+    public int getHomeX() {
+        return homeX;
+    }
 
+    @Override
+    public int getHomeY() {
+        return homeY;
+    }
     @Override
     public void moveTo(int newXPos,int newYPos) {
         setXpos(newXPos);
@@ -27,6 +38,6 @@ public class CPUCreature extends Creature {
 
     @Override
     public void die() {
-
+        moveTo(homeX,homeY);
     }
 }
