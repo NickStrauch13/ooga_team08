@@ -46,6 +46,7 @@ public class Controller {
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
+    private JSONReader reader;
 
     private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -81,7 +82,7 @@ public class Controller {
     public void initializeGame(String path) {
         int numOfRows, numOfCols;
         try {
-            JSONReader reader = new JSONReader(path);
+            reader = new JSONReader(path);
             JSONContainer container = reader.readJSONConfig();
             numOfRows = container.getMyNumOfRows();
             numOfCols = container.getMyNumOfCols();
@@ -287,6 +288,7 @@ public class Controller {
      */
     public void resetGame() {
         myGame.resetGame();
+        initializeGame(reader.getMostRecentPath());
     }
 
 }

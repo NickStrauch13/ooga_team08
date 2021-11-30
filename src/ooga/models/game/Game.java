@@ -120,8 +120,8 @@ public class Game implements PickupGame {
         int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize-xCorner*currentCreature.getSize()/2;
         int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize-yCorner*currentCreature.getSize()/2;
 
-        int actualNewPositionX = (currentCreature.getXpos()+xDirection)%boardXSize;
-        int actualNewPositionY = (currentCreature.getYpos()+yDirection)%boardYSize;
+        int actualNewPositionX = (currentCreature.getXpos()+xDirection + boardXSize) %boardXSize;
+        int actualNewPositionY = (currentCreature.getYpos()+yDirection + boardYSize) %boardYSize;
 
         if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
             currentCreature.moveTo(actualNewPositionX,actualNewPositionY);

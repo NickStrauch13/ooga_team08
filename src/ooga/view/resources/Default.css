@@ -77,8 +77,6 @@
   -fx-background-color: PauseButtonColor;
 }
 
-
-
 .ResetButtonID{
   -fx-border-color: black;
   -fx-border-width: 3px;
@@ -116,9 +114,6 @@
     -fx-padding: 20px;
 }
 
-.gridSpacing {
-     -fx-padding: 5px;
-}
 
 .button-box .color-picker {
   -fx-background-color: lightgray;

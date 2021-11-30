@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.SimulationManager;
 import ooga.view.home.HomeScreen;
 
@@ -70,7 +71,11 @@ public class GameButtons {
   }
 
   private void reset(){
-    //needed for moving starting new levels in the future
+    myController.resetGame();
+    goHome();
+
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
+    gameDisplay.setMainDisplay("Pacman");
   }
 
 
