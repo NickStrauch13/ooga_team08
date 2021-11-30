@@ -17,4 +17,10 @@ public interface PickupGame {
 
     public void updatePickupsLeft();
 
+    public int getStepCounter();
+
+    public void setPowerupEndtime(int powerupEndtime);
+
+    public void setBfsThreshold(int bfsThreshold);
+
 }
