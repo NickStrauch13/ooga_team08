@@ -7,7 +7,6 @@ import javafx.geometry.HPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.gamePieces.*;
 
@@ -33,6 +32,7 @@ public class BoardView {
     myGroup.getChildren().add(myGrid);
     myCellSize = myController.getCellSize();
     myGrid.setMaxSize(myCellSize, myCellSize);
+    myGroup.getStyleClass().add("groupStyling");
     myGrid.getStyleClass().add("gameGridPane");
     myNodeList = new ArrayList<>();
     myCreatureList = new ArrayList<>();
