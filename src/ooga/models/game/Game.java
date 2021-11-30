@@ -27,6 +27,7 @@ public class Game implements PickupGame {
     };
     private ResourceBundle myCreatureResources;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.creatures.resources.";
+    private int stepCounter;
     private int lives;
     private int score;
     private int level;
@@ -54,6 +55,7 @@ public class Game implements PickupGame {
         initializeGhosts();
         boardXSize=cellSize*board.getCols();
         boardYSize=cellSize*board.getRows();
+
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -75,21 +77,21 @@ public class Game implements PickupGame {
             endGame();
             return;
         }
-        moveCreatures();
+        moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
+        for (CPUCreature currentCreature : activeCPUCreatures){
+            if (stepCounter%myCellSize==0){
+                currentCreature.setCurrentDirection(generateDirectionArray(calculateBFSDirection(currentCreature)));
+                System.out.println(calculateBFSDirection(currentCreature));
+            }
+            moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
 
+        }
+        stepCounter++;
     }
 
     private void moveCreatures(){
 
-        for (CPUCreature currentCreature : activeCPUCreatures){
-            //moveCPUCreature(currentCreature);
-            moveToNewPossiblePosition(currentCreature,generateDirectionArray(calculateBFSDirection(currentCreature)));
-            System.out.println(calculateBFSDirection(currentCreature));
-        }
         moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
-    }
-    private String getNodeSignature(int x, int y){
-        return x+","+y;
     }
 
     private boolean moveToNewPossiblePosition(Creature currentCreature, int[] direction){
@@ -114,29 +116,15 @@ public class Game implements PickupGame {
         return false;
     }
 
-    private void moveCPUCreature(CPUCreature currentCreature) {
-        int startingX= getCellCoordinate(currentCreature.getCenterX());
-        int startingY= getCellCoordinate(currentCreature.getCenterY());
-        //visitedNodes.add(getNodeSignature(startingX,startingY));
-        //findPathToUser(startingX,startingY,new ArrayList<>());
-        int[] direction = currentCreature.getCurrentDirection();
-        if(moveToNewPossiblePosition(currentCreature,direction));
-        else {
-            Random r = new Random();
-            String randomDirection = POSSIBLE_DIRECTIONS[r.nextInt(POSSIBLE_DIRECTIONS.length)];
-            currentCreature.setCurrentDirection(generateDirectionArray(randomDirection));
-            moveCPUCreature(currentCreature);
-        }
-
-    }
-
     private String calculateBFSDirection(CPUCreature cpu){
 
         String cpuDirection;
         int dest = getBFSgridCoordinate(myUserControlled);
         int src = getBFSgridCoordinate(cpu);
         LinkedList<Integer> potentialPath = getPathtoUser(myBoard.generateAdjacencies(),src,dest,myBoard.getCols()*myBoard.getRows());
-        if (potentialPath.size()<=0){
+        Random s = new Random();
+        boolean usePath = s.nextInt(4)<1;
+        if (potentialPath == null || usePath){
             Random r = new Random();
             cpuDirection = POSSIBLE_DIRECTIONS[r.nextInt(POSSIBLE_DIRECTIONS.length)];
         }
@@ -292,10 +280,13 @@ public class Game implements PickupGame {
         else{
             myUserControlled.die();
             loseLife();
+            for (Creature currentCreature : activeCPUCreatures){
+                currentCreature.die();
+            }
         }
         return true;
     }
-    //System.out
+
     /**
      * Adds points to the score which is housed in this class.
      */
