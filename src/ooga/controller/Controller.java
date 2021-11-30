@@ -194,6 +194,8 @@ public class Controller {
         return gameType;
     }
 
+    public boolean getIsPowereredUp(){return myGame.getUser().isPoweredUp();}
+
     /**
      * Get the BoardView object of the game
      * @return the Boardview object

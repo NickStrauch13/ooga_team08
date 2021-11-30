@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import ooga.controller.Controller;
@@ -73,7 +74,18 @@ public class SimulationManager {
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
+            updateCreatureState();
             updateStats();
+        }
+    }
+
+    private void updateCreatureState(){
+        boolean creatureState = myController.getIsPowereredUp();
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+            if (!movingPiece.equals(myBoardView.getUserPiece()) && creatureState) {
+                Image image = new Image("ooga/view/resources/viewIcons/yellow square.png");
+                movingPiece.getMyCreature().setImage(image);
+            }
         }
     }
 

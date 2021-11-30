@@ -16,6 +16,12 @@ public class Game implements PickupGame {
         return true;
     }
 
+    public void setBfsThreshold(int bfsThreshold) {
+        this.bfsThreshold = bfsThreshold;
+    }
+
+    private int bfsThreshold = 1;
+    private int standardBFSThreshold;
     private boolean gameOver=false;
     private String lastDirection;
     private int boardXSize;
@@ -27,6 +33,11 @@ public class Game implements PickupGame {
     };
     private ResourceBundle myCreatureResources;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.creatures.resources.";
+
+    public int getStepCounter() {
+        return stepCounter;
+    }
+
     private int stepCounter;
     private int lives;
     private int score;
@@ -35,6 +46,10 @@ public class Game implements PickupGame {
     private Board myBoard;
     private List<CPUCreature> activeCPUCreatures;
     private int myCellSize;
+
+
+
+    private int powerupEndtime=-1;
     private UserCreature myUserControlled;
     private Set<String> visitedNodes = new HashSet<>();
     private Queue<String> queue = new ArrayDeque<String>();
@@ -84,14 +99,13 @@ public class Game implements PickupGame {
                 System.out.println(calculateBFSDirection(currentCreature));
             }
             moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
-
         }
         stepCounter++;
-    }
 
-    private void moveCreatures(){
-
-        moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
+        if (stepCounter == powerupEndtime){
+            myUserControlled.setPoweredUp(false);
+            setBfsThreshold(standardBFSThreshold);
+        }
     }
 
     private boolean moveToNewPossiblePosition(Creature currentCreature, int[] direction){
@@ -123,7 +137,7 @@ public class Game implements PickupGame {
         int src = getBFSgridCoordinate(cpu);
         LinkedList<Integer> potentialPath = getPathtoUser(myBoard.generateAdjacencies(),src,dest,myBoard.getCols()*myBoard.getRows());
         Random s = new Random();
-        boolean usePath = s.nextInt(4)<1;
+        boolean usePath = s.nextInt(4)<standardBFSThreshold;
         if (potentialPath == null || usePath){
             Random r = new Random();
             cpuDirection = POSSIBLE_DIRECTIONS[r.nextInt(POSSIBLE_DIRECTIONS.length)];
@@ -353,5 +367,8 @@ public class Game implements PickupGame {
         return gameOver;
     }
 
+    public void setPowerupEndtime(int powerupEndtime) {
+        this.powerupEndtime = powerupEndtime;
+    }
 
 }
