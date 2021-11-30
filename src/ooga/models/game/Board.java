@@ -1,6 +1,5 @@
 package ooga.models.game;
 
-
 import ooga.models.creatures.Creature;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
@@ -68,7 +67,6 @@ public class Board {
         }
         return myBoardObjects[row][col].isWall();
     }
-
 
     public GameObject getGameObject(int row, int col){
         return myBoardObjects[row][col];
