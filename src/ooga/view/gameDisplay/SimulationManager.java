@@ -80,10 +80,9 @@ public class SimulationManager {
     }
 
     private void updateCreatureState(){
-        boolean creatureState = myController.getIsPowereredUp();
         for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-            if (!movingPiece.equals(myBoardView.getUserPiece()) && creatureState) {
-                Image image = new Image("ooga/view/resources/viewIcons/yellow square.png");
+            if (!movingPiece.equals(myBoardView.getUserPiece()) && myController.getIsPowereredUp()) {
+                Image image = new Image("ooga/view/resources/viewIcons/blueGhost.png");
                 movingPiece.getMyCreature().setImage(image);
             }
         }
