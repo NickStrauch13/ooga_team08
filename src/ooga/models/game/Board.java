@@ -6,15 +6,14 @@ import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
 import ooga.models.gameObjects.GameObject;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Board {
     private GameObject[][] myBoardObjects;
     private int rows;
     private int cols;
     private int numPickupsAtStart=0;
+    private int moveableNodes;
     private static final int WALL_STATE = 1;
     private List<CPUCreature> activeCPUCreatures = new ArrayList<>();
     private UserCreature myUserControlled;
@@ -38,6 +37,7 @@ public class Board {
         }
         else{
             numPickupsAtStart++;
+            moveableNodes++;
         }
     }
 
@@ -57,6 +57,35 @@ public class Board {
             myUserControlled = (UserCreature) newCreature;
         }
         newCreature.setSize(creatureSize);
+        moveableNodes++;
+    }
+
+    public Map<Integer,List<Integer>> generateAdjacencies(){
+        Map<Integer,List<Integer>> myAdjacencies = new HashMap<>();
+        for (int i=0;i<getCols()*getRows();i++){
+            if (getNonWallNeighbors(i)!=null){
+                myAdjacencies.put(i,getNonWallNeighbors(i));
+            }
+        }
+        return myAdjacencies;
+    }
+
+    private ArrayList<Integer> getNonWallNeighbors(int index){
+        int row = index/getCols();
+        int col = index%getCols();
+        ArrayList<Integer> acceptableNeighbors = new ArrayList<Integer>();
+        if (getisWallAtCell(row,col)){return null;}
+
+        for (int i=-1;i<=1;i++){
+            for (int j=-1;j<=1;j++){
+                if ((i==0 || j==0) && i!=j && row+i>=0 && row+i<getRows() && col+j>=0 && col+j<getCols()){
+                    if (!getisWallAtCell(row+i,col+j)){
+                        acceptableNeighbors.add((row+i)*getCols()+col+j);
+                    }
+                }
+            }
+        }
+        return acceptableNeighbors;
     }
     /**
      * gets the current state of the cell
@@ -103,5 +132,7 @@ public class Board {
     public int getNumPickupsAtStart() {
         return numPickupsAtStart;
     }
+
+    public int getMoveableNodes(){ return moveableNodes;}
 
 }
