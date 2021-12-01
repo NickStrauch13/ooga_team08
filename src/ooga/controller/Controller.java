@@ -217,7 +217,7 @@ public class Controller {
      * Update and sync each frame of the game with the last direction used
      * @param direction the string value for the direction
      */
-    public void step(String direction) {
+    public void step(String direction)  {
         myGame.setLastDirection(direction);
         myGame.step();
     }

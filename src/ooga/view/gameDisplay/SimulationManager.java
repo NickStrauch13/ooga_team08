@@ -74,7 +74,7 @@ public class SimulationManager {
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
-            updateCreatureState();
+            //updateCreatureState();
             updateStats();
         }
     }
