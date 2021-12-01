@@ -21,7 +21,7 @@ public class Game implements PickupGame {
     }
 
     private int bfsThreshold = 1;
-    private int standardBFSThreshold;
+    private int standardBFSThreshold = 1;
     private boolean gameOver=false;
     private String lastDirection;
     private int boardXSize;
