@@ -2,7 +2,7 @@ package ooga.view.gameDisplay.top;
 
 import javafx.scene.layout.HBox;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeFactory;
+import ooga.view.UINodeFactory.UINodeFactory;
 import javafx.scene.control.Label;
 import javafx.scene.Node;
 
@@ -28,14 +28,14 @@ public class GameStats {
 
 
     public HBox makeStatLabels(){
-        numLivesText = nodeBuilder.makeLabel("   " + myController.getLives());
-        Label livesText = nodeBuilder.makeLabel(myResources.getString("LivesText"));
+        numLivesText = nodeBuilder.makeLabel("   " + myController.getLives(), "numLivesID");
+        Label livesText = nodeBuilder.makeLabel(myResources.getString("LivesText"), "livesTextID");
         Node livesVBox = nodeBuilder.makeCol("statsFormat", livesText, numLivesText);
-        numScoreText = nodeBuilder.makeLabel("    " + myController.getScore());
-        Label scoreText = nodeBuilder.makeLabel(myResources.getString("ScoreText"));
+        numScoreText = nodeBuilder.makeLabel("    " + myController.getScore(), "numScoreID");
+        Label scoreText = nodeBuilder.makeLabel(myResources.getString("ScoreText"), "scoreTextID");
         Node scoreVBox = nodeBuilder.makeCol("statsFormat", scoreText, numScoreText);
-        Label gameType = nodeBuilder.makeLabel("" + myController.getGameType());
-        Label gameText = nodeBuilder.makeLabel(myResources.getString("GameText"));
+        Label gameType = nodeBuilder.makeLabel("" + myController.getGameType(), "gameTypeID");
+        Label gameText = nodeBuilder.makeLabel(myResources.getString("GameText"), "gameTypeTextID");
         Node gameTypeVBox = nodeBuilder.makeCol("statsFormat", gameText, gameType);
         Label levelText = nodeBuilder.makeLabel(myResources.getString("LevelText"));
         numLevelText = nodeBuilder.makeLabel("    " + myController.getLevel());

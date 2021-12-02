@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeFactory;
+import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.bottom.BuilderButtons;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
@@ -94,7 +94,7 @@ public class BuilderDisplay {
     }
 
     private void setupScene(){
-        Label boardBuilderText = myNodeBuilder.makeLabel(myResources.getString("BoardBuilderText"));
+        Label boardBuilderText = myNodeBuilder.makeLabel(myResources.getString("BoardBuilderText"), "BuilderTextID");
         Node myHbox = myNodeBuilder.makeRow("boardBuilderHolder", boardBuilderText);
         root.setTop(myHbox);
         setupBoard();

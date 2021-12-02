@@ -125,3 +125,19 @@
 .color-picker:hover {
   -fx-background-color: #a1a1a1;
 }
+
+.HighScoreVBox{
+  -fx-background-color: #0d1a5d;
+}
+.HighScoreTitleID{
+  -fx-text-fill: gold;
+  -fx-font-size: 40;
+}
+.ScoreEntryID{
+  -fx-text-fill: white;
+  -fx-font-size: 20;
+}
+.ScoreExitID{
+  -fx-text-fill: #9efffa;
+  -fx-font-size: 14;
+}

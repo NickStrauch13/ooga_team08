@@ -102,6 +102,10 @@ public class Game implements PickupGame {
         }
     }
 
+    public void moveCreatureToCell(int[]cellIndex){
+        myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
+    }
+
     private void moveCreaturesPacman(int bfsThreshold) {
         moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
         for (CPUCreature currentCreature : activeCPUCreatures){
@@ -193,10 +197,12 @@ public class Game implements PickupGame {
             crawl = pred[crawl];
         }
 
-        //System.out.println("Path is ::");
-        for (int i = path.size() - 1; i >= 0; i--) {
-            //System.out.print(path.get(i) + " ");
-        }
+
+//        System.out.println("Path is ::");
+//        for (int i = path.size() - 1; i >= 0; i--) {
+//            System.out.print(path.get(i) + " ");
+//        }
+
         return path;
     }
 
@@ -394,4 +400,7 @@ public class Game implements PickupGame {
         this.gameType = gameType;
     }
 
+    public ArrayList<int[]> getPortalLocations(){
+        return myBoard.getPortalLocations();
+    }
 }

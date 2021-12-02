@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeFactory;
+import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.SimulationManager;
 import ooga.view.home.HomeScreen;

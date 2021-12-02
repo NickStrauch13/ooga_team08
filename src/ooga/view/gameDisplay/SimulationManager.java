@@ -8,6 +8,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -30,6 +31,7 @@ public class SimulationManager {
     private BoardView myBoardView;
     private GameStats myGameStats;
     private int currentLevel;
+    private boolean poweredUpTemp = false;
 
     public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView) {
         myController = controller;
@@ -97,7 +99,7 @@ public class SimulationManager {
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
-            //updateCreatureState();
+            poweredUpTemp = updateCreatureState(poweredUpTemp);
             updateStats();
         }
     }
@@ -111,13 +113,21 @@ public class SimulationManager {
         myController.loadNextLevel(myBoardView);
     }
 
-    private void updateCreatureState(){
+
+    private boolean updateCreatureState(boolean lastPoweredUp){
         for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-            if (!movingPiece.equals(myBoardView.getUserPiece()) && myController.getIsPowereredUp()) {
-                Image image = new Image("ooga/view/resources/viewIcons/blueGhost.png");
-                movingPiece.getMyCreature().setImage(image);
+            if (lastPoweredUp!= myController.getIsPowereredUp() && movingPiece!=myBoardView.getUserPiece()){
+                if (myController.getIsPowereredUp()){
+                    Image blueGhost = new Image("ooga/view/resources/viewIcons/blueGhost.png");
+                    movingPiece.getMyCreature().setImage(blueGhost);
+                }
+                else{
+                    Image normalGhost = new Image("ooga/view/resources/viewIcons/ghostImage.png");
+                    movingPiece.getMyCreature().setImage(normalGhost);
+                }
             }
         }
+        return myController.getIsPowereredUp();
     }
 
     private void updateMovingPiecePositions() {
