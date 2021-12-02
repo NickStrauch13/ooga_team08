@@ -22,6 +22,7 @@ public class SimulationManager {
     private String currentDirection;
     private BoardView myBoardView;
     private GameStats myGameStats;
+    private boolean 
 
     public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView) {
         myController = controller;
@@ -74,7 +75,7 @@ public class SimulationManager {
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
-            //updateCreatureState();
+            updateCreatureState();
             updateStats();
         }
     }

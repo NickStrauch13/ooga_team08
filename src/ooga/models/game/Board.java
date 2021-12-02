@@ -20,6 +20,12 @@ public class Board {
     private ResourceBundle myGameObjects;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.resources.";
 
+    public ArrayList<int[]> getPortalLocations() {
+        return portalLocations;
+    }
+
+    private ArrayList<int[]> portalLocations = new ArrayList<int[]>();
+
     public Board(int numRows, int numCols){
         myBoardObjects = new GameObject[numRows][numCols];
         myGameObjects = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "gameObjects");
@@ -35,6 +41,9 @@ public class Board {
             myBoardObjects[row][col].setWall(true);
         }
         else{
+            if (gameObjectType.contains("PORTAL")){
+                portalLocations.add(new int[]{row,col});
+            }
             numPickupsAtStart++;
             moveableNodes++;
         }
