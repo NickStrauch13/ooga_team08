@@ -11,14 +11,14 @@ public class CpughostPiece extends MovingPiece {
     private static final int CREATURE_SLOP = 5;
 
     //private String imagePath = ;
-
     public CpughostPiece(Integer cellSize){
         super(cellSize);
+
     }
 
     @Override
     protected Node makeNode(){
-        ImageView pacman = new ImageView("ooga/view/resources/viewIcons/ghostImage.png");;
+        ImageView pacman = new ImageView("ooga/view/resources/viewIcons/ghostImage.png");
         pacman.setFitWidth(getCellSize()-CREATURE_SLOP);
         pacman.setFitHeight(getCellSize()-CREATURE_SLOP);
         setIDs(pacman, CSS_ID, getCellIndexID());
@@ -26,8 +26,14 @@ public class CpughostPiece extends MovingPiece {
         return pacman;
     }
 
-//    public void setImagePath(String imagePath) {
-//        this.imagePath = imagePath;
-//    }
+    public void setPoweredUp() {
+        Image image = new Image("ooga/view/resources/viewIcons/blueGhost.png");
+        //pacman.setImage(image);
+    }
+
+    public void setNormal(){
+        Image image = new Image("ooga/view/resources/viewIcons/ghostImage.png");
+        //pacman.setImage(image);
+    }
 
 }
