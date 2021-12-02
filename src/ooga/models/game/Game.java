@@ -102,7 +102,8 @@ public class Game implements PickupGame {
     }
 
     public void moveCreatureToCell(int[]cellIndex){
-        myUserControlled.moveTo(cellIndex[0]*myCellSize,cellIndex[1]*myCellSize);
+        myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
+        System.out.println("MOVED TO CELL: ("+cellIndex[1]+","+cellIndex[0]+")");
     }
 
     private void moveCreaturesPacman(int bfsThreshold) {
@@ -111,7 +112,7 @@ public class Game implements PickupGame {
             if (stepCounter%myCellSize==0){
                 setBfsThreshold(bfsThreshold);
                 currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
-                System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
+                //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
         }
@@ -196,9 +197,9 @@ public class Game implements PickupGame {
             crawl = pred[crawl];
         }
 
-        System.out.println("Path is ::");
+        //System.out.println("Path is ::");
         for (int i = path.size() - 1; i >= 0; i--) {
-            System.out.print(path.get(i) + " ");
+            //System.out.print(path.get(i) + " ");
         }
         return path;
     }
