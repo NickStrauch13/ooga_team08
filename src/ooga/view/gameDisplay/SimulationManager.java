@@ -1,14 +1,21 @@
 package ooga.view.gameDisplay;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import ooga.controller.Controller;
+import ooga.models.game.Board;
 import ooga.view.gameDisplay.center.BoardView;
+import ooga.view.gameDisplay.gamePieces.GamePiece;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
@@ -22,6 +29,7 @@ public class SimulationManager {
     private String currentDirection;
     private BoardView myBoardView;
     private GameStats myGameStats;
+    private int currentLevel;
 
     public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView) {
         myController = controller;
@@ -29,6 +37,7 @@ public class SimulationManager {
         myAnimationRate = 10; //TODO link to json
         currentDirection = "RIGHT";//TODO allow user to set this value. Call the json key "Starting direction"
         myGameStats = gameStats;
+        currentLevel = 1;
     }
 
 
@@ -63,12 +72,26 @@ public class SimulationManager {
      * This is a more 'permanent' version of pause.
      */
     public void stopAnimation(){
+        playPause();
         myAnimation.stop();
+        myAnimation = null;
     }
 
     private void step() {
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
+           if (myController.getLevel() > currentLevel) {
+               currentLevel = myController.getLevel();
+               myAnimationRate *= currentLevel*= 1.05;
+               myAnimation.setRate(myAnimationRate);
+               resetBoardView();
+               stopAnimation();
+               updateStats();
+               return;
+           }
+           if (myController.isGameOver()) {
+               //TODO
+           }
             updateMovingPiecePositions();
             String nodeCollision = myBoardView.getUserCollision();
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
@@ -77,6 +100,15 @@ public class SimulationManager {
             //updateCreatureState();
             updateStats();
         }
+    }
+
+    private void resetBoardView() {
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+            myBoardView.getInitialBoard().getChildren().remove(movingPiece.getPiece());
+        }
+        myBoardView.getInitialBoard().getChildren().remove(myBoardView.getMyGrid());
+        myBoardView.resetBoardView();
+        myController.loadNextLevel(myBoardView);
     }
 
     private void updateCreatureState(){
@@ -106,6 +138,7 @@ public class SimulationManager {
     private void updateStats() {
         myGameStats.setScoreText(myController.getScore());
         myGameStats.setLivesText(myController.getLives());
+        myGameStats.setLevelText(myController.getLevel());
     }
 
     public void handleKeyInput(KeyCode code){
@@ -119,6 +152,10 @@ public class SimulationManager {
         }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e){
             //Unknown key pressed. No view action required.
         }
+    }
+
+    public BoardView getMyBoardView() {
+        return myBoardView;
     }
 
 }

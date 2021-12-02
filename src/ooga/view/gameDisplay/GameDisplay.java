@@ -33,9 +33,9 @@ public class GameDisplay {
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myGameButtons = new GameButtons(stage, width, height, myController, mySimManager);
-        myController.resetGame();
+        myController.restartGame();
     }
-
+    //system.out
     /**
      * Sets the new scene which will show the actual pacman games
      * @param title The title for the stage
@@ -48,11 +48,13 @@ public class GameDisplay {
 
     private void setupScene(){
         root.setTop(myGameStats.makeStatLabels());
-        System.out.println(Arrays.toString(myBoardView.getInitialBoard().getChildren().toArray()));
         root.setCenter(myBoardView.getInitialBoard());
         root.setBottom(myGameButtons.makeButtonBox());
     }
 
+    public BoardView getBoardView() {
+        return myBoardView;
+    }
 
 
 }

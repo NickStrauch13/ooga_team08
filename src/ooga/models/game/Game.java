@@ -12,7 +12,7 @@ import java.util.*;
 
 public class Game implements PickupGame {
 
-    private String gameType = "ANTIPACMAN";
+    private String gameType = "PACMAN";
     private int bfsThreshold = 1;
     private int standardBFSThreshold = 1;
     private boolean gameOver=false;
@@ -48,10 +48,12 @@ public class Game implements PickupGame {
     public Game(Board board){
         myBoard=board;
     }
+    private int startingPickUps;
 
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize){
         myBoard=board;
         pickUpsLeft = numPickUps;
+        startingPickUps = numPickUps;
         myUserControlled = userPlayer;
         activeCPUCreatures = CPUCreatures;
         myCreatureResources = ResourceBundle.getBundle(CREATURE_RESOURCE_PACKAGE + "directions");
@@ -63,7 +65,6 @@ public class Game implements PickupGame {
         initializeGhosts();
         boardXSize=cellSize*board.getCols();
         boardYSize=cellSize*board.getRows();
-
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -107,7 +108,7 @@ public class Game implements PickupGame {
             if (stepCounter%myCellSize==0){
                 setBfsThreshold(bfsThreshold);
                 currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
-                System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
+                //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
         }
@@ -180,7 +181,7 @@ public class Game implements PickupGame {
         int pred[] = new int[v];
 
         if (!BFS(adj, s, dest, v,pred)) {
-            System.out.println("Given source and destination are not connected");
+            //System.out.println("Given source and destination are not connected");
             return null;
         }
 
@@ -192,9 +193,9 @@ public class Game implements PickupGame {
             crawl = pred[crawl];
         }
 
-        System.out.println("Path is ::");
+        //System.out.println("Path is ::");
         for (int i = path.size() - 1; i >= 0; i--) {
-            System.out.print(path.get(i) + " ");
+            //System.out.print(path.get(i) + " ");
         }
         return path;
     }
@@ -315,6 +316,7 @@ public class Game implements PickupGame {
     public void addScore(int scoreToBeAdded){
         score+=scoreToBeAdded;
     };
+
     public void resetGame(){
         resetCreatureStates();
     }
@@ -328,10 +330,8 @@ public class Game implements PickupGame {
         }
         myUserControlled.die();
         lives=3;
-        score=0;
-        level=1;
+        pickUpsLeft = startingPickUps;
         gameOver=false;
-
     }
 
     /**

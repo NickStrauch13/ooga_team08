@@ -44,7 +44,7 @@ public class GameButtons {
     buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("GoHomeButton"), null, "GoHomeButton","HomeButtonID" ,e -> goHome()));
     playPauseButton = myNodeBuilder.makeButton("",PLAY_ICON, "PausePlayButton", "PlayButtonID",e -> playPause());
     buttonBox.getChildren().add(playPauseButton);
-    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> reset()));
+    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> restartGame()));
     buttonBox.getStyleClass().add("BottomGameButtons");
     return buttonBox;
   }
@@ -70,8 +70,7 @@ public class GameButtons {
     }
   }
 
-  private void reset(){
-    myController.resetGame();
+  private void restartGame(){
     goHome();
     GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");
