@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.UINodeBuilder.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.*;
@@ -28,7 +28,7 @@ public class BuilderButtons {
     private int myWidth;
     private int myHeight;
     private ResourceBundle myResources;
-    private UINodeBuilder myNodeBuilder;
+    private UINodeFactory myNodeBuilder;
     private StackPane selectedPane;
     private BoardView myBoardView;
     private ArrayList<Node> objectList;
@@ -44,7 +44,7 @@ public class BuilderButtons {
         myStage = stage;
         myWidth = width;
         myHeight = height;
-        myNodeBuilder = new UINodeBuilder();
+        myNodeBuilder = new UINodeFactory();
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
         cellSize = size;
         myBoardView = boardView;

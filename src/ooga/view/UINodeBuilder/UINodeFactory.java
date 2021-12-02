@@ -15,12 +15,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 
-public class UINodeBuilder {
+public class UINodeFactory {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   private static final String DEFAULT_STYLESHEET =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
   private ResourceBundle myResources;
-  public UINodeBuilder(){
+  public UINodeFactory(){
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English"); //TODO add language here
 
   }

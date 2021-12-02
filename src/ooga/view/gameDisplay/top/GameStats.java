@@ -1,17 +1,15 @@
 package ooga.view.gameDisplay.top;
 
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.UINodeBuilder.UINodeFactory;
 import javafx.scene.control.Label;
 import javafx.scene.Node;
 
 import java.util.ResourceBundle;
 
 public class GameStats {
-    private UINodeBuilder nodeBuilder;
+    private UINodeFactory nodeBuilder;
     private Controller myController;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
     private static final String DEFAULT_STYLESHEET =
@@ -24,7 +22,7 @@ public class GameStats {
     public GameStats(Controller controller) {
         myController = controller;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-        nodeBuilder = new UINodeBuilder();
+        nodeBuilder = new UINodeFactory();
     }
 
 
