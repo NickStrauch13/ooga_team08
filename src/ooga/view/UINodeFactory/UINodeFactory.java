@@ -1,4 +1,4 @@
-package ooga.view.UINodeBuilder;
+package ooga.view.UINodeFactory;
 
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -52,9 +52,10 @@ public class UINodeFactory {
     return result;
   }
 
-  public Label makeLabel(String property) {
-    Label label = new Label(property);
-    return (Label)setID(property, label);
+  public Label makeLabel(String text, String ID) {
+    Label label = new Label(text);
+    label.getStyleClass().add(ID);
+    return (Label)setID(ID, label);
   }
 
   public Node makeRow(String rowFormatting, Node ... nodes) {
