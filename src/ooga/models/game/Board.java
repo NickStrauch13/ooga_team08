@@ -140,6 +140,8 @@ public class Board {
         return numPickupsAtStart;
     }
 
-    public int getMoveableNodes(){ return moveableNodes;}
+    public GameObject[][] getGameObjects() {
+        return myBoardObjects;
+    }
 
 }

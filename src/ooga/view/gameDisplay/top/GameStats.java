@@ -18,6 +18,7 @@ public class GameStats {
     private static final String language = "English"; //TODO
     private Label numScoreText;
     private Label numLivesText;
+    private Label numLevelText;
 
     public GameStats(Controller controller) {
         myController = controller;
@@ -36,7 +37,10 @@ public class GameStats {
         Label gameType = nodeBuilder.makeLabel("" + myController.getGameType(), "gameTypeID");
         Label gameText = nodeBuilder.makeLabel(myResources.getString("GameText"), "gameTypeTextID");
         Node gameTypeVBox = nodeBuilder.makeCol("statsFormat", gameText, gameType);
-        Node myHbox = nodeBuilder.makeRow("statsHolder", livesVBox,scoreVBox,gameTypeVBox);
+        Label levelText = nodeBuilder.makeLabel(myResources.getString("LevelText"));
+        numLevelText = nodeBuilder.makeLabel("    " + myController.getLevel());
+        Node levelVBox = nodeBuilder.makeCol("statsFormat", levelText, numLevelText);
+        Node myHbox = nodeBuilder.makeRow("statsHolder", livesVBox,scoreVBox,gameTypeVBox, levelVBox);
         return (HBox) myHbox;
     }
 
@@ -45,5 +49,9 @@ public class GameStats {
     }
     public void setLivesText(int lives) {
         numLivesText.setText(String.format("%d",lives));
+    }
+
+    public void setLevelText(int level) {
+        numLevelText.setText(String.format("%d", level));
     }
 }
