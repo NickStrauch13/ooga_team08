@@ -4,6 +4,7 @@ import ooga.models.gameObjects.GameObject;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface PickupGame {
@@ -22,5 +23,9 @@ public interface PickupGame {
     public void setPowerupEndtime(int powerupEndtime);
 
     public void setBfsThreshold(int bfsThreshold);
+
+    public ArrayList<int[]> getPortalLocations();
+
+    public void moveCreatureToCell(int[] cellIndex);
 
 }

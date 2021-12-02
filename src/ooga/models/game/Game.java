@@ -101,6 +101,10 @@ public class Game implements PickupGame {
         }
     }
 
+    public void moveCreatureToCell(int[]cellIndex){
+        myUserControlled.moveTo(cellIndex[0]*myCellSize,cellIndex[1]*myCellSize);
+    }
+
     private void moveCreaturesPacman(int bfsThreshold) {
         moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
         for (CPUCreature currentCreature : activeCPUCreatures){
@@ -394,4 +398,7 @@ public class Game implements PickupGame {
         this.gameType = gameType;
     }
 
+    public ArrayList<int[]> getPortalLocations(){
+        return myBoard.getPortalLocations();
+    }
 }
