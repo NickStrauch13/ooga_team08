@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.UINodeBuilder.UINodeFactory;
 import ooga.view.boardBuilder.bottom.BuilderButtons;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
@@ -33,7 +33,7 @@ public class BuilderDisplay {
     private static final String PIECE_PATH = "ooga.view.gameDisplay.gamePieces.%sPiece";
     private int cellSize = 25;
     private Controller myController;
-    private UINodeBuilder myNodeBuilder;
+    private UINodeFactory myNodeBuilder;
     private ResourceBundle myResources;
     private BuilderButtons myBuilderButtons;
     private ArrayList<String> userAdded;
@@ -46,7 +46,7 @@ public class BuilderDisplay {
         root = new BorderPane();
         myScene = new Scene(root, width, height);
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-        myNodeBuilder = new UINodeBuilder();
+        myNodeBuilder = new UINodeFactory();
         myBuilderButtons = new BuilderButtons(myStage,width, height, myController, cellSize, myBoardView, this);
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
         userAdded = new ArrayList<>();

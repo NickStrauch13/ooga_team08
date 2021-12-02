@@ -11,12 +11,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import javafx.util.Builder;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.UINodeBuilder.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
-import ooga.view.gameDisplay.center.BoardView;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -26,7 +24,7 @@ public class HomeScreen {
   private int myWidth;
   private int myHeight;
   private Stage myStage;
-  private UINodeBuilder myNodeBuilder;
+  private UINodeFactory myNodeBuilder;
   private ResourceBundle myResources;
   private Scene myScene;
   private static final String language = "English"; //TODO add to prop file
@@ -41,7 +39,7 @@ public class HomeScreen {
     myStage = stage;
     myScene = new Scene(root, myWidth, myHeight);
     myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-    myNodeBuilder = new UINodeBuilder();
+    myNodeBuilder = new UINodeFactory();
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
   }
 
