@@ -3,8 +3,8 @@ package ooga.models.gameObjects;
 import ooga.models.game.PickupGame;
 
 public abstract class GameObject {
-    private int myRow;
-    private int myCol;
+    protected int myRow;
+    protected int myCol;
     private boolean isWall=false;
 
     public GameObject(int row, int col){

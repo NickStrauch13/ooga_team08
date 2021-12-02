@@ -103,7 +103,6 @@ public class Game implements PickupGame {
 
     public void moveCreatureToCell(int[]cellIndex){
         myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
-        System.out.println("MOVED TO CELL: ("+cellIndex[1]+","+cellIndex[0]+")");
     }
 
     private void moveCreaturesPacman(int bfsThreshold) {
@@ -197,10 +196,11 @@ public class Game implements PickupGame {
             crawl = pred[crawl];
         }
 
-        //System.out.println("Path is ::");
-        for (int i = path.size() - 1; i >= 0; i--) {
-            //System.out.print(path.get(i) + " ");
-        }
+//        System.out.println("Path is ::");
+//        for (int i = path.size() - 1; i >= 0; i--) {
+//            System.out.print(path.get(i) + " ");
+//        }
+
         return path;
     }
 

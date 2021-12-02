@@ -24,6 +24,7 @@ public class SimulationManager {
     private BoardView myBoardView;
     private GameStats myGameStats;
     private boolean poweredUpTemp = false;
+
     public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView) {
         myController = controller;
         myBoardView = boardView;
