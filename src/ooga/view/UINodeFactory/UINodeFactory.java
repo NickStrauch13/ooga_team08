@@ -1,4 +1,4 @@
-package ooga.view.UINodeBuilder;
+package ooga.view.UINodeFactory;
 
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -15,12 +15,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 
-public class UINodeBuilder {
+public class UINodeFactory {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   private static final String DEFAULT_STYLESHEET =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
   private ResourceBundle myResources;
-  public UINodeBuilder(){
+  public UINodeFactory(){
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English"); //TODO add language here
 
   }
@@ -52,9 +52,10 @@ public class UINodeBuilder {
     return result;
   }
 
-  public Label makeLabel(String property) {
-    Label label = new Label(property);
-    return (Label)setID(property, label);
+  public Label makeLabel(String text, String ID) {
+    Label label = new Label(text);
+    label.getStyleClass().add(ID);
+    return (Label)setID(ID, label);
   }
 
   public Node makeRow(String rowFormatting, Node ... nodes) {

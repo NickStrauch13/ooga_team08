@@ -7,14 +7,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.SimulationManager;
 import ooga.view.home.HomeScreen;
 
 public class GameButtons {
   private static final int SPACING = 5;
-  private UINodeBuilder myNodeBuilder;
+  private UINodeFactory myNodeBuilder;
   private Stage myStage;
   private int myWidth;
   private int myHeight;
@@ -34,7 +34,7 @@ public class GameButtons {
     myStage = stage;
     myWidth = width;
     myHeight = height;
-    myNodeBuilder = new UINodeBuilder();
+    myNodeBuilder = new UINodeFactory();
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
   }
 
@@ -73,7 +73,6 @@ public class GameButtons {
   private void reset(){
     myController.resetGame();
     goHome();
-
     GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");
   }

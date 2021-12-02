@@ -37,6 +37,12 @@
             <version>jdk-12.0.1+2</version>
             <scope>test</scope>
         </dependency>
+        <!-- allows for reading and writing of csv files -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>

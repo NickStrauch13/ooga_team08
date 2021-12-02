@@ -1,6 +1,8 @@
 package ooga.view.home;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -11,12 +13,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import javafx.util.Builder;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
-import ooga.view.gameDisplay.center.BoardView;
+import ooga.view.popups.HighScoreView;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -26,7 +27,7 @@ public class HomeScreen {
   private int myWidth;
   private int myHeight;
   private Stage myStage;
-  private UINodeBuilder myNodeBuilder;
+  private UINodeFactory myNodeBuilder;
   private ResourceBundle myResources;
   private Scene myScene;
   private static final String language = "English"; //TODO add to prop file
@@ -41,7 +42,7 @@ public class HomeScreen {
     myStage = stage;
     myScene = new Scene(root, myWidth, myHeight);
     myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-    myNodeBuilder = new UINodeBuilder();
+    myNodeBuilder = new UINodeFactory();
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
   }
 
@@ -76,7 +77,7 @@ public class HomeScreen {
     Button highScoresButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> displayHighScores());
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
     Button buildBoardButton = myNodeBuilder.makeButton(myResources.getString("BuildBoard"), null,"homeScreenButton","buildBoardButton",e -> startBoardBuilder());
-    Label inputText = myNodeBuilder.makeLabel(myResources.getString("userNameText"));
+    Label inputText = myNodeBuilder.makeLabel(myResources.getString("userNameText"), "inputTextID");
     TextField userName = myNodeBuilder.makeInputField("userName", e -> setUserName(e), "");
     Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton, buildBoardButton);
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
@@ -115,7 +116,14 @@ public class HomeScreen {
   }
 
   private void displayHighScores(){
-    //TODO
+    HighScoreView highScoreView = new HighScoreView();
+    List<String[]> testList = new ArrayList<>();
+    testList.add(new String[]{"Player1", "67932"});
+    testList.add(new String[]{"Nicc", "1328"});
+    testList.add(new String[]{"Player2", "133"});
+    testList.add(new String[]{"Player3", "1"});
+    testList.add(new String[]{"Player4", "0"});
+    highScoreView.showHighScores(testList, myStage);
   }
 
   /**
