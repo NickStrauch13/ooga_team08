@@ -29,7 +29,7 @@
     "5" : "CPUGHOST"
   },
 
-  "GAME_TYPE": "ANTIPACMAN",
+  "GAME_TYPE": "PACMAN",
   "LANGUAGE": "ENGLISH"
 
 }

@@ -34,7 +34,6 @@ public class HomeScreen {
   private Scene myScene;
   private String language;
   private static final String SCORE_DIVIDER = "%s-----------%s";
-  private String userName;
   private Controller myController;
 
   public HomeScreen(Stage stage, int width, int height, Controller controller) {
@@ -81,13 +80,13 @@ public class HomeScreen {
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
     Button buildBoardButton = myNodeBuilder.makeButton(myResources.getString("BuildBoard"), null,"homeScreenButton","buildBoardButton",e -> startBoardBuilder());
     Label inputText = myNodeBuilder.makeLabel(myResources.getString("userNameText"), "inputTextID");
-    TextField userName = myNodeBuilder.makeInputField("userName", e -> setUserName(e), "");
+    TextField userName = myNodeBuilder.makeInputField("userNameFieldID", e -> setUserName(e), "");
     Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton, buildBoardButton);
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
   }
 
-  public void setUserName(String userName) {this.userName = userName; }
+  public void setUserName(String userName) { myController.setUsername(userName); }
 
   private void readFile(){
     FileChooser fileChooser = new FileChooser();
@@ -120,13 +119,7 @@ public class HomeScreen {
 
   private void displayHighScores(){
     PopupFactory highScoreView = new PopupFactory(myController);
-    List<String[]> testList = new ArrayList<>();
-    testList.add(new String[]{"Player1", "67932"});
-    testList.add(new String[]{"Nicc", "1328"});
-    testList.add(new String[]{"Player2", "133"});
-    testList.add(new String[]{"Player3", "1"});
-    testList.add(new String[]{"Player4", "0"});
-    makeHighScoreView(highScoreView, testList);
+    makeHighScoreView(highScoreView, myController.getScoreData());
   }
 
   private void makeHighScoreView(PopupFactory highScoreView, List<String[]> testList) {
@@ -142,6 +135,7 @@ public class HomeScreen {
       Label entry = myNodeBuilder.makeLabel(scoreText, "ScoreEntryID");
       box.getChildren().add(entry);
     }
+
   }
 
   /**
