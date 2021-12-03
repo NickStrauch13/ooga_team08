@@ -7,18 +7,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeBuilder;
+import ooga.view.UINodeFactory.UINodeFactory;
+import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.SimulationManager;
 import ooga.view.home.HomeScreen;
 
 public class GameButtons {
   private static final int SPACING = 5;
-  private UINodeBuilder myNodeBuilder;
+  private UINodeFactory myNodeBuilder;
   private Stage myStage;
   private int myWidth;
   private int myHeight;
+  private String myLanguage;
   private ResourceBundle myResources;
-  private String language = "English";
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   private final String ICONS = String.format("/%sviewIcons/", DEFAULT_RESOURCE_PACKAGE.replace(".", "/"));
   private final ImageView PLAY_ICON = new ImageView(String.format("%splay.png", ICONS));
@@ -27,15 +28,17 @@ public class GameButtons {
   private SimulationManager mySimManager;
   private Button playPauseButton;
 
-  public GameButtons(Stage stage, int width, int height, Controller controller, SimulationManager simManager){
+  public GameButtons(Stage stage, int width, int height, Controller controller, SimulationManager simManager, String language){
     myController = controller;
     mySimManager = simManager;
     myStage = stage;
     myWidth = width;
     myHeight = height;
-    myNodeBuilder = new UINodeBuilder();
+    myNodeBuilder = new UINodeFactory(myController);
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    myLanguage = language;
   }
+
 
   public Node makeButtonBox(){
     HBox buttonBox = new HBox();
@@ -43,13 +46,15 @@ public class GameButtons {
     buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("GoHomeButton"), null, "GoHomeButton","HomeButtonID" ,e -> goHome()));
     playPauseButton = myNodeBuilder.makeButton("",PLAY_ICON, "PausePlayButton", "PlayButtonID",e -> playPause());
     buttonBox.getChildren().add(playPauseButton);
-    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> reset()));
+    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> restartGame()));
     buttonBox.getStyleClass().add("BottomGameButtons");
     return buttonBox;
   }
 
 
-  private void goHome(){
+  public void goHome(){
+    mySimManager.playPause();
+    mySimManager.stopAnimation();
     HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight, myController);
     homeScreen.setMainDisplay("Home");
   }
@@ -67,8 +72,10 @@ public class GameButtons {
     }
   }
 
-  private void reset(){
-    //needed for moving starting new levels in the future
+  public void restartGame(){
+    goHome();
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", myLanguage,  "Pacman", myController, myController.getBoardView());
+    gameDisplay.setMainDisplay("Pacman");
   }
 
 

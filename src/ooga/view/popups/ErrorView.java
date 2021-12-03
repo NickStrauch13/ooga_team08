@@ -3,13 +3,14 @@ package ooga.view.popups;
 import java.util.ResourceBundle;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import ooga.controller.Controller;
 
 public class ErrorView {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   private ResourceBundle myResources;
-  private static final String language = "English"; //TODO
 
-  public ErrorView(){
+
+  public ErrorView(String language){
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
   }
 

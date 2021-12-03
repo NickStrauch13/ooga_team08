@@ -75,8 +75,25 @@ public class GameScreenTests extends DukeApplicationTest {
     sleep(500);
 
     assertNotEquals(myController.getUserPosition()[0], startPos[0]);
-    assertNotEquals(myController.getUserPosition()[1], startPos[1]);
   }
+
+  @Test
+  public void clickOnResetButtonAfterGameHasPlayedForABriefPeriod(){
+    int[] startPos = myController.getUserPosition();
+    clickOn(playButton);
+    FxRobot robot = new FxRobot();
+    sleep(800);
+    robot.press(KeyCode.UP).release(KeyCode.UP);
+    sleep(2300);
+    robot.press(KeyCode.LEFT).release(KeyCode.LEFT);
+    sleep(620);
+    Button resetButton = lookup("#ResetButtonID").query();
+    clickOn(resetButton);
+    assertEquals(startPos[0], myController.getUserPosition()[0]);
+    sleep(100);
+  }
+
+
 
 }
 

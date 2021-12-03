@@ -13,14 +13,14 @@ class JSONContainerTest {
 
     @Test
     void checkNumOfRows() throws IOException, ParseException {
-        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONReader reader = new JSONReader("English", FILE_PATH);
         JSONContainer container = reader.readJSONConfig();
         assertTrue(container.checkNumOfRows());
     }
 
     @Test
     void checkNumOfCols() throws IOException, ParseException {
-        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONReader reader = new JSONReader("English",FILE_PATH);
         JSONContainer container = reader.readJSONConfig();
         assertTrue(container.checkNumOfCols());
     }

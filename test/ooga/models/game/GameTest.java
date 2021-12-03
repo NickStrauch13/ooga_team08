@@ -24,7 +24,7 @@ public class GameTest {
     @BeforeEach
     public void initializeGame() throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
-        JSONReader reader = new JSONReader("data/test/vanillaTest.json");
+        JSONReader reader = new JSONReader("English","data/test/vanillaTest.json");
         JSONContainer container = reader.readJSONConfig();
 
         int numOfRows = container.getMyNumOfRows();
@@ -80,7 +80,7 @@ public class GameTest {
         assert (num==2000);
     }
     @Test
-    public void testPickupsLeft(){
+    public void testPickupsLeft() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         g=new Game(newBoard,1,userPacman,creatureList, 25);
 
         g.updatePickupsLeft();
@@ -88,7 +88,7 @@ public class GameTest {
         assert(g.getLevel()==2);
     }
     @Test
-    public void testGetLevel(){
+    public void testGetLevel() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         g=new Game(newBoard,1,userPacman,creatureList, 25);
         assert(g.getLevel()==1);
         g.updatePickupsLeft();
@@ -113,7 +113,7 @@ public class GameTest {
         assert (g.getScore()==400);
     }
     @Test
-    public void testGameOver(){
+    public void testGameOver() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         g=new Game(newBoard,1,userPacman,creatureList, 25);
         CollisionManager cm = new CollisionManager();
         for(int i=0;i<3;i++) {
@@ -146,7 +146,7 @@ public class GameTest {
 
     }
     @Test
-    public void testLevel(){
+    public void testLevel() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         g=new Game(newBoard,1,userPacman,creatureList, 25);
         assert (g.getLevel()==1);
         g.updatePickupsLeft();
@@ -162,7 +162,7 @@ public class GameTest {
 
     }
     @Test
-    public void testMove(){
+    public void testMove() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         g=new Game(newBoard,1,userPacman, creatureList,25);
         g.setLastDirection("up");
         g.step();
@@ -170,7 +170,7 @@ public class GameTest {
         assert(g.getUser().getYpos()==99);
     }
     @Test
-    public void testMoveIntoWall(){
+    public void testMoveIntoWall() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         UserPacman temp = new UserPacman(90,65);
         g=new Game(newBoard,1,temp,creatureList, 25);
         g.setLastDirection("left");
@@ -180,7 +180,7 @@ public class GameTest {
         assert(g.getUser().getYpos()==65);
     }
     @Test
-    public void testCreatureMoveIntoWall(){
+    public void testCreatureMoveIntoWall() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         CPUCreature c2 = new CPUCreature(65,90);
         c2.setCurrentDirection(new int[]{0,-1});
         c2.setId("CREATURE123");

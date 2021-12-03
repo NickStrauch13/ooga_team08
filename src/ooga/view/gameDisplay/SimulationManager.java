@@ -1,22 +1,19 @@
 package ooga.view.gameDisplay;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Locale;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 import ooga.controller.Controller;
-import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.view.gameDisplay.center.BoardView;
-import ooga.view.gameDisplay.gamePieces.GhostPiece;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
+import ooga.view.popups.PopupFactory;
 
 public class SimulationManager {
     private static final String KEY_PATH = "ooga.view.gameDisplay.keyActions.%sKey";
@@ -27,13 +24,20 @@ public class SimulationManager {
     private String currentDirection;
     private BoardView myBoardView;
     private GameStats myGameStats;
+    private GameDisplay myGameDisplay;
+    private int currentLevel;
+    private boolean poweredUpTemp = false;
+    private static final double initialAnimationRate =10.0;
 
-    public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView) {
+
+    public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
         myController = controller;
         myBoardView = boardView;
-        myAnimationRate = 10; //TODO link to json
+        myAnimationRate = initialAnimationRate; //TODO link to json
         currentDirection = "RIGHT";//TODO allow user to set this value. Call the json key "Starting direction"
         myGameStats = gameStats;
+        currentLevel = 1;
+        myGameDisplay = gameDisplay;
     }
 
 
@@ -42,55 +46,110 @@ public class SimulationManager {
      * @return false if the animation is paused.
      */
     public boolean playPause() {
-        //TODO make toggleable with the pause
         if(myAnimation == null) {
-            myAnimation = new Timeline();
-            myAnimation.setCycleCount(Timeline.INDEFINITE);
-            myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
-            myAnimation.setRate(myAnimationRate);
-            myAnimation.play();
-            currentDirection = "RIGHT"; //TODO allow user to set this value. Call the json key "Starting direction"
+            setupAnimation();
         }
         else if(myAnimation.getStatus() == Status.PAUSED){
-            System.out.println("playing");
             myAnimation.play();
         }
         else{
-            System.out.println("paused");
             myAnimation.pause();
         }
         return myAnimation.getStatus() != Status.PAUSED;
     }
 
-    private void step() {
+    private void setupAnimation() {
+        myAnimation = new Timeline();
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
+        myAnimation.setRate(myAnimationRate);
+        myAnimation.play();
+        currentDirection = "RIGHT"; //TODO allow user to set this value. Call the json key "Starting direction"
+    }
+
+    /**
+     * Stops the game animation. Typically, called when the user wants to return to the home screen.
+     * This is a more 'permanent' version of pause.
+     */
+    public void stopAnimation(){
+        playPause();
+        myAnimation.stop();
+        myAnimation = null;
+    }
+
+    private void step() { //TODO REFACTOR THIS METHOD :(
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
-           int[] newUserPosition = myController.getUserPosition();
-           for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-               if (movingPiece.equals(myBoardView.getUserPiece())) {
-                   movingPiece.updatePosition(newUserPosition[0], newUserPosition[1]);
-               }
-               else {
-                   int[] newGhostPosition = myController.getGhostPosition(movingPiece.getPiece().getId());
-                   if (newGhostPosition != null) {
-                       movingPiece.updatePosition(newGhostPosition[0], newGhostPosition[1]);
-                   }
-               }
+           if (myController.getLevel() > currentLevel) {
+               currentLevel = myController.getLevel();
+               myAnimationRate += currentLevel/2.0;
+               myAnimation.setRate(myAnimationRate);
+               resetBoardView();
+               stopAnimation();
+               updateStats();
+               return;
            }
-           String nodeCollision = myBoardView.getUserCollision(); //TODO if too slow, only do this every 10ish steps and dont include nonpassible nodes in list
-           if (nodeCollision != null) {
-               System.out.println(nodeCollision);
+           if (myController.isGameOver()) {
+               myController.addScoreToCSV(new String[]{myController.getUsername(),Integer.toString(myController.getScore())});
+               myGameDisplay.showGameOverPopup();
+               stopAnimation();
+               return;
            }
+            updateMovingPiecePositions();
+            String nodeCollision = myBoardView.getUserCollision();
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
+            poweredUpTemp = updateCreatureState(poweredUpTemp);
             updateStats();
+        }
+    }
+
+    private void resetBoardView() {
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+            myBoardView.getInitialBoard().getChildren().remove(movingPiece.getPiece());
+        }
+        myBoardView.getInitialBoard().getChildren().remove(myBoardView.getMyGrid());
+        myBoardView.resetBoardView();
+        myController.loadNextLevel(myBoardView);
+    }
+
+
+    private boolean updateCreatureState(boolean lastPoweredUp){
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+            if (lastPoweredUp!= myController.getIsPowereredUp() && movingPiece!=myBoardView.getUserPiece()){
+                if (myController.getIsPowereredUp()){
+                    Image blueGhost = new Image("ooga/view/resources/viewIcons/blueGhost.png");
+                    movingPiece.getMyCreature().setImage(blueGhost);
+                }
+                else{
+                    Image normalGhost = new Image("ooga/view/resources/viewIcons/ghostImage.png");
+                    movingPiece.getMyCreature().setImage(normalGhost);
+                }
+            }
+        }
+        return myController.getIsPowereredUp();
+    }
+
+    private void updateMovingPiecePositions() {
+        int[] newUserPosition = myController.getUserPosition();
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+            if (movingPiece.equals(myBoardView.getUserPiece())) {
+                movingPiece.updatePosition(newUserPosition[0], newUserPosition[1]);
+            }
+            else {
+                int[] newGhostPosition = myController.getGhostPosition(movingPiece.getPiece().getId());
+                if (newGhostPosition != null) {
+                    movingPiece.updatePosition(newGhostPosition[0], newGhostPosition[1]);
+                }
+            }
         }
     }
 
     private void updateStats() {
         myGameStats.setScoreText(myController.getScore());
         myGameStats.setLivesText(myController.getLives());
+        myGameStats.setLevelText(myController.getLevel());
     }
 
     public void handleKeyInput(KeyCode code){
@@ -104,6 +163,10 @@ public class SimulationManager {
         }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e){
             //Unknown key pressed. No view action required.
         }
+    }
+
+    public BoardView getMyBoardView() {
+        return myBoardView;
     }
 
 }

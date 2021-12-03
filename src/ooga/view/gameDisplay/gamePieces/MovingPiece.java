@@ -10,6 +10,7 @@ import ooga.controller.Controller;
  * pieces like pacman and ghosts.
  */
 public abstract class MovingPiece extends GamePiece{
+
   private ImageView myCreature;
 
   public MovingPiece(int cellSize){
@@ -80,5 +81,9 @@ public abstract class MovingPiece extends GamePiece{
       }
     }
     return null;
+  }
+
+  public ImageView getMyCreature() {
+    return myCreature;
   }
 }

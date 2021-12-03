@@ -6,19 +6,19 @@ import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 
 public class Game implements PickupGame {
 
-    public boolean setLastDirection(String lastDirection) {
-        this.lastDirection = lastDirection;
-        return true;
-    }
-
+    private String gameType = "";
+    private int bfsThreshold = 1;
+    private int standardBFSThreshold = 1;
     private boolean gameOver=false;
     private String lastDirection;
     private int boardXSize;
+    private int timer;
     private int boardYSize;
     private static final int WALL_STATE = 1;
     private static final int EAT_CREATURE_SCORE = 400;
@@ -26,7 +26,15 @@ public class Game implements PickupGame {
             "LEFT","DOWN","UP","RIGHT"
     };
     private ResourceBundle myCreatureResources;
-    private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.creatures.resources.";
+    private ResourceBundle myGameTypeThresholds;
+    private static final String CREATURE_RESOURCE_PACKAGE = "ooga.models.creatures.resources.";
+    private static final String GAME_RESOURCE_PACKAGE = "ooga.models.resources.";
+
+    public int getStepCounter() {
+        return stepCounter;
+    }
+
+    private int stepCounter;
     private int lives;
     private int score;
     private int level;
@@ -34,22 +42,27 @@ public class Game implements PickupGame {
     private Board myBoard;
     private List<CPUCreature> activeCPUCreatures;
     private int myCellSize;
+    private int powerupEndtime=-1;
     private UserCreature myUserControlled;
     private Set<String> visitedNodes = new HashSet<>();
     private Queue<String> queue = new ArrayDeque<String>();
     public Game(Board board){
         myBoard=board;
     }
+    private int startingPickUps;
 
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize){
         myBoard=board;
         pickUpsLeft = numPickUps;
+        startingPickUps = numPickUps;
         myUserControlled = userPlayer;
         activeCPUCreatures = CPUCreatures;
-        myCreatureResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "directions");
+        myCreatureResources = ResourceBundle.getBundle(CREATURE_RESOURCE_PACKAGE + "directions");
+        myGameTypeThresholds = ResourceBundle.getBundle(GAME_RESOURCE_PACKAGE+"gameTypes");
         level=1;
         lives=3;
         score=0;
+        timer = 5000;
         myCellSize = cellSize;
         initializeGhosts();
         boardXSize=cellSize*board.getCols();
@@ -58,6 +71,7 @@ public class Game implements PickupGame {
     public UserCreature getUser(){
         return myUserControlled;
     }
+
     public GameObject getGameObject(int row, int col){
         return myBoard.getGameObject(row,col);
     }
@@ -65,8 +79,18 @@ public class Game implements PickupGame {
         return activeCPUCreatures;
     }
 
-    public void step(){
+    public void step() {
+        timer--;
+        System.out.println(timer);
 
+        if(gameType.equals("ANTIPACMAN")){
+            if(timer==0){
+                endGame();
+            }
+            if(checkLives()){
+                nextLevel();
+            }
+        }
         if (checkPickUps()){
             nextLevel();
             return;
@@ -75,18 +99,40 @@ public class Game implements PickupGame {
             endGame();
             return;
         }
-        moveCreatures();
+        adjustGhostCollisions(gameType);
+        moveCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
+        stepCounter++;
 
-    }
-
-    private void moveCreatures(){
-        for (CPUCreature currentCreature : activeCPUCreatures){
-            moveCPUCreature(currentCreature);
+        if (stepCounter == powerupEndtime){
+            myUserControlled.setPoweredUp(!myUserControlled.isPoweredUp());
+            setBfsThreshold(standardBFSThreshold);
         }
-        moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
     }
-    private String getNodeSignature(int x, int y){
-        return x+","+y;
+    private int getTime(){
+        return timer/100;
+    }
+
+    private void adjustGhostCollisions(String gameType){
+        if (Integer.parseInt(myGameTypeThresholds.getString(gameType))<4){
+            myUserControlled.setPoweredUp(true);
+        }
+    }
+
+
+    public void moveCreatureToCell(int[]cellIndex){
+        myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
+    }
+
+    private void moveCreaturesPacman(int bfsThreshold) {
+        moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
+        for (CPUCreature currentCreature : activeCPUCreatures){
+            if (stepCounter%myCellSize==0){
+                setBfsThreshold(bfsThreshold);
+                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
+                //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
+            }
+            moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
+        }
     }
 
     private boolean moveToNewPossiblePosition(Creature currentCreature, int[] direction){
@@ -101,8 +147,8 @@ public class Game implements PickupGame {
         int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize-xCorner*currentCreature.getSize()/2;
         int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize-yCorner*currentCreature.getSize()/2;
 
-        int actualNewPositionX = (currentCreature.getXpos()+xDirection)%boardXSize;
-        int actualNewPositionY = (currentCreature.getYpos()+yDirection)%boardYSize;
+        int actualNewPositionX = (currentCreature.getXpos()+xDirection + boardXSize) %boardXSize;
+        int actualNewPositionY = (currentCreature.getYpos()+yDirection + boardYSize) %boardYSize;
 
         if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
             currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
@@ -111,49 +157,102 @@ public class Game implements PickupGame {
         return false;
     }
 
-    private ArrayList<String> findPathToUser(int x, int y, ArrayList<String> path){
-        queue = new ArrayDeque<>();
-        queue.add(getNodeSignature(x,y));
-        while(!queue.isEmpty()){
-            String current = queue.remove();
-            int currentX =Integer.parseInt( current.split(",")[0]);
-            int currentY =Integer.parseInt( current.split(",")[1]);
-            path.add(current);
-            System.out.println(current);
-            if(current.equals(getNodeSignature(getCellCoordinate(myUserControlled.getXpos()),getCellCoordinate(myUserControlled.getYpos())))){
-                return path;
+    private String adjustedMovement(int threshold, CPUCreature cpu) {
+        Random r = new Random();
+        boolean usePath = r.nextInt(4)<threshold;
+        String movementDirection;
+        if (usePath){
+            movementDirection = bfsChase(cpu);
+        }
+        else{
+            movementDirection = POSSIBLE_DIRECTIONS[r.nextInt(4)];
+        }
+        return movementDirection;
+    }
+
+    private String bfsChase(CPUCreature cpu){
+        String cpuDirection;
+        int dest = getBFSgridCoordinate(myUserControlled);
+        int src = getBFSgridCoordinate(cpu);
+        LinkedList<Integer> potentialPath = getPathtoUser(myBoard.generateAdjacencies(),src,dest,myBoard.getCols()*myBoard.getRows());
+        int firstStep = potentialPath.getLast()-potentialPath.get(potentialPath.size()-2);
+        if (Math.abs(firstStep)>1){
+            if (firstStep<0){
+                cpuDirection = "DOWN";
             }
-            else{
-                if(!myBoard.getisWallAtCell(currentY,currentX-1)){
-                    queue.add(getNodeSignature(currentX-1,currentY));
-                }
-                if(!myBoard.getisWallAtCell(currentY,currentX+1)){
-                    queue.add(getNodeSignature(currentX+1,currentY));
-                }
-                if(!myBoard.getisWallAtCell(currentY-1,currentX)){
-                    queue.add(getNodeSignature(currentX,currentY-1));
-                }
-                if(!myBoard.getisWallAtCell(currentY+1,currentX)){
-                    queue.add(getNodeSignature(currentX,currentY+1));
-                }
+            else {
+                cpuDirection = "UP";
             }
         }
-        return null;
+        else{
+            if (firstStep>0){
+                cpuDirection = "LEFT";
+            }
+            else {
+                cpuDirection = "RIGHT";
+            }
+        }
+        return cpuDirection;
     }
-    private void moveCPUCreature(CPUCreature currentCreature) {
-        int startingX= getCellCoordinate(currentCreature.getCenterX());
-        int startingY= getCellCoordinate(currentCreature.getCenterY());
-        visitedNodes.add(getNodeSignature(startingX,startingY));
-        findPathToUser(startingX,startingY,new ArrayList<>());
-        int[] direction = currentCreature.getCurrentDirection();
-        if(moveToNewPossiblePosition(currentCreature,direction));
-        else {
-            Random r = new Random();
-            String randomDirection = POSSIBLE_DIRECTIONS[r.nextInt(POSSIBLE_DIRECTIONS.length)];
-            currentCreature.setCurrentDirection(generateDirectionArray(randomDirection));
-            moveCPUCreature(currentCreature);
+
+    private LinkedList<Integer> getPathtoUser(
+            Map<Integer,List<Integer>> adj,
+            int s, int dest, int v)
+    {
+        int pred[] = new int[v];
+
+        if (!BFS(adj, s, dest, v,pred)) {
+            //System.out.println("Given source and destination are not connected");
+            return null;
         }
 
+        LinkedList<Integer> path = new LinkedList<Integer>();
+        int crawl = dest;
+        path.add(crawl);
+        while (pred[crawl] != -1) {
+            path.add(pred[crawl]);
+            crawl = pred[crawl];
+        }
+
+
+//        System.out.println("Path is ::");
+//        for (int i = path.size() - 1; i >= 0; i--) {
+//            System.out.print(path.get(i) + " ");
+//        }
+
+        return path;
+    }
+
+    private boolean BFS(Map<Integer,List<Integer>> adj, int src,int dest, int v, int[] pred) {
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+        boolean visited[] = new boolean[v];
+        for (int i = 0; i < v; i++) {
+            visited[i] = false;
+            pred[i] = -1;
+        }
+
+        visited[src] = true;
+        queue.add(src);
+
+        while (!queue.isEmpty()) {
+            int u = queue.remove();
+            for (int i = 0; i < adj.get(u).size(); i++) {
+                //System.out.println(adj.get(u));
+                if (!visited[adj.get(u).get(i)]) {
+                    visited[adj.get(u).get(i)] = true;
+                    pred[adj.get(u).get(i)] = u;
+                    queue.add(adj.get(u).get(i));
+
+                    if (adj.get(u).get(i) == dest)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private int getBFSgridCoordinate(Creature currentCreature){
+        return getCellCoordinate(currentCreature.getYpos())*myBoard.getCols()+getCellCoordinate(currentCreature.getXpos());
     }
 
     private void initializeGhosts() {
@@ -215,6 +314,9 @@ public class Game implements PickupGame {
     }
 
     private boolean creatureVsCreatureCollision(CollisionManager cm){
+        if(gameType.equals("ANTIPACMAN")){
+            lives--;
+        }
         if(myUserControlled.isPoweredUp()){
             addScore(EAT_CREATURE_SCORE);
             for(Creature c:activeCPUCreatures){
@@ -225,9 +327,11 @@ public class Game implements PickupGame {
             }
         }
         else{
-            System.out.println("DIE DIE DIE DIE DIE");
             myUserControlled.die();
             loseLife();
+            for (Creature currentCreature : activeCPUCreatures){
+                currentCreature.die();
+            }
         }
         return true;
     }
@@ -238,6 +342,7 @@ public class Game implements PickupGame {
     public void addScore(int scoreToBeAdded){
         score+=scoreToBeAdded;
     };
+
     public void resetGame(){
         resetCreatureStates();
     }
@@ -251,32 +356,29 @@ public class Game implements PickupGame {
         }
         myUserControlled.die();
         lives=3;
-        score=0;
-        level=1;
+        pickUpsLeft = startingPickUps;
         gameOver=false;
-
-    };
+    }
 
     /**
      * Increments the level.
      */
     private void nextLevel(){
         level+=1;
-    };
+        timer= (int) (5000/Math.pow(1.1,level));
+    }
 
     /**
      * Gets the score and level and returns it
      */
     private void endGame(){
         gameOver=true;
-    };
+    }
 
     private int[] generateDirectionArray(String lastDirection){
         int[] directionArray = Arrays.stream(myCreatureResources.getString(lastDirection).split(",")).mapToInt(Integer::parseInt).toArray();
         return directionArray;
     }
-
-
 
     public int getLives() {
         return lives;
@@ -298,5 +400,28 @@ public class Game implements PickupGame {
         return gameOver;
     }
 
+    public void setPowerupEndtime(int powerupEndtime) {
+        this.powerupEndtime = powerupEndtime;
+    }
 
+    public boolean setLastDirection(String lastDirection) {
+        this.lastDirection = lastDirection;
+        return true;
+    }
+
+    public void setBfsThreshold(int bfsThreshold) {
+        this.bfsThreshold = bfsThreshold;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
+    }
+
+    public ArrayList<int[]> getPortalLocations(){
+        return myBoard.getPortalLocations();
+    }
 }
