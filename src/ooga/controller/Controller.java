@@ -45,6 +45,8 @@ public class Controller {
     private final String EXCEPTION = "Something is wrong here!";
     private static final File SCORE_FILE = new File("./data/highscores/HighScores.csv");
     private static final int HIGH_SCORE_VALS = 10;
+    private static final String[] BLANK_ENTRY = new String[]{"","-1"};
+    private static final String DEFAULT_USERNAME = "Guest";
 
 
     private Game myGame;
@@ -56,13 +58,12 @@ public class Controller {
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
     private JSONReader reader;
-    private FileReader myFileReader;
-    private FileWriter myFileWriter;
     private CSVReader myCSVReader;
     private CSVWriter myCSVWriter;
     private Map<Integer, String> gameObjectMap;
     private List<List<String>> stringBoard;
     private Stage myStage;
+    private String myUsername;
 
     private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -87,10 +88,11 @@ public class Controller {
         myStage.show();
         animationSpeed = 0.3;
         myErrorView = new ErrorView();
-        myFileReader = new FileReader(SCORE_FILE);
-        myFileWriter = new FileWriter(SCORE_FILE);
-        myCSVReader = new CSVReader(myFileReader);
-        myCSVWriter = new CSVWriter(myFileWriter);
+        myCSVReader = new CSVReader(new FileReader(SCORE_FILE));
+        myCSVWriter = new CSVWriter(new FileWriter(SCORE_FILE, true),',',CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+        myUsername = DEFAULT_USERNAME;
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -307,6 +309,11 @@ public class Controller {
      */
     public void addScoreToCSV(String[] nameAndScore){
         myCSVWriter.writeNext(nameAndScore);
+        try {
+            myCSVWriter.close();
+        }catch(IOException e){
+
+        }
     }
 
     /**
@@ -331,7 +338,7 @@ public class Controller {
             numToDisplay = allScores.size();
         }
         for(int i = 0; i < numToDisplay; i++){
-            topTen.add(allScores.get(i));
+            topTen.add(BLANK_ENTRY);
         }
         optimizeTopTen(allScores, topTen, numToDisplay);
         return topTen;
@@ -359,4 +366,19 @@ public class Controller {
         return myGame.isGameOver();
     }
 
+    /**
+     * Sets the username string for the game.
+     * @param username String inputted by user on the home screen. Defaults to "Guest"
+     */
+    public void setUsername(String username){
+        myUsername = username;
+    }
+
+    /**
+     * Returns the username for the current game.
+     * @return String representing username
+     */
+    public String getUsername(){
+        return myUsername;
+    }
 }

@@ -34,7 +34,6 @@ public class HomeScreen {
   private Scene myScene;
   private static final String language = "English"; //TODO add to prop file
   private static final String SCORE_DIVIDER = "%s-----------%s";
-  private String userName;
   private Controller myController;
 
   public HomeScreen(Stage stage, int width, int height, Controller controller) {
@@ -87,7 +86,7 @@ public class HomeScreen {
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
   }
 
-  public void setUserName(String userName) {this.userName = userName; }
+  public void setUserName(String userName) { myController.setUsername(userName); }
 
   private void readFile(){
     FileChooser fileChooser = new FileChooser();
@@ -119,10 +118,6 @@ public class HomeScreen {
   }
 
   private void displayHighScores(){
-/*<<<<<<< HEAD
-    HighScoreView highScoreView = new HighScoreView();
-    highScoreView.showHighScores(myController.getScoreData(), myStage);
-=======*/
     PopupFactory highScoreView = new PopupFactory();
     makeHighScoreView(highScoreView, myController.getScoreData());
   }

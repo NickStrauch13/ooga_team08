@@ -77,7 +77,7 @@ public class SimulationManager {
         myAnimation = null;
     }
 
-    private void step() {
+    private void step() { //TODO REFACTOR THIS METHOD :(
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
            if (myController.getLevel() > currentLevel) {
@@ -90,6 +90,7 @@ public class SimulationManager {
                return;
            }
            if (myController.isGameOver()) {
+               myController.addScoreToCSV(new String[]{myController.getUsername(),Integer.toString(myController.getScore())});
                myGameDisplay.showGameOverPopup();
                stopAnimation();
                return;
