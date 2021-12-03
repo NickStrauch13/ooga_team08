@@ -1,5 +1,11 @@
 package ooga.controller;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javafx.stage.Stage;
 import java.lang.Integer;
 
@@ -37,6 +43,11 @@ public class Controller {
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
     private final String EXCEPTION = "Something is wrong here!";
+    private static final File SCORE_FILE = new File("./data/highscores/HighScores.csv");
+    private static final int HIGH_SCORE_VALS = 10;
+    private static final String[] BLANK_ENTRY = new String[]{"","-1"};
+    private static final String DEFAULT_USERNAME = "Guest";
+
 
     private Game myGame;
     private Board myBoard;
@@ -47,9 +58,13 @@ public class Controller {
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
     private JSONReader reader;
+    private CSVReader myCSVReader;
+    private CSVWriter myCSVWriter;
     private Map<Integer, String> gameObjectMap;
     private List<List<String>> stringBoard;
     private Stage myStage;
+    private String myUsername;
+
     private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
@@ -73,6 +88,11 @@ public class Controller {
         myStage.show();
         animationSpeed = 0.3;
         myErrorView = new ErrorView();
+        myCSVReader = new CSVReader(new FileReader(SCORE_FILE));
+        myCSVWriter = new CSVWriter(new FileWriter(SCORE_FILE, true),',',CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+        myUsername = DEFAULT_USERNAME;
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -282,6 +302,62 @@ public class Controller {
         initializeGame(reader.getMostRecentPath());
     }
 
+
+    /**
+     * Adds a new Username:Score combo to the high score CSV file
+     * @param nameAndScore String array where the first element is the name and the second element is the score
+     */
+    public void addScoreToCSV(String[] nameAndScore){
+        myCSVWriter.writeNext(nameAndScore);
+        try {
+            myCSVWriter.close();
+        }catch(IOException e){
+
+        }
+    }
+
+    /**
+     * Read high score CSV and get the top ten scores.
+     * @return List of string arrays where each String array is a single username:score combo.
+     */
+    public List<String[]> getScoreData(){
+        List allScoreData = new ArrayList();
+        try {
+            allScoreData = myCSVReader.readAll();
+        }catch(IOException e){
+            //TODO
+        }
+        return findTopTenScores(allScoreData);
+    }
+
+
+    private List<String[]> findTopTenScores(List<String[]> allScores){
+        List<String[]> topTen = new ArrayList<>();
+        int numToDisplay = HIGH_SCORE_VALS;
+        if(allScores.size() < HIGH_SCORE_VALS){
+            numToDisplay = allScores.size();
+        }
+        for(int i = 0; i < numToDisplay; i++){
+            topTen.add(BLANK_ENTRY);
+        }
+        optimizeTopTen(allScores, topTen, numToDisplay);
+        return topTen;
+    }
+
+    private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
+        for (String[] score : allScores) {
+            for (int i = 0; i < numToDisplay; i++) {
+                if (Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])) {
+                    topTen.add(i, score);
+                    break;
+                }
+            }
+        }
+        while (topTen.size() > HIGH_SCORE_VALS) {
+            topTen.remove(topTen.size() - 1);
+        }
+    }
+
     public int getLevel() {
         return myGame.getLevel();
     }
@@ -290,4 +366,19 @@ public class Controller {
         return myGame.isGameOver();
     }
 
+    /**
+     * Sets the username string for the game.
+     * @param username String inputted by user on the home screen. Defaults to "Guest"
+     */
+    public void setUsername(String username){
+        myUsername = username;
+    }
+
+    /**
+     * Returns the username for the current game.
+     * @return String representing username
+     */
+    public String getUsername(){
+        return myUsername;
+    }
 }

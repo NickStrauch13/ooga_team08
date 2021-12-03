@@ -60,6 +60,10 @@
   -fx-font-size: 22px;
 }
 
+.inputTextID{
+  -fx-font-size: 20;
+}
+
 
 
 .PlayButtonID{
