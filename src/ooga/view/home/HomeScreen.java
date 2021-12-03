@@ -80,7 +80,7 @@ public class HomeScreen {
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
     Button buildBoardButton = myNodeBuilder.makeButton(myResources.getString("BuildBoard"), null,"homeScreenButton","buildBoardButton",e -> startBoardBuilder());
     Label inputText = myNodeBuilder.makeLabel(myResources.getString("userNameText"), "inputTextID");
-    TextField userName = myNodeBuilder.makeInputField("userName", e -> setUserName(e), "");
+    TextField userName = myNodeBuilder.makeInputField("userNameFieldID", e -> setUserName(e), "");
     Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton, buildBoardButton);
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
