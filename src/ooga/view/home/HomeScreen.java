@@ -117,13 +117,7 @@ public class HomeScreen {
 
   private void displayHighScores(){
     HighScoreView highScoreView = new HighScoreView();
-    List<String[]> testList = new ArrayList<>();
-    testList.add(new String[]{"Player1", "67932"});
-    testList.add(new String[]{"Nicc", "1328"});
-    testList.add(new String[]{"Player2", "133"});
-    testList.add(new String[]{"Player3", "1"});
-    testList.add(new String[]{"Player4", "0"});
-    highScoreView.showHighScores(testList, myStage);
+    highScoreView.showHighScores(myController.getScoreData(), myStage);
   }
 
   /**

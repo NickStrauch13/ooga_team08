@@ -1,5 +1,9 @@
 package ooga.controller;
 
+import com.opencsv.CSVReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import javafx.stage.Stage;
 import java.lang.Integer;
 
@@ -37,6 +41,9 @@ public class Controller {
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
     private final String EXCEPTION = "Something is wrong here!";
+    private static final File SCORE_FILE = new File("./data/highscores/HighScores.csv");
+    private static final int HIGH_SCORE_VALS = 10;
+
 
     private Game myGame;
     private Board myBoard;
@@ -47,6 +54,8 @@ public class Controller {
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
     private JSONReader reader;
+    private FileReader myFileReader;
+    private CSVReader myCSVReader;
 
     private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -69,8 +78,9 @@ public class Controller {
         stage.setScene(myStartScreen.createScene());
         stage.show();
         animationSpeed = 0.3;
-
         myErrorView = new ErrorView();
+        myFileReader = new FileReader(SCORE_FILE);
+        myCSVReader = new CSVReader(myFileReader);
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -289,6 +299,48 @@ public class Controller {
     public void resetGame() {
         myGame.resetGame();
         initializeGame(reader.getMostRecentPath());
+    }
+
+
+    /**
+     * Read high score CSV and get the top ten scores.
+     * @return List of string arrays where each String array is a single username:score combo.
+     */
+    public List<String[]> getScoreData(){
+        List allScoreData = new ArrayList();
+        try {
+            allScoreData = myCSVReader.readAll();
+        }catch(IOException e){
+            //TODO
+        }
+        return findTopTenScores(allScoreData);
+    }
+
+    private List<String[]> findTopTenScores(List<String[]> allScores){
+        List<String[]> topTen = new ArrayList<>();
+        int numToDisplay = HIGH_SCORE_VALS;
+        if(allScores.size() < HIGH_SCORE_VALS){
+            numToDisplay = allScores.size();
+        }
+        for(int i = 0; i < numToDisplay; i++){
+            topTen.add(allScores.get(i));
+        }
+        optimizeTopTen(allScores, topTen, numToDisplay);
+        return topTen;
+    }
+
+    private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
+        for(String[] score: allScores){
+            for (int i = 0; i < numToDisplay; i++) {
+                if(Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])){
+                    topTen.add(i, score);
+                    break;
+                }
+            }
+        }
+        while(topTen.size() > HIGH_SCORE_VALS){
+            topTen.remove(topTen.size()-1);
+        }
     }
 
 }
