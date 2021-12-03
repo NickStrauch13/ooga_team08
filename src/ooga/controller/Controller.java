@@ -19,10 +19,9 @@ import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
+
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
 public class Controller {
@@ -66,6 +65,11 @@ public class Controller {
     private String myUsername;
 
     private ErrorView myErrorView;
+    private String language;
+    private ResourceBundle myLanguages;
+    private static final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
+    private static final String DEFAULT_LANGUAGE = "English";
+
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
     /**
@@ -80,6 +84,7 @@ public class Controller {
      * @throws IllegalAccessException
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        language = DEFAULT_LANGUAGE;
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         collisionManager = new CollisionManager();
         myStage = stage;
@@ -87,7 +92,7 @@ public class Controller {
         myStage.setScene(myStartScreen.createScene());
         myStage.show();
         animationSpeed = 0.3;
-        myErrorView = new ErrorView();
+        myErrorView = new ErrorView(language);
         myCSVReader = new CSVReader(new FileReader(SCORE_FILE));
         myCSVWriter = new CSVWriter(new FileWriter(SCORE_FILE, true),',',CSVWriter.NO_QUOTE_CHARACTER,
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
@@ -104,7 +109,7 @@ public class Controller {
     public void initializeGame(String path) {
         int numOfRows, numOfCols;
         try {
-            reader = new JSONReader(path);
+            reader = new JSONReader(language, path);
             assembleBoards();
             //TODO get lives from JSON file
         }
@@ -145,12 +150,13 @@ public class Controller {
         //TODO: Currently creatureMap is never accessed
         creatureMap = container.getMyCreatureMap();
         stringBoard = container.getMyStringBoard();
-
+        myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
+        language = myLanguages.getString(container.getLanguage());
         myBoard = new Board(numOfRows, numOfCols);
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
-
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
+
         myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
         myGame.setGameType(container.getGameType());
     }
@@ -366,6 +372,10 @@ public class Controller {
         return myGame.isGameOver();
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
     /**
      * Sets the username string for the game.
      * @param username String inputted by user on the home screen. Defaults to "Guest"
@@ -381,4 +391,5 @@ public class Controller {
     public String getUsername(){
         return myUsername;
     }
+
 }

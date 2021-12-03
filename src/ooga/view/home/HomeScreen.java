@@ -32,7 +32,7 @@ public class HomeScreen {
   private UINodeFactory myNodeBuilder;
   private ResourceBundle myResources;
   private Scene myScene;
-  private static final String language = "English"; //TODO add to prop file
+  private String language;
   private static final String SCORE_DIVIDER = "%s-----------%s";
   private Controller myController;
 
@@ -44,8 +44,8 @@ public class HomeScreen {
     myStage = stage;
     myScene = new Scene(root, myWidth, myHeight);
     myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-    myNodeBuilder = new UINodeFactory();
-    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    myNodeBuilder = new UINodeFactory(myController);
+    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
   }
 
   /**
@@ -90,7 +90,7 @@ public class HomeScreen {
 
   private void readFile(){
     FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle(myResources.getString("LoadFile"));
+    fileChooser.setTitle("LoadFile");
     fileChooser.getExtensionFilters().addAll(new ExtensionFilter("JSON", "*.json"));
     File selectedFile = fileChooser.showOpenDialog(myStage);
     if (selectedFile == null) {
@@ -108,7 +108,7 @@ public class HomeScreen {
 
   private void startNewGame() {
     readFile();
-    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", myController.getLanguage(),  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");
   }
 
@@ -118,7 +118,7 @@ public class HomeScreen {
   }
 
   private void displayHighScores(){
-    PopupFactory highScoreView = new PopupFactory();
+    PopupFactory highScoreView = new PopupFactory(myController);
     makeHighScoreView(highScoreView, myController.getScoreData());
   }
 

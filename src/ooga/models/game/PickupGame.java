@@ -28,4 +28,8 @@ public interface PickupGame {
 
     public void moveCreatureToCell(int[] cellIndex);
 
+    public String getGameType();
+
+    public void nextLevel();
+
 }

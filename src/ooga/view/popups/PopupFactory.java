@@ -1,20 +1,18 @@
 package ooga.view.popups;
 
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Popup;
-import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
+import ooga.controller.Controller;
 import ooga.view.UINodeFactory.UINodeFactory;
 
 public class PopupFactory {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   private ResourceBundle myResources;
-  private static final String language = "English"; //TODO
+  private String language;
   private UINodeFactory myNodeFactory;
   private static final String TITLE_ID = "HighScoreTitleID";
    //TODO need to put in settings resources file?
@@ -22,9 +20,9 @@ public class PopupFactory {
   private static final int BOX_SPACING = 10;
   private VBox myVBox;
 
-  public PopupFactory(){
-    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-    myNodeFactory = new UINodeFactory();
+  public PopupFactory(Controller myController){
+    myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
+    myNodeFactory = new UINodeFactory(myController);
   }
 
   /**
