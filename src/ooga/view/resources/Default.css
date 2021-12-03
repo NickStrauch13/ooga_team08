@@ -9,7 +9,7 @@
   HomeButtonColor: #AA0000;
   PlayButtonColor: #47ea00;
   PauseButtonColor: #838383;
-  ResetButtonColor: #efeb14
+  ResetButtonColor: #efeb14;
 
 }
 
@@ -59,6 +59,8 @@
   -fx-text-fill: white;
   -fx-font-size: 22px;
 }
+
+
 
 .PlayButtonID{
   -fx-border-color: black;
@@ -127,6 +129,7 @@
 }
 
 .HighScoreVBox{
+    -fx-alignment: center;
   -fx-background-color: #0d1a5d;
 }
 .HighScoreTitleID{
@@ -140,4 +143,27 @@
 .ScoreExitID{
   -fx-text-fill: #9efffa;
   -fx-font-size: 14;
+}
+
+.GameOverHome {
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-font-size: 10px;
+    -fx-text-fill: white;
+}
+
+.GameOverHomeID {
+    -fx-background-color: HomeButtonColor;
+}
+
+.GameOverRestartID {
+    -fx-background-color: ResetButtonColor;
+}
+
+.gameOverStats {
+    -fx-font-color: white;
+    -fx-text-fill: white;
 }
