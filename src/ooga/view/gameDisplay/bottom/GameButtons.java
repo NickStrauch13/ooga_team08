@@ -18,8 +18,8 @@ public class GameButtons {
   private Stage myStage;
   private int myWidth;
   private int myHeight;
+  private String myLanguage;
   private ResourceBundle myResources;
-  private String language = "English";
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   private final String ICONS = String.format("/%sviewIcons/", DEFAULT_RESOURCE_PACKAGE.replace(".", "/"));
   private final ImageView PLAY_ICON = new ImageView(String.format("%splay.png", ICONS));
@@ -28,15 +28,17 @@ public class GameButtons {
   private SimulationManager mySimManager;
   private Button playPauseButton;
 
-  public GameButtons(Stage stage, int width, int height, Controller controller, SimulationManager simManager){
+  public GameButtons(Stage stage, int width, int height, Controller controller, SimulationManager simManager, String language){
     myController = controller;
     mySimManager = simManager;
     myStage = stage;
     myWidth = width;
     myHeight = height;
-    myNodeBuilder = new UINodeFactory();
+    myNodeBuilder = new UINodeFactory(myController);
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    myLanguage = language;
   }
+
 
   public Node makeButtonBox(){
     HBox buttonBox = new HBox();
@@ -72,7 +74,7 @@ public class GameButtons {
 
   public void restartGame(){
     goHome();
-    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", myLanguage,  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");
   }
 

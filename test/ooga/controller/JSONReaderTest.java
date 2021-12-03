@@ -16,7 +16,7 @@ class JSONReaderTest {
 
     @Test
     void testReadRows() throws IOException, ParseException {
-        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONReader reader = new JSONReader("English", FILE_PATH);
         JSONContainer container = reader.readJSONConfig();
 
         int numOfRows = 11;
@@ -25,7 +25,7 @@ class JSONReaderTest {
 
     @Test
     void testReadCols() throws IOException, ParseException {
-        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONReader reader = new JSONReader("English", FILE_PATH);
         JSONContainer container = reader.readJSONConfig();
 
         int numOfCols = 10;
@@ -34,7 +34,7 @@ class JSONReaderTest {
 
     @Test
     void testReadInfo() throws IOException, ParseException {
-        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONReader reader = new JSONReader("English",FILE_PATH);
         JSONContainer container = reader.readJSONConfig();
 
         List expectedBoardInfo = List.of(
@@ -55,7 +55,7 @@ class JSONReaderTest {
 
     @Test
     void testMapConversion() throws IOException, ParseException {
-        JSONReader reader = new JSONReader(FILE_PATH);
+        JSONReader reader = new JSONReader("English", FILE_PATH);
         JSONContainer container = reader.readJSONConfig();
         Map<Integer, String> conversionMap = container.getMyConversionMap();
         Map<Integer, String> creatureMap = container.getMyCreatureMap();
@@ -70,7 +70,7 @@ class JSONReaderTest {
 
     @Test
     public void IOExceptionThrown() {
-        JSONReader reader = new JSONReader(WRONG_PATH);
+        JSONReader reader = new JSONReader("English", WRONG_PATH);
 
         String message = "data\\test\\vanillaTet.json (???????????)";
         Exception expectedException = assertThrows(IOException.class, () -> {

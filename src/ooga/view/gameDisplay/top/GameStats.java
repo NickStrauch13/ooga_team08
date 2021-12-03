@@ -15,17 +15,15 @@ public class GameStats {
     private static final String DEFAULT_STYLESHEET =
             "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
     private ResourceBundle myResources;
-    private static final String language = "English"; //TODO
     private Label numScoreText;
     private Label numLivesText;
     private Label numLevelText;
 
     public GameStats(Controller controller) {
         myController = controller;
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-        nodeBuilder = new UINodeFactory();
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
+        nodeBuilder = new UINodeFactory(myController);
     }
-
 
     public HBox makeStatLabels(){
         numLivesText = nodeBuilder.makeLabel("   " + myController.getLives(), "numLivesID");
