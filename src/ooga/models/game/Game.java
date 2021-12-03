@@ -18,6 +18,7 @@ public class Game implements PickupGame {
     private boolean gameOver=false;
     private String lastDirection;
     private int boardXSize;
+    private int timer;
     private int boardYSize;
     private static final int WALL_STATE = 1;
     private static final int EAT_CREATURE_SCORE = 400;
@@ -61,6 +62,7 @@ public class Game implements PickupGame {
         level=1;
         lives=3;
         score=0;
+        timer = 5000;
         myCellSize = cellSize;
         initializeGhosts();
         boardXSize=cellSize*board.getCols();
@@ -69,6 +71,7 @@ public class Game implements PickupGame {
     public UserCreature getUser(){
         return myUserControlled;
     }
+
     public GameObject getGameObject(int row, int col){
         return myBoard.getGameObject(row,col);
     }
@@ -77,7 +80,17 @@ public class Game implements PickupGame {
     }
 
     public void step() {
+        timer--;
+        System.out.println(timer);
 
+        if(gameType.equals("ANTIPACMAN")){
+            if(timer==0){
+                endGame();
+            }
+            if(checkLives()){
+                nextLevel();
+            }
+        }
         if (checkPickUps()){
             nextLevel();
             return;
@@ -95,12 +108,16 @@ public class Game implements PickupGame {
             setBfsThreshold(standardBFSThreshold);
         }
     }
+    private int getTime(){
+        return timer/100;
+    }
 
     private void adjustGhostCollisions(String gameType){
         if (Integer.parseInt(myGameTypeThresholds.getString(gameType))<4){
             myUserControlled.setPoweredUp(true);
         }
     }
+
 
     public void moveCreatureToCell(int[]cellIndex){
         myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
@@ -297,6 +314,9 @@ public class Game implements PickupGame {
     }
 
     private boolean creatureVsCreatureCollision(CollisionManager cm){
+        if(gameType.equals("ANTIPACMAN")){
+            lives--;
+        }
         if(myUserControlled.isPoweredUp()){
             addScore(EAT_CREATURE_SCORE);
             for(Creature c:activeCPUCreatures){
@@ -345,6 +365,7 @@ public class Game implements PickupGame {
      */
     private void nextLevel(){
         level+=1;
+        timer= (int) (5000/Math.pow(1.1,level));
     }
 
     /**
