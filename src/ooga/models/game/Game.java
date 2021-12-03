@@ -150,6 +150,7 @@ public class Game implements PickupGame {
         int actualNewPositionX = (currentCreature.getXpos()+xDirection + boardXSize) %boardXSize;
         int actualNewPositionY = (currentCreature.getYpos()+yDirection + boardYSize) %boardYSize;
 
+
         if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
             currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
             return true;
