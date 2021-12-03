@@ -60,7 +60,7 @@ public class GameDisplay {
         Node popupHome = UINodeFactory.makeButton(myResources.getString("GoHomeButton"), null, "GameOverHome","GameOverHomeID", e -> myGameButtons.goHome());
         Node popupRestart = UINodeFactory.makeButton(myResources.getString("Reset"), null, "GameOverHome","GameOverRestartID", e -> myGameButtons.restartGame());
         HBox buttonRow =(HBox) UINodeFactory.makeRow("homeRowFormat", popupHome, popupRestart);
-        myPopupFactory.getMyVBox().getChildren().add(buttonRow);
+        myPopupFactory.getMyVBox().getChildren().addAll(buttonRow);
         myPopupFactory.addExitInfo("ExitInstructions", "ScoreExitID");
         myPopupFactory.showPopup(myStage, gameOverPopup);
     }
@@ -74,6 +74,5 @@ public class GameDisplay {
     public BoardView getBoardView() {
         return myBoardView;
     }
-
 
 }

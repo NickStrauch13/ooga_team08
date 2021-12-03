@@ -62,6 +62,7 @@ public class JSONReader {
 
         int numOfRows = getDimension(jsonData, "ROW_NUMBER");
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
+        String gameType = (String) jsonData.get("GAME_TYPE");
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
 
 //        Map<Integer, String> conversionMap = getConversionMap(jsonData);
@@ -69,7 +70,7 @@ public class JSONReader {
         Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
         List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap);
 
-        return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard, conversionMap, creatureMap);
+        return new JSONContainer(numOfRows, numOfCols,gameType, boardInfo, stringBoard, conversionMap, creatureMap);
     }
 
     /*

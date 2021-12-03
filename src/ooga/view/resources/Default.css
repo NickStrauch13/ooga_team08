@@ -129,6 +129,7 @@
 }
 
 .HighScoreVBox{
+    -fx-alignment: center;
   -fx-background-color: #0d1a5d;
 }
 .HighScoreTitleID{
@@ -160,4 +161,9 @@
 
 .GameOverRestartID {
     -fx-background-color: ResetButtonColor;
+}
+
+.gameOverStats {
+    -fx-font-color: white;
+    -fx-text-fill: white;
 }

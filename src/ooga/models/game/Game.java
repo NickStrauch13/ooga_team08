@@ -12,7 +12,7 @@ import java.util.*;
 
 public class Game implements PickupGame {
 
-    private String gameType = "PACMAN";
+    private String gameType = "";
     private int bfsThreshold = 1;
     private int standardBFSThreshold = 1;
     private boolean gameOver=false;
