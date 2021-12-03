@@ -24,7 +24,7 @@ public class GameTest {
     @BeforeEach
     public void initializeGame() throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
-        JSONReader reader = new JSONReader("data/test/vanillaTest.json");
+        JSONReader reader = new JSONReader("English","data/test/vanillaTest.json");
         JSONContainer container = reader.readJSONConfig();
 
         int numOfRows = container.getMyNumOfRows();

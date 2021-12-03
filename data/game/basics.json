@@ -20,12 +20,16 @@
     "1" : "POWERUP1",
     "2" : "POWERUP2",
     "3" : "POWERUP3",
+    "6" : "PORTAL",
     "9" : "EMPTY"
   },
 
   "CREATURE_MAP": {
     "4" : "PACMAN",
     "5" : "CPUGHOST"
-  }
+  },
+
+  "GAME_TYPE": "ANTIPACMAN",
+  "LANGUAGE": "ENGLISH"
 
 }

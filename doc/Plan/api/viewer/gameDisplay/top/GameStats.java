@@ -13,4 +13,22 @@ public interface GameStats {
      */
     HBox makeStatLabels();
 
+    /**
+     * Sets the Lives text to the new number of lives
+     * @param lives
+     */
+    void setLivesText(int lives);
+
+    /**
+     * Sets the scoreText to the new score
+     * @param score
+     */
+    void setScoreText(int score);
+
+    /**
+     * Sets the levelText to the new level
+     * @param level
+     */
+    void setLevelText(int level)
+
 }

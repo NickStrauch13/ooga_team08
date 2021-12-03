@@ -7,6 +7,7 @@ import javafx.geometry.HPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.gamePieces.*;
 
@@ -28,14 +29,10 @@ public class BoardView {
   public BoardView(Controller controller){
     myController = controller;
     myGroup = new Group();
-    myGrid = new GridPane();
-    myGroup.getChildren().add(myGrid);
     myCellSize = myController.getCellSize();
-    myGrid.setMaxSize(myCellSize, myCellSize);
     myGroup.getStyleClass().add("groupStyling");
-    myGrid.getStyleClass().add("gameGridPane");
-    myNodeList = new ArrayList<>();
-    myCreatureList = new ArrayList<>();
+    resetBoardView();
+
   }
 
   /**
@@ -114,7 +111,6 @@ public class BoardView {
     return myGroup;
   }
 
-
   /**
    * Getter method that will return the user controlled movingPiece instance.
    * @return movingPiece instance
@@ -152,6 +148,16 @@ public class BoardView {
     }
   }
 
+  public void resetBoardView() {
+    myGrid = new GridPane();
+    myGrid.setMaxSize(myCellSize, myCellSize);
+    myNodeList = new ArrayList<>();
+    myCreatureList = new ArrayList<>();
+    myGroup.getChildren().add(myGrid);
+    myGrid.getStyleClass().add("gameGridPane");
+    cpuCount = 0;
+  }
+
   /**
    * Gets the list of the current view creatures.
    */
@@ -178,4 +184,6 @@ public class BoardView {
     }
     return creaturePiece;
   }
+
+
 }

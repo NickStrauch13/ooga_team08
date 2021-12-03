@@ -35,6 +35,8 @@
   "CREATURE_MAP": {
     "4" : "PACMAN",
     "5" : "CPUGHOST"
-  }
+  },
+
+  "GAME_TYPE": "PACMAN"
 
 }

@@ -39,6 +39,7 @@ public class HomeScreenTests extends DukeApplicationTest {
   public void testClickingOnHighScoresButton(){
     Button highScoresButton = lookup("#highScoresButton").query();
     clickOn(highScoresButton);
+    sleep(200);
   }
 
   @Test

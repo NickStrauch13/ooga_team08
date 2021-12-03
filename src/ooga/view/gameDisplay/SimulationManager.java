@@ -6,12 +6,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
+import ooga.view.popups.PopupFactory;
 
 public class SimulationManager {
     private static final String KEY_PATH = "ooga.view.gameDisplay.keyActions.%sKey";
@@ -22,13 +24,20 @@ public class SimulationManager {
     private String currentDirection;
     private BoardView myBoardView;
     private GameStats myGameStats;
+    private GameDisplay myGameDisplay;
+    private int currentLevel;
+    private boolean poweredUpTemp = false;
+    private static final double initialAnimationRate =10.0;
 
-    public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView) {
+
+    public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
         myController = controller;
         myBoardView = boardView;
-        myAnimationRate = 10; //TODO link to json
+        myAnimationRate = initialAnimationRate; //TODO link to json
         currentDirection = "RIGHT";//TODO allow user to set this value. Call the json key "Starting direction"
         myGameStats = gameStats;
+        currentLevel = 1;
+        myGameDisplay = gameDisplay;
     }
 
 
@@ -63,29 +72,63 @@ public class SimulationManager {
      * This is a more 'permanent' version of pause.
      */
     public void stopAnimation(){
+        playPause();
         myAnimation.stop();
+        myAnimation = null;
     }
 
-    private void step() {
+    private void step() { //TODO REFACTOR THIS METHOD :(
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
+           if (myController.getLevel() > currentLevel) {
+               currentLevel = myController.getLevel();
+               myAnimationRate += currentLevel/2.0;
+               myAnimation.setRate(myAnimationRate);
+               resetBoardView();
+               stopAnimation();
+               updateStats();
+               return;
+           }
+           if (myController.isGameOver()) {
+               myController.addScoreToCSV(new String[]{myController.getUsername(),Integer.toString(myController.getScore())});
+               myGameDisplay.showGameOverPopup();
+               stopAnimation();
+               return;
+           }
             updateMovingPiecePositions();
             String nodeCollision = myBoardView.getUserCollision();
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
-            //updateCreatureState();
+            poweredUpTemp = updateCreatureState(poweredUpTemp);
             updateStats();
         }
     }
 
-    private void updateCreatureState(){
+    private void resetBoardView() {
         for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-            if (!movingPiece.equals(myBoardView.getUserPiece()) && myController.getIsPowereredUp()) {
-                Image image = new Image("ooga/view/resources/viewIcons/blueGhost.png");
-                movingPiece.getMyCreature().setImage(image);
+            myBoardView.getInitialBoard().getChildren().remove(movingPiece.getPiece());
+        }
+        myBoardView.getInitialBoard().getChildren().remove(myBoardView.getMyGrid());
+        myBoardView.resetBoardView();
+        myController.loadNextLevel(myBoardView);
+    }
+
+
+    private boolean updateCreatureState(boolean lastPoweredUp){
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
+            if (lastPoweredUp!= myController.getIsPowereredUp() && movingPiece!=myBoardView.getUserPiece()){
+                if (myController.getIsPowereredUp()){
+                    Image blueGhost = new Image("ooga/view/resources/viewIcons/blueGhost.png");
+                    movingPiece.getMyCreature().setImage(blueGhost);
+                }
+                else{
+                    Image normalGhost = new Image("ooga/view/resources/viewIcons/ghostImage.png");
+                    movingPiece.getMyCreature().setImage(normalGhost);
+                }
             }
         }
+        return myController.getIsPowereredUp();
     }
 
     private void updateMovingPiecePositions() {
@@ -106,6 +149,7 @@ public class SimulationManager {
     private void updateStats() {
         myGameStats.setScoreText(myController.getScore());
         myGameStats.setLivesText(myController.getLives());
+        myGameStats.setLevelText(myController.getLevel());
     }
 
     public void handleKeyInput(KeyCode code){
@@ -119,6 +163,10 @@ public class SimulationManager {
         }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e){
             //Unknown key pressed. No view action required.
         }
+    }
+
+    public BoardView getMyBoardView() {
+        return myBoardView;
     }
 
 }

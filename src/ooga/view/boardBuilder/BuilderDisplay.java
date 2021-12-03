@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeFactory;
+import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.bottom.BuilderButtons;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
@@ -46,9 +46,9 @@ public class BuilderDisplay {
         root = new BorderPane();
         myScene = new Scene(root, width, height);
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-        myNodeBuilder = new UINodeFactory();
+        myNodeBuilder = new UINodeFactory(myController);
         myBuilderButtons = new BuilderButtons(myStage,width, height, myController, cellSize, myBoardView, this);
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         userAdded = new ArrayList<>();
     }
 
@@ -94,7 +94,7 @@ public class BuilderDisplay {
     }
 
     private void setupScene(){
-        Label boardBuilderText = myNodeBuilder.makeLabel(myResources.getString("BoardBuilderText"));
+        Label boardBuilderText = myNodeBuilder.makeLabel(myResources.getString("BoardBuilderText"), "BuilderTextID");
         Node myHbox = myNodeBuilder.makeRow("boardBuilderHolder", boardBuilderText);
         root.setTop(myHbox);
         setupBoard();

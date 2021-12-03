@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
-import ooga.view.UINodeBuilder.UINodeFactory;
+import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.*;
@@ -44,8 +44,8 @@ public class BuilderButtons {
         myStage = stage;
         myWidth = width;
         myHeight = height;
-        myNodeBuilder = new UINodeFactory();
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
+        myNodeBuilder = new UINodeFactory(myController);
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         cellSize = size;
         myBoardView = boardView;
         objectList = new ArrayList<>();
@@ -64,7 +64,7 @@ public class BuilderButtons {
     }
 
     public VBox makeSelectedVBox()  {
-        Label selectedText = myNodeBuilder.makeLabel(myResources.getString("SelectedText"));
+        Label selectedText = myNodeBuilder.makeLabel(myResources.getString("SelectedText"), "selectedTextID");
         selectedPane = new StackPane();
         Rectangle selectedHolder = new Rectangle(100.0, 100.0, Color.LIGHTGRAY);
         WallPiece wallPiece = new WallPiece(cellSize);
@@ -106,15 +106,15 @@ public class BuilderButtons {
     }
 
     public HBox makeObjectRow() {
-        Label wallText = myNodeBuilder.makeLabel(myResources.getString("WallText"));
+        Label wallText = myNodeBuilder.makeLabel(myResources.getString("WallText"), "wallTextID");
         StackPane wallDisplay = createObjectDisplay(new WallPiece(cellSize));
         objectList.add(wallDisplay.getChildren().get(0));
-        Label powerUpText = myNodeBuilder.makeLabel(myResources.getString("PowerUpText"));
+        Label powerUpText = myNodeBuilder.makeLabel(myResources.getString("PowerUpText"), "powerUpTextID");
         StackPane powerUpDisplay = createObjectDisplay(new Powerup1Piece(cellSize));
         objectList.add(powerUpDisplay.getChildren().get(0));
-        Label ghostText = myNodeBuilder.makeLabel(myResources.getString("GhostText"));
+        Label ghostText = myNodeBuilder.makeLabel(myResources.getString("GhostText"), "ghostTextID");
         StackPane ghostDisplay =  createObjectDisplay( new CpughostPiece(cellSize));
-        Label pacmanText = myNodeBuilder.makeLabel(myResources.getString("PacmanText"));
+        Label pacmanText = myNodeBuilder.makeLabel(myResources.getString("PacmanText"), "pacmanTextID");
         StackPane pacmanDisplay = createObjectDisplay(new PacmanPiece(cellSize));
         Node myHbox = myNodeBuilder.makeRow("statsHolder", wallText, wallDisplay, powerUpText, powerUpDisplay, ghostText,ghostDisplay, pacmanText,pacmanDisplay);
         return (HBox) myHbox;

@@ -1,5 +1,11 @@
 package ooga.controller;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javafx.stage.Stage;
 import java.lang.Integer;
 
@@ -13,10 +19,9 @@ import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
+
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
 public class Controller {
@@ -37,6 +42,11 @@ public class Controller {
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
     private final String EXCEPTION = "Something is wrong here!";
+    private static final File SCORE_FILE = new File("./data/highscores/HighScores.csv");
+    private static final int HIGH_SCORE_VALS = 10;
+    private static final String[] BLANK_ENTRY = new String[]{"","-1"};
+    private static final String DEFAULT_USERNAME = "Guest";
+
 
     private Game myGame;
     private Board myBoard;
@@ -47,8 +57,19 @@ public class Controller {
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
     private JSONReader reader;
+    private CSVReader myCSVReader;
+    private CSVWriter myCSVWriter;
+    private Map<Integer, String> gameObjectMap;
+    private List<List<String>> stringBoard;
+    private Stage myStage;
+    private String myUsername;
 
     private ErrorView myErrorView;
+    private String language;
+    private ResourceBundle myLanguages;
+    private static final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
+    private static final String DEFAULT_LANGUAGE = "English";
+
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
     /**
@@ -63,14 +84,20 @@ public class Controller {
      * @throws IllegalAccessException
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        language = DEFAULT_LANGUAGE;
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         collisionManager = new CollisionManager();
-        stage.setTitle(TITLE);
-        stage.setScene(myStartScreen.createScene());
-        stage.show();
+        myStage = stage;
+        myStage.setTitle(TITLE);
+        myStage.setScene(myStartScreen.createScene());
+        myStage.show();
         animationSpeed = 0.3;
-
-        myErrorView = new ErrorView();
+        myErrorView = new ErrorView(language);
+        myCSVReader = new CSVReader(new FileReader(SCORE_FILE));
+        myCSVWriter = new CSVWriter(new FileWriter(SCORE_FILE, true),',',CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+        myUsername = DEFAULT_USERNAME;
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -82,23 +109,8 @@ public class Controller {
     public void initializeGame(String path) {
         int numOfRows, numOfCols;
         try {
-            reader = new JSONReader(path);
-            JSONContainer container = reader.readJSONConfig();
-            numOfRows = container.getMyNumOfRows();
-            numOfCols = container.getMyNumOfCols();
-            Map<Integer, String> gameObjectMap = container.getMyConversionMap();
-
-            //TODO: Currently creatureMap is never accessed
-            creatureMap = container.getMyCreatureMap();
-            List<List<String>> stringBoard = container.getMyStringBoard();
-
-            myBoard = new Board(numOfRows, numOfCols);
-            initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
-
-            myBoardView = new BoardView(this);
-            initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard);
-
-            myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
+            reader = new JSONReader(language, path);
+            assembleBoards();
             //TODO get lives from JSON file
         }
         catch (ClassNotFoundException e) {
@@ -127,6 +139,28 @@ public class Controller {
         }
     }
 
+    private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        int numOfRows;
+        int numOfCols;
+        JSONContainer container = reader.readJSONConfig();
+        numOfRows = container.getMyNumOfRows();
+        numOfCols = container.getMyNumOfCols();
+        gameObjectMap = container.getMyConversionMap();
+
+        //TODO: Currently creatureMap is never accessed
+        creatureMap = container.getMyCreatureMap();
+        stringBoard = container.getMyStringBoard();
+        myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
+        language = myLanguages.getString(container.getLanguage());
+        myBoard = new Board(numOfRows, numOfCols);
+        initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
+        myBoardView = new BoardView(this);
+        initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
+
+        myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
+        myGame.setGameType(container.getGameType());
+    }
+
     /*
     Initialize all game objects within the Board object
      */
@@ -147,20 +181,19 @@ public class Controller {
     /*
     Initialize all pieces within the BoardView object
      */
-    private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) {
-        myBoardView.makeBoard(numOfRows, numOfCols);
+    private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard, BoardView boardView) {
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);
                 if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
-                    myBoardView.addBoardPiece(row, col, objectName);
+                    boardView.addBoardPiece(row, col, objectName);
                 }
                 else {
                     if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
-                        myBoardView.addUserCreature(row, col, objectName);
+                        boardView.addUserCreature(row, col, objectName);
                     }
                     else if (objectName.equals("CPUGHOST")){
-                        myBoardView.addCPUCreature(row, col, objectName);
+                        boardView.addCPUCreature(row, col, objectName);
                     }
                 }
             }
@@ -253,27 +286,6 @@ public class Controller {
     }
 
     /**
-     * Used by frontend to report the most recent node collision.
-     * @param nodeID The ID of the most recently collided node.
-     */
-    public void setCollision(String nodeID){
-        //TODO pass to backend to handle collision action depending on the node type
-        collisionManager.setCollision(nodeID);
-        myGame.dealWithCollision(collisionManager);
-    }
-
-    /**
-     * Used by the frontend to get the ID of a node that should be removed from the view. If nothing
-     * is to be removed, this method returns null.
-     * @return ID of node that should be removed from the view on the current step.
-     */
-    public String getRemovedNodeID() {
-        //return (some call to backend that gets the node ID that should be removed on this step. If nothing
-        //should be removed this step, rust return null.
-        return collisionManager.getCurrentCollision(); //Temporary placeholder for the return.
-    }
-
-    /**
      * Sends information about the collision to the backend
      * @param nodeID
      * @return
@@ -283,12 +295,101 @@ public class Controller {
         return myGame.dealWithCollision(collisionManager);
     }
 
+
+    public void loadNextLevel(BoardView boardView) {
+        myGame.resetGame();
+        initializeBoardView(myBoard.getRows(), myBoard.getCols(), gameObjectMap, stringBoard,boardView);
+    }
+
     /**
      * Receive the backend's command to reset the entire game
      */
-    public void resetGame() {
-        myGame.resetGame();
+    public void restartGame() {
         initializeGame(reader.getMostRecentPath());
+    }
+
+
+    /**
+     * Adds a new Username:Score combo to the high score CSV file
+     * @param nameAndScore String array where the first element is the name and the second element is the score
+     */
+    public void addScoreToCSV(String[] nameAndScore){
+        myCSVWriter.writeNext(nameAndScore);
+        try {
+            myCSVWriter.close();
+        }catch(IOException e){
+
+        }
+    }
+
+    /**
+     * Read high score CSV and get the top ten scores.
+     * @return List of string arrays where each String array is a single username:score combo.
+     */
+    public List<String[]> getScoreData(){
+        List allScoreData = new ArrayList();
+        try {
+            allScoreData = myCSVReader.readAll();
+        }catch(IOException e){
+            //TODO
+        }
+        return findTopTenScores(allScoreData);
+    }
+
+
+    private List<String[]> findTopTenScores(List<String[]> allScores){
+        List<String[]> topTen = new ArrayList<>();
+        int numToDisplay = HIGH_SCORE_VALS;
+        if(allScores.size() < HIGH_SCORE_VALS){
+            numToDisplay = allScores.size();
+        }
+        for(int i = 0; i < numToDisplay; i++){
+            topTen.add(BLANK_ENTRY);
+        }
+        optimizeTopTen(allScores, topTen, numToDisplay);
+        return topTen;
+    }
+
+    private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
+        for (String[] score : allScores) {
+            for (int i = 0; i < numToDisplay; i++) {
+                if (Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])) {
+                    topTen.add(i, score);
+                    break;
+                }
+            }
+        }
+        while (topTen.size() > HIGH_SCORE_VALS) {
+            topTen.remove(topTen.size() - 1);
+        }
+    }
+
+    public int getLevel() {
+        return myGame.getLevel();
+    }
+
+    public boolean isGameOver() {
+        return myGame.isGameOver();
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    /**
+     * Sets the username string for the game.
+     * @param username String inputted by user on the home screen. Defaults to "Guest"
+     */
+    public void setUsername(String username){
+        myUsername = username;
+    }
+
+    /**
+     * Returns the username for the current game.
+     * @return String representing username
+     */
+    public String getUsername(){
+        return myUsername;
     }
 
 }

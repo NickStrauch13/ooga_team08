@@ -12,12 +12,13 @@ import java.util.*;
 
 public class Game implements PickupGame {
 
-    private String gameType = "ANTIPACMAN";
+    private String gameType = "";
     private int bfsThreshold = 1;
     private int standardBFSThreshold = 1;
     private boolean gameOver=false;
     private String lastDirection;
     private int boardXSize;
+    private int timer;
     private int boardYSize;
     private static final int WALL_STATE = 1;
     private static final int EAT_CREATURE_SCORE = 400;
@@ -48,10 +49,12 @@ public class Game implements PickupGame {
     public Game(Board board){
         myBoard=board;
     }
+    private int startingPickUps;
 
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize){
         myBoard=board;
         pickUpsLeft = numPickUps;
+        startingPickUps = numPickUps;
         myUserControlled = userPlayer;
         activeCPUCreatures = CPUCreatures;
         myCreatureResources = ResourceBundle.getBundle(CREATURE_RESOURCE_PACKAGE + "directions");
@@ -59,15 +62,16 @@ public class Game implements PickupGame {
         level=1;
         lives=3;
         score=0;
+        timer = 5000;
         myCellSize = cellSize;
         initializeGhosts();
         boardXSize=cellSize*board.getCols();
         boardYSize=cellSize*board.getRows();
-
     }
     public UserCreature getUser(){
         return myUserControlled;
     }
+
     public GameObject getGameObject(int row, int col){
         return myBoard.getGameObject(row,col);
     }
@@ -76,7 +80,17 @@ public class Game implements PickupGame {
     }
 
     public void step() {
+        timer--;
+        System.out.println(timer);
 
+        if(gameType.equals("ANTIPACMAN")){
+            if(timer==0){
+                endGame();
+            }
+            if(checkLives()){
+                nextLevel();
+            }
+        }
         if (checkPickUps()){
             nextLevel();
             return;
@@ -94,11 +108,19 @@ public class Game implements PickupGame {
             setBfsThreshold(standardBFSThreshold);
         }
     }
+    private int getTime(){
+        return timer/100;
+    }
 
     private void adjustGhostCollisions(String gameType){
         if (Integer.parseInt(myGameTypeThresholds.getString(gameType))<4){
             myUserControlled.setPoweredUp(true);
         }
+    }
+
+
+    public void moveCreatureToCell(int[]cellIndex){
+        myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
     }
 
     private void moveCreaturesPacman(int bfsThreshold) {
@@ -107,7 +129,7 @@ public class Game implements PickupGame {
             if (stepCounter%myCellSize==0){
                 setBfsThreshold(bfsThreshold);
                 currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
-                System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
+                //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
         }
@@ -127,6 +149,7 @@ public class Game implements PickupGame {
 
         int actualNewPositionX = (currentCreature.getXpos()+xDirection + boardXSize) %boardXSize;
         int actualNewPositionY = (currentCreature.getYpos()+yDirection + boardYSize) %boardYSize;
+
 
         if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
             currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
@@ -180,7 +203,7 @@ public class Game implements PickupGame {
         int pred[] = new int[v];
 
         if (!BFS(adj, s, dest, v,pred)) {
-            System.out.println("Given source and destination are not connected");
+            //System.out.println("Given source and destination are not connected");
             return null;
         }
 
@@ -192,10 +215,12 @@ public class Game implements PickupGame {
             crawl = pred[crawl];
         }
 
-        System.out.println("Path is ::");
-        for (int i = path.size() - 1; i >= 0; i--) {
-            System.out.print(path.get(i) + " ");
-        }
+
+//        System.out.println("Path is ::");
+//        for (int i = path.size() - 1; i >= 0; i--) {
+//            System.out.print(path.get(i) + " ");
+//        }
+
         return path;
     }
 
@@ -290,6 +315,9 @@ public class Game implements PickupGame {
     }
 
     private boolean creatureVsCreatureCollision(CollisionManager cm){
+        if(gameType.equals("ANTIPACMAN")){
+            lives--;
+        }
         if(myUserControlled.isPoweredUp()){
             addScore(EAT_CREATURE_SCORE);
             for(Creature c:activeCPUCreatures){
@@ -315,6 +343,7 @@ public class Game implements PickupGame {
     public void addScore(int scoreToBeAdded){
         score+=scoreToBeAdded;
     };
+
     public void resetGame(){
         resetCreatureStates();
     }
@@ -328,17 +357,16 @@ public class Game implements PickupGame {
         }
         myUserControlled.die();
         lives=3;
-        score=0;
-        level=1;
+        pickUpsLeft = startingPickUps;
         gameOver=false;
-
     }
 
     /**
      * Increments the level.
      */
-    private void nextLevel(){
+    public void nextLevel(){
         level+=1;
+        timer= (int) (5000/Math.pow(1.1,level));
     }
 
     /**
@@ -394,4 +422,7 @@ public class Game implements PickupGame {
         this.gameType = gameType;
     }
 
+    public ArrayList<int[]> getPortalLocations(){
+        return myBoard.getPortalLocations();
+    }
 }

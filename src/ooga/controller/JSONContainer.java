@@ -7,11 +7,12 @@ public class JSONContainer {
 
     private List<List<Integer>> myInfo;
     private List<List<String>> myStringBoard;
-
     private int myNumOfRows;
     private int myNumOfCols;
     private Map<Integer, String> myConversionMap;
     private Map<Integer, String> myCreatureMap;
+    private String gameType;
+    private String myLanguage;
 
     /**
      * The constructor of a JSON Reader object that holds all info from the json configuration file
@@ -20,13 +21,15 @@ public class JSONContainer {
      * @param boardInfo A 2-d list that contains a status value for each cell
      * @param stringBoard A 2-d list that contains a string value for each cell
      */
-    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) {
+    public JSONContainer(int rows, int cols, String type,String language ,List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) {
         myNumOfRows = rows;
         myNumOfCols = cols;
         myInfo = boardInfo;
         myStringBoard = stringBoard;
         myConversionMap = conversionMap;
         myCreatureMap = creatureMap;
+        gameType = type;
+        myLanguage = language;
     }
 
     /**
@@ -91,5 +94,13 @@ public class JSONContainer {
      */
     public Map<Integer, String> getMyCreatureMap() {
         return myCreatureMap;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+    //gameTypes
+    public String getLanguage() {
+        return myLanguage;
     }
 }
