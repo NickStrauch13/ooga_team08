@@ -10,14 +10,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
-import ooga.view.popups.HighScoreView;
+import ooga.view.popups.PopupFactory;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -31,6 +33,7 @@ public class HomeScreen {
   private ResourceBundle myResources;
   private Scene myScene;
   private static final String language = "English"; //TODO add to prop file
+  private static final String SCORE_DIVIDER = "%s-----------%s";
   private String userName;
   private Controller myController;
 
@@ -116,8 +119,28 @@ public class HomeScreen {
   }
 
   private void displayHighScores(){
+/*<<<<<<< HEAD
     HighScoreView highScoreView = new HighScoreView();
     highScoreView.showHighScores(myController.getScoreData(), myStage);
+=======*/
+    PopupFactory highScoreView = new PopupFactory();
+    makeHighScoreView(highScoreView, myController.getScoreData());
+  }
+
+  private void makeHighScoreView(PopupFactory highScoreView, List<String[]> testList) {
+    Popup scorePopup = highScoreView.makePopup("HighScoreTitle");
+    addScores(testList, highScoreView.getMyVBox());
+    highScoreView.addExitInfo("ExitInstructions", "ScoreExitID");
+    highScoreView.showPopup(myStage, scorePopup);
+  }
+
+  public void addScores(List<String[]> scores, VBox box) {
+    for(String[] score: scores){
+      String scoreText = String.format(SCORE_DIVIDER, score[0], score[1]);
+      Label entry = myNodeBuilder.makeLabel(scoreText, "ScoreEntryID");
+      box.getChildren().add(entry);
+    }
+
   }
 
   /**

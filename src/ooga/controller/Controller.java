@@ -60,6 +60,9 @@ public class Controller {
     private FileWriter myFileWriter;
     private CSVReader myCSVReader;
     private CSVWriter myCSVWriter;
+    private Map<Integer, String> gameObjectMap;
+    private List<List<String>> stringBoard;
+    private Stage myStage;
 
     private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -78,9 +81,10 @@ public class Controller {
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         collisionManager = new CollisionManager();
-        stage.setTitle(TITLE);
-        stage.setScene(myStartScreen.createScene());
-        stage.show();
+        myStage = stage;
+        myStage.setTitle(TITLE);
+        myStage.setScene(myStartScreen.createScene());
+        myStage.show();
         animationSpeed = 0.3;
         myErrorView = new ErrorView();
         myFileReader = new FileReader(SCORE_FILE);
@@ -99,22 +103,7 @@ public class Controller {
         int numOfRows, numOfCols;
         try {
             reader = new JSONReader(path);
-            JSONContainer container = reader.readJSONConfig();
-            numOfRows = container.getMyNumOfRows();
-            numOfCols = container.getMyNumOfCols();
-            Map<Integer, String> gameObjectMap = container.getMyConversionMap();
-
-            //TODO: Currently creatureMap is never accessed
-            creatureMap = container.getMyCreatureMap();
-            List<List<String>> stringBoard = container.getMyStringBoard();
-
-            myBoard = new Board(numOfRows, numOfCols);
-            initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
-
-            myBoardView = new BoardView(this);
-            initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard);
-
-            myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
+            assembleBoards();
             //TODO get lives from JSON file
         }
         catch (ClassNotFoundException e) {
@@ -143,6 +132,27 @@ public class Controller {
         }
     }
 
+    private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        int numOfRows;
+        int numOfCols;
+        JSONContainer container = reader.readJSONConfig();
+        numOfRows = container.getMyNumOfRows();
+        numOfCols = container.getMyNumOfCols();
+        gameObjectMap = container.getMyConversionMap();
+
+        //TODO: Currently creatureMap is never accessed
+        creatureMap = container.getMyCreatureMap();
+        stringBoard = container.getMyStringBoard();
+
+        myBoard = new Board(numOfRows, numOfCols);
+        initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
+
+        myBoardView = new BoardView(this);
+        initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
+        myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
+        myGame.setGameType(container.getGameType());
+    }
+
     /*
     Initialize all game objects within the Board object
      */
@@ -163,20 +173,19 @@ public class Controller {
     /*
     Initialize all pieces within the BoardView object
      */
-    private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) {
-        myBoardView.makeBoard(numOfRows, numOfCols);
+    private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard, BoardView boardView) {
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);
                 if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
-                    myBoardView.addBoardPiece(row, col, objectName);
+                    boardView.addBoardPiece(row, col, objectName);
                 }
                 else {
                     if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
-                        myBoardView.addUserCreature(row, col, objectName);
+                        boardView.addUserCreature(row, col, objectName);
                     }
                     else if (objectName.equals("CPUGHOST")){
-                        myBoardView.addCPUCreature(row, col, objectName);
+                        boardView.addCPUCreature(row, col, objectName);
                     }
                 }
             }
@@ -269,27 +278,6 @@ public class Controller {
     }
 
     /**
-     * Used by frontend to report the most recent node collision.
-     * @param nodeID The ID of the most recently collided node.
-     */
-    public void setCollision(String nodeID){
-        //TODO pass to backend to handle collision action depending on the node type
-        collisionManager.setCollision(nodeID);
-        myGame.dealWithCollision(collisionManager);
-    }
-
-    /**
-     * Used by the frontend to get the ID of a node that should be removed from the view. If nothing
-     * is to be removed, this method returns null.
-     * @return ID of node that should be removed from the view on the current step.
-     */
-    public String getRemovedNodeID() {
-        //return (some call to backend that gets the node ID that should be removed on this step. If nothing
-        //should be removed this step, rust return null.
-        return collisionManager.getCurrentCollision(); //Temporary placeholder for the return.
-    }
-
-    /**
      * Sends information about the collision to the backend
      * @param nodeID
      * @return
@@ -299,11 +287,16 @@ public class Controller {
         return myGame.dealWithCollision(collisionManager);
     }
 
+
+    public void loadNextLevel(BoardView boardView) {
+        myGame.resetGame();
+        initializeBoardView(myBoard.getRows(), myBoard.getCols(), gameObjectMap, stringBoard,boardView);
+    }
+
     /**
      * Receive the backend's command to reset the entire game
      */
-    public void resetGame() {
-        myGame.resetGame();
+    public void restartGame() {
         initializeGame(reader.getMostRecentPath());
     }
 
@@ -345,17 +338,25 @@ public class Controller {
     }
 
     private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
-        for(String[] score: allScores){
+        for (String[] score : allScores) {
             for (int i = 0; i < numToDisplay; i++) {
-                if(Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])){
+                if (Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])) {
                     topTen.add(i, score);
                     break;
                 }
             }
         }
-        while(topTen.size() > HIGH_SCORE_VALS){
-            topTen.remove(topTen.size()-1);
+        while (topTen.size() > HIGH_SCORE_VALS) {
+            topTen.remove(topTen.size() - 1);
         }
+    }
+
+    public int getLevel() {
+        return myGame.getLevel();
+    }
+
+    public boolean isGameOver() {
+        return myGame.isGameOver();
     }
 
 }

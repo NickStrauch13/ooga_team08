@@ -93,5 +93,16 @@ public interface Controller {
     /**
      * Resets game stats and states
      */
-    void resetGame()
+    void resetGame();
+
+    /**
+     * Returns the level to the frontend
+     */
+    int getLevel();
+
+    /**
+     * @return true if game over otherwise false
+     */
+    boolean isGameOver();
+
 }

@@ -44,13 +44,13 @@ public class GameButtons {
     buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("GoHomeButton"), null, "GoHomeButton","HomeButtonID" ,e -> goHome()));
     playPauseButton = myNodeBuilder.makeButton("",PLAY_ICON, "PausePlayButton", "PlayButtonID",e -> playPause());
     buttonBox.getChildren().add(playPauseButton);
-    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> reset()));
+    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> restartGame()));
     buttonBox.getStyleClass().add("BottomGameButtons");
     return buttonBox;
   }
 
 
-  private void goHome(){
+  public void goHome(){
     mySimManager.playPause();
     mySimManager.stopAnimation();
     HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight, myController);
@@ -70,8 +70,7 @@ public class GameButtons {
     }
   }
 
-  private void reset(){
-    myController.resetGame();
+  public void restartGame(){
     goHome();
     GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");
