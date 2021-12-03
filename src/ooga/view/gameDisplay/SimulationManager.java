@@ -32,11 +32,12 @@ public class SimulationManager {
     private GameStats myGameStats;
     private int currentLevel;
     private boolean poweredUpTemp = false;
+    private static final double initialAnimationRate =10.0;
 
     public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView) {
         myController = controller;
         myBoardView = boardView;
-        myAnimationRate = 10; //TODO link to json
+        myAnimationRate = initialAnimationRate; //TODO link to json
         currentDirection = "RIGHT";//TODO allow user to set this value. Call the json key "Starting direction"
         myGameStats = gameStats;
         currentLevel = 1;
@@ -84,7 +85,7 @@ public class SimulationManager {
            myController.step(currentDirection);
            if (myController.getLevel() > currentLevel) {
                currentLevel = myController.getLevel();
-               myAnimationRate *= currentLevel*= 1.05;
+               myAnimationRate += currentLevel/2.0;
                myAnimation.setRate(myAnimationRate);
                resetBoardView();
                stopAnimation();

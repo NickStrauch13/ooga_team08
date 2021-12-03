@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -17,7 +18,7 @@ import ooga.controller.Controller;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
-import ooga.view.popups.HighScoreView;
+import ooga.view.popups.Popup;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -31,6 +32,7 @@ public class HomeScreen {
   private ResourceBundle myResources;
   private Scene myScene;
   private static final String language = "English"; //TODO add to prop file
+  private static final String SCORE_DIVIDER = "%s-----------%s";
   private String userName;
   private Controller myController;
 
@@ -116,14 +118,29 @@ public class HomeScreen {
   }
 
   private void displayHighScores(){
-    HighScoreView highScoreView = new HighScoreView();
+    Popup highScoreView = new Popup();
     List<String[]> testList = new ArrayList<>();
     testList.add(new String[]{"Player1", "67932"});
     testList.add(new String[]{"Nicc", "1328"});
     testList.add(new String[]{"Player2", "133"});
     testList.add(new String[]{"Player3", "1"});
     testList.add(new String[]{"Player4", "0"});
-    highScoreView.showHighScores(testList, myStage);
+    makeHighScoreView(highScoreView, testList);
+  }
+
+  private void makeHighScoreView(Popup highScoreView, List<String[]> testList) {
+    javafx.stage.Popup scorePopup = highScoreView.makePopup("HighScoreTitle");
+    addScores(testList, highScoreView.getMyVBox());
+    highScoreView.addExitInfo("ExitInstructions", "highScoresPopup");
+    highScoreView.showPopup(myStage, scorePopup);
+  }
+
+  public void addScores(List<String[]> scores, VBox box) {
+    for(String[] score: scores){
+      String scoreText = String.format(SCORE_DIVIDER, score[0], score[1]);
+      Label entry = myNodeBuilder.makeLabel(scoreText, "ScoreEntryID");
+      box.getChildren().add(entry);
+    }
   }
 
   /**
