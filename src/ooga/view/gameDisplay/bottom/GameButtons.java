@@ -50,7 +50,7 @@ public class GameButtons {
   }
 
 
-  private void goHome(){
+  public void goHome(){
     mySimManager.playPause();
     mySimManager.stopAnimation();
     HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight, myController);
@@ -70,7 +70,7 @@ public class GameButtons {
     }
   }
 
-  private void restartGame(){
+  public void restartGame(){
     goHome();
     GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");

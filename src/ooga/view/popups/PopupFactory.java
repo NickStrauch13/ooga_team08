@@ -11,7 +11,7 @@ import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import ooga.view.UINodeFactory.UINodeFactory;
 
-public class Popup {
+public class PopupFactory {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   private ResourceBundle myResources;
   private static final String language = "English"; //TODO
@@ -22,7 +22,7 @@ public class Popup {
   private static final int BOX_SPACING = 10;
   private VBox myVBox;
 
-  public Popup(){
+  public PopupFactory(){
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     myNodeFactory = new UINodeFactory();
   }
@@ -30,8 +30,8 @@ public class Popup {
   /**
    * Puts a popup onto the main stage that shows the high scores.
    */
-  public javafx.stage.Popup makePopup(String title) {
-    javafx.stage.Popup scorePopup = new javafx.stage.Popup();
+  public Popup makePopup(String title) {
+    Popup scorePopup = new Popup();
     myVBox = (VBox) myNodeFactory.makeCol("HighScoreVBox");
     Label scoreTitle = myNodeFactory.makeLabel(myResources.getString(title), TITLE_ID);
     myVBox.getChildren().add(scoreTitle);
@@ -39,10 +39,9 @@ public class Popup {
     return scorePopup;
   }
 
-  public void showPopup(Stage stage, javafx.stage.Popup scorePopup) {
+  public void showPopup(Stage stage, Popup scorePopup) {
     scorePopup.show(stage);
   }
-
 
   public VBox addExitInfo(String exitString, String id) {
     myVBox.getChildren().add(myNodeFactory.makeLabel(null, null));

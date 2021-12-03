@@ -13,12 +13,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
-import ooga.view.popups.Popup;
+import ooga.view.popups.PopupFactory;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -118,7 +119,7 @@ public class HomeScreen {
   }
 
   private void displayHighScores(){
-    Popup highScoreView = new Popup();
+    PopupFactory highScoreView = new PopupFactory();
     List<String[]> testList = new ArrayList<>();
     testList.add(new String[]{"Player1", "67932"});
     testList.add(new String[]{"Nicc", "1328"});
@@ -128,10 +129,10 @@ public class HomeScreen {
     makeHighScoreView(highScoreView, testList);
   }
 
-  private void makeHighScoreView(Popup highScoreView, List<String[]> testList) {
-    javafx.stage.Popup scorePopup = highScoreView.makePopup("HighScoreTitle");
+  private void makeHighScoreView(PopupFactory highScoreView, List<String[]> testList) {
+    Popup scorePopup = highScoreView.makePopup("HighScoreTitle");
     addScores(testList, highScoreView.getMyVBox());
-    highScoreView.addExitInfo("ExitInstructions", "highScoresPopup");
+    highScoreView.addExitInfo("ExitInstructions", "ScoreExitID");
     highScoreView.showPopup(myStage, scorePopup);
   }
 
