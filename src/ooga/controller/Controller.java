@@ -26,13 +26,22 @@ import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
 public class Controller {
 
-    // TODO: Constant values should be in a file probably - enum?
-    public static final Dimension DEFAULT_SIZE = new Dimension(1000, 600);
-    public static final String TITLE = "Start Screen";
-    public static final String gameType = "Pacman"; //TODO update gameType variable
-    public static final int CELL_SIZE = 25;
+    // TODO: Constant values should be in a file probably - enum? -> settings.properties
+    private final double ANIMATION_SPEED = 0.3;
+    private final int HIGH_SCORE_VALS = 10;
+    private final int WIDTH = 1000; // TODO: properties file
+    private final int HEIGHT = 600;
+    public final int CELL_SIZE = 25;
+
+    public final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
 
     // TODO: Should be put into a properties file?
+    public static final String TITLE = "Start Screen";
+    public static final String gameType = "Pacman"; //TODO update gameType variable
+
+    // TODO: exceptions.properties
+    // TODO: refactor into viewController and boardController if I have time
+
     private final String IOE_EXCEPTION = "IOE exceptions";
     private final String NULL_POINTER_EXCEPTION = "Null pointer exception";
     private final String PARSE_EXCEPTION = "Parse exception!";
@@ -41,12 +50,10 @@ public class Controller {
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-    private final String EXCEPTION = "Something is wrong here!";
-    private static final File SCORE_FILE = new File("./data/highscores/HighScores.csv");
-    private static final int HIGH_SCORE_VALS = 10;
-    private static final String[] BLANK_ENTRY = new String[]{"","-1"};
+//    private final String EXCEPTION = "Something is wrong here!";
     private static final String DEFAULT_USERNAME = "Guest";
 
+    private static final String[] BLANK_ENTRY = new String[]{"","-1"};
 
     private Game myGame;
     private Board myBoard;
@@ -67,8 +74,11 @@ public class Controller {
     private ErrorView myErrorView;
     private String language;
     private ResourceBundle myLanguages;
-    private static final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
-    private static final String DEFAULT_LANGUAGE = "English";
+
+    private final String DEFAULT_LANGUAGE = "English";
+
+    private final String SCORE_PATH = "./data/highscores/HighScores.csv";
+    private final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
@@ -91,10 +101,12 @@ public class Controller {
         myStage.setTitle(TITLE);
         myStage.setScene(myStartScreen.createScene());
         myStage.show();
-        animationSpeed = 0.3;
+        animationSpeed = ANIMATION_SPEED;
         myErrorView = new ErrorView(language);
-        myCSVReader = new CSVReader(new FileReader(SCORE_FILE));
-        myCSVWriter = new CSVWriter(new FileWriter(SCORE_FILE, true),',',CSVWriter.NO_QUOTE_CHARACTER,
+
+        File scoreFile = new File(SCORE_PATH);
+        myCSVReader = new CSVReader(new FileReader(scoreFile));
+        myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true),',',CSVWriter.NO_QUOTE_CHARACTER,
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
             CSVWriter.DEFAULT_LINE_END);
         myUsername = DEFAULT_USERNAME;
