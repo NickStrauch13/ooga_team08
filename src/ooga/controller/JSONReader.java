@@ -46,9 +46,9 @@ public class JSONReader {
      * Currently, setup takes the file path of the game config file as the input
      * @param filePath directory of the JSON file
      */
-    public JSONReader(String filePath) {
+    public JSONReader(String language, String filePath) {
         myPath = filePath;
-        myErrorView = new ErrorView();
+        myErrorView = new ErrorView(language);
     }
 
     /**
@@ -63,6 +63,8 @@ public class JSONReader {
         int numOfRows = getDimension(jsonData, "ROW_NUMBER");
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
         String gameType = (String) jsonData.get("GAME_TYPE");
+        String language = (String) jsonData.get("LANGUAGE");
+
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
 
 //        Map<Integer, String> conversionMap = getConversionMap(jsonData);
@@ -70,7 +72,7 @@ public class JSONReader {
         Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
         List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap);
 
-        return new JSONContainer(numOfRows, numOfCols,gameType, boardInfo, stringBoard, conversionMap, creatureMap);
+        return new JSONContainer(numOfRows, numOfCols,gameType, language ,boardInfo, stringBoard, conversionMap, creatureMap);
     }
 
     /*

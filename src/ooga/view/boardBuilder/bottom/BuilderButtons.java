@@ -44,8 +44,8 @@ public class BuilderButtons {
         myStage = stage;
         myWidth = width;
         myHeight = height;
-        myNodeBuilder = new UINodeFactory();
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
+        myNodeBuilder = new UINodeFactory(myController);
+        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         cellSize = size;
         myBoardView = boardView;
         objectList = new ArrayList<>();

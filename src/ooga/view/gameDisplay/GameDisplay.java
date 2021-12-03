@@ -38,7 +38,7 @@ public class GameDisplay {
         myScene = new Scene(root, width, height);
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-        myGameButtons = new GameButtons(stage, width, height, myController, mySimManager);
+        myGameButtons = new GameButtons(stage, width, height, myController, mySimManager, language);
         myController.restartGame();
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     }
@@ -54,8 +54,8 @@ public class GameDisplay {
     }
 
     public void showGameOverPopup() {
-        UINodeFactory UINodeFactory = new UINodeFactory();
-        PopupFactory myPopupFactory = new PopupFactory();
+        UINodeFactory UINodeFactory = new UINodeFactory(myController);
+        PopupFactory myPopupFactory = new PopupFactory(myController);
         Popup gameOverPopup = myPopupFactory.makePopup("GameOverPopup");
         Node popupHome = UINodeFactory.makeButton(myResources.getString("GoHomeButton"), null, "GameOverHome","GameOverHomeID", e -> myGameButtons.goHome());
         Node popupRestart = UINodeFactory.makeButton(myResources.getString("Reset"), null, "GameOverHome","GameOverRestartID", e -> myGameButtons.restartGame());
