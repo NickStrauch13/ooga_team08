@@ -1,9 +1,11 @@
 package ooga.controller;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import javafx.stage.Stage;
 import java.lang.Integer;
 
@@ -55,7 +57,9 @@ public class Controller {
     private Map<Integer, String> creatureMap;
     private JSONReader reader;
     private FileReader myFileReader;
+    private FileWriter myFileWriter;
     private CSVReader myCSVReader;
+    private CSVWriter myCSVWriter;
 
     private ErrorView myErrorView;
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
@@ -80,7 +84,9 @@ public class Controller {
         animationSpeed = 0.3;
         myErrorView = new ErrorView();
         myFileReader = new FileReader(SCORE_FILE);
+        myFileWriter = new FileWriter(SCORE_FILE);
         myCSVReader = new CSVReader(myFileReader);
+        myCSVWriter = new CSVWriter(myFileWriter);
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -303,6 +309,14 @@ public class Controller {
 
 
     /**
+     * Adds a new Username:Score combo to the high score CSV file
+     * @param nameAndScore String array where the first element is the name and the second element is the score
+     */
+    public void addScoreToCSV(String[] nameAndScore){
+        myCSVWriter.writeNext(nameAndScore);
+    }
+
+    /**
      * Read high score CSV and get the top ten scores.
      * @return List of string arrays where each String array is a single username:score combo.
      */
@@ -315,6 +329,7 @@ public class Controller {
         }
         return findTopTenScores(allScoreData);
     }
+
 
     private List<String[]> findTopTenScores(List<String[]> allScores){
         List<String[]> topTen = new ArrayList<>();
