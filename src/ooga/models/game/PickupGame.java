@@ -30,4 +30,6 @@ public interface PickupGame {
 
     public String getGameType();
 
+    public void nextLevel();
+
 }

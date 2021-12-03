@@ -364,7 +364,7 @@ public class Game implements PickupGame {
     /**
      * Increments the level.
      */
-    private void nextLevel(){
+    public void nextLevel(){
         level+=1;
         timer= (int) (5000/Math.pow(1.1,level));
     }
