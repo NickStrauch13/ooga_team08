@@ -18,6 +18,7 @@ import util.DukeApplicationTest;
 public class GameScreenTests extends DukeApplicationTest {
   private Controller myController;
   private Button playButton;
+  private Button resetButton;
 
   @Override
   public void start(Stage stage)
@@ -29,6 +30,7 @@ public class GameScreenTests extends DukeApplicationTest {
   @BeforeEach
   public void setUp() {
     playButton = lookup("#PlayButtonID").query();
+    resetButton = lookup("#ResetButtonID").query();
   }
 
   @Test
@@ -43,6 +45,7 @@ public class GameScreenTests extends DukeApplicationTest {
     clickOn(playButton);
     sleep(2000);
     clickOn(playButton);
+    clickOn(resetButton);
   }
 
   @Test
@@ -50,13 +53,18 @@ public class GameScreenTests extends DukeApplicationTest {
     clickOn(playButton);
     sleep(300);
     clickOn(playButton);
+    clickOn(resetButton);
   }
 
   @Test
-  public void clickOnResetButton(){
-    Button resetButton = lookup("#ResetButtonID").query();
+  public void clickOnResetButtonAfterGameWasStarted(){
+    clickOn(playButton);
+    sleep(500);
+    int prevScore = myController.getScore();
     clickOn(resetButton);
-    //TODO improve test when reset button functionality is added.
+    sleep(400);
+    int resetScore = myController.getScore();
+    assertNotEquals(prevScore, resetScore);
   }
 
   @Test
@@ -73,8 +81,8 @@ public class GameScreenTests extends DukeApplicationTest {
     sleep(340);
     robot.press(KeyCode.RIGHT).release(KeyCode.RIGHT);
     sleep(500);
-
     assertNotEquals(myController.getUserPosition()[0], startPos[0]);
+    clickOn(resetButton);
   }
 
   @Test
@@ -87,12 +95,39 @@ public class GameScreenTests extends DukeApplicationTest {
     sleep(2300);
     robot.press(KeyCode.LEFT).release(KeyCode.LEFT);
     sleep(620);
-    Button resetButton = lookup("#ResetButtonID").query();
     clickOn(resetButton);
     assertEquals(startPos[0], myController.getUserPosition()[0]);
     sleep(100);
   }
 
+  @Test
+  public void startGameAndLetPacmanDieOnceAndThenCheckLives(){
+    clickOn(playButton);
+    int startLives = myController.getLives();
+    FxRobot robot = new FxRobot();
+    sleep(700);
+    robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
+    sleep(5000);
+    int finalLives = myController.getLives();
+    assertNotEquals(startLives, finalLives);
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void startGameAndEatGhostToGetScoreBoost(){
+    clickOn(playButton);
+    int startScore = myController.getScore();
+    FxRobot robot = new FxRobot();
+    robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
+    sleep(1500);
+    robot.press(KeyCode.RIGHT).release(KeyCode.RIGHT);
+    sleep(400);
+    robot.press(KeyCode.LEFT).release(KeyCode.LEFT);
+    sleep(2000);
+    int finalScore = myController.getScore();
+    assertNotEquals(startScore, finalScore);
+    clickOn(resetButton);
+  }
 
 
 }
