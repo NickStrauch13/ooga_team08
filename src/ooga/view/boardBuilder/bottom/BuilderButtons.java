@@ -15,6 +15,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import ooga.controller.BasicController;
 import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.center.BoardView;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class BuilderButtons {
-    private BasicController myController;
+    private ViewerControllerInterface myController;
     private Stage myStage;
     private int myWidth;
     private int myHeight;
@@ -40,7 +41,7 @@ public class BuilderButtons {
     private int cellSize;
 
 
-    public BuilderButtons(Stage stage, int width, int height, BasicController controller, int size, BoardView boardView, BuilderDisplay builderDisplay){
+    public BuilderButtons(Stage stage, int width, int height,ViewerControllerInterface controller, int size, BoardView boardView, BuilderDisplay builderDisplay){
         myController = controller;
         myStage = stage;
         myWidth = width;

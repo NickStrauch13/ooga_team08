@@ -1,7 +1,6 @@
 package ooga.view.home;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
@@ -15,8 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import ooga.controller.BasicController;
-import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
@@ -34,9 +32,9 @@ public class HomeScreen {
   private ResourceBundle myResources;
   private Scene myScene;
   private static final String SCORE_DIVIDER = "%s-----------%s";
-  private BasicController myController;
+  private ViewerControllerInterface myController;
 
-  public HomeScreen(Stage stage, int width, int height, BasicController controller) {
+  public HomeScreen(Stage stage, int width, int height, ViewerControllerInterface controller) {
     root = new BorderPane();
     myController = controller;
     myWidth = width;

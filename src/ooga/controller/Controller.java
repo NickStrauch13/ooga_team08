@@ -24,7 +24,7 @@ import java.util.List;
 
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
-public class Controller implements CheatControllerInterface,BasicController{
+public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface{
 
     // TODO: Constant values should be in a file probably - enum?
     public static final Dimension DEFAULT_SIZE = new Dimension(1000, 600);
