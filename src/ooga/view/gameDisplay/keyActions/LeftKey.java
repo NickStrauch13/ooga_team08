@@ -1,12 +1,13 @@
 package ooga.view.gameDisplay.keyActions;
 
+import ooga.controller.Controller;
 import ooga.view.gameDisplay.center.BoardView;
 
 public class LeftKey extends KeyViewAction{
   private BoardView myBoardView;
 
-  public LeftKey(BoardView boardView){
-    super(boardView);
+  public LeftKey(BoardView boardView, Controller controller){
+    super(boardView, controller);
     myBoardView = boardView;
   }
 
