@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import ooga.controller.BasicController;
 import ooga.controller.Controller;
 
 
@@ -21,7 +22,7 @@ public class UINodeFactory {
   private static final String DEFAULT_STYLESHEET =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
   private ResourceBundle myResources;
-  public UINodeFactory(Controller myController){
+  public UINodeFactory(BasicController myController){
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
 
   }

@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import ooga.controller.BasicController;
 import ooga.controller.Controller;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.bottom.BuilderButtons;
@@ -32,13 +33,13 @@ public class BuilderDisplay {
     private static final int SPACING = 5;
     private static final String PIECE_PATH = "ooga.view.gameDisplay.gamePieces.%sPiece";
     private int cellSize = 25;
-    private Controller myController;
+    private BasicController myController;
     private UINodeFactory myNodeBuilder;
     private ResourceBundle myResources;
     private BuilderButtons myBuilderButtons;
     private ArrayList<String> userAdded;
 
-    public BuilderDisplay(Stage stage, int width, int height, Controller controller) {
+    public BuilderDisplay(Stage stage, int width, int height, BasicController controller) {
         myController = controller;
         myGameStats = new GameStats(myController);
         myBoardView = new BoardView(myController);

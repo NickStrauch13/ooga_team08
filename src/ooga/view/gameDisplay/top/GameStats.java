@@ -1,6 +1,7 @@
 package ooga.view.gameDisplay.top;
 
 import javafx.scene.layout.HBox;
+import ooga.controller.BasicController;
 import ooga.controller.Controller;
 import ooga.view.UINodeFactory.UINodeFactory;
 import javafx.scene.control.Label;
@@ -10,7 +11,7 @@ import java.util.ResourceBundle;
 
 public class GameStats {
     private UINodeFactory nodeBuilder;
-    private Controller myController;
+    private BasicController myController;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
     private static final String DEFAULT_STYLESHEET =
             "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
@@ -19,7 +20,7 @@ public class GameStats {
     private Label numLivesText;
     private Label numLevelText;
 
-    public GameStats(Controller controller) {
+    public GameStats(BasicController controller) {
         myController = controller;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         nodeBuilder = new UINodeFactory(myController);

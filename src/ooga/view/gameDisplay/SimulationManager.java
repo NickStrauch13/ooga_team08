@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+import ooga.controller.BasicController;
 import ooga.controller.Controller;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
@@ -17,7 +18,7 @@ import ooga.view.popups.PopupFactory;
 
 public class SimulationManager {
     private static final String KEY_PATH = "ooga.view.gameDisplay.keyActions.%sKey";
-    private Controller myController;
+    private BasicController myController;
     private Timeline myAnimation;
     private double myAnimationRate;
     private static final double DELAY = .1;
@@ -30,7 +31,7 @@ public class SimulationManager {
     private static final double initialAnimationRate =10.0;
 
 
-    public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
+    public SimulationManager(BasicController controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
         myController = controller;
         myBoardView = boardView;
         myAnimationRate = initialAnimationRate; //TODO link to json

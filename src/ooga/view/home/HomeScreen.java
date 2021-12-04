@@ -15,6 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import ooga.controller.BasicController;
 import ooga.controller.Controller;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
@@ -33,9 +34,9 @@ public class HomeScreen {
   private ResourceBundle myResources;
   private Scene myScene;
   private static final String SCORE_DIVIDER = "%s-----------%s";
-  private Controller myController;
+  private BasicController myController;
 
-  public HomeScreen(Stage stage, int width, int height, Controller controller) {
+  public HomeScreen(Stage stage, int width, int height, BasicController controller) {
     root = new BorderPane();
     myController = controller;
     myWidth = width;

@@ -11,7 +11,7 @@ public interface GameDisplay {
      * @param controller
      * @param boardView
      */
-    void GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, Controller controller, BoardView boardView);
+    void GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, BasicController controller, BoardView boardView);
 
     /**
      * Sets the new scene which will show the actual pacman games

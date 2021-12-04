@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import ooga.controller.BasicController;
 import ooga.controller.Controller;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.gameDisplay.GameDisplay;
@@ -24,11 +25,11 @@ public class GameButtons {
   private final String ICONS = String.format("/%sviewIcons/", DEFAULT_RESOURCE_PACKAGE.replace(".", "/"));
   private final ImageView PLAY_ICON = new ImageView(String.format("%splay.png", ICONS));
   private final ImageView PAUSE_ICON = new ImageView(String.format("%spause.png", ICONS));
-  private Controller myController;
+  private BasicController myController;
   private SimulationManager mySimManager;
   private Button playPauseButton;
 
-  public GameButtons(Stage stage, int width, int height, Controller controller, SimulationManager simManager, String language){
+  public GameButtons(Stage stage, int width, int height, BasicController controller, SimulationManager simManager, String language){
     myController = controller;
     mySimManager = simManager;
     myStage = stage;

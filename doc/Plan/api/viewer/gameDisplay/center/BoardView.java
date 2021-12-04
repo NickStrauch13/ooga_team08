@@ -4,7 +4,7 @@ public interface PacManDisplay {
      * Creates a boardView that adds and positions view objects on the screen
      * @param controller
      */
-    BoardView(Controller controller);
+    BoardView(BasicController controller);
 
     /**
      * Initializes the displayed grid list at the start of the game
