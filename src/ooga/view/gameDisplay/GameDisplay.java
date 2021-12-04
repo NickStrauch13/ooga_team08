@@ -5,7 +5,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import ooga.controller.BasicController;
 import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
@@ -24,11 +26,11 @@ public class GameDisplay {
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
     private static final String DEFAULT_STYLESHEET =
             "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
-    private Controller myController;
+    private ViewerControllerInterface myController;
     private SimulationManager mySimManager;
     private ResourceBundle myResources;
 
-    public GameDisplay(Stage stage, int width, int height, String viewMode, String language,  String gameType, Controller controller, BoardView boardView) {
+    public GameDisplay(Stage stage, int width, int height, String viewMode, String language, String gameType, ViewerControllerInterface controller, BoardView boardView) {
         myController = controller;
         myBoardView = boardView;
         myGameStats = new GameStats(myController);

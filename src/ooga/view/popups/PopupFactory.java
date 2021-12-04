@@ -6,7 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import ooga.controller.BasicController;
 import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 
 public class PopupFactory {
@@ -20,7 +22,7 @@ public class PopupFactory {
   private static final int BOX_SPACING = 10;
   private VBox myVBox;
 
-  public PopupFactory(Controller myController){
+  public PopupFactory(ViewerControllerInterface myController){
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
     myNodeFactory = new UINodeFactory(myController);
   }

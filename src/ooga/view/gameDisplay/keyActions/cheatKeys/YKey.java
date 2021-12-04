@@ -1,13 +1,14 @@
 package ooga.view.gameDisplay.keyActions.cheatKeys;
 
 import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 
 public class YKey extends KeyViewAction {
-  private Controller myController;
+  private ViewerControllerInterface myController;
 
-  public YKey(BoardView boardView, Controller controller){
+  public YKey(BoardView boardView, ViewerControllerInterface controller){
     super(boardView, controller);
     myController = controller;
   }

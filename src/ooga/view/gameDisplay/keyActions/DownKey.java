@@ -1,12 +1,13 @@
 package ooga.view.gameDisplay.keyActions;
 
 import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 
 public class DownKey extends KeyViewAction{
   private BoardView myBoardView;
 
-  public DownKey(BoardView boardView, Controller controller){
+  public DownKey(BoardView boardView, ViewerControllerInterface controller){
     super(boardView, controller);
     myBoardView = boardView;
   }

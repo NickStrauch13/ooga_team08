@@ -1,6 +1,7 @@
 package ooga.view.gameDisplay.keyActions;
 
 import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 
 /**
@@ -13,7 +14,7 @@ public abstract class KeyViewAction {
   protected static final int HALF_ROTATION = 180;
   protected static final int THREE_QUART_ROTATION = 270;
 
-  public KeyViewAction(BoardView boardView, Controller controller){
+  public KeyViewAction(BoardView boardView, ViewerControllerInterface controller){
   }
 
   /**
