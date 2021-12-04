@@ -1,12 +1,13 @@
 package ooga.view.gameDisplay.keyActions;
 
+import ooga.controller.Controller;
 import ooga.view.gameDisplay.center.BoardView;
 
 public class UpKey extends KeyViewAction{
   private BoardView myBoardView;
 
-  public UpKey(BoardView boardView){
-    super(boardView);
+  public UpKey(BoardView boardView, Controller controller){
+    super(boardView, controller);
     myBoardView = boardView;
   }
 
