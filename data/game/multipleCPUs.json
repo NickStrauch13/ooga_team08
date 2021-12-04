@@ -27,6 +27,6 @@
     "5" : "CPUGHOST"
   },
 
-  "GAME_TYPE": "PACMAN"
-
+  "GAME_TYPE": "PACMAN",
+  "LANGUAGE": "ENGLISH"
 }

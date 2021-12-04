@@ -32,7 +32,6 @@ public class HomeScreen {
   private UINodeFactory myNodeBuilder;
   private ResourceBundle myResources;
   private Scene myScene;
-  private String language;
   private static final String SCORE_DIVIDER = "%s-----------%s";
   private Controller myController;
 
@@ -143,7 +142,8 @@ public class HomeScreen {
    */
   public void startNewGameForViewTests(String filePath){
     myController.initializeGame(filePath);
-    GameDisplay gd = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
+    GameDisplay gd = new GameDisplay(myStage, myWidth, myHeight, "Default",
+        myController.getLanguage(),  "Pacman", myController, myController.getBoardView());
     gd.setMainDisplay("Test");
   }
 
