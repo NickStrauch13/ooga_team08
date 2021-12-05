@@ -31,6 +31,7 @@ public class GameDisplay {
         myController = controller;
         myBoardView = boardView;
         myGameStats = new GameStats(myController);
+        myGameButtons = new GameButtons(stage, width, height, myController, mySimManager, language);
         mySimManager = new SimulationManager(myController,myGameStats, boardView, this);
         myStage = stage;
         root = new BorderPane();
@@ -38,7 +39,7 @@ public class GameDisplay {
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
         DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-        myGameButtons = new GameButtons(stage, width, height, myController, mySimManager, language);
+
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     }
 

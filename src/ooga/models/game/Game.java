@@ -52,6 +52,7 @@ public class Game implements PickupGame {
     private boolean isPredator;
     private boolean isHard;
     private int startTime;
+    private boolean isPickupsValidWin;
 
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize, Map<String, String> generalSettings){
         myBoard=board;
@@ -74,8 +75,7 @@ public class Game implements PickupGame {
         startTime=timer;
         lives=Integer.parseInt(gameSettings.get("LIVES"));
         isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
-
-
+        isPickupsValidWin = Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))==1;
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -110,7 +110,7 @@ public class Game implements PickupGame {
             }
         }
         else {
-            if (checkPickUps()) {
+            if (checkPickUps()&&isPickupsValidWin) {
                 nextLevel();
                 return;
             }

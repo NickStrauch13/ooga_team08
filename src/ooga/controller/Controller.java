@@ -31,7 +31,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final int WIDTH = 1000; // TODO: properties file
     private final int HEIGHT = 600;
     public final int CELL_SIZE = 25;
-
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
 
     // TODO: Should be put into a properties file?
@@ -155,8 +154,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     }
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-
-
         JSONContainer container = myReader.readJSONConfig();
         myGameSettings = container.getMyGameSettings();
         language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE"));
@@ -201,20 +198,18 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
                 String objectName = stringBoard.get(row).get(col);//TODO MAKE SURE NOT SETTINGS
-                if (myGameSettings.getAllSettings().containsKey(objectName) && !myGameSettings.getAllSettings().get(objectName).isEmpty()) {
-                    if(!objectName.equals("EMPTY")) {
-                        if (gameObjectMap.containsValue(objectName)) {
-                            boardView.addBoardPiece(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                if(!objectName.equals("EMPTY")) {
+                    if (gameObjectMap.containsValue(objectName)) {
+                        boardView.addBoardPiece(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                    }
+                    else {
+                        if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
+                            boardView.addUserCreature(row, col, objectName,myGameSettings.getAllSettings().get(objectName));
                         }
-                        else {
-                            if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
-                                boardView.addUserCreature(row, col, objectName,myGameSettings.getAllSettings().get(objectName));
-                            }
-                            else if (objectName.equals("CPUGHOST")){
-                                boardView.addCPUCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
-                            }
+                        else if (objectName.equals("CPUGHOST")){
+                            boardView.addCPUCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                        }
 
-                        }
                     }
                 }
             }
@@ -468,7 +463,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     }
 
     public String getGameType() {
-        return myGameSettings.getGeneralSettings().get("GAME_TYPE");
+        return myGameSettings.getGeneralSettings().get("GAME_TITLE");
     }
 
 
