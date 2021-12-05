@@ -186,7 +186,7 @@ public class BoardView {
     MovingPiece creaturePiece = null;
     try {
       Class<?> clazz = Class.forName(creatureName);
-      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class)
+      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class,Map.class)
           .newInstance(myController.getCellSize(),myCreatureValues);
     }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
       e.printStackTrace(); //TODO improve? or is this already handled in controller

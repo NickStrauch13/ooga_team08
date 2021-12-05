@@ -21,7 +21,7 @@
     "2" : "STATECHANGER",
     "3" : "SCOREMULTIPLIER",
     "6" : "PORTAL",
-    "7" : "WALLBREAKER",
+    "7" : "GHOSTSLOWER",
     "8" : "EXTRALIFE",
     "9" : "EMPTY",
     "10" : "INVINCIBILITY",
@@ -74,7 +74,7 @@
     "POWERUP_SIZE": "15"
   },
 
-  "WALLBREAKER": {
+  "GHOSTSLOWER": {
     "POWERUP_COLOR": "YELLOW",
     "POWERUP_SIZE": "15"
   },

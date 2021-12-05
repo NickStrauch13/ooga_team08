@@ -25,6 +25,7 @@ public class ScoreboosterPiece extends GamePiece{
         dotRadius = Integer.parseInt(myValues.get("POWERUP_SIZE"));//TODO Make parser parse out non-integer data
       }
     }
+    setMyPiece(makeNode());
   }
 
   @Override

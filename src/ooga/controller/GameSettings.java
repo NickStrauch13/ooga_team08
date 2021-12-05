@@ -21,11 +21,11 @@ public class GameSettings {
     public Map<String, String> getWallSettings() {return myGameSettings.get("WALL");}
     public Map<String, String> getScoreBoosterSettings() { return myGameSettings.get("SCOREBOOSTER");}
     public Map<String, String> getStateChangerSettings() {return myGameSettings.get("STATECHANGER");}
-    public Map<String, String> getScoreMultplierSettings() {return myGameSettings.get("SCOREMULTIPLIER");}
+    public Map<String, String> getScoreMultiplierSettings() {return myGameSettings.get("SCOREMULTIPLIER");}
     public Map<String, String> getPortalSettings() {return myGameSettings.get("PORTAL");}
-    public Map<String, String> getWallBreakerSettings() {return myGameSettings.get("WALLBREAKER");}
+    public Map<String, String> ghostSlowerSettings() {return myGameSettings.get("GHOSTSLOWER");}
     public Map<String, String> getExtraLifeSettings() { return myGameSettings.get("EXTRALIFE");}
-    public Map<String, String> getInvicibilitySettings() {return myGameSettings.get("INVINCIBILITY");}
+    public Map<String, String> getInvincibilitySettings() {return myGameSettings.get("INVINCIBILITY");}
     public Map<String, String> getSpeedCutterSettings() {return myGameSettings.get("SPEEDCUTTER");}
     public Map<String, String> getWinLevelSettings() {return myGameSettings.get("WINLEVEL");}
 

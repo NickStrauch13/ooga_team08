@@ -17,6 +17,7 @@ public class CpughostPiece extends MovingPiece {
         if(myValues.containsKey("CPU_IMAGE")){
             imagePath = myValues.get("CPU_IMAGE");
         }
+        setMyPiece(makeNode());
     }
 
     @Override

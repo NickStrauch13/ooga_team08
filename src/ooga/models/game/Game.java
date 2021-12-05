@@ -82,6 +82,11 @@ public class Game implements PickupGame {
     public void setUserSpeed(int i){
         myUserControlled.setSpeed(i);
     }
+    public void setCPUSpeed(){
+        for(CPUCreature creature: activeCPUCreatures) {
+            creature.setSpeed(creature.getSpeed()*2);
+        }
+    }
 
     public void step() {
         timer--;

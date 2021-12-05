@@ -88,7 +88,7 @@ public class JSONReader {
         Map<String, String> userSettings = getSettingMap(jsonData, "PACMAN");
         Map<String, String> CPUSettings = getSettingMap(jsonData, "CPUGHOST");
         Map<String, String> wallSettings = getSettingMap(jsonData, "WALL");
-        Map<String, String> wallBreakerSettings = getSettingMap(jsonData, "WALLBREAKER");
+        Map<String, String> ghostSlowerSettings = getSettingMap(jsonData, "GHOSTSLOWER");
         Map<String, String> extraLifeSettings = getSettingMap(jsonData, "EXTRALIFE");
         Map<String, String> scoreBoosterSettings = getSettingMap(jsonData, "SCOREBOOSTER");
         Map<String, String> stateChangerSettings = getSettingMap(jsonData, "STATECHANGER");
@@ -101,7 +101,7 @@ public class JSONReader {
         Map<String,Map<String,String>> mapList = Map.ofEntries(Map.entry("SETTINGS",settingMap),
                 Map.entry("PACMAN",userSettings), Map.entry("CPUGHOST",CPUSettings),Map.entry( "WALL", wallSettings),
                 Map.entry("SCOREBOOSTER", scoreBoosterSettings),Map.entry("STATECHANGER", stateChangerSettings),
-                Map.entry("SCOREMULTIPLIER", scoreMultiplierSettings),Map.entry( "WALLBREAKER", wallBreakerSettings),
+                Map.entry("SCOREMULTIPLIER", scoreMultiplierSettings),Map.entry( "GHOSTSLOWER", ghostSlowerSettings),
                 Map.entry("EXTRALIFE", extraLifeSettings),Map.entry( "INVINCIBILITY", invincibilitySettings),
                 Map.entry("PORTAL",portalSettings),Map.entry( "SPEEDCUTTER",speedCutterSettings),
                 Map.entry("WINLEVEL", winLevelSettings));

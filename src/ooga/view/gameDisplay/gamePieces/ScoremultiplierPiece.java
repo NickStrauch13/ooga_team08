@@ -25,6 +25,7 @@ public class ScoremultiplierPiece extends GamePiece{
         edge = Integer.parseInt(myValues.get("POWERUP_SIZE"));//TODO Make parser parse out non-integer data
       }
     }
+    setMyPiece(makeNode());
   }
 
   @Override

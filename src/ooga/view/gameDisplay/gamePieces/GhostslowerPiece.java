@@ -8,12 +8,12 @@ import java.util.Map;
 /**
  * Class that represents the dot pickup pieces in the view board.
  */
-public class WallbreakerPiece extends GamePiece{
+public class GhostslowerPiece extends GamePiece{
   private int dotRadius = 5;
   private Color myColor = Color.BLACK;
   private static final String CSS_ID = "dotPiece";
 
-  public WallbreakerPiece(Integer cellSize, Map<String, String> myValues){
+  public GhostslowerPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
     if (myValues != null) {
       if(myValues.containsKey("POWERUP_COLOR")){
@@ -24,6 +24,7 @@ public class WallbreakerPiece extends GamePiece{
         dotRadius = Integer.parseInt(myValues.get("POWERUP_SIZE"));//TODO Make parser parse out non-integer data
       }
     }
+    setMyPiece(makeNode());
   }
 
   @Override

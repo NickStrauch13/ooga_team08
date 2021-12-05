@@ -7,11 +7,11 @@
     ["0", "5", "0", "0", "0", "1", "0", "0", "1", "0"],
     ["0", "1", "1", "1", "0", "1", "1", "1", "1", "0"],
     ["0", "1", "0", "0", "0", "1", "0", "0", "1", "0"],
-    ["9", "1", "1", "1", "1", "1", "0", "1", "1", "9"],
+    ["6", "1", "1", "1", "1", "1", "0", "1", "1", "6"],
     ["0", "0", "1", "0", "0", "0", "0", "0", "1", "0"],
     ["0", "1", "1", "1", "1", "1", "1", "1", "1", "0"],
     ["0", "0", "0", "1", "0", "0", "0", "0", "1", "0"],
-    ["0", "1", "1", "1", "1", "1", "4", "1", "2", "0"],
+    ["0", "1", "1", "12", "1", "1", "4", "1", "1", "0"],
     ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
   ],
 
@@ -21,7 +21,7 @@
     "2" : "STATECHANGER",
     "3" : "SCOREMULTIPLIER",
     "6" : "PORTAL",
-    "7" : "WALLBREAKER",
+    "7" : "GHOSTSLOWER",
     "8" : "EXTRALIFE",
     "9" : "EMPTY",
     "10" : "INVINCIBILITY",
@@ -44,11 +44,11 @@
   },
 
   "PACMAN" : {
-    "USER_IMAGE": "Path"
+    "USER_IMAGE": "ooga/view/resources/viewIcons/pacmanImage.png"
   },
 
   "CPUGHOST": {
-    "CPU_IMAGE": "Path"
+    "CPU_IMAGE": "ooga/view/resources/viewIcons/ghostImage.png"
   },
 
   "WALL" : {
@@ -66,13 +66,13 @@
   },
 
   "SCOREMULTIPLIER": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "0,255,0",
+    "POWERUP_SIZE": "8"
   },
 
-  "WALLBREAKER": {
+  "GHOSTSLOWER": {
     "POWERUP_COLOR": "0,0,0",
-    "POWERUP_SIZE": "15"
+    "POWERUP_SIZE": "8"
   },
 
   "EXTRALIFE": {

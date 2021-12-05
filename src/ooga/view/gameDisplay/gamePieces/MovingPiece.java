@@ -1,6 +1,8 @@
 package ooga.view.gameDisplay.gamePieces;
 
 import java.util.List;
+import java.util.Map;
+
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import ooga.controller.Controller;
@@ -13,9 +15,11 @@ public abstract class MovingPiece extends GamePiece{
 
   private ImageView myCreature;
 
-  public MovingPiece(int cellSize){
+  public MovingPiece(Integer cellSize){
     super(cellSize);
   }
+
+
 
   /**
    * Updates the position of the MovingPiece ImageView Node object.

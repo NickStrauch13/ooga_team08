@@ -17,7 +17,6 @@ public abstract class GamePiece{
     myCellSize = cellSize;
     myRow = 0;
     myCol = 0;
-    myPiece = makeNode();
   }
 
   /**
@@ -26,6 +25,10 @@ public abstract class GamePiece{
    */
   public Node getPiece(){
     return myPiece;
+  }
+
+  public void setMyPiece(Node myPiece) {
+    this.myPiece = myPiece;
   }
 
   /**
@@ -40,7 +43,7 @@ public abstract class GamePiece{
   }
 
   protected abstract Node makeNode();
-  
+
   protected String getCellIndexID(){
     return String.format("%d,$d", myRow, myCol);
   }
@@ -53,11 +56,11 @@ public abstract class GamePiece{
   protected int getCellSize(){
     return myCellSize;
   }
-  
+
   protected Color parseRGBs(String rgbColor){
     String[] colorValues = rgbColor.split(COMMA); //TODO PARSE OUT NEGATIVE DATA
     return Color.rgb(Integer.parseInt(colorValues[0])%256,Integer.parseInt(colorValues[1])%256,Integer.parseInt(colorValues[2])%256);
   }
-  
+
 }
 

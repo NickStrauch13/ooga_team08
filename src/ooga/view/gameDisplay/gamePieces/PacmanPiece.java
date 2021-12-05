@@ -15,6 +15,7 @@ public class PacmanPiece extends MovingPiece {
         if(myValues.containsKey("USER_IMAGE")){
             imagePath=myValues.get("USER_IMAGE");
         }
+        setMyPiece(makeNode());
     }
 
     @Override
