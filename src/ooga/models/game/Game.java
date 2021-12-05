@@ -22,17 +22,13 @@ public class Game implements PickupGame {
     private int boardYSize;
     private static final int WALL_STATE = 1;
     private static final int EAT_CREATURE_SCORE = 400;
-    private static final String[] POSSIBLE_DIRECTIONS= new String[]{
-            "LEFT","DOWN","UP","RIGHT"
-    };
+    private static final String[] POSSIBLE_DIRECTIONS= new String[]{"LEFT","DOWN","UP","RIGHT"};
     private ResourceBundle myCreatureResources;
     private ResourceBundle myGameTypeThresholds;
     private static final String CREATURE_RESOURCE_PACKAGE = "ooga.models.creatures.resources.";
     private static final String GAME_RESOURCE_PACKAGE = "ooga.models.resources.";
 
-    public int getStepCounter() {
-        return stepCounter;
-    }
+
 
     private int stepCounter;
     private int lives;
@@ -72,10 +68,12 @@ public class Game implements PickupGame {
         lives = Integer.parseInt(gameSettings.get("LIVES"));
         isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
         startTime=timer;
-
-
-
     }
+
+    public int getStepCounter() {
+        return stepCounter;
+    }
+
     public UserCreature getUser(){
         return myUserControlled;
     }
@@ -99,7 +97,6 @@ public class Game implements PickupGame {
     public void step() {
         timer--;
 
-
         if(isPredator){
             if(timer==0){
                 endGame();
@@ -119,6 +116,7 @@ public class Game implements PickupGame {
                 return;
             }
         }
+
         adjustGhostCollisions(gameType);
         if (stepCounter%myUserControlled.getSpeed()==0){
             moveUser();
@@ -126,7 +124,10 @@ public class Game implements PickupGame {
         moveCPUCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
 
         stepCounter++;
+        resetPowerups(stepCounter);
+    }
 
+    private void resetPowerups(int stepCounter){
         if (stepCounter == powerupEndtime){
             myUserControlled.setPoweredUp(false);
             myUserControlled.setSpeed(myUserControlled.getStandardSpeed());
@@ -134,6 +135,7 @@ public class Game implements PickupGame {
             setBfsThreshold(standardBFSThreshold);
         }
     }
+
     public int getTime(){
         return timer/100;
     }
@@ -143,7 +145,6 @@ public class Game implements PickupGame {
             myUserControlled.setPoweredUp(true);
         }
     }
-
 
     public void moveCreatureToCell(int[]cellIndex){
         myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
@@ -158,7 +159,6 @@ public class Game implements PickupGame {
             if (stepCounter%myCellSize==0){
                 setBfsThreshold(bfsThreshold);
                 currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
-                //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             if (stepCounter%currentCreature.getSpeed()==0) {
                 moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
@@ -181,7 +181,6 @@ public class Game implements PickupGame {
         int actualNewPositionX = (currentCreature.getXpos()+xDirection + boardXSize) %boardXSize;
         int actualNewPositionY = (currentCreature.getYpos()+yDirection + boardYSize) %boardYSize;
 
-
         if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
             currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
             return true;
@@ -191,7 +190,7 @@ public class Game implements PickupGame {
 
     private String adjustedMovement(int threshold, CPUCreature cpu) {
         Random r = new Random();
-        boolean usePath = r.nextInt(4)<threshold;
+        boolean usePath = gameSettings.get();
         String movementDirection;
         if (usePath){
             movementDirection = bfsChase(cpu);
@@ -227,17 +226,12 @@ public class Game implements PickupGame {
         return cpuDirection;
     }
 
-    private LinkedList<Integer> getPathtoUser(
-            Map<Integer,List<Integer>> adj,
-            int s, int dest, int v)
-    {
+    private LinkedList<Integer> getPathtoUser(Map<Integer,List<Integer>> adj, int s, int dest, int v) {
         int pred[] = new int[v];
 
         if (!BFS(adj, s, dest, v,pred)) {
-            //System.out.println("Given source and destination are not connected");
             return null;
         }
-
         LinkedList<Integer> path = new LinkedList<Integer>();
         int crawl = dest;
         path.add(crawl);
@@ -245,31 +239,18 @@ public class Game implements PickupGame {
             path.add(pred[crawl]);
             crawl = pred[crawl];
         }
-
-
-//        System.out.println("Path is ::");
-//        for (int i = path.size() - 1; i >= 0; i--) {
-//            System.out.print(path.get(i) + " ");
-//        }
-
         return path;
     }
 
     private boolean BFS(Map<Integer,List<Integer>> adj, int src,int dest, int v, int[] pred) {
         LinkedList<Integer> queue = new LinkedList<Integer>();
         boolean visited[] = new boolean[v];
-        for (int i = 0; i < v; i++) {
-            visited[i] = false;
-            pred[i] = -1;
-        }
-
+        setInitialsforBFS(pred,visited,v);
         visited[src] = true;
         queue.add(src);
-
         while (!queue.isEmpty()) {
             int u = queue.remove();
             for (int i = 0; i < adj.get(u).size(); i++) {
-                //System.out.println(adj.get(u));
                 if (!visited[adj.get(u).get(i)]) {
                     visited[adj.get(u).get(i)] = true;
                     pred[adj.get(u).get(i)] = u;
@@ -281,6 +262,13 @@ public class Game implements PickupGame {
             }
         }
         return false;
+    }
+
+    private void setInitialsforBFS(int[] pred, boolean[]visited, int v){
+        for (int i=0;i<v;i++){
+            pred[i]=-1;
+            visited[i]=false;
+        }
     }
 
     private int getBFSgridCoordinate(Creature currentCreature){
