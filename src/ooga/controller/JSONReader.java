@@ -85,11 +85,8 @@ public class JSONReader {
     private GameSettings getGameSettings(JSONObject jsonData) {
         Map<String, String> settingMap = getSettingMap(jsonData, "SETTINGS");
         Settings basicSettings = new Settings(settingMap);
-
         Map<String, String> userSettings = getSettingMap(jsonData, "USER");
-
         Map<String, String> CPUSettings = getSettingMap(jsonData, "CPU");
-
         Map<String, String> wallSettings = getSettingMap(jsonData, "WALL");
         Map<String, String> wallBreakerSettings = getSettingMap(jsonData, "WALLBREAKER");
         Map<String, String> extraLifeSettings = getSettingMap(jsonData, "EXTRALIFE");
