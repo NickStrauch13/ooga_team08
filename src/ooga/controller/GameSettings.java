@@ -13,18 +13,21 @@ public class GameSettings {
         myGameSettings = gameSettings;
     }
 
-    public Map<String, String> getGeneralSettings() {return myGameSettings.get("general");}
-    public Map<String, String> getUserSettings() {return myGameSettings.get("user");}
-    public Map<String, String> getWallSettings() {return myGameSettings.get("wall");}
-    public Map<String, String> getScoreBoosterSettings() { return myGameSettings.get("scoreBooster");}
-    public Map<String, String> getStateChangerSettings() {return myGameSettings.get("stateChanger");}
-    public Map<String, String> getScoreMultplierSettings() {return myGameSettings.get("scoreMultiplier");}
-    public Map<String, String> getPortalSettings() {return myGameSettings.get("portal");}
-    public Map<String, String> getWallBreakerSettings() {return myGameSettings.get("wallBreaker");}
-    public Map<String, String> getExtraLifeSettings() { return myGameSettings.get("extraLife");}
-    public Map<String, String> getInvicibilitySettings() {return myGameSettings.get("invincibility");}
-    public Map<String, String> getSpeedCutterSettings() {return myGameSettings.get("speedCutter");}
-    public Map<String, String> getWinLevelSettings() {return myGameSettings.get("winLevel");}
+    public Map<String,Map<String,String>> getAllSettings() {
+        return myGameSettings;
+    }
+    public Map<String, String> getGeneralSettings() {return myGameSettings.get("SETTINGS");}
+    public Map<String, String> getUserSettings() {return myGameSettings.get("PACMAN");}
+    public Map<String, String> getWallSettings() {return myGameSettings.get("WALL");}
+    public Map<String, String> getScoreBoosterSettings() { return myGameSettings.get("SCOREBOOSTER");}
+    public Map<String, String> getStateChangerSettings() {return myGameSettings.get("STATECHANGER");}
+    public Map<String, String> getScoreMultiplierSettings() {return myGameSettings.get("SCOREMULTIPLIER");}
+    public Map<String, String> getPortalSettings() {return myGameSettings.get("PORTAL");}
+    public Map<String, String> ghostSlowerSettings() {return myGameSettings.get("GHOSTSLOWER");}
+    public Map<String, String> getExtraLifeSettings() { return myGameSettings.get("EXTRALIFE");}
+    public Map<String, String> getInvincibilitySettings() {return myGameSettings.get("INVINCIBILITY");}
+    public Map<String, String> getSpeedCutterSettings() {return myGameSettings.get("SPEEDCUTTER");}
+    public Map<String, String> getWinLevelSettings() {return myGameSettings.get("WINLEVEL");}
 
 
 }

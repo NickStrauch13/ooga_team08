@@ -11,6 +11,7 @@ public class Invincibility extends Pickup {
 
     public void interact(PickupGame pickupGame){
         pickupGame.getUser().setInvincible(true);
+
         pickupGame.setPowerupEndtime(pickupGame.getStepCounter()+POWERUP_TIME);
         super.interact(pickupGame);
     }

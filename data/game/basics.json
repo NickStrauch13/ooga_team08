@@ -7,21 +7,21 @@
     ["0", "5", "0", "0", "0", "1", "0", "0", "1", "0"],
     ["0", "1", "1", "1", "0", "1", "1", "1", "1", "0"],
     ["0", "1", "0", "0", "0", "1", "0", "0", "1", "0"],
-    ["9", "1", "1", "1", "1", "1", "0", "1", "1", "9"],
+    ["6", "1", "1", "1", "1", "1", "0", "1", "1", "6"],
     ["0", "0", "1", "0", "0", "0", "0", "0", "1", "0"],
     ["0", "1", "1", "1", "1", "1", "1", "1", "1", "0"],
     ["0", "0", "0", "1", "0", "0", "0", "0", "1", "0"],
-    ["0", "1", "1", "1", "1", "1", "4", "1", "2", "0"],
+    ["0", "1", "1", "12", "1", "1", "4", "1", "1", "0"],
     ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
   ],
 
   "OBJECT_MAP": {
-    "0" : "WAll",
+    "0" : "WALL",
     "1" : "SCOREBOOSTER",
     "2" : "STATECHANGER",
     "3" : "SCOREMULTIPLIER",
     "6" : "PORTAL",
-    "7" : "WALLBREAKER",
+    "7" : "GHOSTSLOWER",
     "8" : "EXTRALIFE",
     "9" : "EMPTY",
     "10" : "INVINCIBILITY",
@@ -39,69 +39,65 @@
     "GAME_TYPE": "PACMAN",
     "TIMER": "0",
     "WIN_CONDITION": "LIVES",
-    "CELL_SIZE": "25"
+    "CELL_SIZE": "25",
+    "CSS_FILE_NAME" : "Default.css"
   },
 
-  "USER" : {
-    "USER_IMAGE": "Path"
+  "PACMAN" : {
+    "USER_IMAGE": "ooga/view/resources/viewIcons/pacmanImage.png"
   },
 
-  "CPU": {
-    "CPU_IMAGE": "Path"
+  "CPUGHOST": {
+    "CPU_IMAGE": "ooga/view/resources/viewIcons/ghostImage.png"
   },
 
   "WALL" : {
-    "WALL_COLOR": "WHITE"
-  },
-
-  "FOOD" : {
-    "FOOD_COLOR": "ORANGE",
-    "FOOD_SIZE": "15"
+    "WALL_COLOR": "0,0,255"
   },
 
   "SCOREBOOSTER": {
-    "POWERUP_COLOR": "BLUE",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "213,219,33",
+    "POWERUP_SIZE": "5"
   },
 
   "STATECHANGER": {
-    "POWERUP_COLOR": "RED",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "213,219,33",
+    "POWERUP_SIZE": "8"
   },
 
   "SCOREMULTIPLIER": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "0,255,0",
+    "POWERUP_SIZE": "8"
   },
 
-  "WALLBREAKER": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+  "GHOSTSLOWER": {
+    "POWERUP_COLOR": "0,0,0",
+    "POWERUP_SIZE": "8"
   },
 
   "EXTRALIFE": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "255,0,0",
+    "POWERUP_SIZE": "8"
   },
 
   "INVINCIBILITY": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "255,215,0",
+    "POWERUP_SIZE": "8"
   },
 
   "PORTAL": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "0,0,0",
+    "POWERUP_SIZE": "8"
   },
 
   "SPEEDCUTTER": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "199,26,233",
+    "POWERUP_SIZE": "8"
   },
 
   "WINLEVEL": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "40,179,58",
+    "POWERUP_SIZE": "8"
   }
 
 }

@@ -82,6 +82,11 @@ public class Game implements PickupGame {
     public void setUserSpeed(int i){
         myUserControlled.setSpeed(i);
     }
+    public void setCPUSpeed(){
+        for(CPUCreature creature: activeCPUCreatures) {
+            creature.setSpeed(creature.getSpeed()*2);
+        }
+    }
 
     public void step() {
         timer--;
@@ -108,6 +113,7 @@ public class Game implements PickupGame {
             moveUser();
         }
         moveCPUCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
+
         stepCounter++;
 
         if (stepCounter == powerupEndtime){
@@ -143,7 +149,9 @@ public class Game implements PickupGame {
                 currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
                 //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
-            moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
+            if (stepCounter%currentCreature.getSpeed()==0) {
+                moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
+            }
         }
     }
 

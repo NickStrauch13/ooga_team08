@@ -2,20 +2,18 @@ package ooga.view.gameDisplay.gamePieces;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 
 import java.util.Map;
 
 /**
  * Class that represents the dot pickup pieces in the view board.
  */
-public class WinlevelPiece extends GamePiece{
-  public static final int edge = 25;
-  private Color myColor = Color.GREEN;
-  private int dotRadius = 9;
+public class GhostslowerPiece extends GamePiece{
+  private int dotRadius = 5;
+  private Color myColor = Color.BLACK;
   private static final String CSS_ID = "dotPiece";
 
-  public WinlevelPiece(Integer cellSize, Map<String, String> myValues){
+  public GhostslowerPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
     if (myValues != null) {
       if(myValues.containsKey("POWERUP_COLOR")){
@@ -30,10 +28,10 @@ public class WinlevelPiece extends GamePiece{
   }
 
   @Override
-  protected Rectangle makeNode(){
-    Rectangle rect = new Rectangle(dotRadius,dotRadius);
-    rect.setId(getCellIndexID());
-    rect.setFill(myColor);
-    return rect;
+  protected Circle makeNode(){
+    Circle dot = new Circle(dotRadius);
+    dot.setId(getCellIndexID());
+    dot.setFill(myColor);
+    return dot;
   }
 }
