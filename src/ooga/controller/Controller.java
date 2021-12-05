@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import javafx.stage.Stage;
 import java.lang.Integer;
 
+import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
@@ -46,6 +47,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private static final int HIGH_SCORE_VALS = 10;
     private static final String[] BLANK_ENTRY = new String[]{"","-1"};
     private static final String DEFAULT_USERNAME = "Guest";
+    private static final int MILLION = 1000000;
+    private static final int ONE_HUNDRED = 100;
+    private static final int FIVE_HUNDRED = 500;
 
 
     private Game myGame;
@@ -400,6 +404,46 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     public int getGameTime(){
         return myGame.getTime();
+    }
+
+    public void addOneMillionPoints(){
+        getGame().addScore(MILLION);
+    }
+    public void addOneHundredPoints(){
+        getGame().addScore(ONE_HUNDRED);
+    }
+    public void addFiveHundredPoints(){
+        getGame().addScore(FIVE_HUNDRED);
+    }
+    public void resetGhosts(){
+        List<CPUCreature> ghosts =  getGame().getCPUs();
+        for(CPUCreature ghost: ghosts){
+            ghost.die();
+        }
+    }
+    public void addLife(){
+        getGame().addLives(1);
+    }
+    public void goToNextLevel(){
+        getGame().nextLevel();
+    }
+    public void powerUp() {
+        getGame().getUser().setPoweredUp(true);
+    }
+    public void FreezeGhosts(){
+        getGame().getCPUs().removeAll(getGame().getCPUs());
+    }//TODO (billion, billion)
+    public void RemoveOneMillionPoints(){
+        getGame().addScore(-MILLION);
+    }
+    public void resetUserPosition(){
+        getGame().getUser().die();
+    }
+    public void loseLife(){
+        getGame().addLives(-1);
+    }
+    public void gameOver(){
+        getGame().endGame();
     }
 
 }

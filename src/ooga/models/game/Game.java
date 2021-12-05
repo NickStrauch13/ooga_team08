@@ -81,7 +81,7 @@ public class Game implements PickupGame {
 
     public void step() {
         timer--;
-        System.out.println(timer);
+
 
         if(gameType.equals("ANTIPACMAN")){
             if(timer==0){
