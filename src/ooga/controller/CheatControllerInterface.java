@@ -7,7 +7,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
+@Deprecated
 public interface CheatControllerInterface {
     public void initializeGame(String path);
     public int getCellCoordinate(double pixels);
