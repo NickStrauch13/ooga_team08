@@ -6,16 +6,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Popup;
 import javafx.util.Duration;
-import ooga.controller.BasicController;
-import ooga.controller.Controller;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
-import ooga.view.popups.PopupFactory;
 
 public class SimulationManager {
     private static final String KEY_PATH = "ooga.view.gameDisplay.keyActions.%sKey";
