@@ -471,4 +471,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myGameSettings.getGeneralSettings().get("GAME_TYPE");
     }
 
+
+
 }

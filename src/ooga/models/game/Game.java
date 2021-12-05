@@ -50,6 +50,7 @@ public class Game implements PickupGame {
     private int startingPickUps;
     private Map<String, String> gameSettings;
     private boolean isPredator;
+    private boolean isHard;
     private int startTime;
 
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize, Map<String, String> generalSettings){
@@ -69,6 +70,7 @@ public class Game implements PickupGame {
         timer=Integer.parseInt(gameSettings.get("TIMER"));
         lives = Integer.parseInt(gameSettings.get("LIVES"));
         isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
+        isHard = gameSettings.get("HARD").equals("1");
         startTime=timer;
         lives=Integer.parseInt(gameSettings.get("LIVES"));
         isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
@@ -156,7 +158,7 @@ public class Game implements PickupGame {
         for (CPUCreature currentCreature : activeCPUCreatures){
             if (stepCounter%myCellSize==0){
                 //setBfsThreshold(bfsThreshold);
-                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(false,currentCreature)));
+                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(isHard,currentCreature)));
                 //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             if (stepCounter%currentCreature.getSpeed()==0) {
@@ -169,7 +171,7 @@ public class Game implements PickupGame {
         for (CPUCreature currentCreature : activeCPUCreatures){
             if (stepCounter%myCellSize==0){
                 //setBfsThreshold(bfsThreshold);
-                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(false,currentCreature)));
+                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(isHard,currentCreature)));
                 //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             if (stepCounter%currentCreature.getSpeed()==0) {
@@ -201,10 +203,10 @@ public class Game implements PickupGame {
         return false;
     }
 
-    private String adjustedMovement(boolean random, CPUCreature cpu) {
+    private String adjustedMovement(boolean hard, CPUCreature cpu) {
         Random r = new Random();
         String movementDirection;
-        if (!random){
+        if (hard){
             movementDirection = bfsChase(cpu);
         }
         else{
