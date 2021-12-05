@@ -16,14 +16,13 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
-import ooga.view.boardBuilder.BuilderDisplay;
+//import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.popups.PopupFactory;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-  private static final String DEFAULT_STYLESHEET =
-      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
+  private static String DEFAULT_STYLESHEET;
   private BorderPane root;
   private int myWidth;
   private int myHeight;
@@ -41,6 +40,7 @@ public class HomeScreen {
     myHeight = height;
     myStage = stage;
     myScene = new Scene(root, myWidth, myHeight);
+    DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
     myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
     myNodeBuilder = new UINodeFactory(myController);
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
@@ -76,10 +76,10 @@ public class HomeScreen {
   private Node homeButtons(){
     Button highScoresButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> displayHighScores());
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
-    Button buildBoardButton = myNodeBuilder.makeButton(myResources.getString("BuildBoard"), null,"homeScreenButton","buildBoardButton",e -> startBoardBuilder());
+    //Button buildBoardButton = myNodeBuilder.makeButton(myResources.getString("BuildBoard"), null,"homeScreenButton","buildBoardButton",e -> startBoardBuilder());
     Label inputText = myNodeBuilder.makeLabel(myResources.getString("userNameText"), "inputTextID");
     TextField userName = myNodeBuilder.makeInputField("userNameFieldID", e -> setUserName(e), "");
-    Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton, buildBoardButton);
+    Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton);//TODO buildBoardButton
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
   }
@@ -110,10 +110,10 @@ public class HomeScreen {
     gameDisplay.setMainDisplay("Pacman");
   }
 
-  private void startBoardBuilder() {
-    BuilderDisplay builderDisplay = new BuilderDisplay(myStage, myWidth, myHeight, myController);
-    builderDisplay.setMainDisplay("Board Builder");
-  }
+//  private void startBoardBuilder() {
+//    BuilderDisplay builderDisplay = new BuilderDisplay(myStage, myWidth, myHeight, myController);
+//    builderDisplay.setMainDisplay("Board Builder");
+//  }
 
   private void displayHighScores(){
     PopupFactory highScoreView = new PopupFactory(myController);

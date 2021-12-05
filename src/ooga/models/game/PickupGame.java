@@ -26,10 +26,23 @@ public interface PickupGame {
 
     public ArrayList<int[]> getPortalLocations();
 
+    public void setPortalsGone();
+
+    public void removePortal(int[] portalLocations);
+
     public void moveCreatureToCell(int[] cellIndex);
 
     public String getGameType();
 
     public void nextLevel();
 
+    public void addLife();
+
+    public void setUserSpeed(double i);
+
+    public void wallStateChange(boolean toSet);
+
+    public void multiplyScore(int multiplier);
+
+    public void setCPUSpeed(double v);
 }

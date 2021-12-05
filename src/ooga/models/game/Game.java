@@ -50,8 +50,11 @@ public class Game implements PickupGame {
         myBoard=board;
     }
     private int startingPickUps;
+    private Map<String, String> gameSettings;
+    private boolean isPredator;
+    private int startTime;
 
-    public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize){
+    public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize, Map<String, String> generalSettings){
         myBoard=board;
         pickUpsLeft = numPickUps;
         startingPickUps = numPickUps;
@@ -60,13 +63,20 @@ public class Game implements PickupGame {
         myCreatureResources = ResourceBundle.getBundle(CREATURE_RESOURCE_PACKAGE + "directions");
         myGameTypeThresholds = ResourceBundle.getBundle(GAME_RESOURCE_PACKAGE+"gameTypes");
         level=1;
-        lives=3;
-        score=0;
-        timer = 5000;
         myCellSize = cellSize;
         initializeGhosts();
         boardXSize=cellSize*board.getCols();
         boardYSize=cellSize*board.getRows();
+        gameSettings = generalSettings;
+        timer=Integer.parseInt(gameSettings.get("TIMER"));
+        lives = Integer.parseInt(gameSettings.get("LIVES"));
+        isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
+        startTime=timer;
+
+        lives=Integer.parseInt(gameSettings.get("LIVES"));
+        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
+
+
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -79,11 +89,20 @@ public class Game implements PickupGame {
         return activeCPUCreatures;
     }
 
+    public void setUserSpeed(double i){
+        myUserControlled.setSpeed(i);
+    }
+    public void setCPUSpeed(double multiplier){
+        for(CPUCreature creature: activeCPUCreatures) {
+            creature.setSpeed(creature.getSpeed()*multiplier);
+        }
+    }
+
     public void step() {
         timer--;
 
 
-        if(gameType.equals("ANTIPACMAN")){
+        if(isPredator){
             if(timer==0){
                 endGame();
             }
@@ -91,20 +110,29 @@ public class Game implements PickupGame {
                 nextLevel();
             }
         }
-        if (checkPickUps()){
-            nextLevel();
-            return;
-        }
-        if (checkLives()){
-            endGame();
-            return;
+        else {
+            if (checkPickUps()) {
+                nextLevel();
+                return;
+            }
+
+            if (checkLives()||timer==0) {
+                endGame();
+                return;
+            }
         }
         adjustGhostCollisions(gameType);
-        moveCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
+        if (stepCounter%myUserControlled.getSpeed()==0){
+            moveUser();
+        }
+        moveCPUCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
+
         stepCounter++;
 
         if (stepCounter == powerupEndtime){
-            myUserControlled.setPoweredUp(!myUserControlled.isPoweredUp());
+            myUserControlled.setPoweredUp(false);
+            myUserControlled.setSpeed(myUserControlled.getStandardSpeed());
+            myUserControlled.setInvincible(false);
             setBfsThreshold(standardBFSThreshold);
         }
     }
@@ -123,15 +151,20 @@ public class Game implements PickupGame {
         myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
     }
 
-    private void moveCreaturesPacman(int bfsThreshold) {
-        moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
+    private void moveUser(){
+        moveToNewPossiblePosition(myUserControlled,generateDirectionArray(lastDirection));
+    }
+
+    private void moveCPUCreaturesPacman(int bfsThreshold) {
         for (CPUCreature currentCreature : activeCPUCreatures){
             if (stepCounter%myCellSize==0){
                 setBfsThreshold(bfsThreshold);
                 currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
                 //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
-            moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
+            if (stepCounter%currentCreature.getSpeed()==0) {
+                moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
+            }
         }
     }
 
@@ -329,6 +362,9 @@ public class Game implements PickupGame {
                 }
             }
         }
+        else if (myUserControlled.isInvincible()){
+            return true;
+        }
         else{
             myUserControlled.die();
             loseLife();
@@ -344,7 +380,11 @@ public class Game implements PickupGame {
      */
     public void addScore(int scoreToBeAdded){
         score+=scoreToBeAdded;
-    };
+    }
+
+    public void multiplyScore(int multiplier){
+        score*=multiplier;
+    }
 
     public void resetGame(){
         resetCreatureStates();
@@ -426,5 +466,25 @@ public class Game implements PickupGame {
 
     public ArrayList<int[]> getPortalLocations(){
         return myBoard.getPortalLocations();
+    }
+
+    public ArrayList<int[]> getWallLocations(){
+        return myBoard.getWallLocations();
+    }
+
+    public void setPortalsGone(){myBoard.setPortalsGone();}
+
+    public void removePortal(int[] portalLocations){
+        myBoard.removePortal(portalLocations);
+    }
+
+    public void addLife(){
+        lives++;
+    }
+
+    public void wallStateChange(boolean toSet){
+        for (int[] wall:getWallLocations()){
+            myBoard.setWallatCell(wall,toSet);
+        }
     }
 }

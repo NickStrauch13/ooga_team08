@@ -7,21 +7,26 @@
     ["0", "5", "0", "0", "0", "1", "0", "0", "1", "0"],
     ["0", "1", "1", "1", "0", "1", "1", "1", "1", "0"],
     ["0", "1", "0", "0", "0", "1", "0", "0", "1", "0"],
-    ["9", "1", "1", "1", "1", "1", "0", "1", "1", "9"],
+    ["6", "1", "1", "1", "1", "1", "0", "1", "1", "6"],
     ["0", "0", "1", "0", "0", "0", "0", "0", "1", "0"],
     ["0", "1", "1", "1", "1", "1", "1", "1", "1", "0"],
     ["0", "0", "0", "1", "0", "0", "0", "0", "1", "0"],
-    ["0", "1", "1", "1", "1", "1", "4", "1", "2", "0"],
+    ["0", "1", "1", "7", "1", "1", "4", "1", "1", "0"],
     ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
   ],
 
   "OBJECT_MAP": {
-    "0" : "WAll",
-    "1" : "POWERUP1",
-    "2" : "POWERUP2",
-    "3" : "POWERUP3",
+    "0" : "WALL",
+    "1" : "SCOREBOOSTER",
+    "2" : "STATECHANGER",
+    "3" : "SCOREMULTIPLIER",
     "6" : "PORTAL",
-    "9" : "EMPTY"
+    "7" : "GHOSTSLOWER",
+    "8" : "EXTRALIFE",
+    "9" : "EMPTY",
+    "10" : "INVINCIBILITY",
+    "11" : "SPEEDCUTTER",
+    "12" : "WINLEVEL"
   },
 
   "CREATURE_MAP": {
@@ -29,7 +34,71 @@
     "5" : "CPUGHOST"
   },
 
-  "GAME_TYPE": "PACMAN",
-  "LANGUAGE": "ENGLISH"
+  "SETTINGS": {
+    "LANGUAGE": "ENGLISH",
+    "GAME_TYPE": "PACMAN",
+    "TIMER": "-1",
+    "LIVES": "3",
+    "CELL_SIZE": "25",
+    "CSS_FILE_NAME" : "Default.css",
+    "USER_IS_PREDATOR" : "0"
+  },
+
+  "PACMAN" : {
+    "USER_IMAGE": "ooga/view/resources/viewIcons/pacmanImage.png"
+  },
+
+  "CPUGHOST": {
+    "CPU_IMAGE": "ooga/view/resources/viewIcons/ghostImage.png"
+  },
+
+  "WALL" : {
+    "WALL_COLOR": "0,0,255"
+  },
+
+  "SCOREBOOSTER": {
+    "POWERUP_COLOR": "213,219,33",
+    "POWERUP_SIZE": "5"
+  },
+
+  "STATECHANGER": {
+    "POWERUP_COLOR": "213,219,33",
+    "POWERUP_SIZE": "8"
+  },
+
+  "SCOREMULTIPLIER": {
+    "POWERUP_COLOR": "0,255,0",
+    "POWERUP_SIZE": "8"
+  },
+
+  "GHOSTSLOWER": {
+    "POWERUP_COLOR": "255,192,212",
+    "POWERUP_SIZE": "8"
+  },
+
+  "EXTRALIFE": {
+    "POWERUP_COLOR": "255,0,0",
+    "POWERUP_SIZE": "8"
+  },
+
+  "INVINCIBILITY": {
+    "POWERUP_COLOR": "255,215,0",
+    "POWERUP_SIZE": "8"
+  },
+
+  "PORTAL": {
+    "POWERUP_COLOR": "0,0,0",
+    "POWERUP_SIZE": "8"
+  },
+
+  "SPEEDCUTTER": {
+    "POWERUP_COLOR": "199,26,233",
+    "POWERUP_SIZE": "8"
+  },
+
+  "WINLEVEL": {
+    "POWERUP_COLOR": "40,179,58",
+    "POWERUP_SIZE": "8"
+  }
 
 }

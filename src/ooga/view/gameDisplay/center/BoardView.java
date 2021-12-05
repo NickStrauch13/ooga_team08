@@ -3,6 +3,8 @@ package ooga.view.gameDisplay.center;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javafx.geometry.HPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -20,6 +22,12 @@ public class BoardView {
   private MovingPiece myUserPiece;
   private MovingPiece myCPUPiece;
   private List<Node> myNodeList;
+
+  public List<Node> getMyWallList() {
+    return myWallList;
+  }
+
+  private List<Node> myWallList;
   private List<MovingPiece> myCreatureList;
   private static final String ID_FORMAT = "%s,%s";
   private int cpuCount = 0;
@@ -40,8 +48,9 @@ public class BoardView {
    * @param col
    * @param objectName
    */
-  public Node addBoardPiece(int row, int col, String objectName) {
-      Node pieceNode = pieceReflection(String.format(PIECE_PATH, objectName.substring(0, 1) + objectName.toLowerCase().substring(1))).getPiece();
+  public Node addBoardPiece(int row, int col, String objectName, Map<String, String> myObjectValues) {
+      String formattedString = String.format(PIECE_PATH,objectName.substring(0, 1) + objectName.toLowerCase().substring(1));
+      Node pieceNode = pieceReflection(formattedString, myObjectValues).getPiece();
       pieceNode.setId(String.format(ID_FORMAT, row, col));
       myGrid.add(pieceNode, col, row);
       myGrid.setHalignment(pieceNode, HPos.CENTER);
@@ -55,8 +64,9 @@ public class BoardView {
    * @param col user creature starting column.
    * @param creatureName name of the user creature
    */
-  public void addUserCreature(int row, int col, String creatureName) {
-    myUserPiece = creatureReflection(String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1)));
+  public void addUserCreature(int row, int col, String creatureName,Map<String,String> myCreatureValues) {
+    String formattedString = String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1));
+    myUserPiece = creatureReflection(formattedString,myCreatureValues);
     Node pieceNode = myUserPiece.getPiece();
     pieceNode.setId(creatureName);
     myGroup.getChildren().add(pieceNode);
@@ -70,8 +80,9 @@ public class BoardView {
    * @param col CPU starting col
    * @param creatureName name of the creature
    */
-  public void addCPUCreature(int row, int col, String creatureName){
-    myCPUPiece = creatureReflection(String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1)));
+  public void addCPUCreature(int row, int col, String creatureName,Map<String,String> myCreatureValues){
+    String formattedString = String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1));
+    myCPUPiece = creatureReflection(formattedString,myCreatureValues);
     Node cpuNode = myCPUPiece.getPiece();
     cpuNode.setId(creatureName + cpuCount);
     myGroup.getChildren().add(cpuNode);
@@ -80,12 +91,12 @@ public class BoardView {
     cpuCount++;
   }
 
-  public GamePiece pieceReflection(String objectName) {
+  public GamePiece pieceReflection(String objectName, Map<String, String> myObjectValues) {
     GamePiece gamePiece = null;
     try {
       Class<?> clazz = Class.forName(objectName);
-      gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class)
-          .newInstance(myController.getCellSize());
+        gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class, Map.class)
+                .newInstance(myController.getCellSize(), myObjectValues);
     }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
       //TODO I think this is already checked in the controller parsing of the json file..
       e.printStackTrace(); //TODO make better
@@ -172,12 +183,12 @@ public class BoardView {
     return myGrid;
   }
 
-  public MovingPiece creatureReflection(String creatureName){
+  public MovingPiece creatureReflection(String creatureName, Map<String,String> myCreatureValues){
     MovingPiece creaturePiece = null;
     try {
       Class<?> clazz = Class.forName(creatureName);
-      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class)
-          .newInstance(myController.getCellSize());
+      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class,Map.class)
+          .newInstance(myController.getCellSize(),myCreatureValues);
     }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
       e.printStackTrace(); //TODO improve? or is this already handled in controller
     }

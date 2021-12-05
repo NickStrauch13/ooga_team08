@@ -12,8 +12,7 @@ public class GameStats {
     private UINodeFactory nodeBuilder;
     private ViewerControllerInterface myController;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-    private static final String DEFAULT_STYLESHEET =
-            "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
+    private static String DEFAULT_STYLESHEET;
     private static final String SPACE = "   ";
     private ResourceBundle myResources;
     private Label numScoreText;
@@ -25,9 +24,10 @@ public class GameStats {
         myController = controller;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         nodeBuilder = new UINodeFactory(myController);
+        DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
     }
 
-    public HBox makeStatLabels(){
+    public HBox makeStatLabels(int timer, int lives){
         numLivesText = nodeBuilder.makeLabel(SPACE + myController.getLives(), "numLivesID");
         Label livesText = nodeBuilder.makeLabel(myResources.getString("LivesText"), "livesTextID");
         Node livesVBox = nodeBuilder.makeCol("statsFormat", livesText, numLivesText);
@@ -43,8 +43,15 @@ public class GameStats {
         Label levelText = nodeBuilder.makeLabel(myResources.getString("LevelText"), "levelTextID");
         numLevelText = nodeBuilder.makeLabel(SPACE + myController.getLevel(), "numLevelID");
         Node levelVBox = nodeBuilder.makeCol("statsFormat", levelText, numLevelText);
-        Node myHBox = nodeBuilder.makeRow("statsHolder", livesVBox,timerVBox, scoreVBox,gameTypeVBox, levelVBox);
-        return (HBox) myHBox;
+        HBox myHBox;
+        myHBox = nodeBuilder.makeRow("statsHolder", scoreVBox,gameTypeVBox, levelVBox);
+        if (timer >= 0) {
+            myHBox.getChildren().add(timerVBox);
+        }
+        if (lives >=0) {
+            myHBox.getChildren().add(livesVBox);
+        }
+        return myHBox;
     }
 
     /**

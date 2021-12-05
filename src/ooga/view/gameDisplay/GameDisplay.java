@@ -22,8 +22,7 @@ public class GameDisplay {
     private BoardView myBoardView;
     private GameStats myGameStats;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-    private static final String DEFAULT_STYLESHEET =
-            "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
+    private static String DEFAULT_STYLESHEET;
     private ViewerControllerInterface myController;
     private SimulationManager mySimManager;
     private ResourceBundle myResources;
@@ -37,6 +36,7 @@ public class GameDisplay {
         root = new BorderPane();
         myScene = new Scene(root, width, height);
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
+        DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myGameButtons = new GameButtons(stage, width, height, myController, mySimManager, language);
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
@@ -65,8 +65,8 @@ public class GameDisplay {
     }
 
     private void setupScene(){
-        root.setTop(myGameStats.makeStatLabels());
         root.setCenter(myBoardView.getInitialBoard());
+        root.setTop(myGameStats.makeStatLabels(myController.getTimer(), myController.getLives()));
         root.setBottom(myGameButtons.makeButtonBox());
     }
 

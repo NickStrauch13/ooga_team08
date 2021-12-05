@@ -16,14 +16,91 @@
   ],
 
   "OBJECT_MAP": {
-    "10" : "WAll",
-    "1" : "POWERUP1",
-    "2" : "POWERUP2",
-    "3" : "POWERUP3"
+    "0" : "WAll",
+    "1" : "SCOREBOOSTER",
+    "2" : "STATECHANGER",
+    "3" : "SCOREMULTIPLIER",
+    "6" : "PORTAL",
+    "7" : "GHOSTSLOWER",
+    "8" : "EXTRALIFE",
+    "9" : "EMPTY",
+    "10" : "INVINCIBILITY",
+    "11" : "SPEEDCUTTER",
+    "13" : "WINLEVEL"
   },
 
   "CREATURE_MAP": {
     "4" : "PACMAN",
     "5" : "CPUGHOST"
+  },
+
+  "SETTINGS": {
+    "LANGUAGE": "ENGLISH",
+    "GAME_TYPE": "PACMAN",
+    "TIMER": "0",
+    "WIN_CONDITION": "LIVES",
+    "CELL_SIZE": "25"
+  },
+
+  "USER" : {
+    "USER_IMAGE": "Path"
+  },
+
+  "CPU": {
+    "CPU_IMAGE": "Path"
+  },
+
+  "WALL" : {
+    "WALL_COLOR": "WHITE"
+  },
+
+  "FOOD" : {
+    "FOOD_COLOR": "ORANGE",
+    "FOOD_SIZE": "15"
+  },
+
+  "SCOREBOOSTER": {
+    "POWERUP_COLOR": "BLUE",
+    "POWERUP_SIZE": "15"
+  },
+
+  "STATECHANGER": {
+    "POWERUP_COLOR": "RED",
+    "POWERUP_SIZE": "15"
+  },
+
+  "SCOREMULTIPLIER": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
+  },
+
+  "GHOSTSLOWER": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
+  },
+
+  "EXTRALIFE": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
+  },
+
+  "INVINCIBILITY": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
+  },
+
+  "PORTAL": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
+  },
+
+  "SPEEDCUTTER": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
+  },
+
+  "WINLEVEL": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
   }
 }

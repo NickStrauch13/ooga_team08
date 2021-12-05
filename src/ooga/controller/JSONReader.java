@@ -1,10 +1,10 @@
 package ooga.controller;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import ooga.controller.settings.Settings;
 import ooga.view.popups.ErrorView;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -57,13 +57,14 @@ public class JSONReader {
      * @throws IOException
      * @throws ParseException
      */
+    //TODO: add deprecated methods
     public JSONContainer readJSONConfig() throws IOException, ParseException {
         JSONObject jsonData = extractJSONObject();
 
         int numOfRows = getDimension(jsonData, "ROW_NUMBER");
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
-        String gameType = (String) jsonData.get("GAME_TYPE");
-        String language = (String) jsonData.get("LANGUAGE");
+//        String gameType = (String) jsonData.get("GAME_TYPE");
+//        String language = (String) jsonData.get("LANGUAGE");
 
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
 
@@ -72,7 +73,78 @@ public class JSONReader {
         Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
         List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap);
 
-        return new JSONContainer(numOfRows, numOfCols,gameType, language ,boardInfo, stringBoard, conversionMap, creatureMap);
+        GameSettings gameSettings = getGameSettings(jsonData);
+
+        return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard, conversionMap, creatureMap, gameSettings);
+    }
+
+
+    /*
+    Extract setting information from the game input file
+     */
+    private GameSettings getGameSettings(JSONObject jsonData) {
+        Map<String, String> settingMap = getSettingMap(jsonData, "SETTINGS");
+        Settings basicSettings = new Settings(settingMap);
+        Map<String, String> userSettings = getSettingMap(jsonData, "PACMAN");
+        Map<String, String> CPUSettings = getSettingMap(jsonData, "CPUGHOST");
+        Map<String, String> wallSettings = getSettingMap(jsonData, "WALL");
+        Map<String, String> ghostSlowerSettings = getSettingMap(jsonData, "GHOSTSLOWER");
+        Map<String, String> extraLifeSettings = getSettingMap(jsonData, "EXTRALIFE");
+        Map<String, String> scoreBoosterSettings = getSettingMap(jsonData, "SCOREBOOSTER");
+        Map<String, String> stateChangerSettings = getSettingMap(jsonData, "STATECHANGER");
+        Map<String, String> scoreMultiplierSettings = getSettingMap(jsonData, "SCOREMULTIPLIER");
+        Map<String, String> invincibilitySettings = getSettingMap(jsonData, "INVINCIBILITY");
+        Map<String, String> portalSettings = getSettingMap(jsonData, "PORTAL");
+        Map<String, String> speedCutterSettings = getSettingMap(jsonData, "SPEEDCUTTER");
+        Map<String, String> winLevelSettings = getSettingMap(jsonData, "WINLEVEL");
+
+        Map<String,Map<String,String>> mapList = Map.ofEntries(Map.entry("SETTINGS",settingMap),
+                Map.entry("PACMAN",userSettings), Map.entry("CPUGHOST",CPUSettings),Map.entry( "WALL", wallSettings),
+                Map.entry("SCOREBOOSTER", scoreBoosterSettings),Map.entry("STATECHANGER", stateChangerSettings),
+                Map.entry("SCOREMULTIPLIER", scoreMultiplierSettings),Map.entry( "GHOSTSLOWER", ghostSlowerSettings),
+                Map.entry("EXTRALIFE", extraLifeSettings),Map.entry( "INVINCIBILITY", invincibilitySettings),
+                Map.entry("PORTAL",portalSettings),Map.entry( "SPEEDCUTTER",speedCutterSettings),
+                Map.entry("WINLEVEL", winLevelSettings));
+
+        // TODO: should all food items be a map?
+        return new GameSettings(mapList);
+    }
+
+    /*
+    Extract information about the translation from String values to object names
+     */
+    private Map<String, String> getSettingMap(JSONObject jsonData, String objectType) {
+
+        Map<String, String> conversionMap = new HashMap();
+        Map<String,String> JSONMap = ((HashMap)jsonData.get(objectType));
+
+        for (Object keyObject : JSONMap.keySet()) {
+            String keyString = keyObject.toString().trim();
+//                int key = Integer.parseInt(keyString.trim());
+            String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
+            conversionMap.put(keyString, stringValue);
+        }
+//        System.out.println(conversionMap);
+//        try {
+//            Map JSONMap = ((HashMap) jsonData.get(objectType));
+//
+//            for (Object keyObject : JSONMap.keySet()) {
+//                String keyString = keyObject.toString().trim();
+////                int key = Integer.parseInt(keyString.trim());
+//                String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
+//                conversionMap.put(keyString, stringValue);
+//            }
+//        }
+//        catch (NullPointerException e) {
+//            myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);
+//        }
+//        catch (NumberFormatException e){
+//            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_MAP);
+//        }
+//        catch (ClassCastException e) {
+//            myErrorView.showError(CLASS_CAST_EXCEPTION_MAP);
+//        }
+        return conversionMap;
     }
 
     /*

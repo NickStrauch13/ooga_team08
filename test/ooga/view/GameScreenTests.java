@@ -246,7 +246,8 @@ public class GameScreenTests extends DukeApplicationTest {
     clickOn(playButton);
     robot.press(KeyCode.U).release(KeyCode.U);
     sleep(100);
-    assert(myController.getIsPowereredUp());
+
+    assert(myController.getIsPoweredUp());
     clickOn(resetButton);
   }
 
