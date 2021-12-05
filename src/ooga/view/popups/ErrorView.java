@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import ooga.controller.Controller;
 import java.util.logging.Level;
 
 public class ErrorView {
