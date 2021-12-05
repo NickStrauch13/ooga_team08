@@ -81,7 +81,7 @@ public class Game implements PickupGame {
 
     public void step() {
         timer--;
-        System.out.println(timer);
+
 
         if(gameType.equals("ANTIPACMAN")){
             if(timer==0){
@@ -108,7 +108,7 @@ public class Game implements PickupGame {
             setBfsThreshold(standardBFSThreshold);
         }
     }
-    private int getTime(){
+    public int getTime(){
         return timer/100;
     }
 
@@ -303,7 +303,9 @@ public class Game implements PickupGame {
     public void updatePickupsLeft(){
         pickUpsLeft--;
     }
-
+    public void addLives(int numLives){
+        lives+=numLives;
+    }
     public boolean creatureVSPickupCollision(CollisionManager cm) {
         String[] collisionIndex = cm.getCurrentCollision().split(",");
         GameObject collidingPickup = myBoard.getGameObject(Integer.parseInt(collisionIndex[0]) , Integer.parseInt(collisionIndex[1]));
@@ -372,7 +374,7 @@ public class Game implements PickupGame {
     /**
      * Gets the score and level and returns it
      */
-    private void endGame(){
+    public void endGame(){
         gameOver=true;
     }
 

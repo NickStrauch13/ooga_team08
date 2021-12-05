@@ -5,10 +5,12 @@ import java.lang.reflect.InvocationTargetException;
 import javafx.scene.control.Button;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
+import ooga.models.creatures.cpuControl.CPUCreature;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +21,14 @@ public class GameScreenTests extends DukeApplicationTest {
   private Controller myController;
   private Button playButton;
   private Button resetButton;
+  private FxRobot robot;
 
   @Override
   public void start(Stage stage)
       throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
     myController = new Controller(stage);
     myController.changeToGameScreen("data/game/basics.json");
+    robot = new FxRobot();
   }
 
   @BeforeEach
@@ -71,7 +75,6 @@ public class GameScreenTests extends DukeApplicationTest {
   public void clickOnPlayThenMovePacmanAndCheckIfPositionChanged(){
     int[] startPos = myController.getUserPosition();
     clickOn(playButton);
-    FxRobot robot = new FxRobot();
     sleep(700);
     robot.press(KeyCode.UP).release(KeyCode.UP);
     sleep(2300);
@@ -89,7 +92,6 @@ public class GameScreenTests extends DukeApplicationTest {
   public void clickOnResetButtonAfterGameHasPlayedForABriefPeriod(){
     int[] startPos = myController.getUserPosition();
     clickOn(playButton);
-    FxRobot robot = new FxRobot();
     sleep(800);
     robot.press(KeyCode.UP).release(KeyCode.UP);
     sleep(2300);
@@ -104,7 +106,6 @@ public class GameScreenTests extends DukeApplicationTest {
   public void startGameAndLetPacmanDieOnceAndThenCheckLives(){
     clickOn(playButton);
     int startLives = myController.getLives();
-    FxRobot robot = new FxRobot();
     sleep(700);
     robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
     sleep(5000);
@@ -117,7 +118,6 @@ public class GameScreenTests extends DukeApplicationTest {
   public void startGameAndEatGhostToGetScoreBoost(){
     clickOn(playButton);
     int startScore = myController.getScore();
-    FxRobot robot = new FxRobot();
     robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
     sleep(1500);
     robot.press(KeyCode.RIGHT).release(KeyCode.RIGHT);
@@ -128,6 +128,138 @@ public class GameScreenTests extends DukeApplicationTest {
     assertNotEquals(startScore, finalScore);
     clickOn(resetButton);
   }
+
+  @Test
+  public void addLifeUsingCheatKeyA(){
+    clickOn(playButton);
+    int startLives = myController.getLives();
+    robot.press(KeyCode.A).release(KeyCode.A);
+    sleep(100);
+    int finalLives = myController.getLives();
+    assertEquals(startLives+1, finalLives);
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void endGameUsingCheatKeyE(){
+    clickOn(playButton);
+    robot.press(KeyCode.E).release(KeyCode.E);
+    sleep(100);
+    assert(myController.getGame().isGameOver());
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void addMillionScoreUsingCheatKeyP(){
+    clickOn(playButton);
+    int startScore = myController.getScore()+100;
+    robot.press(KeyCode.P).release(KeyCode.P);
+    int finalScore = myController.getScore();
+    sleep(100);
+    assertEquals(startScore+1000000, finalScore);
+    clickOn(resetButton);
+  }
+
+
+  @Test
+  public void AddFiveHundredScoreUsingCheatKeyI(){
+    clickOn(playButton);
+    int score = myController.getScore();
+    robot.press(KeyCode.I).release(KeyCode.I);
+    sleep(100);
+    assert(myController.getScore()==score+600);
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void addOneHundredScoreUsingCheatKeyO(){
+    clickOn(playButton);
+    int startScore = myController.getScore() +100;
+    robot.press(KeyCode.O).release(KeyCode.O);
+    int finalScore = myController.getScore();
+    sleep(100);
+    assertEquals(startScore+100, finalScore);
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void FreezeGhostsUsingCheatKeyQ(){
+    clickOn(playButton);
+
+    robot.press(KeyCode.Q).release(KeyCode.Q);
+    sleep(100);
+    assert(myController.getGame().getCPUs().size()==0);
+    clickOn(resetButton);
+  }
+  @Test
+  public void ResetUserPositionUsingKeyR(){
+    clickOn(playButton);
+
+    robot.press(KeyCode.R).release(KeyCode.R);
+
+    clickOn(playButton);
+    System.out.println(myController.getGame().getUser().getXpos());
+    System.out.println(myController.getGame().getUser().getHomeX());
+    System.out.println(myController.getGame().getUser().getYpos());
+    System.out.println(myController.getGame().getUser().getHomeY());
+    assert(myController.getGame().getUser().getXpos()==myController.getGame().getUser().getHomeX());
+    assert(myController.getGame().getUser().getYpos()==myController.getGame().getUser().getHomeY());
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void removeOneMillionScoreUsingCheatKeyS(){
+    clickOn(playButton);
+    int startScore = myController.getScore();
+    robot.press(KeyCode.S).release(KeyCode.S);
+    int finalScore = myController.getScore();
+    assertEquals(startScore-999900, finalScore);
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void goToNextLevelWithCheatKeyT(){
+    clickOn(playButton);
+    int startLevel = myController.getLevel();
+    robot.press(KeyCode.T).release(KeyCode.T);
+    int finalLevel = myController.getLevel();
+    sleep(100);
+    assertEquals(startLevel+1, finalLevel);
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void GhostsDieUsingKeyW(){
+    clickOn(playButton);
+    robot.press(KeyCode.W).release(KeyCode.W);
+    sleep(100);
+    for(CPUCreature creature: myController.getGame().getCPUs()) {
+      assert (creature.getXpos() == creature.getHomeX());
+      assert (creature.getYpos() == creature.getHomeY());
+    }
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void powerUpUsingCheatKeyU(){
+    clickOn(playButton);
+    robot.press(KeyCode.U).release(KeyCode.U);
+    sleep(100);
+    assert(myController.getIsPowereredUp());
+    clickOn(resetButton);
+  }
+
+  @Test
+  public void RemoveLifeUsingCheatKeyY(){
+    clickOn(playButton);
+    int startLives = myController.getLives();
+    robot.press(KeyCode.Y).release(KeyCode.Y);
+    sleep(100);
+    int finalLives = myController.getLives();
+    assertEquals(startLives-1, finalLives);
+    clickOn(resetButton);
+  }
+
 
 
 }

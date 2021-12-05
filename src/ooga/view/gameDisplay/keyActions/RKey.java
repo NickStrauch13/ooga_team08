@@ -1,13 +1,14 @@
-package ooga.view.gameDisplay.keyActions.cheatKeys;
+package ooga.view.gameDisplay.keyActions;
 
+import ooga.controller.CheatController;
+import ooga.controller.CheatControllerInterface;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 
-public class UKey extends KeyViewAction {
+public class RKey extends KeyViewAction {
   private ViewerControllerInterface myController;
-
-  public UKey(BoardView boardView, ViewerControllerInterface controller){
+  public RKey(BoardView boardView, ViewerControllerInterface controller){
     super(boardView, controller);
     myController = controller;
   }
@@ -17,6 +18,6 @@ public class UKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-
+    myController.resetUserPosition();
   }
 }
