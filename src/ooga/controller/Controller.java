@@ -73,13 +73,14 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private Stage myStage;
     private String myUsername;
     private ErrorView myErrorView;
-    private String language;
     private ResourceBundle myLanguages;
     private static final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
-    private static final String DEFAULT_LANGUAGE = "English";
-    private String myViewMode;
-    private GameSettings gameSettings;
+    private static final String DEFAULT_CSS_FILE = "Default.css";
+    private static final String DEFAULT_LANGUAGE = "ENGLISH";
+    private GameSettings myGameSettings;
     private final String SCORE_PATH = "./data/highscores/HighScores.csv";
+    private String language;
+    private String cssFileName;
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
@@ -95,8 +96,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * @throws IllegalAccessException
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException  {
-        language = DEFAULT_LANGUAGE;
-        myViewMode = "UNC.css";
+        cssFileName = DEFAULT_CSS_FILE;
+        myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
+        language = myLanguages.getString(DEFAULT_LANGUAGE);
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         collisionManager = new CollisionManager();
         myStage = stage;
@@ -104,8 +106,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         myStage.setScene(myStartScreen.createScene());
         myStage.show();
         animationSpeed = ANIMATION_SPEED;
-        myErrorView = new ErrorView(language);
-
+        myErrorView = new ErrorView(DEFAULT_LANGUAGE);
         File scoreFile = new File(SCORE_PATH);
         myCSVReader = new CSVReader(new FileReader(scoreFile));
         myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true),',',CSVWriter.NO_QUOTE_CHARACTER,
@@ -157,7 +158,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
 
         JSONContainer container = myReader.readJSONConfig();
-        gameSettings = container.getMyGameSettings();
+        myGameSettings = container.getMyGameSettings();
+        language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE"));
+        cssFileName = myGameSettings.getGeneralSettings().get("CSS_FILE_NAME");
         int numOfRows = container.getMyNumOfRows();
         int numOfCols = container.getMyNumOfCols();
 
@@ -166,15 +169,12 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         //TODO: Currently creatureMap is never accessed
         creatureMap = container.getMyCreatureMap();
         stringBoard = container.getMyStringBoard();
-        myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
-        language = myLanguages.getString(gameSettings.getGeneralSettings().get("LANGUAGE"));
-        System.out.println(language);
         myBoard = new Board(numOfRows, numOfCols);
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
         myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
-        myGame.setGameType(gameSettings.getGeneralSettings().get("GAME_TYPE"));
+        myGame.setGameType(myGameSettings.getGeneralSettings().get("GAME_TYPE"));
     }
 
     /*
@@ -414,7 +414,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     }
 
     public String getViewMode() {
-        return myViewMode;
+        return cssFileName;
     }
     /**
      * Returns the current time of the game.
