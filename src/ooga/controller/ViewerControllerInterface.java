@@ -22,11 +22,12 @@ public interface ViewerControllerInterface {
     public String getUsername();
     public boolean handleCollision(String nodeID);
     public void loadNextLevel(BoardView boardView);
-    public boolean getIsPowereredUp();
+    public boolean getIsPoweredUp();
     public int[] getUserPosition();
     public int[] getGhostPosition(String nodeID);
     public int getCellSize();
     public String getGameType();
+    public boolean getIsInvincible();
     public String getViewMode();
     public int getGameTime();
     public void addOneMillionPoints();
@@ -41,5 +42,6 @@ public interface ViewerControllerInterface {
     public void resetUserPosition();
     public void loseLife();
     public void gameOver();
+
 
 }

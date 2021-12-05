@@ -65,8 +65,8 @@ public class GameDisplay {
     }
 
     private void setupScene(){
-        root.setTop(myGameStats.makeStatLabels());
         root.setCenter(myBoardView.getInitialBoard());
+        root.setTop(myGameStats.makeStatLabels());
         root.setBottom(myGameButtons.makeButtonBox());
     }
 

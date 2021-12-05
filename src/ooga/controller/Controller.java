@@ -247,7 +247,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return gameType;
     }
 
-    public boolean getIsPowereredUp(){return myGame.getUser().isPoweredUp();}
+    public boolean getIsPoweredUp(){return myGame.getUser().isPoweredUp();}
+
+    public boolean getIsInvincible() {return myGame.getUser().isInvincible();}
 
     /**
      * Get the BoardView object of the game

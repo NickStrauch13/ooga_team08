@@ -20,6 +20,12 @@ public class BoardView {
   private MovingPiece myUserPiece;
   private MovingPiece myCPUPiece;
   private List<Node> myNodeList;
+
+  public List<Node> getMyWallList() {
+    return myWallList;
+  }
+
+  private List<Node> myWallList;
   private List<MovingPiece> myCreatureList;
   private static final String ID_FORMAT = "%s,%s";
   private int cpuCount = 0;

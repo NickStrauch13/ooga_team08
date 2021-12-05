@@ -26,6 +26,7 @@ public class SimulationManager {
     private GameDisplay myGameDisplay;
     private int currentLevel;
     private boolean poweredUpTemp = false;
+    private boolean invincibilityTemp = false;
     private static final double initialAnimationRate =10.0;
 
 
@@ -99,7 +100,8 @@ public class SimulationManager {
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
-            poweredUpTemp = updateCreatureState(poweredUpTemp);
+            poweredUpTemp = powerUpGhosts(poweredUpTemp);
+            invincibilityTemp = makePacmanInvincible(invincibilityTemp);
             updateStats();
         }
     }
@@ -113,11 +115,30 @@ public class SimulationManager {
         myController.loadNextLevel(myBoardView);
     }
 
+//    private boolean checkWallAtCollision(){
+//
+//    }
 
-    private boolean updateCreatureState(boolean lastPoweredUp){
+    private boolean makePacmanInvincible(boolean lastInvincible){
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()){
+            if (movingPiece==myBoardView.getUserPiece() && lastInvincible!=myController.getIsInvincible()){
+                if (myController.getIsInvincible()){
+                    Image invinciblePacman = new Image("ooga/view/resources/viewIcons/invinciblePacman.png");
+                    movingPiece.getMyCreature().setImage(invinciblePacman);
+                }
+                else{
+                    Image normalPacman = new Image("ooga/view/resources/viewIcons/pacmanImage.png");
+                    movingPiece.getMyCreature().setImage(normalPacman);
+                }
+            }
+        }
+        return myController.getIsInvincible();
+    }
+
+    private boolean powerUpGhosts(boolean lastPoweredUp){
         for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-            if (lastPoweredUp!= myController.getIsPowereredUp() && movingPiece!=myBoardView.getUserPiece()){
-                if (myController.getIsPowereredUp()){
+            if (lastPoweredUp!= myController.getIsPoweredUp() && movingPiece!=myBoardView.getUserPiece()){
+                if (myController.getIsPoweredUp()){
                     Image blueGhost = new Image("ooga/view/resources/viewIcons/blueGhost.png");
                     movingPiece.getMyCreature().setImage(blueGhost);
                 }
@@ -127,8 +148,10 @@ public class SimulationManager {
                 }
             }
         }
-        return myController.getIsPowereredUp();
+        return myController.getIsPoweredUp();
     }
+
+
 
     private void updateMovingPiecePositions() {
         int[] newUserPosition = myController.getUserPosition();

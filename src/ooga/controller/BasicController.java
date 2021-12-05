@@ -14,7 +14,7 @@ public interface BasicController {
     public int getLives();
     public int getScore();
     public String getGameType();
-    public boolean getIsPowereredUp();
+    public boolean getIsPoweredUp();
     public BoardView getBoardView();
     public int getCellSize();
     public void step(String direction);

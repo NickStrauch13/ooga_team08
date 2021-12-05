@@ -15,11 +15,12 @@ public class portal extends pickup{
 
     public void interact(PickupGame pickupGame){
         Random r = new Random();
-        int[] moveTo = pickupGame.getPortalLocations().get(r.nextInt(pickupGame.getPortalLocations().size()));
-        while (moveTo == new int[]{myRow,myCol}){
-            moveTo = pickupGame.getPortalLocations().get(r.nextInt(pickupGame.getPortalLocations().size()));
+        if (pickupGame.getPortalLocations()!=null){
+            pickupGame.removePortal(new int[] {this.myRow,this.myCol});
+            int[] moveTo = pickupGame.getPortalLocations().get(r.nextInt(pickupGame.getPortalLocations().size()));
+            pickupGame.setPortalsGone();
+            pickupGame.moveCreatureToCell(moveTo);
         }
-        pickupGame.moveCreatureToCell(moveTo);
         super.interact(pickupGame);
     }
 }
