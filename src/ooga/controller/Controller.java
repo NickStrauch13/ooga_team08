@@ -25,30 +25,37 @@ import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
 public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface{
 
-    // TODO: Constant values should be in a file probably - enum?
-    public static final Dimension DEFAULT_SIZE = new Dimension(1000, 600);
-    public static final String TITLE = "Start Screen";
-    public static final String gameType = "Pacman"; //TODO update gameType variable
-    public static final int CELL_SIZE = 25;
+    // TODO: Constant values should be in a file probably - enum? -> settings.properties
+    private final double ANIMATION_SPEED = 0.3;
+    private final int HIGH_SCORE_VALS = 10;
+    private final int WIDTH = 1000; // TODO: properties file
+    private final int HEIGHT = 600;
+    public final int CELL_SIZE = 25;
+
+    public final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
 
     // TODO: Should be put into a properties file?
+    public static final String TITLE = "Start Screen";
+    public static final String gameType = "Pacman"; //TODO update gameType variable
+
+    // TODO: exceptions.properties
+    // TODO: refactor into viewController and boardController if I have time
+
     private final String IOE_EXCEPTION = "IOE exceptions";
-    private final String NULL_POINTER_EXCEPTION = "Null pointer exception";
+    private final String NULL_POINTER_EXCEPTION = "Null pointer exception controller";
     private final String PARSE_EXCEPTION = "Parse exception!";
     private final String CLASS_NOT_FOUND = "Class not found!";
     private final String INVOCATION_TARGET = "Invocation target error!";
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-    private final String EXCEPTION = "Something is wrong here!";
-    private static final File SCORE_FILE = new File("./data/highscores/HighScores.csv");
-    private static final int HIGH_SCORE_VALS = 10;
-    private static final String[] BLANK_ENTRY = new String[]{"","-1"};
+//    private final String EXCEPTION = "Something is wrong here!";
     private static final String DEFAULT_USERNAME = "Guest";
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
     private static final int FIVE_HUNDRED = 500;
 
+    private static final String[] BLANK_ENTRY = new String[]{"","-1"};
 
     private Game myGame;
     private Board myBoard;
@@ -58,7 +65,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
-    private JSONReader reader;
+    private JSONReader myReader;
     private CSVReader myCSVReader;
     private CSVWriter myCSVWriter;
     private Map<Integer, String> gameObjectMap;
@@ -94,10 +101,12 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         myStage.setTitle(TITLE);
         myStage.setScene(myStartScreen.createScene());
         myStage.show();
-        animationSpeed = 0.3;
+        animationSpeed = ANIMATION_SPEED;
         myErrorView = new ErrorView(language);
-        myCSVReader = new CSVReader(new FileReader(SCORE_FILE));
-        myCSVWriter = new CSVWriter(new FileWriter(SCORE_FILE, true),',',CSVWriter.NO_QUOTE_CHARACTER,
+
+        File scoreFile = new File(SCORE_PATH);
+        myCSVReader = new CSVReader(new FileReader(scoreFile));
+        myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true),',',CSVWriter.NO_QUOTE_CHARACTER,
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
             CSVWriter.DEFAULT_LINE_END);
         myUsername = DEFAULT_USERNAME;
@@ -112,7 +121,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     public void initializeGame(String path) {
         int numOfRows, numOfCols;
         try {
-            reader = new JSONReader(language, path);
+            myReader = new JSONReader(language, path);
             assembleBoards();
             //TODO get lives from JSON file
         }
@@ -137,30 +146,35 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         catch (ParseException e) {
             myErrorView.showError(PARSE_EXCEPTION);
         }
-        catch (NullPointerException e) {
-            myErrorView.showError(NULL_POINTER_EXCEPTION);
-        }
+//        catch (NullPointerException e) {
+//            myErrorView.showError(NULL_POINTER_EXCEPTION);
+//        }
     }
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        int numOfRows;
-        int numOfCols;
-        JSONContainer container = reader.readJSONConfig();
-        numOfRows = container.getMyNumOfRows();
-        numOfCols = container.getMyNumOfCols();
+
+
+        JSONContainer container = myReader.readJSONConfig();
+        int numOfRows = container.getMyNumOfRows();
+        int numOfCols = container.getMyNumOfCols();
+
         gameObjectMap = container.getMyConversionMap();
 
         //TODO: Currently creatureMap is never accessed
         creatureMap = container.getMyCreatureMap();
         stringBoard = container.getMyStringBoard();
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
-        language = myLanguages.getString(container.getLanguage());
+//        System.out.println("My game setting is: " + container.getMyGameSettings());
+//        System.out.println("My setting is: " + container.getMyGameSettings().getMySettings());
+//        System.out.println("My language is: " + container.getMyGameSettings().getMySettings().getLanguage());
+        language = myLanguages.getString(container.getMyGameSettings().getMySettings().getLanguage());
+//        System.out.println(language);
         myBoard = new Board(numOfRows, numOfCols);
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
         myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
-        myGame.setGameType(container.getGameType());
+        myGame.setGameType(container.getMyGameSettings().getMySettings().getGameType());
     }
 
     /*
@@ -310,7 +324,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * Receive the backend's command to reset the entire game
      */
     public void restartGame() {
-        initializeGame(reader.getMostRecentPath());
+        initializeGame(myReader.getMostRecentPath());
     }
 
 
