@@ -22,8 +22,6 @@ public interface PickupGame {
 
     public void setPowerupEndtime(int powerupEndtime);
 
-    public void setBfsThreshold(int bfsThreshold);
-
     public ArrayList<int[]> getPortalLocations();
 
     public void setPortalsGone();
@@ -31,8 +29,6 @@ public interface PickupGame {
     public void removePortal(int[] portalLocations);
 
     public void moveCreatureToCell(int[] cellIndex);
-
-    public String getGameType();
 
     public void nextLevel();
 

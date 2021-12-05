@@ -47,7 +47,7 @@
 //        myScene = new Scene(root, width, height);
 //        DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
 //        myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-//        myNodeBuilder = new UINodeFactory(myController);
+//        myNodeBuilder = new UINodeFactory(myController);myBuilderButtons
 //        myBuilderButtons = new BuilderButtons(myStage,width, height, myController, cellSize, myBoardView, this);
 //        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
 //        userAdded = new ArrayList<>();
