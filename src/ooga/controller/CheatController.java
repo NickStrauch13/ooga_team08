@@ -5,7 +5,7 @@ import ooga.models.creatures.cpuControl.CPUCreature;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Deprecated
 public class CheatController {
     CheatControllerInterface myController;
     private static final int MILLION = 1000000;

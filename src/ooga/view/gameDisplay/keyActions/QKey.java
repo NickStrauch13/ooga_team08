@@ -1,12 +1,12 @@
-package ooga.view.gameDisplay.keyActions.cheatKeys;
+package ooga.view.gameDisplay.keyActions;
 
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
-import ooga.view.gameDisplay.keyActions.KeyViewAction;
 
-public class RKey extends KeyViewAction {
+public class QKey extends KeyViewAction {
   private ViewerControllerInterface myController;
-  public RKey(BoardView boardView, ViewerControllerInterface controller){
+
+  public QKey(BoardView boardView, ViewerControllerInterface controller){
     super(boardView, controller);
     myController = controller;
   }
@@ -16,6 +16,6 @@ public class RKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-
+    myController.FreezeGhosts();
   }
 }

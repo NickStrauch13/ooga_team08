@@ -20,6 +20,7 @@ public class PacmanPiece extends MovingPiece {
         pacman.setFitHeight(getCellSize()-CREATURE_SLOP);
         setIDs(pacman, CSS_ID, getCellIndexID());
         //System.out.println(getCellSize());
+
         return pacman;
     }
 

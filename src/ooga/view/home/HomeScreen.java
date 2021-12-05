@@ -22,8 +22,7 @@ import ooga.view.popups.PopupFactory;
 
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-  private static final String DEFAULT_STYLESHEET =
-      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
+  private static String DEFAULT_STYLESHEET;
   private BorderPane root;
   private int myWidth;
   private int myHeight;
@@ -41,6 +40,7 @@ public class HomeScreen {
     myHeight = height;
     myStage = stage;
     myScene = new Scene(root, myWidth, myHeight);
+    DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
     myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
     myNodeBuilder = new UINodeFactory(myController);
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());

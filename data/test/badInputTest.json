@@ -12,11 +12,11 @@
     ["0", "0", "0", "1", "0", "0", "1", "0", "0", "0"],
     ["0", "0", "0", "1", "0", "0", "1", "0", "0", "0"],
     ["0", "0", "0", "1", "0", "0", "3", "0", "0", "0"],
-    ["0", "0", "0", "1", "0", "0", "1", "0", "0", "0"]
+    ["0", "0", "0", "1", "0", "0", "1", "0", "0", "zero"]
   ],
 
   "OBJECT_MAP": {
-    "10" : "WAll",
+    "0" : "WAll",
     "1" : "POWERUP1",
     "2" : "POWERUP2",
     "3" : "POWERUP3"
@@ -25,5 +25,45 @@
   "CREATURE_MAP": {
     "4" : "PACMAN",
     "5" : "CPUGHOST"
+  },
+
+  "SETTINGS": {
+    "LANGUAGE": "ENGLISH",
+    "GAME_TYPE": "PACMAN",
+    "TIMER": "0",
+    "WIN_CONDITION": "LIVES",
+    "CELL_SIZE": "25"
+  },
+
+  "USER" : {
+    "USER_IMAGE": "Path"
+  },
+
+  "CPU": {
+    "CPU_IMAGE": "Path"
+  },
+
+  "WALL" : {
+    "WALL_COLOR": "WHITE"
+  },
+
+  "FOOD" : {
+    "FOOD_COLOR": "ORANGE",
+    "FOOD_SIZE": "15"
+  },
+
+  "POWERUP1": {
+    "POWERUP_COLOR": "BLUE",
+    "POWERUP_SIZE": "15"
+  },
+
+  "POWERUP2": {
+    "POWERUP_COLOR": "RED",
+    "POWERUP_SIZE": "15"
+  },
+
+  "POWERUP3": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
   }
 }
