@@ -36,7 +36,7 @@
 
   "SETTINGS": {
     "LANGUAGE": "ENGLISH",
-    "GAME_TYPE": "PACMAN",
+    "GAME_TITLE": "PACMAN",
     "TIMER": "0",
     "LIVES": "3",
     "WIN_CONDITION": "LIVES",
