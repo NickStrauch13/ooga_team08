@@ -41,7 +41,7 @@
 
   "SETTINGS": {
     "LANGUAGE": "ENGLISH",
-    "GAME_TYPE": "PACMAN",
+    "GAME_TITLE": "PACMAN",
     "TIMER": "-1",
     "LIVES": "3",
     "CELL_SIZE": "28",

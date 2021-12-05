@@ -36,7 +36,7 @@
 
   "SETTINGS": {
     "LANGUAGE": "ENGLISH",
-    "GAME_TYPE": "PACMAN",
+    "GAME_TITLE": "Maze",
     "TIMER": "40000",
     "LIVES": "-1",
     "CELL_SIZE": "24",
@@ -99,8 +99,8 @@
   },
 
   "WINLEVEL": {
-    "POWERUP_COLOR": "40,179,58",
-    "POWERUP_SIZE": "8"
+    "POWERUP_COLOR": "10,255,20",
+    "POWERUP_SIZE": "14"
   }
 
 }
