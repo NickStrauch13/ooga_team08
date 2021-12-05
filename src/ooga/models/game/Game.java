@@ -73,8 +73,6 @@ public class Game implements PickupGame {
         isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
         startTime=timer;
 
-        lives=Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
 
 
     }
@@ -350,7 +348,7 @@ public class Game implements PickupGame {
     }
 
     private boolean creatureVsCreatureCollision(CollisionManager cm){
-        if(gameType.equals("ANTIPACMAN")){
+        if(isPredator){
             lives--;
         }
         if(myUserControlled.isPoweredUp()){
