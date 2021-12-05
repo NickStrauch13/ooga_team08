@@ -43,6 +43,7 @@ public interface ViewerControllerInterface {
     public void loseLife();
     public void gameOver();
     public int getTimer();
+    public void setCellSize(int newSize);
 
 
 }

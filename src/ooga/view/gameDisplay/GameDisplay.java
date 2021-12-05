@@ -39,7 +39,6 @@ public class GameDisplay {
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
         DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
-
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     }
 

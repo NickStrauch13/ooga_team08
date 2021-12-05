@@ -14,8 +14,10 @@ public class CpughostPiece extends MovingPiece {
     //private String imagePath = ;
     public CpughostPiece(Integer cellSize, Map<String, String> myValues){
         super(cellSize);
-        if(myValues.containsKey("CPU_IMAGE")){
-            imagePath = myValues.get("CPU_IMAGE");
+        if (myValues != null) {
+            if(myValues.containsKey("CPU_IMAGE")){
+                imagePath = myValues.get("CPU_IMAGE");
+            }
         }
         setMyPiece(makeNode());
     }
