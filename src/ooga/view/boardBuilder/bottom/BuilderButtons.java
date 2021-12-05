@@ -52,10 +52,17 @@ public class BuilderButtons {
         myBuilderDisplay = builderDisplay;
     }
 
-    public HBox makeColorPickerRow() {
-        ColorPicker wallColorPicker = myNodeBuilder.makeColorPicker("wallColorPicker", color -> updateShapeColor(color,(Shape)objectList.get(0)), Color.rgb(33, 33, 222));
-        ColorPicker powerUpColorPicker = myNodeBuilder.makeColorPicker("powerUpColorPicker", color -> updateShapeColor(color,(Shape)objectList.get(1)), Color.rgb(184,134, 11));
-        Node myHbox = myNodeBuilder.makeRow("statsHolder", wallColorPicker, powerUpColorPicker);
+    public HBox makePowerUpsRow() {
+        Label powerUpText = myNodeBuilder.makeLabel(myResources.getString("PowerUpText"), "powerUpTextID");
+        StackPane powerUpDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"SCOREBOOSTER", null));
+        StackPane extraLifeDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"EXTRALIFE", null));
+        StackPane ghostSlowerDisplay= createObjectDisplay(myBoardView.addBoardPiece(0,0,"GHOSTSLOWER", null));
+        StackPane invincibilityDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"INVINCIBILITY", null));
+        StackPane portalDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"PORTAL", null));
+        StackPane scoreMultiplierDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"SCOREMULTIPLIER", null));
+        StackPane stateChangerDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"STATECHANGER", null));
+        StackPane winLevelDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"WINLEVEL", null));
+        Node myHbox = myNodeBuilder.makeRow("statsHolder", powerUpText, powerUpDisplay,stateChangerDisplay,scoreMultiplierDisplay,extraLifeDisplay,ghostSlowerDisplay,invincibilityDisplay,portalDisplay,winLevelDisplay);
         return (HBox) myHbox;
     }
 
@@ -77,7 +84,7 @@ public class BuilderButtons {
 
     public HBox makeBottomHBox() {
         Button buildBoardButton = myNodeBuilder.makeButton("Build Board", null, "homeScreenButton", "buildBoardButton", e -> myBuilderDisplay.buildBoardFile());
-        VBox center = makeCenterVBox(makeObjectRow(), makeColorPickerRow());
+        VBox center = makeCenterVBox(makeObjectRow(), makePowerUpsRow());
         return (HBox) myNodeBuilder.makeRow("statsHolder",makeSelectedVBox(), center, buildBoardButton);
     }
 
@@ -108,15 +115,11 @@ public class BuilderButtons {
     public HBox makeObjectRow() {
         Label wallText = myNodeBuilder.makeLabel(myResources.getString("WallText"), "wallTextID");
         StackPane wallDisplay = createObjectDisplay(myBoardView.addBoardPiece(0, 0, "WALL", null));
-        objectList.add(wallDisplay.getChildren().get(0));
-        Label powerUpText = myNodeBuilder.makeLabel(myResources.getString("PowerUpText"), "powerUpTextID");
-        StackPane powerUpDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"SCOREBOOSTER", null));
-        objectList.add(powerUpDisplay.getChildren().get(0));
         Label ghostText = myNodeBuilder.makeLabel(myResources.getString("GhostText"), "ghostTextID");
         StackPane ghostDisplay =  createObjectDisplay(myBoardView.addBoardPiece(0,0,"CPUGHOST", null));
         Label pacmanText = myNodeBuilder.makeLabel(myResources.getString("PacmanText"), "pacmanTextID");
         StackPane pacmanDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"PACMAN", null));
-        Node myHbox = myNodeBuilder.makeRow("statsHolder", wallText, wallDisplay, powerUpText, powerUpDisplay, ghostText,ghostDisplay, pacmanText,pacmanDisplay);
+        Node myHbox = myNodeBuilder.makeRow("statsHolder", wallText, wallDisplay, ghostText,ghostDisplay, pacmanText,pacmanDisplay);
         return (HBox) myHbox;
     }
 
