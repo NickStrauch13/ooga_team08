@@ -12,8 +12,6 @@ import java.util.*;
 
 public class Game implements PickupGame {
 
-    private String gameType = "";
-    private int bfsThreshold = 1;
     private int standardBFSThreshold = 1;
     private boolean gameOver=false;
     private String lastDirection;
@@ -52,7 +50,9 @@ public class Game implements PickupGame {
     private int startingPickUps;
     private Map<String, String> gameSettings;
     private boolean isPredator;
+    private boolean isHard;
     private int startTime;
+    private boolean isPickupsValidWin;
 
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize, Map<String, String> generalSettings){
         myBoard=board;
@@ -71,9 +71,11 @@ public class Game implements PickupGame {
         timer=Integer.parseInt(gameSettings.get("TIMER"));
         lives = Integer.parseInt(gameSettings.get("LIVES"));
         isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
+        isHard = gameSettings.get("HARD").equals("1");
         startTime=timer;
-
-
+        lives=Integer.parseInt(gameSettings.get("LIVES"));
+        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
+        isPickupsValidWin = Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))==1;
 
     }
     public UserCreature getUser(){
@@ -109,7 +111,7 @@ public class Game implements PickupGame {
             }
         }
         else {
-            if (checkPickUps()) {
+            if (checkPickUps()&&isPickupsValidWin) {
                 nextLevel();
                 return;
             }
@@ -119,11 +121,11 @@ public class Game implements PickupGame {
                 return;
             }
         }
-        adjustGhostCollisions(gameType);
+        adjustGhostCollisions();
         if (stepCounter%myUserControlled.getSpeed()==0){
             moveUser();
         }
-        moveCPUCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
+        moveCPUCreaturesPacman();
 
         stepCounter++;
 
@@ -131,15 +133,14 @@ public class Game implements PickupGame {
             myUserControlled.setPoweredUp(false);
             myUserControlled.setSpeed(myUserControlled.getStandardSpeed());
             myUserControlled.setInvincible(false);
-            setBfsThreshold(standardBFSThreshold);
         }
     }
     public int getTime(){
         return timer/100;
     }
 
-    private void adjustGhostCollisions(String gameType){
-        if (Integer.parseInt(myGameTypeThresholds.getString(gameType))<4){
+    private void adjustGhostCollisions(){
+        if (isPredator){
             myUserControlled.setPoweredUp(true);
         }
     }
@@ -153,11 +154,25 @@ public class Game implements PickupGame {
         moveToNewPossiblePosition(myUserControlled,generateDirectionArray(lastDirection));
     }
 
+    @Deprecated
     private void moveCPUCreaturesPacman(int bfsThreshold) {
         for (CPUCreature currentCreature : activeCPUCreatures){
             if (stepCounter%myCellSize==0){
-                setBfsThreshold(bfsThreshold);
-                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
+                //setBfsThreshold(bfsThreshold);
+                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(isHard,currentCreature)));
+                //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
+            }
+            if (stepCounter%currentCreature.getSpeed()==0) {
+                moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
+            }
+        }
+    }
+
+    private void moveCPUCreaturesPacman() {
+        for (CPUCreature currentCreature : activeCPUCreatures){
+            if (stepCounter%myCellSize==0){
+                //setBfsThreshold(bfsThreshold);
+                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(isHard,currentCreature)));
                 //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             if (stepCounter%currentCreature.getSpeed()==0) {
@@ -189,11 +204,10 @@ public class Game implements PickupGame {
         return false;
     }
 
-    private String adjustedMovement(int threshold, CPUCreature cpu) {
+    private String adjustedMovement(boolean hard, CPUCreature cpu) {
         Random r = new Random();
-        boolean usePath = r.nextInt(4)<threshold;
         String movementDirection;
-        if (usePath){
+        if (hard){
             movementDirection = bfsChase(cpu);
         }
         else{
@@ -448,18 +462,6 @@ public class Game implements PickupGame {
     public boolean setLastDirection(String lastDirection) {
         this.lastDirection = lastDirection;
         return true;
-    }
-
-    public void setBfsThreshold(int bfsThreshold) {
-        this.bfsThreshold = bfsThreshold;
-    }
-
-    public String getGameType() {
-        return gameType;
-    }
-
-    public void setGameType(String gameType) {
-        this.gameType = gameType;
     }
 
     public ArrayList<int[]> getPortalLocations(){

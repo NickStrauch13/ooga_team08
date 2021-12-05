@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import ooga.controller.CheatController;
 import ooga.controller.ViewerControllerInterface;
+import ooga.view.gameDisplay.bottom.GameButtons;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
@@ -24,6 +25,7 @@ public class SimulationManager {
     private BoardView myBoardView;
     private GameStats myGameStats;
     private GameDisplay myGameDisplay;
+    private GameButtons gameButtons;
     private int currentLevel;
     private boolean poweredUpTemp = false;
     private boolean invincibilityTemp = false;
@@ -38,6 +40,7 @@ public class SimulationManager {
         myGameStats = gameStats;
         currentLevel = 1;
         myGameDisplay = gameDisplay;
+        gameButtons = new GameButtons();
     }
 
 
@@ -113,6 +116,7 @@ public class SimulationManager {
         myBoardView.getInitialBoard().getChildren().remove(myBoardView.getMyGrid());
         myBoardView.resetBoardView();
         myController.loadNextLevel(myBoardView);
+        gameButtons.playPause();
     }
 
 //    private boolean checkWallAtCollision(){

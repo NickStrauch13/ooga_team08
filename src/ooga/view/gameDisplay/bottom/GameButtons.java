@@ -28,6 +28,8 @@ public class GameButtons {
   private SimulationManager mySimManager;
   private Button playPauseButton;
 
+  public GameButtons(){};
+
   public GameButtons(Stage stage, int width, int height, ViewerControllerInterface controller, SimulationManager simManager, String language){
     myController = controller;
     mySimManager = simManager;
@@ -59,7 +61,7 @@ public class GameButtons {
     homeScreen.setMainDisplay("Home");
   }
 
-  private void playPause(){
+  public void playPause(){
     if(mySimManager.playPause()){
       playPauseButton.setGraphic(PAUSE_ICON);
       playPauseButton.getStyleClass().clear();
@@ -79,7 +81,5 @@ public class GameButtons {
     gameDisplay.setMainDisplay("Pacman");
     myController.restartGame();
   }
-
-
 
 }

@@ -117,33 +117,14 @@ public class JSONReader {
 
         Map<String, String> conversionMap = new HashMap();
         Map<String,String> JSONMap = ((HashMap)jsonData.get(objectType));
-
-        for (Object keyObject : JSONMap.keySet()) {
-            String keyString = keyObject.toString().trim();
+        if (JSONMap != null) {
+            for (Object keyObject : JSONMap.keySet()) {
+                String keyString = keyObject.toString().trim();
 //                int key = Integer.parseInt(keyString.trim());
-            String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
-            conversionMap.put(keyString, stringValue);
+                String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
+                conversionMap.put(keyString, stringValue);
+            }
         }
-//        System.out.println(conversionMap);
-//        try {
-//            Map JSONMap = ((HashMap) jsonData.get(objectType));
-//
-//            for (Object keyObject : JSONMap.keySet()) {
-//                String keyString = keyObject.toString().trim();
-////                int key = Integer.parseInt(keyString.trim());
-//                String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
-//                conversionMap.put(keyString, stringValue);
-//            }
-//        }
-//        catch (NullPointerException e) {
-//            myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);
-//        }
-//        catch (NumberFormatException e){
-//            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_MAP);
-//        }
-//        catch (ClassCastException e) {
-//            myErrorView.showError(CLASS_CAST_EXCEPTION_MAP);
-//        }
         return conversionMap;
     }
 
