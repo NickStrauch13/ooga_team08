@@ -31,7 +31,7 @@
     "GAME_TYPE": "PACMAN",
     "LANGUAGE": "ENGLISH",
     "TIMER": "0",
-    "WIN_CONDITION": "LIVES", // LIVES VS. TIME
+    "WIN_CONDITION": "LIVES",
     "CELL_SIZE": "25"
   },
 
@@ -56,10 +56,12 @@
     "POWERUP_COLOR": "BLUE",
     "POWERUP_SIZE": "15"
   },
+
   "POWERUP2": {
     "POWERUP_COLOR": "RED",
     "POWERUP_SIZE": "15"
   },
+
   "POWERUP3": {
     "POWERUP_COLOR": "YELLOW",
     "POWERUP_SIZE": "15"

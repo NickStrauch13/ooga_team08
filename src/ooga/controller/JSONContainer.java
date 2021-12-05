@@ -14,6 +14,9 @@ public class JSONContainer {
     private String gameType;
     private String myLanguage;
 
+    private GameSettings mySettings;
+
+
     /**
      * The constructor of a JSON Reader object that holds all info from the json configuration file
      * @param rows number of rows of the board
@@ -21,7 +24,7 @@ public class JSONContainer {
      * @param boardInfo A 2-d list that contains a status value for each cell
      * @param stringBoard A 2-d list that contains a string value for each cell
      */
-    public JSONContainer(int rows, int cols, String type,String language ,List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) {
+    public JSONContainer(int rows, int cols, String type,String language ,List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, GameSettings gameSettings) {
         myNumOfRows = rows;
         myNumOfCols = cols;
         myInfo = boardInfo;
@@ -30,6 +33,9 @@ public class JSONContainer {
         myCreatureMap = creatureMap;
         gameType = type;
         myLanguage = language;
+        mySettings = gameSettings;
+        //TODO: 1. have mySettings here as part of the container
+        //      2. having a setting object in parallel
     }
 
     /**
@@ -102,5 +108,9 @@ public class JSONContainer {
     //gameTypes
     public String getLanguage() {
         return myLanguage;
+    }
+
+    public GameSettings getMySettings() {
+        return mySettings;
     }
 }
