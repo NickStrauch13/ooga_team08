@@ -27,9 +27,9 @@
     "5" : "CPUGHOST"
   },
 
-  "SETTINGS" : {
-    "GAME_TYPE": "PACMAN",
+  "SETTINGS": {
     "LANGUAGE": "ENGLISH",
+    "GAME_TYPE": "PACMAN",
     "TIMER": "0",
     "WIN_CONDITION": "LIVES",
     "CELL_SIZE": "25"
@@ -66,5 +66,4 @@
     "POWERUP_COLOR": "YELLOW",
     "POWERUP_SIZE": "15"
   }
-
 }

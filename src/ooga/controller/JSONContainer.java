@@ -11,8 +11,8 @@ public class JSONContainer {
     private int myNumOfCols;
     private Map<Integer, String> myConversionMap;
     private Map<Integer, String> myCreatureMap;
-    private String gameType;
-    private String myLanguage;
+//    private String gameType;
+//    private String myLanguage;
 
     private GameSettings mySettings;
 
@@ -24,15 +24,15 @@ public class JSONContainer {
      * @param boardInfo A 2-d list that contains a status value for each cell
      * @param stringBoard A 2-d list that contains a string value for each cell
      */
-    public JSONContainer(int rows, int cols, String type,String language ,List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, GameSettings gameSettings) {
+    public JSONContainer(int rows, int cols,List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, GameSettings gameSettings) {
         myNumOfRows = rows;
         myNumOfCols = cols;
         myInfo = boardInfo;
         myStringBoard = stringBoard;
         myConversionMap = conversionMap;
         myCreatureMap = creatureMap;
-        gameType = type;
-        myLanguage = language;
+//        gameType = type;
+//        myLanguage = language;
         mySettings = gameSettings;
         //TODO: 1. have mySettings here as part of the container
         //      2. having a setting object in parallel
@@ -102,15 +102,15 @@ public class JSONContainer {
         return myCreatureMap;
     }
 
-    public String getGameType() {
-        return gameType;
-    }
-    //gameTypes
-    public String getLanguage() {
-        return myLanguage;
-    }
+//    public String getGameType() {
+//        return gameType;
+//    }
+//    //gameTypes
+//    public String getLanguage() {
+//        return myLanguage;
+//    }
 
-    public GameSettings getMySettings() {
+    public GameSettings getMyGameSettings() {
         return mySettings;
     }
 }

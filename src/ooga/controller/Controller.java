@@ -146,9 +146,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         catch (ParseException e) {
             myErrorView.showError(PARSE_EXCEPTION);
         }
-        catch (NullPointerException e) {
-            myErrorView.showError(NULL_POINTER_EXCEPTION);
-        }
+//        catch (NullPointerException e) {
+//            myErrorView.showError(NULL_POINTER_EXCEPTION);
+//        }
     }
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -164,14 +164,18 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         creatureMap = container.getMyCreatureMap();
         stringBoard = container.getMyStringBoard();
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
-        language = myLanguages.getString(container.getLanguage());
+        System.out.println("My game setting is: " + container.getMyGameSettings());
+        System.out.println("My setting is: " + container.getMyGameSettings().getMySettings());
+        System.out.println("My language is: " + container.getMyGameSettings().getMySettings().getLanguage());
+        language = myLanguages.getString(container.getMyGameSettings().getMySettings().getLanguage());
+//        System.out.println(language);
         myBoard = new Board(numOfRows, numOfCols);
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
 
         myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
-        myGame.setGameType(container.getGameType());
+        myGame.setGameType(container.getMyGameSettings().getMySettings().getGameType());
     }
 
     /*
