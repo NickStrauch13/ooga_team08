@@ -4,7 +4,7 @@ public interface GameStats {
      * Adds the GameStat information to the GameDisplay screen
      * @param controller
      */
-    void GameStats(Controller controller);
+    void GameStats(BasicController controller);
 
 
     /**

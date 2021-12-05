@@ -6,18 +6,16 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Popup;
 import javafx.util.Duration;
-import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
-import ooga.view.popups.PopupFactory;
 
 public class SimulationManager {
     private static final String KEY_PATH = "ooga.view.gameDisplay.keyActions.%sKey";
-    private Controller myController;
+    private ViewerControllerInterface myController;
     private Timeline myAnimation;
     private double myAnimationRate;
     private static final double DELAY = .1;
@@ -30,7 +28,7 @@ public class SimulationManager {
     private static final double initialAnimationRate =10.0;
 
 
-    public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
+    public SimulationManager(ViewerControllerInterface controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
         myController = controller;
         myBoardView = boardView;
         myAnimationRate = initialAnimationRate; //TODO link to json
@@ -158,7 +156,7 @@ public class SimulationManager {
             String reflectionCode =
                 code.toString().substring(0, 1) + code.toString().toLowerCase().substring(1);
             Class<?> clazz = Class.forName(String.format(KEY_PATH, reflectionCode));
-            KeyViewAction keyAction = (KeyViewAction) clazz.getDeclaredConstructor(BoardView.class).newInstance(myBoardView);
+            KeyViewAction keyAction = (KeyViewAction) clazz.getDeclaredConstructor(BoardView.class, ViewerControllerInterface.class).newInstance(myBoardView,myController);
             keyAction.doAction();
         }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e){
             //Unknown key pressed. No view action required.

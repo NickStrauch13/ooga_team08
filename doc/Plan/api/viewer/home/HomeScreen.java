@@ -3,7 +3,7 @@ public inteface HomeScreen {
     /**
      * Creates the landing page which starts a new game given a file and shows high scores
      */
-    HomeScreen(Stage stage, int width, int height, Controller controller);
+    HomeScreen(Stage stage, int width, int height, BasicController controller);
 
     /**
      * Creates the home screen scene.

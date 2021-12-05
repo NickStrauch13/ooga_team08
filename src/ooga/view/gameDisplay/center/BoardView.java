@@ -7,8 +7,7 @@ import javafx.geometry.HPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
-import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.gamePieces.*;
 
 
@@ -17,7 +16,7 @@ public class BoardView {
   private Group myGroup;
   private int[][] controllerBoard;
   private int myCellSize;
-  private Controller myController;
+  private ViewerControllerInterface myController;
   private MovingPiece myUserPiece;
   private MovingPiece myCPUPiece;
   private List<Node> myNodeList;
@@ -26,7 +25,7 @@ public class BoardView {
   private int cpuCount = 0;
   private static final String PIECE_PATH = "ooga.view.gameDisplay.gamePieces.%sPiece";
 
-  public BoardView(Controller controller){
+  public BoardView(ViewerControllerInterface controller){
     myController = controller;
     myGroup = new Group();
     myCellSize = myController.getCellSize();

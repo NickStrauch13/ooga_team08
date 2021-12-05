@@ -5,7 +5,7 @@ public interface SimulationManager {
      * @param controller
      * @param boardView
      */
-    void SimulationManager(Controller controller, GameStats gameStats, BoardView boardView);
+    void SimulationManager(BasicController controller, GameStats gameStats, BoardView boardView);
 
     /**
      * Sets up the game animation (speed, lifetime, keyframes etc.)

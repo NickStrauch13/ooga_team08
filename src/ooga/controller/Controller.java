@@ -24,7 +24,7 @@ import java.util.List;
 
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
-public class Controller {
+public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface{
 
     // TODO: Constant values should be in a file probably - enum? -> settings.properties
     private final double ANIMATION_SPEED = 0.3;
@@ -93,7 +93,7 @@ public class Controller {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException  {
         language = DEFAULT_LANGUAGE;
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         collisionManager = new CollisionManager();
@@ -223,6 +223,9 @@ public class Controller {
      */
     public int getLives() {
         return myGame.getLives(); //TODO change this to the model's get lives
+    }
+    public Game getGame(){
+        return myGame;
     }
 
     /**
