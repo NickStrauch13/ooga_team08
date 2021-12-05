@@ -114,6 +114,9 @@ public class SimulationManager {
         myController.loadNextLevel(myBoardView);
     }
 
+//    private boolean checkWallAtCollision(){
+//
+//    }
 
     private boolean updateCreatureState(boolean lastPoweredUp){
         for (MovingPiece movingPiece : myBoardView.getCreatureList()) {

@@ -19,12 +19,29 @@ public class Board {
     private int cpuCount = 0;
     private ResourceBundle myGameObjects;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.models.resources.";
-
+    private ArrayList<int[]> portalLocations = new ArrayList<int[]>();
+    private ArrayList<int[]> wallLocations = new ArrayList<int[]>();
     public ArrayList<int[]> getPortalLocations() {
         return portalLocations;
     }
 
-    private ArrayList<int[]> portalLocations = new ArrayList<int[]>();
+    public void setPortalsGone(){
+        portalLocations = null;
+    }
+
+    public ArrayList<int[]> getWallLocations() {
+        return wallLocations;
+    }
+
+    public void removePortal(int[] portalLocation){
+        int index=0;
+        for (int[] portal: portalLocations){
+            if (Arrays.equals(portalLocation,portal)){
+                index = portalLocations.indexOf(portal);
+            }
+        }
+        portalLocations.remove(index);
+    }
 
     public Board(int numRows, int numCols){
         myBoardObjects = new GameObject[numRows][numCols];
@@ -37,8 +54,10 @@ public class Board {
         Class<?> gameObjectClass = Class.forName(myGameObjects.getString(gameObjectType));
         GameObject gameObject = (GameObject) gameObjectClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
         myBoardObjects[row][col] = gameObject;
+        System.out.println("("+row+","+col+")");
         if (gameObjectType.contains("WALL")){
             myBoardObjects[row][col].setWall(true);
+            //wallLocations.add(new int[]{row,col});
         }
         else{
             if (gameObjectType.contains("PORTAL")){
@@ -104,6 +123,11 @@ public class Board {
             return false;
         }
         return myBoardObjects[row][col].isWall();
+    }
+
+    public void setWallatCell(int[] position, boolean set){
+        myBoardObjects[position[0]][position[1]].setWall(set);
+        System.out.println("("+position[0]+","+position[1]+") wall state changed");
     }
 
     public GameObject getGameObject(int row, int col){

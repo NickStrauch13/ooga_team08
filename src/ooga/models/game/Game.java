@@ -79,9 +79,13 @@ public class Game implements PickupGame {
         return activeCPUCreatures;
     }
 
+    public void setUserSpeed(int i){
+        myUserControlled.setSpeed(i);
+    }
+
     public void step() {
         timer--;
-        System.out.println(timer);
+        //System.out.println(timer);
 
         if(gameType.equals("ANTIPACMAN")){
             if(timer==0){
@@ -100,11 +104,16 @@ public class Game implements PickupGame {
             return;
         }
         adjustGhostCollisions(gameType);
-        moveCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
+        if (stepCounter%myUserControlled.getSpeed()==0){
+            moveUser();
+        }
+        moveCPUCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
         stepCounter++;
 
         if (stepCounter == powerupEndtime){
-            myUserControlled.setPoweredUp(!myUserControlled.isPoweredUp());
+            wallStateChange(true);
+            myUserControlled.setPoweredUp(false);
+            myUserControlled.setSpeed(myUserControlled.getSpeed()/2);
             setBfsThreshold(standardBFSThreshold);
         }
     }
@@ -123,8 +132,11 @@ public class Game implements PickupGame {
         myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
     }
 
-    private void moveCreaturesPacman(int bfsThreshold) {
-        moveToNewPossiblePosition(myUserControlled, generateDirectionArray(lastDirection));
+    private void moveUser(){
+        moveToNewPossiblePosition(myUserControlled,generateDirectionArray(lastDirection));
+    }
+
+    private void moveCPUCreaturesPacman(int bfsThreshold) {
         for (CPUCreature currentCreature : activeCPUCreatures){
             if (stepCounter%myCellSize==0){
                 setBfsThreshold(bfsThreshold);
@@ -424,5 +436,25 @@ public class Game implements PickupGame {
 
     public ArrayList<int[]> getPortalLocations(){
         return myBoard.getPortalLocations();
+    }
+
+    public ArrayList<int[]> getWallLocations(){
+        return myBoard.getWallLocations();
+    }
+
+    public void setPortalsGone(){myBoard.setPortalsGone();}
+
+    public void removePortal(int[] portalLocations){
+        myBoard.removePortal(portalLocations);
+    }
+
+    public void addLife(){
+        lives++;
+    }
+
+    public void wallStateChange(boolean toSet){
+        for (int[] wall:getWallLocations()){
+            myBoard.setWallatCell(wall,toSet);
+        }
     }
 }

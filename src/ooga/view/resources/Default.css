@@ -1,16 +1,15 @@
 
-.root{
-  -fx-font-family: "Arial";
-  -fx-background-color: AliceBlue;
-  text_color: #444444;
-  NewGameColor: #00069C ;
-  BuildBoardButtonColor: #008C1E;
-  HighScoresButtonColor: #AA0000 ;
-  HomeButtonColor: #AA0000;
-  PlayButtonColor: #47ea00;
-  PauseButtonColor: #838383;
-  ResetButtonColor: #efeb14;
-
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: AliceBlue;
+    text_color: #444444;
+    NewGameColor: #00069C;
+    BuildBoardButtonColor: #008C1E;
+    HighScoresButtonColor: #AA0000;
+    HomeButtonColor: #AA0000;
+    PlayButtonColor: #47ea00;
+    PauseButtonColor: #838383;
+    ResetButtonColor: #efeb14;
 }
 
 .homeRowFormat {
@@ -95,6 +94,7 @@
 
 .gameGridPane{
   -fx-alignment: center;
+    -fx-border-style: none;
 }
 
 .wallPiece{

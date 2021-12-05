@@ -2,7 +2,7 @@ package ooga.models.creatures;
 
 public abstract class Creature {
 
-    int speed;
+    int speed=1;
     int myXpos;
     int myYpos;
     int homeX;

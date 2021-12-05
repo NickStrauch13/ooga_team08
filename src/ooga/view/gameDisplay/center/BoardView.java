@@ -21,6 +21,12 @@ public class BoardView {
   private MovingPiece myUserPiece;
   private MovingPiece myCPUPiece;
   private List<Node> myNodeList;
+
+  public List<Node> getMyWallList() {
+    return myWallList;
+  }
+
+  private List<Node> myWallList;
   private List<MovingPiece> myCreatureList;
   private static final String ID_FORMAT = "%s,%s";
   private int cpuCount = 0;
@@ -47,6 +53,9 @@ public class BoardView {
       myGrid.add(pieceNode, col, row);
       myGrid.setHalignment(pieceNode, HPos.CENTER);
       myNodeList.add(pieceNode);
+      if (objectName.contains("WALL")){
+        myWallList.add(pieceNode);
+      }
       return pieceNode;
   }
 
