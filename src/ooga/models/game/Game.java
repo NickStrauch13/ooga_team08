@@ -420,6 +420,9 @@ public class Game implements PickupGame {
      */
     public void nextLevel(){
         level+=1;
+        if(!isPickupsValidWin){
+            score += timer;
+        }
         timer= (int) (startTime/Math.pow(1.1,level));
     }
 
