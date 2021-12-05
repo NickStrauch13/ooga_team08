@@ -52,17 +52,17 @@
   },
 
   "WALL" : {
-    "WALL_COLOR": "WHITE"
+    "WALL_COLOR": "0,0,255"
   },
 
   "SCOREBOOSTER": {
-    "POWERUP_COLOR": "BLUE",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "213,219,33",
+    "POWERUP_SIZE": "5"
   },
 
   "STATECHANGER": {
-    "POWERUP_COLOR": "RED",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "213,219,33",
+    "POWERUP_SIZE": "8"
   },
 
   "SCOREMULTIPLIER": {
@@ -76,28 +76,28 @@
   },
 
   "EXTRALIFE": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "255,0,0",
+    "POWERUP_SIZE": "8"
   },
 
   "INVINCIBILITY": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "255,215,0",
+    "POWERUP_SIZE": "8"
   },
 
   "PORTAL": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "0,0,0",
+    "POWERUP_SIZE": "8"
   },
 
   "SPEEDCUTTER": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "199,26,233",
+    "POWERUP_SIZE": "8"
   },
 
   "WINLEVEL": {
-    "POWERUP_COLOR": "YELLOW",
-    "POWERUP_SIZE": "15"
+    "POWERUP_COLOR": "40,179,58",
+    "POWERUP_SIZE": "8"
   }
 
 }

@@ -82,7 +82,8 @@ public class BoardView {
    */
   public void addCPUCreature(int row, int col, String creatureName,Map<String,String> myCreatureValues){
     String formattedString = String.format(PIECE_PATH, creatureName.substring(0, 1) + creatureName.toLowerCase().substring(1));
-    myCPUPiece = creatureReflection(formattedString,myCreatureValues);Node cpuNode = myCPUPiece.getPiece();
+    myCPUPiece = creatureReflection(formattedString,myCreatureValues);
+    Node cpuNode = myCPUPiece.getPiece();
     cpuNode.setId(creatureName + cpuCount);
     myGroup.getChildren().add(cpuNode);
     myCPUPiece.updatePosition(col*myController.getCellSize(), row*myController.getCellSize());

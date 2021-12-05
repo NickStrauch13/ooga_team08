@@ -9,7 +9,8 @@ import java.util.Map;
  * Class that represents the dot pickup pieces in the view board.
  */
 public class StatechangerPiece extends GamePiece{
-  public static final int DOT_RAD = 8;
+  public int dotRadius = 8;
+  private Color myColor = Color.YELLOW;
   private static final String CSS_ID = "dotPiece";
 
   public StatechangerPiece(Integer cellSize, Map<String, String> myValues){
@@ -28,9 +29,9 @@ public class StatechangerPiece extends GamePiece{
 
   @Override
   protected Circle makeNode(){
-    Circle dot = new Circle(DOT_RAD);
+    Circle dot = new Circle(dotRadius);
     dot.setId(getCellIndexID());
-    dot.setFill(Color.rgb(184,134, 11));
+    dot.setFill(myColor);
     return dot;
   }
 }
