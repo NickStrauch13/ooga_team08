@@ -50,8 +50,11 @@ public class Game implements PickupGame {
         myBoard=board;
     }
     private int startingPickUps;
+    private Map<String, String> gameSettings;
+    private boolean isPredator;
+    private int startTime;
 
-    public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize){
+    public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize, Map<String, String> generalSettings){
         myBoard=board;
         pickUpsLeft = numPickUps;
         startingPickUps = numPickUps;
@@ -60,13 +63,20 @@ public class Game implements PickupGame {
         myCreatureResources = ResourceBundle.getBundle(CREATURE_RESOURCE_PACKAGE + "directions");
         myGameTypeThresholds = ResourceBundle.getBundle(GAME_RESOURCE_PACKAGE+"gameTypes");
         level=1;
-        lives=3;
-        score=0;
-        timer = 5000;
         myCellSize = cellSize;
         initializeGhosts();
         boardXSize=cellSize*board.getCols();
         boardYSize=cellSize*board.getRows();
+        gameSettings = generalSettings;
+        timer=Integer.parseInt(gameSettings.get("TIMER"));
+        lives = Integer.parseInt(gameSettings.get("LIVES"));
+        isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
+        startTime=timer;
+
+        lives=Integer.parseInt(gameSettings.get("LIVES"));
+        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
+
+
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -92,7 +102,7 @@ public class Game implements PickupGame {
         timer--;
 
 
-        if(gameType.equals("ANTIPACMAN")){
+        if(isPredator){
             if(timer==0){
                 endGame();
             }
@@ -100,13 +110,16 @@ public class Game implements PickupGame {
                 nextLevel();
             }
         }
-        if (checkPickUps()){
-            nextLevel();
-            return;
-        }
-        if (checkLives()){
-            endGame();
-            return;
+        else {
+            if (checkPickUps()) {
+                nextLevel();
+                return;
+            }
+
+            if (checkLives()||timer==0) {
+                endGame();
+                return;
+            }
         }
         adjustGhostCollisions(gameType);
         if (stepCounter%myUserControlled.getSpeed()==0){

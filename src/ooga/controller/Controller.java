@@ -173,7 +173,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
-        myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
+        myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
         myGame.setGameType(myGameSettings.getGeneralSettings().get("GAME_TYPE"));
     }
 
@@ -468,6 +468,10 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     }
     public void gameOver(){
         getGame().endGame();
+    }
+
+    public int getTimer() {
+        return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
     }
 
 }

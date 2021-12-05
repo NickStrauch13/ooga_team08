@@ -42,6 +42,7 @@ public interface ViewerControllerInterface {
     public void resetUserPosition();
     public void loseLife();
     public void gameOver();
+    public int getTimer();
 
 
 }
