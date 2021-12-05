@@ -12,8 +12,10 @@ public class PacmanPiece extends MovingPiece {
 
     public PacmanPiece(Integer cellSize, Map<String, String> myValues){
         super(cellSize);
-        if(myValues.containsKey("USER_IMAGE")){
-            imagePath=myValues.get("USER_IMAGE");
+        if (myValues != null) {
+            if(myValues.containsKey("USER_IMAGE")){
+                imagePath=myValues.get("USER_IMAGE");
+            }
         }
         setMyPiece(makeNode());
     }

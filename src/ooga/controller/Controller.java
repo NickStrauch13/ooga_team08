@@ -56,6 +56,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
     private static final int FIVE_HUNDRED = 500;
+    private static int DEFAULT_CELL_SIZE;
 
     private static final String[] BLANK_ENTRY = new String[]{"", "-1"};
 
@@ -114,6 +115,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
                 CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                 CSVWriter.DEFAULT_LINE_END);
         myUsername = DEFAULT_USERNAME;
+        cellSize = DEFAULT_CELL_SIZE;
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -213,7 +215,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
             }
         }
     }
-
 
     public int getCellCoordinate(double pixels) {
         return ((int) pixels) / cellSize;
@@ -494,7 +495,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myGameSettings.getGeneralSettings().get("GAME_TITLE");
     }
 
-    private void setCellSize(int newSize) {
+    public void setCellSize(int newSize) {
         cellSize = newSize;
     }
 

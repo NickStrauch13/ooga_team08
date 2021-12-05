@@ -31,17 +31,6 @@ public abstract class GamePiece{
     this.myPiece = myPiece;
   }
 
-  /**
-   * Sets the specific cell that the piece will reside. This is typically used to create the ID
-   * for the piece node. (ex: a wall in cell r=4 c =11 would get the ID = "4,11")
-   * @param row
-   * @param col
-   */
-  public void setCellIndex(int row, int col){
-    myRow = row;
-    myCol = col;
-  }
-
   protected abstract Node makeNode();
 
   protected String getCellIndexID(){
@@ -55,6 +44,10 @@ public abstract class GamePiece{
 
   protected int getCellSize(){
     return myCellSize;
+  }
+
+  public void setCellSize(int newSize) {
+    myCellSize = newSize;
   }
 
   protected Color parseRGBs(String rgbColor){

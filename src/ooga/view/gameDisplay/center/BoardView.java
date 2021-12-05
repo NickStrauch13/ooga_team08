@@ -48,14 +48,15 @@ public class BoardView {
    * @param col
    * @param objectName
    */
-  public Node addBoardPiece(int row, int col, String objectName, Map<String, String> myObjectValues) {
+  public GamePiece addBoardPiece(int row, int col, String objectName, Map<String, String> myObjectValues) {
       String formattedString = String.format(PIECE_PATH,objectName.substring(0, 1) + objectName.toLowerCase().substring(1));
-      Node pieceNode = pieceReflection(formattedString, myObjectValues).getPiece();
-      pieceNode.setId(String.format(ID_FORMAT, row, col));
+      GamePiece gamePiece = pieceReflection(formattedString, myObjectValues);
+      Node pieceNode = gamePiece.getPiece();
+      gamePiece.getPiece().setId(String.format(ID_FORMAT, row, col));
       myGrid.add(pieceNode, col, row);
       myGrid.setHalignment(pieceNode, HPos.CENTER);
       myNodeList.add(pieceNode);
-      return pieceNode;
+      return gamePiece;
   }
 
   /**
@@ -102,15 +103,6 @@ public class BoardView {
       e.printStackTrace(); //TODO make better
     }
     return gamePiece;
-  }
-
-  /**
-   * Created the board.
-   * @param rows
-   * @param cols
-   */
-  public void makeBoard(int rows, int cols){
-    controllerBoard = new int[rows][cols];
   }
 
   /**

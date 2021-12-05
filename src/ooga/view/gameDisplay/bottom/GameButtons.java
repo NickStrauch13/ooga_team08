@@ -62,7 +62,7 @@ public class GameButtons {
   }
 
   public void playPause(){
-    if(mySimManager.playPause()){
+    if(git mySimManager.playPause()){
       playPauseButton.setGraphic(PAUSE_ICON);
       playPauseButton.getStyleClass().clear();
       playPauseButton.getStyleClass().add("PauseButtonID");
