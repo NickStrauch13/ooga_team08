@@ -41,7 +41,9 @@
     "LIVES": "3",
     "CELL_SIZE": "24",
     "CSS_FILE_NAME" : "Default.css",
-    "USER_IS_PREDATOR" : "1"
+    "USER_IS_PREDATOR" : "1",
+    "HARD" : "1",
+    "IS_PICKUPS_A_VALID_WIN_CONDITION": "1"
   },
 
   "PACMAN" : {
