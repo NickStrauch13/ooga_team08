@@ -395,4 +395,12 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myUsername;
     }
 
+    /**
+     * Returns the current time of the game.
+     * @return Integer values representing time.
+     */
+    public int getGameTime(){
+        return myGame.getTime();
+    }
+
 }

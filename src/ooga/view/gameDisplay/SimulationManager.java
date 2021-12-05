@@ -148,6 +148,7 @@ public class SimulationManager {
         myGameStats.setScoreText(myController.getScore());
         myGameStats.setLivesText(myController.getLives());
         myGameStats.setLevelText(myController.getLevel());
+        myGameStats.setTimeText(myController.getGameTime());
     }
 
     public void handleKeyInput(KeyCode code){

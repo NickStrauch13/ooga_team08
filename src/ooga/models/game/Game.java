@@ -108,7 +108,7 @@ public class Game implements PickupGame {
             setBfsThreshold(standardBFSThreshold);
         }
     }
-    private int getTime(){
+    public int getTime(){
         return timer/100;
     }
 
