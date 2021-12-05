@@ -34,7 +34,7 @@ public class BoardTest {
     }
     @Test
     public void createGameObject() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        newBoard.createGameObject(3,3,"POWERUP3");
+        newBoard.createGameObject(3,3,"SCOREMULTIPLIER");
         assert (newBoard.getGameObject(3,3).getClass().getName().equals("ooga.models.gameObjects.pickups.bigScoreBooster"));
     }
     @Test

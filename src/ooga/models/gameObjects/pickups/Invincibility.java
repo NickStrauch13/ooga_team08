@@ -2,10 +2,10 @@ package ooga.models.gameObjects.pickups;
 
 import ooga.models.game.PickupGame;
 
-public class invincibility extends pickup{
+public class Invincibility extends Pickup {
     private static final int POWERUP_TIME = 500;
 
-    public invincibility(Integer row, Integer col) {
+    public Invincibility(Integer row, Integer col) {
         super(row, col);
     }
 

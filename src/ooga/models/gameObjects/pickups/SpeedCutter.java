@@ -2,7 +2,7 @@ package ooga.models.gameObjects.pickups;
 
 import ooga.models.game.PickupGame;
 
-public class SpeedCutter extends pickup{
+public class SpeedCutter extends Pickup {
     private static final int POWERUP_TIME=150;
 
     public SpeedCutter(Integer row, Integer col) {

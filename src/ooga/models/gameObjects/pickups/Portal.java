@@ -4,12 +4,12 @@ import ooga.models.game.PickupGame;
 
 import java.util.Random;
 
-public class portal extends pickup{
+public class Portal extends Pickup {
     private static final int SCORE_TO_ADD=100;
     private int portalToX;
     private int portalToY;
 
-    public portal(Integer row, Integer col) {
+    public Portal(Integer row, Integer col) {
         super(row, col);
     }
 

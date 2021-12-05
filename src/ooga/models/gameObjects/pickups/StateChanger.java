@@ -2,10 +2,10 @@ package ooga.models.gameObjects.pickups;
 
 import ooga.models.game.PickupGame;
 
-public class stateChanger extends pickup{
+public class StateChanger extends Pickup {
     private static final int POWERUP_TIME=150;
 
-    public stateChanger(Integer row, Integer col) {
+    public StateChanger(Integer row, Integer col) {
         super(row, col);
     }
 

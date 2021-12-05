@@ -1,12 +1,11 @@
 package ooga.models.gameObjects.pickups;
 
 import ooga.models.game.PickupGame;
-import ooga.models.gameObjects.pickups.pickup;
 
-public class scoreMultiplier extends pickup {
+public class ScoreMultiplier extends Pickup {
     private static final int MULTIPLIER=2;
 
-    public scoreMultiplier(Integer row, Integer col) {
+    public ScoreMultiplier(Integer row, Integer col) {
         super(row, col);
     }
 

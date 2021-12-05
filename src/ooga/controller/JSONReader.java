@@ -85,24 +85,29 @@ public class JSONReader {
     private GameSettings getGameSettings(JSONObject jsonData) {
         Map<String, String> settingMap = getSettingMap(jsonData, "SETTINGS");
         Settings basicSettings = new Settings(settingMap);
-
         Map<String, String> userSettings = getSettingMap(jsonData, "USER");
-
         Map<String, String> CPUSettings = getSettingMap(jsonData, "CPU");
-
         Map<String, String> wallSettings = getSettingMap(jsonData, "WALL");
+        Map<String, String> wallBreakerSettings = getSettingMap(jsonData, "WALLBREAKER");
+        Map<String, String> extraLifeSettings = getSettingMap(jsonData, "EXTRALIFE");
+        Map<String, String> scoreBoosterSettings = getSettingMap(jsonData, "SCOREBOOSTER");
+        Map<String, String> stateChangerSettings = getSettingMap(jsonData, "STATECHANGER");
+        Map<String, String> scoreMultiplierSettings = getSettingMap(jsonData, "SCOREMULTIPLIER");
+        Map<String, String> invincibilitySettings = getSettingMap(jsonData, "INVINCIBILITY");
+        Map<String, String> portalSettings = getSettingMap(jsonData, "PORTAL");
+        Map<String, String> speedCutterSettings = getSettingMap(jsonData, "SPEEDCUTTER");
+        Map<String, String> winLevelSettings = getSettingMap(jsonData, "WINLEVEL");
 
-        // TODO: map { food -> food obj, 1, 2, 3
-        Map<String, String> foodSettings = getSettingMap(jsonData, "FOOD");
-
-        Map<String, String> powerUP1Settings = getSettingMap(jsonData, "POWERUP1");
-
-        Map<String, String> powerUP2Settings = getSettingMap(jsonData, "POWERUP2");
-
-        Map<String, String> powerUP3Settings = getSettingMap(jsonData, "POWERUP3");
+        Map<String,Map<String,String>> mapList = Map.ofEntries(Map.entry("general",settingMap),
+                Map.entry("user",userSettings), Map.entry("CPU",CPUSettings),Map.entry( "wall", wallSettings),
+                Map.entry("scoreBooster", scoreBoosterSettings),Map.entry("stateChanger", stateChangerSettings),
+                Map.entry("scoreMultiplier", scoreMultiplierSettings),Map.entry( "wallBreaker", wallBreakerSettings),
+                Map.entry("extraLife", extraLifeSettings),Map.entry( "invincibility", invincibilitySettings),
+                Map.entry("portal",portalSettings),Map.entry( "speedCutter",speedCutterSettings),
+                Map.entry("winLevel", winLevelSettings));
 
         // TODO: should all food items be a map?
-        return new GameSettings(basicSettings, userSettings, CPUSettings, wallSettings, foodSettings, powerUP1Settings, powerUP2Settings, powerUP3Settings);
+        return new GameSettings(mapList);
     }
 
     /*
@@ -111,7 +116,7 @@ public class JSONReader {
     private Map<String, String> getSettingMap(JSONObject jsonData, String objectType) {
 
         Map<String, String> conversionMap = new HashMap();
-        Map JSONMap = ((HashMap) jsonData.get(objectType));
+        Map<String,String> JSONMap = ((HashMap)jsonData.get(objectType));
 
         for (Object keyObject : JSONMap.keySet()) {
             String keyString = keyObject.toString().trim();

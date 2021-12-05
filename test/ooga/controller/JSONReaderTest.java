@@ -60,7 +60,7 @@ class JSONReaderTest {
         Map<Integer, String> conversionMap = container.getMyConversionMap();
         Map<Integer, String> creatureMap = container.getMyCreatureMap();
 
-        String expectedObject = "POWERUP1";
+        String expectedObject = "SCOREBOOSTER";
         String expectedCreature = "CPUGHOST";
 
 

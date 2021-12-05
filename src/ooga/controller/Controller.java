@@ -78,6 +78,8 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private static final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
     private static final String DEFAULT_LANGUAGE = "English";
     private String myViewMode;
+    private GameSettings gameSettings;
+    private final String SCORE_PATH = "./data/highscores/HighScores.csv";
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
@@ -155,6 +157,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
 
         JSONContainer container = myReader.readJSONConfig();
+        gameSettings = container.getMyGameSettings();
         int numOfRows = container.getMyNumOfRows();
         int numOfCols = container.getMyNumOfCols();
 
@@ -164,17 +167,14 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         creatureMap = container.getMyCreatureMap();
         stringBoard = container.getMyStringBoard();
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
-//        System.out.println("My game setting is: " + container.getMyGameSettings());
-//        System.out.println("My setting is: " + container.getMyGameSettings().getMySettings());
-//        System.out.println("My language is: " + container.getMyGameSettings().getMySettings().getLanguage());
-        language = myLanguages.getString(container.getMyGameSettings().getMySettings().getLanguage());
-//        System.out.println(language);
+        language = myLanguages.getString(gameSettings.getGeneralSettings().get("LANGUAGE"));
+        System.out.println(language);
         myBoard = new Board(numOfRows, numOfCols);
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
         myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
-        myGame.setGameType(container.getMyGameSettings().getMySettings().getGameType());
+        myGame.setGameType(gameSettings.getGeneralSettings().get("GAME_TYPE"));
     }
 
     /*
