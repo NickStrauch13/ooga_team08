@@ -57,7 +57,7 @@ public class UINodeFactory {
     return (Label)setID(ID, label);
   }
 
-  public Node makeRow(String rowFormatting, Node ... nodes) {
+  public HBox makeRow(String rowFormatting, Node ... nodes) {
     HBox row = new HBox();
     row.getChildren().addAll(nodes);
     row.setSpacing(5.0);
