@@ -12,8 +12,6 @@ import java.util.*;
 
 public class Game implements PickupGame {
 
-    private String gameType = "";
-    private int bfsThreshold = 1;
     private int standardBFSThreshold = 1;
     private boolean gameOver=false;
     private String lastDirection;
@@ -72,7 +70,6 @@ public class Game implements PickupGame {
         lives = Integer.parseInt(gameSettings.get("LIVES"));
         isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
         startTime=timer;
-
         lives=Integer.parseInt(gameSettings.get("LIVES"));
         isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
 
@@ -121,11 +118,11 @@ public class Game implements PickupGame {
                 return;
             }
         }
-        adjustGhostCollisions(gameType);
+        adjustGhostCollisions();
         if (stepCounter%myUserControlled.getSpeed()==0){
             moveUser();
         }
-        moveCPUCreaturesPacman(Integer.parseInt(myGameTypeThresholds.getString(gameType)));
+        moveCPUCreaturesPacman();
 
         stepCounter++;
 
@@ -133,15 +130,14 @@ public class Game implements PickupGame {
             myUserControlled.setPoweredUp(false);
             myUserControlled.setSpeed(myUserControlled.getStandardSpeed());
             myUserControlled.setInvincible(false);
-            setBfsThreshold(standardBFSThreshold);
         }
     }
     public int getTime(){
         return timer/100;
     }
 
-    private void adjustGhostCollisions(String gameType){
-        if (Integer.parseInt(myGameTypeThresholds.getString(gameType))<4){
+    private void adjustGhostCollisions(){
+        if (isPredator){
             myUserControlled.setPoweredUp(true);
         }
     }
@@ -155,11 +151,25 @@ public class Game implements PickupGame {
         moveToNewPossiblePosition(myUserControlled,generateDirectionArray(lastDirection));
     }
 
+    @Deprecated
     private void moveCPUCreaturesPacman(int bfsThreshold) {
         for (CPUCreature currentCreature : activeCPUCreatures){
             if (stepCounter%myCellSize==0){
-                setBfsThreshold(bfsThreshold);
-                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature)));
+                //setBfsThreshold(bfsThreshold);
+                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(false,currentCreature)));
+                //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
+            }
+            if (stepCounter%currentCreature.getSpeed()==0) {
+                moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
+            }
+        }
+    }
+
+    private void moveCPUCreaturesPacman() {
+        for (CPUCreature currentCreature : activeCPUCreatures){
+            if (stepCounter%myCellSize==0){
+                //setBfsThreshold(bfsThreshold);
+                currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(false,currentCreature)));
                 //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             if (stepCounter%currentCreature.getSpeed()==0) {
@@ -191,11 +201,10 @@ public class Game implements PickupGame {
         return false;
     }
 
-    private String adjustedMovement(int threshold, CPUCreature cpu) {
+    private String adjustedMovement(boolean random, CPUCreature cpu) {
         Random r = new Random();
-        boolean usePath = r.nextInt(4)<threshold;
         String movementDirection;
-        if (usePath){
+        if (!random){
             movementDirection = bfsChase(cpu);
         }
         else{
@@ -350,7 +359,7 @@ public class Game implements PickupGame {
     }
 
     private boolean creatureVsCreatureCollision(CollisionManager cm){
-        if(gameType.equals("ANTIPACMAN")){
+        if(isPredator){
             lives--;
         }
         if(myUserControlled.isPoweredUp()){
@@ -450,18 +459,6 @@ public class Game implements PickupGame {
     public boolean setLastDirection(String lastDirection) {
         this.lastDirection = lastDirection;
         return true;
-    }
-
-    public void setBfsThreshold(int bfsThreshold) {
-        this.bfsThreshold = bfsThreshold;
-    }
-
-    public String getGameType() {
-        return gameType;
-    }
-
-    public void setGameType(String gameType) {
-        this.gameType = gameType;
     }
 
     public ArrayList<int[]> getPortalLocations(){

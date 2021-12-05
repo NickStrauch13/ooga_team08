@@ -174,7 +174,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
         myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
-        myGame.setGameType(myGameSettings.getGeneralSettings().get("GAME_TYPE"));
+
     }
 
     /*
@@ -245,13 +245,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myGame.getScore();
     }
 
-    /**
-     * Get the game category
-     * @return the game category
-     */
-    public String getGameType() {
-        return gameType;
-    }
 
     public boolean getIsPoweredUp(){return myGame.getUser().isPoweredUp();}
 
@@ -472,6 +465,10 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     public int getTimer() {
         return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
+    }
+
+    public String getGameType() {
+        return myGameSettings.getGeneralSettings().get("GAME_TYPE");
     }
 
 }
