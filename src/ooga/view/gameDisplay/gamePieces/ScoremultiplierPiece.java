@@ -8,7 +8,8 @@ import javafx.scene.shape.Rectangle;
  * Class that represents the dot pickup pieces in the view board.
  */
 public class ScoremultiplierPiece extends GamePiece{
-  public static final int edge = 7;
+  private int edge = 7;
+  private Color myColor=Color.GREEN;
   private static final String CSS_ID = "dotPiece";
 
   public ScoremultiplierPiece(Integer cellSize){
@@ -19,7 +20,7 @@ public class ScoremultiplierPiece extends GamePiece{
   protected Rectangle makeNode(){
     Rectangle rect = new Rectangle(edge,edge);
     rect.setId(getCellIndexID());
-    rect.setFill(Color.rgb(184,134, 11));
+    rect.setFill(myColor);
     return rect;
   }
 }

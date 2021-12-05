@@ -1,5 +1,6 @@
 package ooga.view.gameDisplay.gamePieces;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
 
 /**
  * Abstract class that is the parent of all game pieces. This includes walls, dots, pacman, etc.
@@ -9,6 +10,7 @@ public abstract class GamePiece{
   private int myCol;
   private Node myPiece;
   private int myCellSize;
+  private static final String COMMA = ",";
 
 
   public GamePiece(int cellSize){
@@ -38,7 +40,7 @@ public abstract class GamePiece{
   }
 
   protected abstract Node makeNode();
-
+  
   protected String getCellIndexID(){
     return String.format("%d,$d", myRow, myCol);
   }
@@ -51,4 +53,11 @@ public abstract class GamePiece{
   protected int getCellSize(){
     return myCellSize;
   }
+  
+  protected Color parseRGBs(String rgbColor){
+    String[] colorValues = rgbColor.split(COMMA); //TODO PARSE OUT NEGATIVE DATA
+    return Color.rgb(Integer.parseInt(colorValues[0])%256,Integer.parseInt(colorValues[1])%256,Integer.parseInt(colorValues[2])%256);
+  }
+  
 }
+

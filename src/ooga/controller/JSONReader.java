@@ -85,8 +85,8 @@ public class JSONReader {
     private GameSettings getGameSettings(JSONObject jsonData) {
         Map<String, String> settingMap = getSettingMap(jsonData, "SETTINGS");
         Settings basicSettings = new Settings(settingMap);
-        Map<String, String> userSettings = getSettingMap(jsonData, "USER");
-        Map<String, String> CPUSettings = getSettingMap(jsonData, "CPU");
+        Map<String, String> userSettings = getSettingMap(jsonData, "PACMAN");
+        Map<String, String> CPUSettings = getSettingMap(jsonData, "CPUGHOST");
         Map<String, String> wallSettings = getSettingMap(jsonData, "WALL");
         Map<String, String> wallBreakerSettings = getSettingMap(jsonData, "WALLBREAKER");
         Map<String, String> extraLifeSettings = getSettingMap(jsonData, "EXTRALIFE");
@@ -98,13 +98,13 @@ public class JSONReader {
         Map<String, String> speedCutterSettings = getSettingMap(jsonData, "SPEEDCUTTER");
         Map<String, String> winLevelSettings = getSettingMap(jsonData, "WINLEVEL");
 
-        Map<String,Map<String,String>> mapList = Map.ofEntries(Map.entry("general",settingMap),
-                Map.entry("user",userSettings), Map.entry("CPU",CPUSettings),Map.entry( "wall", wallSettings),
-                Map.entry("scoreBooster", scoreBoosterSettings),Map.entry("stateChanger", stateChangerSettings),
-                Map.entry("scoreMultiplier", scoreMultiplierSettings),Map.entry( "wallBreaker", wallBreakerSettings),
-                Map.entry("extraLife", extraLifeSettings),Map.entry( "invincibility", invincibilitySettings),
-                Map.entry("portal",portalSettings),Map.entry( "speedCutter",speedCutterSettings),
-                Map.entry("winLevel", winLevelSettings));
+        Map<String,Map<String,String>> mapList = Map.ofEntries(Map.entry("SETTINGS",settingMap),
+                Map.entry("PACMAN",userSettings), Map.entry("CPUGHOST",CPUSettings),Map.entry( "WALL", wallSettings),
+                Map.entry("SCOREBOOSTER", scoreBoosterSettings),Map.entry("STATECHANGER", stateChangerSettings),
+                Map.entry("SCOREMULTIPLIER", scoreMultiplierSettings),Map.entry( "WALLBREAKER", wallBreakerSettings),
+                Map.entry("EXTRALIFE", extraLifeSettings),Map.entry( "INVINCIBILITY", invincibilitySettings),
+                Map.entry("PORTAL",portalSettings),Map.entry( "SPEEDCUTTER",speedCutterSettings),
+                Map.entry("WINLEVEL", winLevelSettings));
 
         // TODO: should all food items be a map?
         return new GameSettings(mapList);

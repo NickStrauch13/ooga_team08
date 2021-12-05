@@ -6,17 +6,18 @@ import javafx.scene.shape.Circle;
 /**
  * Class that represents the dot pickup pieces in the view board.
  */
-public class AllbreakerPiece extends GamePiece{
-  public static final int DOT_RAD = 5;
+public class WallbreakerPiece extends GamePiece{
+  private int dotRadius = 5;
+  private Color myColor = Color.BLACK;
   private static final String CSS_ID = "dotPiece";
 
-  public AllbreakerPiece(Integer cellSize){
+  public WallbreakerPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
   }
 
   @Override
   protected Circle makeNode(){
-    Circle dot = new Circle(DOT_RAD);
+    Circle dot = new Circle(dotRadius);
     dot.setId(getCellIndexID());
     dot.setFill(Color.rgb(200,100, 0));
     return dot;
