@@ -6,7 +6,6 @@ import ooga.view.gameDisplay.keyActions.KeyViewAction;
 
 public class RKey extends KeyViewAction {
   private ViewerControllerInterface myController;
-
   public RKey(BoardView boardView, ViewerControllerInterface controller){
     super(boardView, controller);
     myController = controller;
