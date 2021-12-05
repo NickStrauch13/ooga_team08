@@ -39,7 +39,7 @@
     "GAME_TYPE": "PACMAN",
     "TIMER": "0",
     "WIN_CONDITION": "LIVES",
-    "CELL_SIZE": "25",
+    "CELL_SIZE": "24",
     "CSS_FILE_NAME" : "Default.css"
   },
 
