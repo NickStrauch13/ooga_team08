@@ -36,22 +36,20 @@
 
   "SETTINGS": {
     "LANGUAGE": "ENGLISH",
-    "GAME_TITLE": "PACMAN",
-    "TIMER": "-1",
+    "GAME_TYPE": "PACMAN",
+    "TIMER": "40000",
     "LIVES": "3",
-    "CELL_SIZE": "24",
+    "CELL_SIZE": "25",
     "CSS_FILE_NAME" : "Default.css",
-    "USER_IS_PREDATOR" : "0",
-    "HARD" : "1",
-    "IS_PICKUPS_A_VALID_WIN_CONDITION": "0"
+    "USER_IS_PREDATOR" : "1"
   },
 
   "PACMAN" : {
-    "USER_IMAGE": "ooga/view/resources/viewIcons/pacmanImage.png"
+    "USER_IMAGE":"ooga/view/resources/viewIcons/ghostImage.png"
   },
 
   "CPUGHOST": {
-    "CPU_IMAGE": "ooga/view/resources/viewIcons/ghostImage.png"
+    "CPU_IMAGE": "ooga/view/resources/viewIcons/pacmanImage.png"
   },
 
   "WALL" : {

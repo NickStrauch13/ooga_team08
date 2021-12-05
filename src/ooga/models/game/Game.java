@@ -76,6 +76,7 @@ public class Game implements PickupGame {
         lives=Integer.parseInt(gameSettings.get("LIVES"));
         isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
         isPickupsValidWin = Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))==1;
+
     }
     public UserCreature getUser(){
         return myUserControlled;
@@ -419,7 +420,7 @@ public class Game implements PickupGame {
      */
     public void nextLevel(){
         level+=1;
-        timer= (int) (5000/Math.pow(1.1,level));
+        timer= (int) (startTime/Math.pow(1.1,level));
     }
 
     /**

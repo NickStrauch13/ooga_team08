@@ -195,9 +195,10 @@ public class GameScreenTests extends DukeApplicationTest {
   public void ResetUserPositionUsingKeyR(){
     clickOn(playButton);
 
-    robot.press(KeyCode.R).release(KeyCode.R);
+
 
     clickOn(playButton);
+    robot.press(KeyCode.R).release(KeyCode.R);
     System.out.println(myController.getGame().getUser().getXpos());
     System.out.println(myController.getGame().getUser().getHomeX());
     System.out.println(myController.getGame().getUser().getYpos());
@@ -231,8 +232,8 @@ public class GameScreenTests extends DukeApplicationTest {
   @Test
   public void GhostsDieUsingKeyW(){
     clickOn(playButton);
+    clickOn(playButton);
     robot.press(KeyCode.W).release(KeyCode.W);
-    sleep(100);
     for(CPUCreature creature: myController.getGame().getCPUs()) {
       assert (creature.getXpos() == creature.getHomeX());
       assert (creature.getYpos() == creature.getHomeY());

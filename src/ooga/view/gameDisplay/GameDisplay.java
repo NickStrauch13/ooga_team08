@@ -31,8 +31,8 @@ public class GameDisplay {
         myController = controller;
         myBoardView = boardView;
         myGameStats = new GameStats(myController);
-        myGameButtons = new GameButtons(stage, width, height, myController, mySimManager, language);
         mySimManager = new SimulationManager(myController,myGameStats, boardView, this);
+        myGameButtons = new GameButtons(stage, width, height, myController, mySimManager, language);
         myStage = stage;
         root = new BorderPane();
         myScene = new Scene(root, width, height);
