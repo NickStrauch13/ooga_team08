@@ -3,12 +3,10 @@ package ooga.controller;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import javafx.stage.Stage;
 import java.lang.Integer;
-
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
@@ -63,12 +61,12 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private List<List<String>> stringBoard;
     private Stage myStage;
     private String myUsername;
-
     private ErrorView myErrorView;
     private String language;
     private ResourceBundle myLanguages;
     private static final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
     private static final String DEFAULT_LANGUAGE = "English";
+    private String myViewMode;
 
     // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
     // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
@@ -85,6 +83,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException  {
         language = DEFAULT_LANGUAGE;
+        myViewMode = "UNC.css";
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         collisionManager = new CollisionManager();
         myStage = stage;
@@ -156,7 +155,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
-
         myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
         myGame.setGameType(container.getGameType());
     }
@@ -393,6 +391,10 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     public String getUsername(){
         return myUsername;
+    }
+
+    public String getViewMode() {
+        return myViewMode;
     }
 
 }

@@ -25,5 +25,6 @@ public interface ViewerControllerInterface {
     public int[] getGhostPosition(String nodeID);
     public int getCellSize();
     public String getGameType();
+    public String getViewMode();
 
 }
