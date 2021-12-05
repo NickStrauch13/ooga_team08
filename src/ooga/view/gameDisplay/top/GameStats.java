@@ -12,8 +12,7 @@ public class GameStats {
     private UINodeFactory nodeBuilder;
     private ViewerControllerInterface myController;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-    private static final String DEFAULT_STYLESHEET =
-            "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
+    private static String DEFAULT_STYLESHEET;
     private static final String SPACE = "   ";
     private ResourceBundle myResources;
     private Label numScoreText;
@@ -25,6 +24,7 @@ public class GameStats {
         myController = controller;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         nodeBuilder = new UINodeFactory(myController);
+        DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
     }
 
     public HBox makeStatLabels(){

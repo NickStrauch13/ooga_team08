@@ -15,15 +15,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import ooga.controller.ViewerControllerInterface;
 
-
 public class UINodeFactory {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-  private static final String DEFAULT_STYLESHEET =
-      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
+  private static String DEFAULT_STYLESHEET;
   private ResourceBundle myResources;
   public UINodeFactory(ViewerControllerInterface myController){
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
-
+    DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
   }
 
   /**
