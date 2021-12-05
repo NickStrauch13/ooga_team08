@@ -52,7 +52,7 @@
   },
 
   "PACMAN" : {
-    "USER_IMAGE": "ooga/view/resources/viewIcons/mrsPacman.png"
+    "USER_IMAGE": "ooga/view/resources/viewIcons/purplePacman.png"
   },
 
   "CPUGHOST": {
@@ -69,7 +69,7 @@
   },
 
   "STATECHANGER": {
-    "POWERUP_COLOR": "221,0,255",
+    "POWERUP_COLOR": "0,255,200",
     "POWERUP_SIZE": "8"
   },
 
