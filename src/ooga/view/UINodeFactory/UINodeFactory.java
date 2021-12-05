@@ -65,7 +65,7 @@ public class UINodeFactory {
     return row;
   }
 
-  public Node makeCol(String rowFormatting, Node ... nodes) {
+  public VBox makeCol(String rowFormatting, Node ... nodes) {
     VBox col = new VBox();
     col.getChildren().addAll(nodes);
     col.setSpacing(5.0);
