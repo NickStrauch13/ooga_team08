@@ -1,0 +1,111 @@
+{
+  "ROW_NUMBER": "16",
+  "COL_NUMBER": "15",
+  "BOARD": [
+    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+    ["0", "5", "2", "1", "1", "1", "1", "6", "1", "1", "1", "1", "2", "5", "0"],
+    ["0", "0", "1", "0", "0", "0", "1", "0", "1", "0", "0", "0", "1", "0", "0"],
+    ["0", "1", "1", "1", "1", "0", "1", "1", "1", "0", "1", "1", "1", "1", "0"],
+    ["0", "1", "1", "0", "1", "0", "1", "0", "1", "0", "1", "0", "1", "1", "0"],
+    ["0", "0", "1", "1", "1", "0", "1", "1", "1", "0", "1", "1", "1", "0", "0"],
+    ["0", "0", "1", "0", "1", "5", "1", "0", "1", "5", "1", "0", "1", "0", "0"],
+    ["9", "1", "1", "0", "1", "0", "1", "0", "1", "0", "1", "0", "1", "1", "9"],
+    ["0", "0", "1", "0", "1", "1", "1", "0", "1", "1", "1", "0", "1", "0", "0"],
+    ["0", "0", "1", "0", "0", "0", "1", "0", "1", "0", "0", "0", "1", "0", "0"],
+    ["0", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0"],
+    ["0", "1", "0", "1", "0", "0", "0", "1", "0", "0", "0", "1", "0", "1", "0"],
+    ["0", "1", "0", "1", "1", "1", "1", "6", "1", "1", "1", "1", "0", "1", "0"],
+    ["0", "1", "0", "0", "1", "0", "0", "0", "0", "0", "1", "0", "0", "1", "0"],
+    ["0", "2", "1", "1", "1", "1", "1", "4", "1", "1", "1", "1", "1", "2", "0"],
+    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
+  ],
+
+  "OBJECT_MAP": {
+    "0" : "WALL",
+    "1" : "SCOREBOOSTER",
+    "2" : "STATECHANGER",
+    "3" : "SCOREMULTIPLIER",
+    "6" : "PORTAL",
+    "7" : "GHOSTSLOWER",
+    "8" : "EXTRALIFE",
+    "9" : "EMPTY",
+    "10" : "INVINCIBILITY",
+    "11" : "SPEEDCUTTER",
+    "12" : "WINLEVEL"
+  },
+
+  "CREATURE_MAP": {
+    "4" : "PACMAN",
+    "5" : "CPUGHOST"
+  },
+
+  "SETTINGS": {
+    "LANGUAGE": "ENGLISH",
+    "GAME_TITLE": "MRS.PACMAN",
+    "TIMER": "-1",
+    "LIVES": "3",
+    "CELL_SIZE": "28",
+    "CSS_FILE_NAME" : "Default.css",
+    "USER_IS_PREDATOR" : "0",
+    "HARD" : "1",
+    "IS_PICKUPS_A_VALID_WIN_CONDITION": "1"
+  },
+
+  "PACMAN" : {
+    "USER_IMAGE": "ooga/view/resources/viewIcons/mrsPacman.png"
+  },
+
+  "CPUGHOST": {
+    "CPU_IMAGE": "ooga/view/resources/viewIcons/ghostImage.png"
+  },
+
+  "WALL" : {
+    "WALL_COLOR": "255,0,215"
+  },
+
+  "SCOREBOOSTER": {
+    "POWERUP_COLOR": "255,0,81",
+    "POWERUP_SIZE": "5"
+  },
+
+  "STATECHANGER": {
+    "POWERUP_COLOR": "221,0,255",
+    "POWERUP_SIZE": "8"
+  },
+
+  "SCOREMULTIPLIER": {
+    "POWERUP_COLOR": "0,255,0",
+    "POWERUP_SIZE": "8"
+  },
+
+  "GHOSTSLOWER": {
+    "POWERUP_COLOR": "255,192,212",
+    "POWERUP_SIZE": "8"
+  },
+
+  "EXTRALIFE": {
+    "POWERUP_COLOR": "255,0,0",
+    "POWERUP_SIZE": "8"
+  },
+
+  "INVINCIBILITY": {
+    "POWERUP_COLOR": "255,215,0",
+    "POWERUP_SIZE": "8"
+  },
+
+  "PORTAL": {
+    "POWERUP_COLOR": "0,0,0",
+    "POWERUP_SIZE": "8"
+  },
+
+  "SPEEDCUTTER": {
+    "POWERUP_COLOR": "199,26,233",
+    "POWERUP_SIZE": "8"
+  },
+
+  "WINLEVEL": {
+    "POWERUP_COLOR": "40,179,58",
+    "POWERUP_SIZE": "8"
+  }
+
+}
