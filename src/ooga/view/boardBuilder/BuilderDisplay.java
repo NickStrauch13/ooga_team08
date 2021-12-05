@@ -8,7 +8,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
-import ooga.view.boardBuilder.bottom.BuilderButtons;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
 import javafx.scene.Scene;
@@ -16,6 +15,7 @@ import ooga.view.gameDisplay.gamePieces.GamePiece;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.top.GameStats;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
 public class BuilderDisplay {
@@ -47,10 +47,9 @@ public class BuilderDisplay {
         DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myNodeBuilder = new UINodeFactory(myController);
-        myBuilderButtons = new BuilderButtons(myStage,width, height, myController, DEFAULT_CELL_SIZE, myBoardView, this);
+        myBuilderButtons = new BuilderButtons(myStage,width, height, myController, myBoardView, this);
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         userAdded = new ArrayList<>();
-
     }
 
     /**
@@ -81,13 +80,13 @@ public class BuilderDisplay {
     private void updateGrid(Node oldPiece) {
         myBoardView.removeNode(oldPiece.getId());
         String[] position = oldPiece.getId().split(",");
-        String objectClass = myBuilderButtons.getSelected().getClass().toString();
-        String objectName = objectClass.substring(objectClass.lastIndexOf(".")+1, objectClass.length()-5);
-        GamePiece newNode = myBoardView.addBoardPiece(Integer.parseInt(position[0]), Integer.parseInt(position[1]), objectName, null);
+        Collection<String> stringList = myController.createCreatureMap().values();
+        String className = myBuilderButtons.getClassName(myBuilderButtons.getSelected());
+        GamePiece newNode = myBoardView.addBoardPiece(Integer.parseInt(position[0]), Integer.parseInt(position[1]), className, null);
         if (!userAdded.contains(newNode.getPiece().getId())) {
             userAdded.add(newNode.getPiece().getId());
         }
-        if (!(myBuilderButtons.getSelected() instanceof MovingPiece)) { //TODO get rid of instanceof
+        if (!(stringList.contains(className))) {
             Node temp = newNode.getPiece();
             Node temp2 = myBuilderButtons.getSelected().getPiece();
             temp.getStyleClass().add(temp2.getStyle());

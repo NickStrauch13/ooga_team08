@@ -174,14 +174,14 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     }
 
-    private Map<Integer,String> createGameObjectMap() {
+    public Map<Integer,String> createGameObjectMap() {
          return Map.ofEntries(Map.entry(0,"WALL"),Map.entry(1,"SCOREBOOSTER"),Map.entry(2 ,"STATECHANGER"),
                 Map.entry(3 , "SCOREMULTIPLIER"),Map.entry( 6 , "PORTAL"),Map.entry( 7 , "GHOSTSLOWER"), Map.entry(8 , "EXTRALIFE"),
                 Map.entry( 9 , "EMPTY"), Map.entry( 10, "INVINCIBILITY"),Map.entry(11 , "SPEEDCUTTER"), Map.entry(12 , "WINLEVEL"));
 
     }
 
-    private Map<Integer,String> createCreatureMap() {
+    public Map<Integer,String> createCreatureMap() {
         return Map.ofEntries(Map.entry(4,"PACMAN"),Map.entry(5,"CPUGHOST"));
     }
 
