@@ -2,7 +2,10 @@ package ooga.models.creatures;
 
 public abstract class Creature {
 
-    int speed=1;
+
+
+    int standardSpeed=1;
+    int speed=standardSpeed;
     int myXpos;
     int myYpos;
     int homeX;
@@ -73,4 +76,6 @@ public abstract class Creature {
     public void setImage(String image){
         this.image=image;
     }
+
+    public int getStandardSpeed() {return standardSpeed;}
 }

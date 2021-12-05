@@ -1,7 +1,6 @@
 package ooga.view.home;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
@@ -15,7 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
@@ -32,11 +31,10 @@ public class HomeScreen {
   private UINodeFactory myNodeBuilder;
   private ResourceBundle myResources;
   private Scene myScene;
-  private String language;
   private static final String SCORE_DIVIDER = "%s-----------%s";
-  private Controller myController;
+  private ViewerControllerInterface myController;
 
-  public HomeScreen(Stage stage, int width, int height, Controller controller) {
+  public HomeScreen(Stage stage, int width, int height, ViewerControllerInterface controller) {
     root = new BorderPane();
     myController = controller;
     myWidth = width;
@@ -143,7 +141,8 @@ public class HomeScreen {
    */
   public void startNewGameForViewTests(String filePath){
     myController.initializeGame(filePath);
-    GameDisplay gd = new GameDisplay(myStage, myWidth, myHeight, "Default", language,  "Pacman", myController, myController.getBoardView());
+    GameDisplay gd = new GameDisplay(myStage, myWidth, myHeight, "Default",
+        myController.getLanguage(),  "Pacman", myController, myController.getBoardView());
     gd.setMainDisplay("Test");
   }
 

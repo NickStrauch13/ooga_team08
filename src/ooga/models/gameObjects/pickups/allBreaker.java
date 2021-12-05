@@ -11,7 +11,6 @@ public class allBreaker extends pickup{
 
     public void interact(PickupGame pickupGame){
         pickupGame.wallStateChange(false);
-        pickupGame.setPowerupEndtime(pickupGame.getStepCounter()+150);
         super.interact(pickupGame);
     }
 }

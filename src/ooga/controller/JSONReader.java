@@ -125,7 +125,6 @@ public class JSONReader {
         catch (ClassCastException e) {
             myErrorView.showError(CLASS_CAST_EXCEPTION_MAP);
         }
-
         return conversionMap;
     }
 
@@ -139,7 +138,6 @@ public class JSONReader {
         try {
             JSONArray JSONBoard = (JSONArray) jsonData.get("BOARD");
             Iterator<JSONArray> iterator = JSONBoard.iterator();
-
             while (iterator.hasNext()){
                 List<Integer> innerList = new ArrayList<>();
                 Iterator<String> innerIterator = iterator.next().iterator();

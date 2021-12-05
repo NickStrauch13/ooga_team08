@@ -3,15 +3,19 @@ package ooga.view;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.view.home.HomeScreen;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testfx.api.FxRobot;
 import util.DukeApplicationTest;
 
 public class HomeScreenTests extends DukeApplicationTest {
@@ -21,7 +25,7 @@ public class HomeScreenTests extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-    Controller myController = new Controller(stage);
+    myController = new Controller(stage);
   }
 
   @BeforeEach
@@ -36,16 +40,21 @@ public class HomeScreenTests extends DukeApplicationTest {
   }
 
   @Test
-  public void testClickingOnHighScoresButton(){
+  public void testClickingOnHighScoresButtonAndThenCloseHighScoreWindow(){
+    FxRobot robot = new FxRobot();
     Button highScoresButton = lookup("#highScoresButton").query();
     clickOn(highScoresButton);
-    sleep(200);
+    sleep(600);
+    robot.press(KeyCode.ESCAPE).release(KeyCode.ESCAPE);
+    sleep(300);
   }
 
   @Test
   public void testEnteringUsername(){
     String username = "Player1";
-    TextField userNameBox = lookup("#userName").query();
+    TextField userNameBox = lookup("#userNameFieldID").query();
     writeInputTo(userNameBox, username);
+    sleep(400);
+    assertEquals(username, myController.getUsername());
   }
 }

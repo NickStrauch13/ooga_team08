@@ -6,18 +6,16 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Popup;
 import javafx.util.Duration;
-import ooga.controller.Controller;
+import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
-import ooga.view.popups.PopupFactory;
 
 public class SimulationManager {
     private static final String KEY_PATH = "ooga.view.gameDisplay.keyActions.%sKey";
-    private Controller myController;
+    private ViewerControllerInterface myController;
     private Timeline myAnimation;
     private double myAnimationRate;
     private static final double DELAY = .1;
@@ -27,10 +25,11 @@ public class SimulationManager {
     private GameDisplay myGameDisplay;
     private int currentLevel;
     private boolean poweredUpTemp = false;
+    private boolean invincibilityTemp = false;
     private static final double initialAnimationRate =10.0;
 
 
-    public SimulationManager(Controller controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
+    public SimulationManager(ViewerControllerInterface controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
         myController = controller;
         myBoardView = boardView;
         myAnimationRate = initialAnimationRate; //TODO link to json
@@ -100,7 +99,8 @@ public class SimulationManager {
             if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
                 myBoardView.removeNode(nodeCollision);
             }
-            poweredUpTemp = updateCreatureState(poweredUpTemp);
+            poweredUpTemp = powerUpGhosts(poweredUpTemp);
+            invincibilityTemp = makePacmanInvincible(invincibilityTemp);
             updateStats();
         }
     }
@@ -118,10 +118,26 @@ public class SimulationManager {
 //
 //    }
 
-    private boolean updateCreatureState(boolean lastPoweredUp){
+    private boolean makePacmanInvincible(boolean lastInvincible){
+        for (MovingPiece movingPiece : myBoardView.getCreatureList()){
+            if (movingPiece==myBoardView.getUserPiece() && lastInvincible!=myController.getIsInvincible()){
+                if (myController.getIsInvincible()){
+                    Image invinciblePacman = new Image("ooga/view/resources/viewIcons/invinciblePacman.png");
+                    movingPiece.getMyCreature().setImage(invinciblePacman);
+                }
+                else{
+                    Image normalPacman = new Image("ooga/view/resources/viewIcons/pacmanImage.png");
+                    movingPiece.getMyCreature().setImage(normalPacman);
+                }
+            }
+        }
+        return myController.getIsInvincible();
+    }
+
+    private boolean powerUpGhosts(boolean lastPoweredUp){
         for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-            if (lastPoweredUp!= myController.getIsPowereredUp() && movingPiece!=myBoardView.getUserPiece()){
-                if (myController.getIsPowereredUp()){
+            if (lastPoweredUp!= myController.getIsPoweredUp() && movingPiece!=myBoardView.getUserPiece()){
+                if (myController.getIsPoweredUp()){
                     Image blueGhost = new Image("ooga/view/resources/viewIcons/blueGhost.png");
                     movingPiece.getMyCreature().setImage(blueGhost);
                 }
@@ -131,8 +147,10 @@ public class SimulationManager {
                 }
             }
         }
-        return myController.getIsPowereredUp();
+        return myController.getIsPoweredUp();
     }
+
+
 
     private void updateMovingPiecePositions() {
         int[] newUserPosition = myController.getUserPosition();
@@ -161,7 +179,7 @@ public class SimulationManager {
             String reflectionCode =
                 code.toString().substring(0, 1) + code.toString().toLowerCase().substring(1);
             Class<?> clazz = Class.forName(String.format(KEY_PATH, reflectionCode));
-            KeyViewAction keyAction = (KeyViewAction) clazz.getDeclaredConstructor(BoardView.class).newInstance(myBoardView);
+            KeyViewAction keyAction = (KeyViewAction) clazz.getDeclaredConstructor(BoardView.class, ViewerControllerInterface.class).newInstance(myBoardView,myController);
             keyAction.doAction();
         }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e){
             //Unknown key pressed. No view action required.

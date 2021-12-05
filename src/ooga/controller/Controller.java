@@ -24,7 +24,7 @@ import java.util.List;
 
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
-public class Controller {
+public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface{
 
     // TODO: Constant values should be in a file probably - enum?
     public static final Dimension DEFAULT_SIZE = new Dimension(1000, 600);
@@ -63,7 +63,6 @@ public class Controller {
     private List<List<String>> stringBoard;
     private Stage myStage;
     private String myUsername;
-
     private ErrorView myErrorView;
     private String language;
     private ResourceBundle myLanguages;
@@ -83,7 +82,7 @@ public class Controller {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException  {
         language = DEFAULT_LANGUAGE;
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         collisionManager = new CollisionManager();
@@ -156,7 +155,6 @@ public class Controller {
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
-
         myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE); //TODO assigning pickups manually assign from file!!
         myGame.setGameType(container.getGameType());
     }
@@ -211,6 +209,9 @@ public class Controller {
     public int getLives() {
         return myGame.getLives(); //TODO change this to the model's get lives
     }
+    public Game getGame(){
+        return myGame;
+    }
 
     /**
      * Get the current game scores
@@ -228,7 +229,9 @@ public class Controller {
         return gameType;
     }
 
-    public boolean getIsPowereredUp(){return myGame.getUser().isPoweredUp();}
+    public boolean getIsPoweredUp(){return myGame.getUser().isPoweredUp();}
+
+    public boolean getIsInvincible() {return myGame.getUser().isInvincible();}
 
     /**
      * Get the BoardView object of the game

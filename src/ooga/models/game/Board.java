@@ -54,10 +54,10 @@ public class Board {
         Class<?> gameObjectClass = Class.forName(myGameObjects.getString(gameObjectType));
         GameObject gameObject = (GameObject) gameObjectClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(row, col);
         myBoardObjects[row][col] = gameObject;
-        System.out.println("("+row+","+col+")");
+        //System.out.println("("+row+","+col+")");
         if (gameObjectType.contains("WALL")){
             myBoardObjects[row][col].setWall(true);
-            //wallLocations.add(new int[]{row,col});
+            wallLocations.add(new int[]{row,col});
         }
         else{
             if (gameObjectType.contains("PORTAL")){
@@ -127,7 +127,6 @@ public class Board {
 
     public void setWallatCell(int[] position, boolean set){
         myBoardObjects[position[0]][position[1]].setWall(set);
-        System.out.println("("+position[0]+","+position[1]+") wall state changed");
     }
 
     public GameObject getGameObject(int row, int col){

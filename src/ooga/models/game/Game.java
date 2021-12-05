@@ -111,9 +111,9 @@ public class Game implements PickupGame {
         stepCounter++;
 
         if (stepCounter == powerupEndtime){
-            wallStateChange(true);
             myUserControlled.setPoweredUp(false);
-            myUserControlled.setSpeed(myUserControlled.getSpeed()/2);
+            myUserControlled.setSpeed(myUserControlled.getStandardSpeed());
+            myUserControlled.setInvincible(false);
             setBfsThreshold(standardBFSThreshold);
         }
     }
@@ -315,7 +315,9 @@ public class Game implements PickupGame {
     public void updatePickupsLeft(){
         pickUpsLeft--;
     }
-
+    public void addLives(int numLives){
+        lives+=numLives;
+    }
     public boolean creatureVSPickupCollision(CollisionManager cm) {
         String[] collisionIndex = cm.getCurrentCollision().split(",");
         GameObject collidingPickup = myBoard.getGameObject(Integer.parseInt(collisionIndex[0]) , Integer.parseInt(collisionIndex[1]));
@@ -339,6 +341,9 @@ public class Game implements PickupGame {
                 }
             }
         }
+        else if (myUserControlled.isInvincible()){
+            return true;
+        }
         else{
             myUserControlled.die();
             loseLife();
@@ -354,7 +359,11 @@ public class Game implements PickupGame {
      */
     public void addScore(int scoreToBeAdded){
         score+=scoreToBeAdded;
-    };
+    }
+
+    public void multiplyScore(int multiplier){
+        score*=multiplier;
+    }
 
     public void resetGame(){
         resetCreatureStates();
@@ -384,7 +393,7 @@ public class Game implements PickupGame {
     /**
      * Gets the score and level and returns it
      */
-    private void endGame(){
+    public void endGame(){
         gameOver=true;
     }
 

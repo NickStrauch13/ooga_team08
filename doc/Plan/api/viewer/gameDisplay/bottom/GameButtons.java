@@ -9,7 +9,7 @@ public interface GameButtons {
      * @param controller
      * @param simManager
      */
-    void GameButtons(Stage stage, int width, int height, Controller controller, SimulationManager simManager);
+    void GameButtons(Stage stage, int width, int height, BasicController controller, SimulationManager simManager);
 
     /**
      * creates and styles the HBox containing the buttons to be displayed at the bottom of the GameDisplay screen

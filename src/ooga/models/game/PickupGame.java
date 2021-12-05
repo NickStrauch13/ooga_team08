@@ -41,4 +41,6 @@ public interface PickupGame {
     public void setUserSpeed(int i);
 
     public void wallStateChange(boolean toSet);
+
+    void multiplyScore(int multiplier);
 }
