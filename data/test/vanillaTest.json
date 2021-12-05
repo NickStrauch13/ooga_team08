@@ -27,13 +27,42 @@
     "5" : "CPUGHOST"
   },
 
-  "GAME_TYPE": "PACMAN",
-  "LANGUAGE": "ENGLISH",
-  "PACMAN_IMAGE": "",
-  "GHOST_IMAGE": "",
-  "WALL_COLOR": "",
-  "BACKGROUND_COLOR": "",
-  "AI_TYPE": "",
-  "POWERUP_IMAGE": "",
-  "NUM_OF_PICKUPS_TO_WIN": ""
+  "SETTINGS" : {
+    "GAME_TYPE": "PACMAN",
+    "LANGUAGE": "ENGLISH",
+    "TIMER": "0",
+    "WIN_CONDITION": "LIVES", // LIVES VS. TIME
+    "CELL_SIZE": "25"
+  },
+
+  "USER" : {
+    "USER_IMAGE": "Path"
+  },
+
+  "CPU": {
+    "CPU_IMAGE": "Path"
+  },
+
+  "WALL" : {
+    "WALL_COLOR": "WHITE"
+  },
+
+  "FOOD" : {
+    "FOOD_COLOR": "ORANGE",
+    "FOOD_SIZE": "15"
+  },
+
+  "POWERUP1": {
+    "POWERUP_COLOR": "BLUE",
+    "POWERUP_SIZE": "15"
+  },
+  "POWERUP2": {
+    "POWERUP_COLOR": "RED",
+    "POWERUP_SIZE": "15"
+  },
+  "POWERUP3": {
+    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_SIZE": "15"
+  }
+
 }
