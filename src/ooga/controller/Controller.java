@@ -63,7 +63,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private List<List<String>> stringBoard;
     private Stage myStage;
     private String myUsername;
-
     private ErrorView myErrorView;
     private String language;
     private ResourceBundle myLanguages;
