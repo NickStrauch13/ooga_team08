@@ -408,7 +408,7 @@ public class Game implements PickupGame {
      */
     public void nextLevel(){
         level+=1;
-        timer= (int) (5000/Math.pow(1.1,level));
+        timer= (int) (startTime/Math.pow(1.1,level));
     }
 
     /**

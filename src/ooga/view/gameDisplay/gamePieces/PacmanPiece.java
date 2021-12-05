@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class PacmanPiece extends MovingPiece {
     private static final String CSS_ID = "pacmanPiece";
-    private static final int CREATURE_SLOP_CAUSER = 5;
+    private static final int CREATURE_SLOP_CAUSER = 3;
     private String imagePath="ooga/view/resources/viewIcons/pacmanImage.png";
 
     public PacmanPiece(Integer cellSize, Map<String, String> myValues){
@@ -21,8 +21,8 @@ public class PacmanPiece extends MovingPiece {
     @Override
     protected Node makeNode(){
         ImageView pacman = new ImageView(imagePath);
-        pacman.setFitWidth(getCellSize()- CREATURE_SLOP_CAUSER);
-        pacman.setFitHeight(getCellSize()- CREATURE_SLOP_CAUSER);
+        pacman.setFitWidth(getCellSize()- getCellSize()/CREATURE_SLOP_CAUSER);
+        pacman.setFitHeight(getCellSize()- getCellSize()/CREATURE_SLOP_CAUSER);
         setIDs(pacman, CSS_ID, getCellIndexID());
         //System.out.println(getCellSize());
 

@@ -30,7 +30,10 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final int HIGH_SCORE_VALS = 10;
     private final int WIDTH = 1000; // TODO: properties file
     private final int HEIGHT = 600;
-    public final int CELL_SIZE = 25;
+
+
+
+    private int cellSize;
 
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
 
@@ -161,6 +164,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         myGameSettings = container.getMyGameSettings();
         language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE"));
         cssFileName = myGameSettings.getGeneralSettings().get("CSS_FILE_NAME");
+        setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE")));
         int numOfRows = container.getMyNumOfRows();
         int numOfCols = container.getMyNumOfCols();
 
@@ -173,7 +177,8 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
-        myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,CELL_SIZE, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+        myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,
+            cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
         myGame.setGameType(myGameSettings.getGeneralSettings().get("GAME_TYPE"));
     }
 
@@ -188,7 +193,8 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
                     myBoard.createGameObject(row, col, objectName);
                 }
                 else if (creatureMap.containsValue(objectName)){
-                    myBoard.createCreature(col*CELL_SIZE+3, row*CELL_SIZE+3, objectName,CELL_SIZE-5);
+                    myBoard.createCreature(col* cellSize +3, row* cellSize +3, objectName,
+                        cellSize -5);
                 }
             }
         }
@@ -223,7 +229,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
 
     public int getCellCoordinate(double pixels){
-        return ((int)pixels)/CELL_SIZE;
+        return ((int)pixels)/ cellSize;
     }
 
     /**
@@ -270,7 +276,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * @return the size of a cell in the board
      */
     public int getCellSize() {
-        return CELL_SIZE;
+        return cellSize;
     }
 
     /**
@@ -472,6 +478,10 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     public int getTimer() {
         return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
+    }
+
+    public void setCellSize(int cell_size) {
+        cellSize = cell_size;
     }
 
 }
