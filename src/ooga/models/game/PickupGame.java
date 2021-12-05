@@ -38,11 +38,11 @@ public interface PickupGame {
 
     public void addLife();
 
-    public void setUserSpeed(int i);
+    public void setUserSpeed(double i);
 
     public void wallStateChange(boolean toSet);
 
     public void multiplyScore(int multiplier);
 
-    public void setCPUSpeed();
+    public void setCPUSpeed(double v);
 }

@@ -4,8 +4,8 @@ public abstract class Creature {
 
 
 
-    int standardSpeed=1;
-    int speed=standardSpeed;
+    double standardSpeed=1;
+    double speed=standardSpeed;
     int myXpos;
     int myYpos;
     int homeX;
@@ -33,7 +33,7 @@ public abstract class Creature {
         this.id = id;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
@@ -69,7 +69,7 @@ public abstract class Creature {
         this.size=size;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
@@ -77,5 +77,5 @@ public abstract class Creature {
         this.image=image;
     }
 
-    public int getStandardSpeed() {return standardSpeed;}
+    public Double getStandardSpeed() {return standardSpeed;}
 }
