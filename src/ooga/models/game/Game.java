@@ -81,7 +81,7 @@ public class Game implements PickupGame {
 
     public void step() {
         timer--;
-        System.out.println(timer);
+
 
         if(gameType.equals("ANTIPACMAN")){
             if(timer==0){
@@ -108,7 +108,7 @@ public class Game implements PickupGame {
             setBfsThreshold(standardBFSThreshold);
         }
     }
-    private int getTime(){
+    public int getTime(){
         return timer/100;
     }
 

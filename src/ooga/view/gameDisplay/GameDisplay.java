@@ -39,7 +39,6 @@ public class GameDisplay {
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myGameButtons = new GameButtons(stage, width, height, myController, mySimManager, language);
-        myController.restartGame();
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     }
 

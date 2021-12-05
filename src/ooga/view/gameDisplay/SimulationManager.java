@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
+import ooga.controller.CheatController;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
@@ -148,13 +149,17 @@ public class SimulationManager {
         myGameStats.setScoreText(myController.getScore());
         myGameStats.setLivesText(myController.getLives());
         myGameStats.setLevelText(myController.getLevel());
+        myGameStats.setTimeText(myController.getGameTime());
     }
 
     public void handleKeyInput(KeyCode code){
-        currentDirection = code.toString();
         try {
-            String reflectionCode =
-                code.toString().substring(0, 1) + code.toString().toLowerCase().substring(1);
+            String reflectionCode = code.toString();
+            if(code.toString().length() > 1) {
+                currentDirection = code.toString();
+                reflectionCode =
+                    code.toString().substring(0, 1) + code.toString().toLowerCase().substring(1);
+            }
             Class<?> clazz = Class.forName(String.format(KEY_PATH, reflectionCode));
             KeyViewAction keyAction = (KeyViewAction) clazz.getDeclaredConstructor(BoardView.class, ViewerControllerInterface.class).newInstance(myBoardView,myController);
             keyAction.doAction();

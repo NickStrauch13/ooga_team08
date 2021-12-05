@@ -1,13 +1,15 @@
-package ooga.view.gameDisplay.keyActions.cheatKeys;
+package ooga.view.gameDisplay.keyActions;
 
+import ooga.controller.CheatController;
+import ooga.controller.CheatControllerInterface;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 
-public class EKey extends KeyViewAction {
+public class OKey extends KeyViewAction {
   private ViewerControllerInterface myController;
 
-  public EKey(BoardView boardView, ViewerControllerInterface controller){
+  public OKey(BoardView boardView, ViewerControllerInterface controller){
     super(boardView, controller);
     myController = controller;
   }
@@ -17,6 +19,6 @@ public class EKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-
+    myController.addOneHundredPoints();
   }
 }

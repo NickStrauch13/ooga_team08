@@ -1,13 +1,15 @@
-package ooga.view.gameDisplay.keyActions.cheatKeys;
+package ooga.view.gameDisplay.keyActions;
 
+import ooga.controller.CheatController;
+import ooga.controller.CheatControllerInterface;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
 
-public class YKey extends KeyViewAction {
+public class TKey extends KeyViewAction {
   private ViewerControllerInterface myController;
 
-  public YKey(BoardView boardView, ViewerControllerInterface controller){
+  public TKey(BoardView boardView, ViewerControllerInterface controller){
     super(boardView, controller);
     myController = controller;
   }
@@ -17,6 +19,6 @@ public class YKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-
+    myController.goToNextLevel();
   }
 }
