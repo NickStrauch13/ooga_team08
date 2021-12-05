@@ -12,12 +12,11 @@ public class Settings {
     private String myCellSize;
 
     // TODO: ENUM -
-    final String[] settingStrings = {"LANGUAGE", "GAME_TYPE", "TIMER" , "WIN_CONDITION", "CELL_SIZE"};
-    String[] myStringSettings = {myLanguage, myGameType, myTimer, myWinCondition, myCellSize};
+//    final String[] settingStrings = {"LANGUAGE", "GAME_TYPE", "TIMER" , "WIN_CONDITION", "CELL_SIZE"};
+//    String[] myStringSettings = {myLanguage, myGameType, myTimer, myWinCondition, myCellSize};
 
 
     public Settings(Map<String, String> settingMap) {
-        System.out.println(settingMap);
         myLanguage = settingMap.get("LANGUAGE");
         myGameType = settingMap.get("GAME_TYPE");
         myTimer = settingMap.get("TIMER");
@@ -25,16 +24,14 @@ public class Settings {
         myCellSize = settingMap.get("CELL_SIZE");
     }
 
-
-    public void initializeSettings(Map<String, String> settings) {
-        for (int i = 0; i < settingStrings.length; i++) {
-            if (settings.containsKey(settingStrings[i])) {
-                myStringSettings[i] = settings.get(settingStrings[i]);
-                System.out.println(myLanguage);
-            }
-        }
-    }
-
+//    public void initializeSettings(Map<String, String> settings) {
+//        for (int i = 0; i < settingStrings.length; i++) {
+//            if (settings.containsKey(settingStrings[i])) {
+//                myStringSettings[i] = settings.get(settingStrings[i]);
+//                System.out.println(myLanguage);
+//            }
+//        }
+//    }
 
     public String getLanguage() {
         return myLanguage;

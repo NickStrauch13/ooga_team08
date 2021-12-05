@@ -167,9 +167,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         creatureMap = container.getMyCreatureMap();
         stringBoard = container.getMyStringBoard();
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
-        System.out.println("My game setting is: " + container.getMyGameSettings());
-        System.out.println("My setting is: " + container.getMyGameSettings().getMySettings());
-        System.out.println("My language is: " + container.getMyGameSettings().getMySettings().getLanguage());
+//        System.out.println("My game setting is: " + container.getMyGameSettings());
+//        System.out.println("My setting is: " + container.getMyGameSettings().getMySettings());
+//        System.out.println("My language is: " + container.getMyGameSettings().getMySettings().getLanguage());
         language = myLanguages.getString(container.getMyGameSettings().getMySettings().getLanguage());
 //        System.out.println(language);
         myBoard = new Board(numOfRows, numOfCols);
