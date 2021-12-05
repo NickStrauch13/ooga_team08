@@ -32,7 +32,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final int HEIGHT = 600;
     public final int CELL_SIZE = 25;
 
-    public final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
+    private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
 
     // TODO: Should be put into a properties file?
     public static final String TITLE = "Start Screen";
