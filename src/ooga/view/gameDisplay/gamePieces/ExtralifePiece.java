@@ -9,12 +9,16 @@ import java.util.Map;
  * Class that represents the dot pickup pieces in the view board.
  */
 public class ExtralifePiece extends GamePiece{
-  public int dotRadius = 8;
-  public Color myColor = Color.RED;
+  private int dotRadius;
+  private static final int DEFAULT_RAD = 8;
+  private static final Color DEFAULT_COLOR = Color.RED;
+  private Color myColor;
   private static final String CSS_ID = "dotPiece";
 
   public ExtralifePiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
+    dotRadius = DEFAULT_RAD;
+    myColor = DEFAULT_COLOR;
     if (myValues != null) {
       if(myValues.containsKey("POWERUP_COLOR")){
         String rgbValues= myValues.get("POWERUP_COLOR"); //TODO PARSE OUT NEGATIVE DATA
