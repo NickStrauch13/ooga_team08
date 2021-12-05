@@ -10,7 +10,6 @@ import java.util.Map;
  * Class that represents the wall pieces in the view board.
  */
 public class WallPiece extends GamePiece{
-  public static final int WALL_SIZE = 25;
   private Color myColor = Color.DARKBLUE;
   private static final String CSS_ID = "wallPiece";
 
@@ -29,7 +28,7 @@ public class WallPiece extends GamePiece{
 
   @Override
   protected Rectangle makeNode(){
-    Rectangle wall = new Rectangle(WALL_SIZE, WALL_SIZE);
+    Rectangle wall = new Rectangle(getCellSize(), getCellSize());
     wall.setId(getCellIndexID());
     wall.setFill(myColor);
     return wall;

@@ -74,6 +74,7 @@ public class GameButtons {
 
   public void restartGame(){
     goHome();
+    myController.restartGame();
     GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", myLanguage,  "Pacman", myController, myController.getBoardView());
     gameDisplay.setMainDisplay("Pacman");
     myController.restartGame();

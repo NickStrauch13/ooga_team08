@@ -32,7 +32,7 @@ public class CollisionManagerTest {
     @Test
     public void checkIsCreatureTrue(){
         CollisionManager cm = new CollisionManager();
-        cm.setCollision("ABCD");
+        cm.setCollision("AB,CD");
         assert(!cm.isCreature());
     }
     @Test
