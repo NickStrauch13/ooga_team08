@@ -5,8 +5,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import ooga.controller.BasicController;
-import ooga.controller.Controller;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.gameDisplay.bottom.*;

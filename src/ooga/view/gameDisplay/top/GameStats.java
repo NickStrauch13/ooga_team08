@@ -1,8 +1,6 @@
 package ooga.view.gameDisplay.top;
 
 import javafx.scene.layout.HBox;
-import ooga.controller.BasicController;
-import ooga.controller.Controller;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import javafx.scene.control.Label;

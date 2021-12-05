@@ -5,8 +5,6 @@ public class CheatController {
     public CheatController(CheatControllerInterface C){
         myController=  C;
     }
-    public void addOneMillionScore(){
-        myController.getGame().addScore(1000000);
-    }
+
 
 }

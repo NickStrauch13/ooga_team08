@@ -1,6 +1,5 @@
 package ooga.view.gameDisplay.keyActions.cheatKeys;
 
-import ooga.controller.Controller;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;

@@ -7,8 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
-import ooga.controller.BasicController;
-import ooga.controller.Controller;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.bottom.BuilderButtons;
@@ -18,7 +16,6 @@ import javafx.scene.Scene;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.top.GameStats;
 
-import javax.swing.text.View;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
