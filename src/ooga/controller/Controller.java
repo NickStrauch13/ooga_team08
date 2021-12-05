@@ -200,21 +200,27 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard, BoardView boardView) {
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col ++) {
-                String objectName = stringBoard.get(row).get(col);
-                if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
-                    boardView.addBoardPiece(row, col, objectName);
-                }
-                else {
-                    if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
-                        boardView.addUserCreature(row, col, objectName);
-                    }
-                    else if (objectName.equals("CPUGHOST")){
-                        boardView.addCPUCreature(row, col, objectName);
+                String objectName = stringBoard.get(row).get(col);//TODO MAKE SURE NOT SETTINGS
+                if (myGameSettings.getAllSettings().containsKey(objectName) && !myGameSettings.getAllSettings().get(objectName).isEmpty()) {
+                    if(!objectName.equals("EMPTY")) {
+                        if (gameObjectMap.containsValue(objectName)) {
+                            boardView.addBoardPiece(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                        }
+                        else {
+                            if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
+                                boardView.addUserCreature(row, col, objectName,myGameSettings.getAllSettings().get(objectName));
+                            }
+                            else if (objectName.equals("CPUGHOST")){
+                                boardView.addCPUCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                            }
+
+                        }
                     }
                 }
             }
         }
     }
+
 
     public int getCellCoordinate(double pixels){
         return ((int)pixels)/CELL_SIZE;

@@ -16,7 +16,7 @@
   ],
 
   "OBJECT_MAP": {
-    "0" : "WAll",
+    "0" : "WALL",
     "1" : "SCOREBOOSTER",
     "2" : "STATECHANGER",
     "3" : "SCOREMULTIPLIER",
@@ -43,21 +43,16 @@
     "CSS_FILE_NAME" : "Default.css"
   },
 
-  "USER" : {
+  "PACMAN" : {
     "USER_IMAGE": "Path"
   },
 
-  "CPU": {
+  "CPUGHOST": {
     "CPU_IMAGE": "Path"
   },
 
   "WALL" : {
     "WALL_COLOR": "WHITE"
-  },
-
-  "FOOD" : {
-    "FOOD_COLOR": "ORANGE",
-    "FOOD_SIZE": "15"
   },
 
   "SCOREBOOSTER": {
@@ -76,7 +71,7 @@
   },
 
   "WALLBREAKER": {
-    "POWERUP_COLOR": "YELLOW",
+    "POWERUP_COLOR": "0,0,0",
     "POWERUP_SIZE": "15"
   },
 

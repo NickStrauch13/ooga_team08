@@ -3,6 +3,8 @@ package ooga.view.gameDisplay.gamePieces;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.Map;
+
 /**
  * Class that represents the dot pickup pieces in the view board.
  */
@@ -10,7 +12,7 @@ public class InvincibilityPiece extends GamePiece{
   public static final int edge = 7;
   private static final String CSS_ID = "dotPiece";
 
-  public InvincibilityPiece(Integer cellSize){
+  public InvincibilityPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
   }
 

@@ -48,8 +48,9 @@ public class BoardView {
    * @param col
    * @param objectName
    */
-  public Node addBoardPiece(int row, int col, String objectName) {
-      Node pieceNode = pieceReflection(String.format(PIECE_PATH, objectName.substring(0, 1) + objectName.toLowerCase().substring(1))).getPiece();
+  public Node addBoardPiece(int row, int col, String objectName, Map<String, String> myObjectValues) {
+      String formattedString = String.format(PIECE_PATH,objectName.substring(0, 1) + objectName.toLowerCase().substring(1));
+      Node pieceNode = pieceReflection(formattedString, myObjectValues).getPiece();
       pieceNode.setId(String.format(ID_FORMAT, row, col));
       myGrid.add(pieceNode, col, row);
       myGrid.setHalignment(pieceNode, HPos.CENTER);
@@ -89,12 +90,12 @@ public class BoardView {
     cpuCount++;
   }
 
-  public GamePiece pieceReflection(String objectName) {
+  public GamePiece pieceReflection(String objectName, Map<String, String> myObjectValues) {
     GamePiece gamePiece = null;
     try {
       Class<?> clazz = Class.forName(objectName);
-      gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class)
-          .newInstance(myController.getCellSize());
+        gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class, Map.class)
+                .newInstance(myController.getCellSize(), myObjectValues);
     }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
       //TODO I think this is already checked in the controller parsing of the json file..
       e.printStackTrace(); //TODO make better

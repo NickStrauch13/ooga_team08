@@ -3,6 +3,8 @@ package ooga.view.gameDisplay.gamePieces;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.Map;
+
 /**
  * Class that represents the dot pickup pieces in the view board.
  */
@@ -10,7 +12,7 @@ public class SpeedcutterPiece extends GamePiece{
   public static final int DOT_RAD = 8;
   private static final String CSS_ID = "dotPiece";
 
-  public SpeedcutterPiece(Integer cellSize){
+  public SpeedcutterPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
   }
 

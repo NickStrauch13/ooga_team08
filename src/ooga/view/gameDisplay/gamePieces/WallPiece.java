@@ -4,6 +4,8 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.Map;
+
 /**
  * Class that represents the wall pieces in the view board.
  */
@@ -12,7 +14,7 @@ public class WallPiece extends GamePiece{
   private static final String CSS_ID = "wallPiece";
 
 
-  public WallPiece(Integer cellSize){
+  public WallPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
   }
 

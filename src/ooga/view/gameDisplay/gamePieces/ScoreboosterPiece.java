@@ -4,6 +4,8 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.Map;
+
 /**
  * Class that represents the dot pickup pieces in the view board.
  */
@@ -12,7 +14,7 @@ public class ScoreboosterPiece extends GamePiece{
   private Color myColor = Color.YELLOW;
   private static final String CSS_ID = "dotPiece";
 
-  public ScoreboosterPiece(Integer cellSize){
+  public ScoreboosterPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
     if (myValues != null) {
       if(myValues.containsKey("POWERUP_COLOR")){
