@@ -1,25 +1,24 @@
 
-
 .root{
-  -fx-font-family: "Arial";
-  -fx-background-color: AliceBlue;
-  NewGameColor: #00069C ;
-  BuildBoardButtonColor: #008C1E;
-  HighScoresButtonColor: #AA0000 ;
-  HomeButtonColor: #AA0000;
-  PlayButtonColor: #47ea00;
-  PauseButtonColor: #838383;
-  ResetButtonColor: #efeb14;
-  WallPieceColor: DarkBlue;
+  -fx-font-family: "Monaco";
+  -fx-background-color: #00068E;
+  text_color: white;
+  NewGameColor: #00610E ;
+  BuildBoardButtonColor: #910000;
+  HighScoresButtonColor: #3E0063;
+  HomeButtonColor: #C6C800;
+  PlayButtonColor: #1A5500;
+  PauseButtonColor: #515151;
+  ResetButtonColor: #6B0000;
+  WallPieceColor: #656565;
   DotPieceColor: DarkGoldenRod;
   ColorPickerColor: lightgray;
   ColorPickerHover: #a1a1a1;
-  HighScoresPopupColor: #0D1A5D;
+  HighScoresPopupColor: #9C9C9C;
   HighScoresTitleColor: gold;
   ScoreEntryColor: white;
-  ScoreExitColor: #9efffa;
-  LabelFontColor: #444444;
-
+  ScoreExitColor: #919191;
+  LabelFontColor: white;
 
 }
 
@@ -74,6 +73,8 @@
   -fx-font-size: 20;
 }
 
+
+
 .PlayButtonID{
   -fx-border-color: black;
   -fx-border-width: 3px;
@@ -103,7 +104,6 @@
 
 .gameGridPane{
   -fx-alignment: center;
-    -fx-border-style: none;
 }
 
 .wallPiece{
@@ -122,11 +122,6 @@
     -fx-spacing: 20px;
     -fx-padding: 10px;
 }
-
-.livesTextID, .levelTextID, .scoreTextID, .gameTypeID, .gameTypeTextID, .numLivesID, .numScoreID, .numLevelID, .inputTextID{
- -fx-text-fill: LabelFontColor;
-}
-
 
 .boardBuilderHolder {
     -fx-alignment: center;
@@ -157,6 +152,11 @@
   -fx-text-fill: ScoreEntryColor;
   -fx-font-size: 20;
 }
+
+.livesTextID, .levelTextID, .scoreTextID, .gameTypeID, .gameTypeTextID, .numLivesID, .numScoreID, .numLevelID, .inputTextID{
+ -fx-text-fill: LabelFontColor;
+}
+
 .ScoreExitID{
   -fx-text-fill: ScoreExitColor;
   -fx-font-size: 14;
@@ -179,3 +179,4 @@
 .GameOverRestartID {
     -fx-background-color: ResetButtonColor;
 }
+

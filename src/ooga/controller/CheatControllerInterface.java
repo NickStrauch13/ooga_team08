@@ -15,7 +15,7 @@ public interface CheatControllerInterface {
     public Game getGame();
     public int getScore();
     public String getGameType();
-    public boolean getIsPowereredUp();
+    public boolean getIsPoweredUp();
     public BoardView getBoardView();
     public int getCellSize();
     public void step(String direction);

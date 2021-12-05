@@ -13,15 +13,18 @@ public class UserCreature extends Creature {
         super(xPos, yPos);
     }
 
-    public boolean isPoweredUp() {
-        return isPoweredUp;
-    }
+    private boolean isPoweredUp;
+    private boolean isInvincible;
 
+    public boolean isPoweredUp() {return isPoweredUp;}
     public void setPoweredUp(boolean poweredUp) {
         isPoweredUp = poweredUp;
     }
 
-    private boolean isPoweredUp;
+    public boolean isInvincible() {return isInvincible;}
+    public void setInvincible(boolean invincibility) {
+        isInvincible = invincibility;
+    }
 
     @Override
     public void moveTo(int newXPos,int newYPos) {

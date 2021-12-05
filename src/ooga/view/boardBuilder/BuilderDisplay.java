@@ -27,8 +27,7 @@ public class BuilderDisplay {
     private BoardView myBoardView;
     private GameStats myGameStats;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-    private static final String DEFAULT_STYLESHEET =
-            "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + "Default.css";
+    private static String DEFAULT_STYLESHEET;
     private static final int DEFAULT_BOARD_SIZE = 10;
     private static final int SPACING = 5;
     private static final String PIECE_PATH = "ooga.view.gameDisplay.gamePieces.%sPiece";
@@ -46,11 +45,13 @@ public class BuilderDisplay {
         myStage = stage;
         root = new BorderPane();
         myScene = new Scene(root, width, height);
+        DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myNodeBuilder = new UINodeFactory(myController);
         myBuilderButtons = new BuilderButtons(myStage,width, height, myController, cellSize, myBoardView, this);
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         userAdded = new ArrayList<>();
+
     }
 
     /**
