@@ -5,7 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
@@ -72,8 +71,9 @@ public class BuilderDisplay {
             for (int c = 0; c < DEFAULT_BOARD_SIZE; c++) {
                 GamePiece newPiece =  myBoardView.addBoardPiece(r, c, "WALL",null);
                 newPiece.getPiece().setOnMouseClicked(e -> updateGrid(newPiece.getPiece()));
-                Rectangle temp = (Rectangle)newPiece.getPiece();
-                temp.setFill(Color.LIGHTGRAY);
+                Node temp = newPiece.getPiece();
+                Node rect = new Rectangle(1,1,Color.LIGHTGRAY);
+                temp.getStyleClass().add(rect.getStyle());
             }
         }
     }
@@ -88,9 +88,9 @@ public class BuilderDisplay {
             userAdded.add(newNode.getPiece().getId());
         }
         if (!(myBuilderButtons.getSelected() instanceof MovingPiece)) { //TODO get rid of instanceof
-            Shape temp = (Shape)newNode.getPiece();
-            Shape temp2 = (Shape)myBuilderButtons.getSelected().getPiece();
-            temp.setFill(temp2.getFill());
+            Node temp = newNode.getPiece();
+            Node temp2 = myBuilderButtons.getSelected().getPiece();
+            temp.getStyleClass().add(temp2.getStyle());
         }
         newNode.getPiece().setOnMouseClicked(e -> updateGrid(newNode.getPiece()));
     }

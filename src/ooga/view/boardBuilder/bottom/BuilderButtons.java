@@ -107,15 +107,15 @@ public class BuilderButtons {
 
     public HBox makeObjectRow() {
         Label wallText = myNodeBuilder.makeLabel(myResources.getString("WallText"), "wallTextID");
-        StackPane wallDisplay = createObjectDisplay(new WallPiece(cellSize, null));
+        StackPane wallDisplay = createObjectDisplay(myBoardView.addBoardPiece(0, 0, "WALL", null));
         objectList.add(wallDisplay.getChildren().get(0));
         Label powerUpText = myNodeBuilder.makeLabel(myResources.getString("PowerUpText"), "powerUpTextID");
-        StackPane powerUpDisplay = createObjectDisplay(new ScoreboosterPiece(cellSize, null));
+        StackPane powerUpDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"SCOREBOOSTER", null));
         objectList.add(powerUpDisplay.getChildren().get(0));
         Label ghostText = myNodeBuilder.makeLabel(myResources.getString("GhostText"), "ghostTextID");
-        StackPane ghostDisplay =  createObjectDisplay( new CpughostPiece(cellSize, null));
+        StackPane ghostDisplay =  createObjectDisplay(myBoardView.addBoardPiece(0,0,"CPUGHOST", null));
         Label pacmanText = myNodeBuilder.makeLabel(myResources.getString("PacmanText"), "pacmanTextID");
-        StackPane pacmanDisplay = createObjectDisplay(new PacmanPiece(cellSize, null));
+        StackPane pacmanDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"PACMAN", null));
         Node myHbox = myNodeBuilder.makeRow("statsHolder", wallText, wallDisplay, powerUpText, powerUpDisplay, ghostText,ghostDisplay, pacmanText,pacmanDisplay);
         return (HBox) myHbox;
     }
