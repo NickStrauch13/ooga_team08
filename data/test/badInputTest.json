@@ -17,9 +17,16 @@
 
   "OBJECT_MAP": {
     "0" : "WAll",
-    "1" : "POWERUP1",
-    "2" : "POWERUP2",
-    "3" : "POWERUP3"
+    "1" : "SCOREBOOSTER",
+    "2" : "STATECHANGER",
+    "3" : "SCOREMULTIPLIER",
+    "6" : "PORTAL",
+    "7" : "WALLBREAKER",
+    "8" : "EXTRALIFE",
+    "9" : "EMPTY",
+    "10" : "INVINCIBILITY",
+    "11" : "SPEEDCUTTER",
+    "13" : "WINLEVEL"
   },
 
   "CREATURE_MAP": {
@@ -52,17 +59,17 @@
     "FOOD_SIZE": "15"
   },
 
-  "POWERUP1": {
+  "SCOREBOOSTER": {
     "POWERUP_COLOR": "BLUE",
     "POWERUP_SIZE": "15"
   },
 
-  "POWERUP2": {
+  "STATECHANGER": {
     "POWERUP_COLOR": "RED",
     "POWERUP_SIZE": "15"
   },
 
-  "POWERUP3": {
+  "SCOREMULTIPLIER": {
     "POWERUP_COLOR": "YELLOW",
     "POWERUP_SIZE": "15"
   }

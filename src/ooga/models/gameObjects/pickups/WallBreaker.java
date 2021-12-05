@@ -2,15 +2,15 @@ package ooga.models.gameObjects.pickups;
 
 import ooga.models.game.PickupGame;
 
-public class scoreBooster extends pickup{
-    private static final int SCORE_TO_ADD=100;
+public class WallBreaker extends Pickup {
+    private static final int SCORE_TO_ADD=1000;
 
-    public scoreBooster(Integer row, Integer col) {
+    public WallBreaker(Integer row, Integer col) {
         super(row, col);
     }
 
     public void interact(PickupGame pickupGame){
-        pickupGame.addScore(SCORE_TO_ADD);
+        pickupGame.wallStateChange(false);
         super.interact(pickupGame);
     }
 }

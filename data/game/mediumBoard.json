@@ -22,9 +22,9 @@
 
   "OBJECT_MAP": {
     "0" : "WAll",
-    "1" : "POWERUP1",
-    "2" : "POWERUP2",
-    "3" : "POWERUP3",
+    "1" : "SCOREBOOSTER",
+    "2" : "STATECHANGER",
+    "3" : "SCOREMULTIPLIER",
     "6" : "PORTAL",
     "9" : "EMPTY"
   },

@@ -110,7 +110,7 @@ public class BuilderButtons {
         StackPane wallDisplay = createObjectDisplay(new WallPiece(cellSize));
         objectList.add(wallDisplay.getChildren().get(0));
         Label powerUpText = myNodeBuilder.makeLabel(myResources.getString("PowerUpText"), "powerUpTextID");
-        StackPane powerUpDisplay = createObjectDisplay(new Powerup1Piece(cellSize));
+        StackPane powerUpDisplay = createObjectDisplay(new ScoreboosterPiece(cellSize));
         objectList.add(powerUpDisplay.getChildren().get(0));
         Label ghostText = myNodeBuilder.makeLabel(myResources.getString("GhostText"), "ghostTextID");
         StackPane ghostDisplay =  createObjectDisplay( new CpughostPiece(cellSize));

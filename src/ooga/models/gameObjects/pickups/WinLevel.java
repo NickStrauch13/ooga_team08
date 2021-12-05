@@ -2,7 +2,7 @@ package ooga.models.gameObjects.pickups;
 
 import ooga.models.game.PickupGame;
 
-public class WinLevel extends pickup{
+public class WinLevel extends Pickup {
     private static final int SCORE_TO_ADD=1000;
 
     public WinLevel(Integer row, Integer col) {
