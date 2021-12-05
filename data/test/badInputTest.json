@@ -16,7 +16,7 @@
   ],
 
   "OBJECT_MAP": {
-    "10" : "WAll",
+    "0" : "WAll",
     "1" : "POWERUP1",
     "2" : "POWERUP2",
     "3" : "POWERUP3"

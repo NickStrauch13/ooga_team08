@@ -25,6 +25,15 @@
   "CREATURE_MAP": {
     "4" : "PACMAN",
     "5" : "CPUGHOST"
-  }
+  },
 
+  "GAME_TYPE": "PACMAN",
+  "LANGUAGE": "ENGLISH",
+  "PACMAN_IMAGE": "",
+  "GHOST_IMAGE": "",
+  "WALL_COLOR": "",
+  "BACKGROUND_COLOR": "",
+  "AI_TYPE": "",
+  "POWERUP_IMAGE": "",
+  "NUM_OF_PICKUPS_TO_WIN": ""
 }

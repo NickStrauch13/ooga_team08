@@ -43,7 +43,7 @@ public class Controller {
     // TODO: refactor into viewController and boardController if I have time
 
     private final String IOE_EXCEPTION = "IOE exceptions";
-    private final String NULL_POINTER_EXCEPTION = "Null pointer exception";
+    private final String NULL_POINTER_EXCEPTION = "Null pointer exception controller";
     private final String PARSE_EXCEPTION = "Parse exception!";
     private final String CLASS_NOT_FOUND = "Class not found!";
     private final String INVOCATION_TARGET = "Invocation target error!";
@@ -63,7 +63,7 @@ public class Controller {
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
-    private JSONReader reader;
+    private JSONReader myReader;
     private CSVReader myCSVReader;
     private CSVWriter myCSVWriter;
     private Map<Integer, String> gameObjectMap;
@@ -121,7 +121,7 @@ public class Controller {
     public void initializeGame(String path) {
         int numOfRows, numOfCols;
         try {
-            reader = new JSONReader(language, path);
+            myReader = new JSONReader(language, path);
             assembleBoards();
             //TODO get lives from JSON file
         }
@@ -152,11 +152,12 @@ public class Controller {
     }
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        int numOfRows;
-        int numOfCols;
-        JSONContainer container = reader.readJSONConfig();
-        numOfRows = container.getMyNumOfRows();
-        numOfCols = container.getMyNumOfCols();
+
+
+        JSONContainer container = myReader.readJSONConfig();
+        int numOfRows = container.getMyNumOfRows();
+        int numOfCols = container.getMyNumOfCols();
+
         gameObjectMap = container.getMyConversionMap();
 
         //TODO: Currently creatureMap is never accessed
@@ -317,7 +318,7 @@ public class Controller {
      * Receive the backend's command to reset the entire game
      */
     public void restartGame() {
-        initializeGame(reader.getMostRecentPath());
+        initializeGame(myReader.getMostRecentPath());
     }
 
 
