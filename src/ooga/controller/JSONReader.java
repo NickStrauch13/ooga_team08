@@ -34,17 +34,12 @@ public class JSONReader {
     private final String IOE_EXCEPTION = "IOE exceptions";
     private final String PARSE_EXCEPTION = "Parse exceptions";
     private final String MISSING_CONTENT = "Please check your game file because you are missing some inputs";
-    private final String WRONG_BOARD_DIMENSION = "The dimension of the board does not match.";
+    private final String MISSING_INDEX = "Please check your game object maps in the file because you are missing game objects";
 
-//    private final List<String> SETTING_PARAMETERS = List.of(
-//            "LANGUAGE", "GAME_TITLE",
-//            "TIMER", "LIVES",
-//            "CELL_SIZE", "CSS_FILE_NAME",
-//            "USER_IS_PREDATOR", "HARD",
-//            "IS_PICKUPS_A_VALID_WIN_CONDITION");
-    private final List<String> PACMAN_PARAMETERS = List.of("USER_IMAGE");
-    private final List<String> CPU_GHOST_PARAMETERS = List.of("CPU_IMAGE");
-    private final List<String> WALL_PARAMETERS = List.of("WALL_COLOR");
+    private final String WRONG_BOARD_DIMENSION = "The dimension of the board does not match.";
+    private final String WRONG_COL_DIMENSION = "The column dimension of the board does not match.";
+
+
     private final List<String> FOOD_PARAMETERS = List.of("POWERUP_COLOR", "POWERUP_SIZE");
     private final List<String> GAME_SETTINGS = List.of(
             "SETTINGS", "PACMAN",
@@ -73,23 +68,17 @@ public class JSONReader {
                      Map.entry("WINLEVEL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE"))
                      );
 
-    private final List<String> OBJECT_PARAMETERS =
-            List.of(
-                    "0", "1", "2", "3",
-                    "6", "7", "8", "9",
-                    "10", "11", "12"
-                    );
-
-    private final List<String> CREATURE_PARAMETERS =
-            List.of("4", "5");
-
-
-    /*
-    TODO: Other exceptions maybe for the frontend or controller?
-    myGame NullPointer,
-    ClassNotFoundException for wrong key in map
-    How to handle values on board but not in map keys?
-     */
+    private final Map<String, List<Integer>> OBJECT_PARAMETERS =
+            Map.ofEntries(
+                    Map.entry("OBJECT_MAP" ,
+                            List.of(
+                                    0, 1, 2, 3,
+                                    6, 7, 8, 9,
+                                    10, 11, 12
+                            )
+                    ),
+                    Map.entry("CREATURE_MAP" ,List.of(4, 5))
+            );
 
     private final String myPath;
     private ErrorView myErrorView;
@@ -141,7 +130,6 @@ public class JSONReader {
         for (String parameter: GAME_SETTINGS) {
             mapList.put(parameter, getSettingMap(jsonData, parameter));
         }
-        // TODO: should all food items be a map?
 
         if (isMissingSettings(mapList)) return null;
 
@@ -156,14 +144,18 @@ public class JSONReader {
                 return true;
             }
             else { // if all elements required in the mapList
-                Set<String> parameterSet = mapList.get(keyString).keySet();
-                for (String parameter : SETTING_PARAMETERS.get(keyString)) {
-                    if (!parameterSet.contains(parameter)) {
-                        myErrorView.showError(MISSING_CONTENT);
-                        return true;
-                    }
-                }
-                // TODO: concatenate all keysets into a large set
+                return isMissingItems(mapList, keyString);
+            }
+        }
+        return false;
+    }
+
+    private boolean isMissingItems(Map<String, Map<String, String>> mapList, String keyString) {
+        Set<String> parameterSet = mapList.get(keyString).keySet();
+        for (String parameter : SETTING_PARAMETERS.get(keyString)) {
+            if (!parameterSet.contains(parameter)) {
+                myErrorView.showError(MISSING_CONTENT);
+                return true;
             }
         }
         return false;
@@ -184,25 +176,13 @@ public class JSONReader {
                     conversionMap.put(keyString, stringValue);
                 }
             }
-            if (isMissingObjects(conversionMap)) return null;
             return conversionMap;
         }
-
         catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_SETTING);}
         catch (NumberFormatException e){myErrorView.showError(NUMBER_FORMAT_EXCEPTION_SETTING);}
         catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_SETTING);}
 
         return null;
-    }
-
-    private boolean isMissingObjects(Map<String, String> conversionMap) {
-        for (String keyString : conversionMap.keySet()) {
-            if (conversionMap.get(keyString) == null || conversionMap.get(keyString).isEmpty()) {
-                myErrorView.showError(MISSING_CONTENT);
-                return true;
-            }
-        }
-        return false;
     }
 
     /*
@@ -229,13 +209,17 @@ public class JSONReader {
     }
 
     private boolean isMissingBoardStrings(List<List<String>> stringBoard, int numOfRows, int numOfCols) {
-        if (stringBoard.size() != numOfRows) {
+        if (stringBoard == null || stringBoard.size() != numOfRows) {
             myErrorView.showError(WRONG_BOARD_DIMENSION);
             return true;
         }
+        return isColMismatch(stringBoard, numOfCols);
+    }
+
+    private boolean isColMismatch(List<List<String>> stringBoard, int numOfCols) {
         for (List<String> row : stringBoard) {
             if (row == null || row.isEmpty() || row.size() != numOfCols) {
-                myErrorView.showError(WRONG_BOARD_DIMENSION);
+                myErrorView.showError(WRONG_COL_DIMENSION);
                 return true;
             }
         }
@@ -256,7 +240,7 @@ public class JSONReader {
                 String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
                 conversionMap.put(key, stringValue);
             }
-            if (isMissingValues(conversionMap)) return null;
+            if (isMissingValues(conversionMap, objectType)) return null;
             return conversionMap;
         }
         catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);}
@@ -265,10 +249,25 @@ public class JSONReader {
         return null;
     }
 
-    private boolean isMissingValues(Map<Integer, String> conversionMap) {
+    private boolean isMissingValues(Map<Integer, String> conversionMap, String objectType) {
         for (Integer keyValue : conversionMap.keySet()) {
             if (conversionMap.get(keyValue) == null || conversionMap.get(keyValue).isEmpty()) {
-                myErrorView.showError(MISSING_CONTENT);
+                myErrorView.showError(MISSING_INDEX);
+                return true;
+            }
+            else {
+                Set<Integer> indexSet = conversionMap.keySet();
+                List<Integer> objectIndices = OBJECT_PARAMETERS.get(objectType);
+                return isMissingIndices(indexSet, objectIndices);
+            }
+        }
+        return false;
+    }
+
+    private boolean isMissingIndices(Set<Integer> indexSet, List<Integer> objectIndices) {
+        for (int index : objectIndices) {
+            if (!indexSet.contains(index)) {
+                myErrorView.showError(MISSING_INDEX);
                 return true;
             }
         }
@@ -284,16 +283,7 @@ public class JSONReader {
         List<List<Integer>> boardInfo = new ArrayList<>();
         try {
             JSONArray JSONBoard = (JSONArray) jsonData.get("BOARD");
-            Iterator<JSONArray> iterator = JSONBoard.iterator();
-            while (iterator.hasNext()){
-                List<Integer> innerList = new ArrayList<>();
-                Iterator<String> innerIterator = iterator.next().iterator();
-                while (innerIterator.hasNext()) {
-                    String nextToken = innerIterator.next();
-                    innerList.add(Integer.parseInt(nextToken.trim()));
-                }
-                boardInfo.addAll(Collections.singleton(innerList));
-            }
+            updateBoardInfo(boardInfo, JSONBoard);
             if (isMissingBoardInfo(boardInfo, numOfRows, numOfCols)) return null;
             return boardInfo;
         }
@@ -303,8 +293,21 @@ public class JSONReader {
         return null;
     }
 
+    private void updateBoardInfo(List<List<Integer>> boardInfo, JSONArray JSONBoard) {
+        Iterator<JSONArray> iterator = JSONBoard.iterator();
+        while (iterator.hasNext()){
+            List<Integer> innerList = new ArrayList<>();
+            Iterator<String> innerIterator = iterator.next().iterator();
+            while (innerIterator.hasNext()) {
+                String nextToken = innerIterator.next();
+                innerList.add(Integer.parseInt(nextToken.trim()));
+            }
+            boardInfo.addAll(Collections.singleton(innerList));
+        }
+    }
+
     private boolean isMissingBoardInfo(List<List<Integer>> boardInfo, int numOfRows, int numOfCols) {
-        if (boardInfo.size() != numOfRows) {
+        if (boardInfo == null || boardInfo.size() != numOfRows) {
             myErrorView.showError(WRONG_BOARD_DIMENSION);
             return true;
         }
