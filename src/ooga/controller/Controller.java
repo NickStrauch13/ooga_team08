@@ -128,7 +128,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * @param path The directory of a layout file
      */
     public void initializeGame(String path) {
-        int numOfRows, numOfCols;
         try {
             myReader = new JSONReader(language, path);
             assembleBoards();
@@ -155,26 +154,27 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         JSONContainer container = myReader.readJSONConfig();
-        myGameSettings = container.getMyGameSettings();
-        language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE"));
-        cssFileName = myGameSettings.getGeneralSettings().get("CSS_FILE_NAME");
-        setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE")));
-        int numOfRows = container.getMyNumOfRows();
-        int numOfCols = container.getMyNumOfCols();
 
-        gameObjectMap = createGameObjectMap();
-        creatureMap = createCreatureMap();
-        stringBoard = container.getMyStringBoard();
-        myBoard = new Board(numOfRows, numOfCols);
-        initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
-        myBoardView = new BoardView(this);
-        initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
+        if (container != null && !container.isMissingContent()) {
+            // TODO: if exception being thrown, shouldn't run the following code
+            myGameSettings = container.getMyGameSettings();
+            language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE").trim());
+            cssFileName = myGameSettings.getGeneralSettings().get("CSS_FILE_NAME").trim();
+            setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE").trim()));
+            int numOfRows = container.getMyNumOfRows();
+            int numOfCols = container.getMyNumOfCols();
 
-        myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),
-            myBoard.getMyCPUCreatures(),
-            cellSize,
-            myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+            gameObjectMap = createGameObjectMap();
+            creatureMap = createCreatureMap();
+            stringBoard = container.getMyStringBoard();
+            myBoard = new Board(numOfRows, numOfCols);
+            initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
+            myBoardView = new BoardView(this);
+            initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
 
+            myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
+                    cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+        }
     }
 
     public Map<Integer,String> createGameObjectMap() {
@@ -358,7 +358,8 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         try {
             myCSVWriter.close();
         } catch (IOException e) {
-
+            //TODO
+            myErrorView.showError(IOE_EXCEPTION);
         }
     }
 
@@ -373,6 +374,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
             allScoreData = myCSVReader.readAll();
         } catch (IOException e) {
             //TODO
+            myErrorView.showError(IOE_EXCEPTION);
         }
         return findTopTenScores(allScoreData);
     }

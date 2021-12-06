@@ -98,21 +98,21 @@ public class HomeScreen {
 
   public void setUserName(String userName) { myController.setUsername(userName); }
 
-  private void readFile(){
+  private boolean readFile(){
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("LoadFile");
     fileChooser.getExtensionFilters().addAll(new ExtensionFilter("JSON", "*.json"));
     File selectedFile = fileChooser.showOpenDialog(myStage);
     if (selectedFile == null) {
-      return;
+      return false;
     }
     else {
-      try {
-        myController.initializeGame(selectedFile.getPath());
+      myController.initializeGame(selectedFile.getPath());
+      if (myController.getBoardView() == null) {
+        return false;
       }
-      catch (Exception e)  {
-        e.printStackTrace(); //TODO update this error handling
-      }
+      return true;
+
     }
   }
 
@@ -124,9 +124,10 @@ public class HomeScreen {
 
 
   private void startNewGame() {
-    readFile();
-    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", myController.getLanguage(),  "Pacman", myController, myController.getBoardView());
-    gameDisplay.setMainDisplay("Pacman");
+    if (readFile()) {
+      GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", myController.getLanguage(), "Pacman", myController, myController.getBoardView());
+      gameDisplay.setMainDisplay("Pacman");
+    }
   }
 
   private void startBoardBuilder() {
