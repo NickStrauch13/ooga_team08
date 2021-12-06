@@ -248,7 +248,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
                  Map.entry(11 , "SPEEDCUTTER"),
                  Map.entry(12 , "WINLEVEL")
          );
-
     }
 
     public Map<Integer,String> createCreatureMap() {
@@ -499,15 +498,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return allCSVData;
     }
 
-    @Deprecated
-    public int getLevel() {
-        return myGame.getLevel();
-    }
-
-    @Deprecated
-    public boolean isGameOver() {
-        return myGame.isGameOver();
-    }
 
     /**
      * Returns the language of the game. If the user has input a language from the dropdown, it has priority.
@@ -554,12 +544,26 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return cssFileName;
     }
 
+    public void setCellSize(int newSize) {
+        cellSize = newSize;
+    }
+
     /**
      * Sets the CSS file being used.
      * @param cssName CSS file name WITHOUT .css on the end.
      */
     public void setViewMode(String cssName){
         cssUIFileName = String.format(CSS_FILE_EXTENSION, cssName);
+    }
+
+    @Deprecated
+    public int getLevel() {
+        return myGame.getLevel();
+    }
+
+    @Deprecated
+    public boolean isGameOver() {
+        return myGame.isGameOver();
     }
 
     /**
@@ -645,8 +649,5 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myGameSettings.getGeneralSettings().get("GAME_TITLE");
     }
 
-    public void setCellSize(int newSize) {
-        cellSize = newSize;
-    }
 
 }
