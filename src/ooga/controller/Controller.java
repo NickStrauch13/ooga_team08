@@ -5,6 +5,11 @@ import com.opencsv.CSVWriter;
 
 import java.io.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 import javafx.stage.Stage;
 import java.lang.Integer;
 
@@ -33,6 +38,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final int HEIGHT = 600;
     public final int CELL_SIZE = 25;
     private int cellSize;
+    private static final String CSS_FILE_EXTENSION = "%s.css";
 
 
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
@@ -83,7 +89,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     private GameSettings myGameSettings;
     private String language;
+    private String UILanguage;
     private String cssFileName;
+    private String cssUIFileName;
 
     private final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
     private final String DEFAULT_CSS_FILE = "Default.css";
@@ -100,6 +108,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     public Controller(Stage stage){
         cssFileName = DEFAULT_CSS_FILE;
+        myUsername = DEFAULT_USERNAME;
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
         language = myLanguages.getString(DEFAULT_LANGUAGE);
 
@@ -138,7 +147,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         catch (IOException e){
             myErrorView.showError(IOE_EXCEPTION);
         }
-
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -269,7 +277,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
                     myBoard.createGameObject(row, col, objectName);
                 } else if (creatureMap.containsValue(objectName)) {
                     myBoard.createCreature(col * cellSize + 3, row * cellSize + 3, objectName,
-                            cellSize - 5);
+                            cellSize-5);
                 }
             }
         }
@@ -323,7 +331,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     public int getScore() {
         return myGame.getScore();
     }
-
 
     public boolean getIsPoweredUp() {
         return myGame.getUser().isPoweredUp();
@@ -439,13 +446,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * @return List of string arrays where each String array is a single username:score combo.
      */
     public List<String[]> getScoreData() {
-        List allScoreData = new ArrayList();
-        try {
-            allScoreData = myCSVReader.readAll();
-        } catch (IOException e) {
-            //TODO
-            myErrorView.showError(IOE_EXCEPTION);
-        }
+        List allScoreData = readCSV();
         return findTopTenScores(allScoreData);
     }
 
@@ -477,6 +478,21 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         }
     }
 
+    /**
+     * Returns the top score for the given username.
+     * @return String value representing the integer score.
+     */
+    public String getTopScoreForUser(){
+        List<String[]> scoreData = readCSV();
+        String score = Integer.toString(0);
+        for(int i=0; i<scoreData.size(); i++){
+            if(Integer.parseInt(scoreData.get(i)[1]) > Integer.parseInt(score) && myUsername.equals(scoreData.get(i)[0])){
+                score = scoreData.get(i)[1];
+            }
+        }
+        return score;
+    }
+
     public int getLevel() {
         return myGame.getLevel();
     }
@@ -485,13 +501,25 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myGame.isGameOver();
     }
 
+    /**
+     * Returns the language of the game. If the user has input a language from the dropdown, it has priority.
+     * @return String representing language name.
+     */
     public String getLanguage() {
+        if(UILanguage != null){
+            return UILanguage;
+        }
         return language;
     }
 
     /**
+     * Sets the UI input language for the game.
+     * @param lang String representing the language name.
+     */
+    public void setUILanguage(String lang){UILanguage = lang;}
+
+    /**
      * Sets the username string for the game.
-     *
      * @param username String inputted by user on the home screen. Defaults to "Guest"
      */
     public void setUsername(String username) {
@@ -507,8 +535,23 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myUsername;
     }
 
+    /**
+     * Returns the CSS file being used. Priority returns the UI choice box selection css mode over data file css
+     * @return the CSS file path as a string.
+     */
     public String getViewMode() {
+        if(cssUIFileName != null){
+            return cssUIFileName;
+        }
         return cssFileName;
+    }
+
+    /**
+     * Sets the CSS file being used.
+     * @param cssName CSS file name WITHOUT .css on the end.
+     */
+    public void setViewMode(String cssName){
+        cssUIFileName = String.format(CSS_FILE_EXTENSION, cssName);
     }
 
     /**
@@ -582,4 +625,15 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     public void setCellSize(int newSize) {
         cellSize = newSize;
     }
+    private List<String[]> readCSV(){
+        List<String[]> allCSVData = new ArrayList<>();
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
+            allCSVData = csvReader.readAll();
+        } catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION);
+        }
+        return allCSVData;
+    }
+
 }

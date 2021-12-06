@@ -47,7 +47,7 @@
   "SETTINGS": {
     "LANGUAGE": "ENGLISH",
     "GAME_TITLE": "PACMAN",
-    "TIMER": "0",
+    "TIMER": "-1",
     "LIVES": "3",
     "WIN_CONDITION": "LIVES",
     "CELL_SIZE": "24",

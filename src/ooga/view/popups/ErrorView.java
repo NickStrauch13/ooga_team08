@@ -8,7 +8,9 @@ import javafx.scene.control.Alert.AlertType;
 import java.util.logging.Level;
 
 public class ErrorView {
+
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
+  public static final String ERROR_TITLE = "ErrorTitle";
   private ResourceBundle myResources;
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -25,7 +27,7 @@ public class ErrorView {
   public void showError(String message) {
     LOGGER.log(Level.WARNING, message);
     Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle(myResources.getString("ErrorTitle"));
+    alert.setTitle(myResources.getString(ERROR_TITLE));
     alert.setContentText(message);
     alert.showAndWait();
   }
