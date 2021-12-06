@@ -200,3 +200,7 @@
   -fx-font-size: 28px;
   -fx-padding: 20px;
 }
+.gameSelectBoxID{
+  -fx-min-width: 200px;
+  -fx-min-height: 20;
+}
