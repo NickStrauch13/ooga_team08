@@ -582,6 +582,4 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     public void setCellSize(int newSize) {
         cellSize = newSize;
     }
-
-
 }

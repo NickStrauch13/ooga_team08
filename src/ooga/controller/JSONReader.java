@@ -40,7 +40,7 @@ public class JSONReader {
     private final String WRONG_COL_DIMENSION = "The column dimension of the board does not match.";
 
 
-    private final List<String> FOOD_PARAMETERS = List.of("POWERUP_COLOR", "POWERUP_SIZE");
+//    private final List<String> FOOD_PARAMETERS = List.of("POWERUP_COLOR", "POWERUP_SIZE");
     private final List<String> GAME_SETTINGS = List.of(
             "SETTINGS", "PACMAN",
             "CPUGHOST", "WALL",
@@ -120,8 +120,7 @@ public class JSONReader {
 
         return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard, conversionMap, creatureMap, gameSettings);
     }
-
-
+    
     /*
     Extract setting information from the game input file
      */
