@@ -24,7 +24,7 @@ public class JSONContainer {
      * @param boardInfo A 2-d list that contains a status value for each cell
      * @param stringBoard A 2-d list that contains a string value for each cell
      */
-    public JSONContainer(int rows, int cols,List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, GameSettings gameSettings) {
+    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, GameSettings gameSettings) {
         myNumOfRows = rows;
         myNumOfCols = cols;
         myInfo = boardInfo;
@@ -112,5 +112,12 @@ public class JSONContainer {
 
     public GameSettings getMyGameSettings() {
         return mySettings;
+    }
+
+    public boolean isMissingContent() {
+        if (myInfo != null && myStringBoard != null && myConversionMap != null && myCreatureMap != null && mySettings != null && myNumOfRows != 0 && myNumOfCols != 0) {
+            return false;
+        }
+        return true;
     }
 }
