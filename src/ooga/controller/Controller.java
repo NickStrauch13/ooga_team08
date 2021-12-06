@@ -202,7 +202,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
                     myBoard.createGameObject(row, col, objectName);
                 } else if (creatureMap.containsValue(objectName)) {
                     myBoard.createCreature(col * cellSize + 3, row * cellSize + 3, objectName,
-                            cellSize - 5);
+                            cellSize-5);
                 }
             }
         }
@@ -256,7 +256,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     public int getScore() {
         return myGame.getScore();
     }
-
 
     public boolean getIsPoweredUp() {
         return myGame.getUser().isPoweredUp();
