@@ -412,10 +412,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         myCSVWriter.writeNext(nameAndScore);
         try {
             myCSVWriter.close();
-        } catch (IOException e) {
-            //TODO
-            myErrorView.showError(IOE_EXCEPTION);
-        }
+        } catch (IOException e) {}
     }
 
     /**
