@@ -118,9 +118,10 @@ public class HomeButtons {
   }
 
   private void startNewGame() {
-    readFile();
-    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, myController.getLanguage(), myController, myController.getBoardView());
-    gameDisplay.setMainDisplay();
+    if (readFile()) {
+      GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, myController.getLanguage(), myController, myController.getBoardView());
+      gameDisplay.setMainDisplay();
+    }
   }
 
   private boolean readFile(){
