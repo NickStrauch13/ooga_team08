@@ -12,7 +12,9 @@ import javafx.scene.layout.GridPane;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.gamePieces.*;
 
-
+/**
+ * Class that establishes the view board that the user actually sees.
+ */
 public class BoardView {
 
   public static final String GROUP_STYLING = "groupStyling";
@@ -96,16 +98,13 @@ public class BoardView {
     cpuCount++;
   }
 
-  public GamePiece pieceReflection(String objectName, Map<String, String> myObjectValues) {
+  private GamePiece pieceReflection(String objectName, Map<String, String> myObjectValues) {
     GamePiece gamePiece = null;
     try {
       Class<?> clazz = Class.forName(objectName);
         gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class, Map.class)
                 .newInstance(myController.getCellSize(), myObjectValues);
-    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
-      //TODO I think this is already checked in the controller parsing of the json file..
-      e.printStackTrace(); //TODO make better
-    }
+    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {}
     return gamePiece;
   }
 
@@ -121,7 +120,6 @@ public class BoardView {
    * Getter method that will return the user controlled movingPiece instance.
    * @return movingPiece instance
    */
-  //TODO refactor to allow multiple controlled pieces at once?
   public MovingPiece getUserPiece(){
     return myUserPiece;
   }
@@ -154,6 +152,9 @@ public class BoardView {
     }
   }
 
+  /**
+   * Resets the game's UI board.
+   */
   public void resetBoardView() {
     myGrid = new GridPane();
     myGrid.setMaxSize(myCellSize, myCellSize);
@@ -171,15 +172,15 @@ public class BoardView {
     return myCreatureList;
   }
 
-  public List<Node> getNodeList() {
-    return myNodeList;
-  }
-
+  /**
+   * Returns the view game gridPane
+   * @return GridPane Node
+   */
   public GridPane getMyGrid() {
     return myGrid;
   }
 
-  public MovingPiece creatureReflection(String creatureName, Map<String,String> myCreatureValues){
+  private MovingPiece creatureReflection(String creatureName, Map<String,String> myCreatureValues){
     MovingPiece creaturePiece = null;
     try {
       Class<?> clazz = Class.forName(creatureName);
@@ -190,6 +191,4 @@ public class BoardView {
     }
     return creaturePiece;
   }
-
-
 }

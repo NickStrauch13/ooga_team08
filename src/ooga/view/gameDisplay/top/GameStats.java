@@ -53,6 +53,12 @@ public class GameStats {
         myPlayerProfile = new PlayerProfile(controller);
     }
 
+    /**
+     * Creates the stats labels in the game screen.
+     * @param timer Timer start value.
+     * @param lives Lives start value.
+     * @return HBox node with the labels.
+     */
     public HBox makeStatLabels(int timer, int lives){
         Node livesVBox = makeLivesBox();
         Node timerVBox = makeTimerBox();
