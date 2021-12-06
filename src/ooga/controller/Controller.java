@@ -2,12 +2,12 @@ package ooga.controller;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-
 import java.io.*;
-
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javafx.stage.Stage;
 import java.lang.Integer;
-
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
@@ -25,18 +25,14 @@ import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
 public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface {
 
-    // TODO: Constant values should be in a file probably - enum? -> settings.properties
     private final double ANIMATION_SPEED = 0.3;
     private final int HIGH_SCORE_VALS = 10;
-    private final int WIDTH = 1000; // TODO: properties file
-    private final int HEIGHT = 600;
+    private final int WIDTH = 1200;
+    private final int HEIGHT = 700;
     public final int CELL_SIZE = 25;
     private int cellSize;
     private static final String CSS_FILE_EXTENSION = "%s.css";
-
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
-
-    // TODO: Should be put into a properties file?
     public static final String TITLE = "Start Screen";
 
     // TODO: exceptions.properties
@@ -75,18 +71,15 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private String myUsername;
     private ErrorView myErrorView;
     private ResourceBundle myLanguages;
-
     private GameSettings myGameSettings;
     private String language;
     private String UILanguage;
     private String cssFileName;
     private String cssUIFileName;
-
     private final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
     private final String DEFAULT_CSS_FILE = "Default.css";
     private final String DEFAULT_LANGUAGE = "ENGLISH";
     private final String DEFAULT_USERNAME = "Guest";
-
     private final String SCORE_PATH = "./data/highscores/HighScores.csv";
 
     // TODO: 1. move CSV stuff into a new class -> IOParser
@@ -173,7 +166,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         JSONContainer container = myReader.readJSONConfig();
-
         if (container != null && !container.isMissingContent()) {
             // TODO: if exception being thrown, shouldn't run the following code
             int numOfRows = container.getMyNumOfRows();

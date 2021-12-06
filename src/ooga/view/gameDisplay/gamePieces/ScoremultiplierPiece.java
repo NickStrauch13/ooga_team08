@@ -35,6 +35,7 @@ public class ScoremultiplierPiece extends GamePiece{
     setMyPiece(makeNode());
   }
 
+
   @Override
   protected Rectangle makeNode(){
     Rectangle rect = new Rectangle(edge,edge);

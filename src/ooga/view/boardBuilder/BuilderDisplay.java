@@ -6,16 +6,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import ooga.controller.JSONBuilder;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
+import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
 import javafx.scene.Scene;
-import ooga.view.gameDisplay.gamePieces.GamePiece;
-import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.top.GameStats;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.ResourceBundle;
 
 public class BuilderDisplay {
@@ -35,7 +33,8 @@ public class BuilderDisplay {
     private UINodeFactory myNodeBuilder;
     private ResourceBundle myResources;
     private BuilderButtons myBuilderButtons;
-    private ArrayList<String> userAdded;
+    private BoardManager myBoardManager;
+    private JSONBuilder myJSONBuilder;
 
     public BuilderDisplay(Stage stage, int width, int height, ViewerControllerInterface controller) {
         myController = controller;
@@ -49,7 +48,8 @@ public class BuilderDisplay {
         myNodeBuilder = new UINodeFactory(myController);
         myBuilderButtons = new BuilderButtons(myStage,width, height, myController, myBoardView, this);
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
-        userAdded = new ArrayList<>();
+        myBoardManager = new BoardManager(myController, myBoardView, myBuilderButtons);
+        myJSONBuilder = new JSONBuilder(myController);
     }
 
     /**
@@ -68,30 +68,13 @@ public class BuilderDisplay {
         myBoardView.getMyGrid().setVgap(SPACING);
         for (int r = 0; r < DEFAULT_BOARD_SIZE; r++) {
             for (int c = 0; c < DEFAULT_BOARD_SIZE; c++) {
-                GamePiece newPiece =  myBoardView.addBoardPiece(r, c, "WALL",null);
-                newPiece.getPiece().setOnMouseClicked(e -> updateGrid(newPiece.getPiece()));
-                Node temp = newPiece.getPiece();
-                Node rect = new Rectangle(1,1,Color.LIGHTGRAY);
-                temp.getStyleClass().add(rect.getStyle());
+                Node gridSpace = new Rectangle(DEFAULT_CELL_SIZE,DEFAULT_CELL_SIZE, Color.LIGHTGRAY);
+                myBoardView.getMyGrid().add(gridSpace, c, r);
+                gridSpace.setId(String.format("%d,%d,%s", r, c,gridSpace.getClass().getSimpleName()));
+                gridSpace.setOnMouseClicked(e -> myBoardManager.updateGrid(gridSpace));
+
             }
         }
-    }
-
-    private void updateGrid(Node oldPiece) {
-        myBoardView.removeNode(oldPiece.getId());
-        String[] position = oldPiece.getId().split(",");
-        Collection<String> stringList = myController.createCreatureMap().values();
-        String className = myBuilderButtons.getClassName(myBuilderButtons.getSelected());
-        GamePiece newNode = myBoardView.addBoardPiece(Integer.parseInt(position[0]), Integer.parseInt(position[1]), className, null);
-        if (!userAdded.contains(newNode.getPiece().getId())) {
-            userAdded.add(newNode.getPiece().getId());
-        }
-        if (!(stringList.contains(className))) {
-            Node temp = newNode.getPiece();
-            Node temp2 = myBuilderButtons.getSelected().getPiece();
-            temp.getStyleClass().add(temp2.getStyle());
-        }
-        newNode.getPiece().setOnMouseClicked(e -> updateGrid(newNode.getPiece()));
     }
 
     private void setupScene(){
@@ -103,9 +86,10 @@ public class BuilderDisplay {
         root.setBottom(myBuilderButtons.makeBottomHBox());
     }
 
-    public void buildBoardFile() {
-        for (String id : userAdded) {
-            System.out.println(id);
-        }
+    public void newGameWithBoard() {
+        myController.initializeGame(String.format(myJSONBuilder.getBoardPath(), "MyBoard"));
+        GameDisplay gameDisplay = new GameDisplay(myStage, (int)myScene.getWidth(),  (int)myScene.getHeight(), myController.getLanguage(), myController, myController.getBoardView());
+        gameDisplay.setMainDisplay();
     }
+
 }

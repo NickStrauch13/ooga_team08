@@ -53,6 +53,12 @@ public class GameStats {
         myPlayerProfile = new PlayerProfile(controller);
     }
 
+    /**
+     * Creates the stats labels in the game screen.
+     * @param timer Timer start value.
+     * @param lives Lives start value.
+     * @return HBox node with the labels.
+     */
     public HBox makeStatLabels(int timer, int lives){
         Node livesVBox = makeLivesBox();
         Node timerVBox = makeTimerBox();
@@ -79,7 +85,7 @@ public class GameStats {
     }
 
     private Node makeGameTitleBox() {
-        Label gameType = nodeBuilder.makeLabel(EMPTY + myController.getGameType(), GAME_TYPE_ID);
+        Label gameType = nodeBuilder.makeLabel(EMPTY + myController.getGameType().toLowerCase(), GAME_TYPE_ID);
         Label gameText = nodeBuilder.makeLabel(myResources.getString(GAME_TEXT), GAME_TYPE_TEXT_ID);
         Node gameTypeVBox = nodeBuilder.makeCol(STATS_FORMAT1, gameText, gameType);
         return gameTypeVBox;

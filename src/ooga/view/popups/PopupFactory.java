@@ -29,6 +29,7 @@ public class PopupFactory {
 
   /**
    * Puts a popup onto the main stage that shows the high scores.
+   * @param title String to have in the popup
    */
   public Popup makePopup(String title) {
     Popup scorePopup = new Popup();
@@ -39,10 +40,21 @@ public class PopupFactory {
     return scorePopup;
   }
 
+  /**
+   * Displays the popup on the stage.
+   * @param stage stage to show popup on.
+   * @param scorePopup score popup Popup node
+   */
   public void showPopup(Stage stage, Popup scorePopup) {
     scorePopup.show(stage);
   }
 
+  /**
+   * Adds information telling the suer how to close the window.
+   * @param exitString message to show user.
+   * @param id CSS ID for the message
+   * @return VBox with the messages.
+   */
   public VBox addExitInfo(String exitString, String id) {
     myVBox.getChildren().add(myNodeFactory.makeLabel(null, null));
     myVBox.getChildren().add(myNodeFactory.makeLabel(myResources.getString(exitString), id));
@@ -51,6 +63,10 @@ public class PopupFactory {
     return myVBox;
   }
 
+  /**
+   * Returns the Popup Vbox
+   * @return Popup VBox node
+   */
   public VBox getMyVBox() {
     return myVBox;
   }
