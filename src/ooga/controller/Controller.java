@@ -55,7 +55,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String ILLEGAL_ACCESS = "Access illegal! ";
     //    private final String EXCEPTION = "Something is wrong here!";
 
-    private static final String DEFAULT_USERNAME = "Guest";
+
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
     private static final int FIVE_HUNDRED = 500;
@@ -85,9 +85,11 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private String language;
     private String cssFileName;
 
-    private static final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
-    private static final String DEFAULT_CSS_FILE = "Default.css";
-    private static final String DEFAULT_LANGUAGE = "ENGLISH";
+    private final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
+    private final String DEFAULT_CSS_FILE = "Default.css";
+    private final String DEFAULT_LANGUAGE = "ENGLISH";
+    private final String DEFAULT_USERNAME = "Guest";
+
     private final String SCORE_PATH = "./data/highscores/HighScores.csv";
 
 
@@ -198,8 +200,8 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private void extractInfoFromContainer(JSONContainer container) {
         myGameSettings = container.getMyGameSettings();
         stringBoard = container.getMyStringBoard();
-        language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE").trim());
-        cssFileName = myGameSettings.getGeneralSettings().get("CSS_FILE_NAME").trim();
+        language = myLanguages.getString(myGameSettings.getGeneralSettings().getOrDefault("LANGUAGE", DEFAULT_LANGUAGE).trim());
+        cssFileName = myGameSettings.getGeneralSettings().getOrDefault("CSS_FILE_NAME", DEFAULT_CSS_FILE).trim();
         setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE").trim()));
     }
 

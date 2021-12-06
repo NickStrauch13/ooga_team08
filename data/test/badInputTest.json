@@ -16,17 +16,14 @@
   ],
 
   "OBJECT_MAP": {
-    "0" : "asodifuhsadio",
+    "0" : "wall",
     "1" : "SCOREBOOSTER",
     "2" : "STATECHANGER",
     "3" : "SCOREMULTIPLIER",
     "6" : "PORTAL",
     "7" : "GHOSTSLOWER",
-    "8" : "EXTRALIFE",
-    "9" : "EMPTY",
-    "10" : "INVINCIBILITY",
-    "11" : "SPEEDCUTTER",
-    "12" : "WINLEVEL"
+    "8" : "EXTRALIFE"
+
   },
 
   "CREATURE_MAP": {
@@ -34,16 +31,7 @@
     "5" : "CPUGHOST"
   },
 
-  "SETTINGS": {
-    "LANGUAGE": "ENGLISH",
-    "GAME_TITLE": "PACMAN",
-    "TIMER": "-1",
-    "LIVES": "3",
-    "CSS_FILE_NAME" : "Default.css",
-    "USER_IS_PREDATOR" : "0",
-    "HARD" : "1",
-    "IS_PICKUPS_A_VALID_WIN_CONDITION": "1"
-  },
+
 
   "PACMAN" : {
     "USER_IMAGE": "ooga/view/resources/viewIcons/pacmanImage.png"

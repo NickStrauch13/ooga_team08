@@ -33,6 +33,7 @@ public class JSONReader {
     private final String INDEX_OUT_BOUNDS_EXCEPTION = "Check if the dimension of the board is correct!";
     private final String IOE_EXCEPTION = "IOE exceptions";
     private final String PARSE_EXCEPTION = "Parse exceptions";
+    private final String MISSING_CONTENT = "Please check your game file because you are missing some inputs";
 
     /*
     TODO: Other exceptions maybe for the frontend or controller?
@@ -110,12 +111,19 @@ public class JSONReader {
                 Map.entry("WINLEVEL", winLevelSettings));
 
         // TODO: should all food items be a map?
-//        for (String keyString : mapList.keySet()) {
-//            if (mapList.get(keyString) == null) {
-//                return null;
-//            }
-//        }
+        if (isMissingSettings(mapList)) return null;
+
         return new GameSettings(mapList);
+    }
+
+    private boolean isMissingSettings(Map<String, Map<String, String>> mapList) {
+        for (String keyString : mapList.keySet()) {
+            if (mapList.get(keyString) == null || mapList.get(keyString).isEmpty()) {
+                myErrorView.showError(MISSING_CONTENT);
+                return true;
+            }
+        }
+        return false;
     }
 
     /*
@@ -133,13 +141,35 @@ public class JSONReader {
                     conversionMap.put(keyString, stringValue);
                 }
             }
+            if (isMissingObjects(conversionMap)) return null;
             return conversionMap;
         }
 
         catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_SETTING);}
         catch (NumberFormatException e){myErrorView.showError(NUMBER_FORMAT_EXCEPTION_SETTING);}
         catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_SETTING);}
+
         return null;
+    }
+
+    private boolean isMissingObjects(Map<String, String> conversionMap) {
+        for (String keyString : conversionMap.keySet()) {
+            if (conversionMap.get(keyString) == null || conversionMap.get(keyString).isEmpty()) {
+                myErrorView.showError(MISSING_CONTENT);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isMissingValues(Map<Integer, String> conversionMap) {
+        for (Integer keyValue : conversionMap.keySet()) {
+            if (conversionMap.get(keyValue) == null || conversionMap.get(keyValue).isEmpty()) {
+                myErrorView.showError(MISSING_CONTENT);
+                return true;
+            }
+        }
+        return false;
     }
 
     /*
@@ -156,11 +186,23 @@ public class JSONReader {
                 }
                 stringBoard.addAll(Collections.singleton(innerList));
             }
+
+            if (isMissingStrings(stringBoard)) return null;
             return stringBoard;
         }
         catch (IndexOutOfBoundsException e) {myErrorView.showError(INDEX_OUT_BOUNDS_EXCEPTION);}
         catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_BOARD);}
         return null;
+    }
+
+    private boolean isMissingStrings(List<List<String>> stringBoard) {
+        for (List<String> stringList : stringBoard) {
+            if (stringList == null || stringList.isEmpty()) {
+                myErrorView.showError(MISSING_CONTENT);
+                return true;
+            }
+        }
+        return false;
     }
 
     /*
@@ -178,6 +220,7 @@ public class JSONReader {
                 String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
                 conversionMap.put(key, stringValue);
             }
+            if (isMissingValues(conversionMap)) return null;
             return conversionMap;
         }
         catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);}
