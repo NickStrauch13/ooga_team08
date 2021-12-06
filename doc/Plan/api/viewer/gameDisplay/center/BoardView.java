@@ -5,7 +5,7 @@ public interface PacManDisplay {
      * @param controller
      */
     BoardView(BasicController controller);
-
+    public GamePiece addBoardPiece(int row, int col, String objectName, Map<String, String> myObjectValues);
     /**
      * Initializes the displayed grid list at the start of the game
      * @param rows
@@ -81,4 +81,5 @@ public interface PacManDisplay {
      * @param objectName
      */
     MovingPiece creatureReflection(String creatureName);
+
 }
