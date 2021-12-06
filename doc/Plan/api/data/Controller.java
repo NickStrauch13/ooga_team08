@@ -11,11 +11,6 @@ public interface Controller {
      * @throws IllegalAccessException
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        HomeScreen startScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
-        stage.setTitle(TITLE);
-        stage.setScene(startScreen.createScene());
-        stage.show();
-        animationSpeed = 0.3;
     }
 
     /**

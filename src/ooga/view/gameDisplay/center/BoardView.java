@@ -14,6 +14,10 @@ import ooga.view.gameDisplay.gamePieces.*;
 
 
 public class BoardView {
+
+  public static final String GROUP_STYLING = "groupStyling";
+  public static final String GAME_GRID_PANE = "gameGridPane";
+  public static final String ID_HASH = "#";
   private GridPane myGrid;
   private Group myGroup;
   private int[][] controllerBoard;
@@ -37,7 +41,7 @@ public class BoardView {
     myController = controller;
     myGroup = new Group();
     myCellSize = myController.getCellSize();
-    myGroup.getStyleClass().add("groupStyling");
+    myGroup.getStyleClass().add(GROUP_STYLING);
     resetBoardView();
 
   }
@@ -151,8 +155,8 @@ public class BoardView {
    * Removes the node specified by the backend from the boardView.
    */
   public void removeNode(String nodeID){
-    String removedID = "#" + nodeID;
-    Node nodeInGrid = getNodeInGrid(removedID);
+    String removedID = ID_HASH + nodeID;
+    Node nodeInGrid = myGrid.lookup(removedID);
     Node nodeInGroup = myGroup.lookup(removedID);
     if(myGrid.getChildren().remove(nodeInGrid)){
       myNodeList.remove(nodeInGrid);
@@ -168,7 +172,7 @@ public class BoardView {
     myNodeList = new ArrayList<>();
     myCreatureList = new ArrayList<>();
     myGroup.getChildren().add(myGrid);
-    myGrid.getStyleClass().add("gameGridPane");
+    myGrid.getStyleClass().add(GAME_GRID_PANE);
     cpuCount = 0;
   }
 

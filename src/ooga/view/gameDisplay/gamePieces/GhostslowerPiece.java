@@ -9,6 +9,9 @@ import java.util.Map;
  * Class that represents the dot pickup pieces in the view board.
  */
 public class GhostslowerPiece extends GamePiece{
+
+  public static final String POWERUP_COLOR = "POWERUP_COLOR";
+  public static final String POWERUP_SIZE = "POWERUP_SIZE";
   private int dotRadius = 5;
   private Color myColor = Color.BLACK;
   private static final String CSS_ID = "dotPiece";
@@ -16,12 +19,12 @@ public class GhostslowerPiece extends GamePiece{
   public GhostslowerPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
     if (myValues != null) {
-      if(myValues.containsKey("POWERUP_COLOR")){
-        String rgbValues= myValues.get("POWERUP_COLOR"); //TODO PARSE OUT NEGATIVE DATA
+      if(myValues.containsKey(POWERUP_COLOR)){
+        String rgbValues= myValues.get(POWERUP_COLOR); //TODO PARSE OUT NEGATIVE DATA
         myColor=parseRGBs(rgbValues);
       }
-      if(myValues.containsKey("POWERUP_SIZE")){
-        dotRadius = Integer.parseInt(myValues.get("POWERUP_SIZE"));//TODO Make parser parse out non-integer data
+      if(myValues.containsKey(POWERUP_SIZE)){
+        dotRadius = Integer.parseInt(myValues.get(POWERUP_SIZE));//TODO Make parser parse out non-integer data
       }
     }
     setMyPiece(makeNode());

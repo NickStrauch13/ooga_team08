@@ -6,6 +6,8 @@ import javafx.scene.paint.Color;
  * Abstract class that is the parent of all game pieces. This includes walls, dots, pacman, etc.
  */
 public abstract class GamePiece{
+
+  public static final String CELL_INDEX_FORMAT = "%d,$d";
   private int myRow;
   private int myCol;
   private Node myPiece;
@@ -34,7 +36,7 @@ public abstract class GamePiece{
   protected abstract Node makeNode();
 
   protected String getCellIndexID(){
-    return String.format("%d,$d", myRow, myCol);
+    return String.format(CELL_INDEX_FORMAT, myRow, myCol);
   }
 
   protected void setIDs(Node node, String cssID, String generalID){

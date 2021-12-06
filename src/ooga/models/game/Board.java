@@ -74,7 +74,7 @@ public class Board {
      */
     public void createCreature(int xPos, int yPos, String creatureType, int creatureSize) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException{
         Class<Creature> creatureClass = (Class<Creature>)Class.forName(myGameObjects.getString(creatureType));
-        Creature newCreature = (Creature) creatureClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(xPos, yPos);
+        Creature newCreature =  creatureClass.getDeclaredConstructor(Integer.class, Integer.class).newInstance(xPos, yPos);
         if (myGameObjects.getString(creatureType).contains("CPU")) {
             newCreature.setId(creatureType + cpuCount);
             activeCPUCreatures.add((CPUCreature)newCreature);
