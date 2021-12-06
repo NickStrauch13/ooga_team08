@@ -81,6 +81,10 @@ public class GameDisplay {
         root.setBottom(myGameButtons.makeButtonBox());
     }
 
+    /**
+     * Returns the BoardView object
+     * @return BoardView object.
+     */
     public BoardView getBoardView() {
         return myBoardView;
     }

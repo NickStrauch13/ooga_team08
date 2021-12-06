@@ -9,13 +9,11 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import ooga.controller.ViewerControllerInterface;
 
 public class UINodeFactory {
@@ -34,12 +32,12 @@ public class UINodeFactory {
 
   /**
    * Creates buttons for the UI.
-   * @param property
-   * @param icon
-   * @param buttonStyle
-   * @param ID
-   * @param response
-   * @return
+   * @param property The Text for the Button
+   * @param icon Button icon image path
+   * @param buttonStyle CSS ID for the button
+   * @param ID The Node ID for the Button
+   * @param response Button action.
+   * @return Button node
    */
   public Button makeButton(String property, ImageView icon, String buttonStyle, String ID, EventHandler<ActionEvent> response) {
     Button result = new Button(property, icon);
@@ -50,6 +48,13 @@ public class UINodeFactory {
     return (Button)setID(ID, result);
   }
 
+  /**
+   * Creates a text input field Node.
+   * @param ID CSS ID and Node ID
+   * @param response Action on entry
+   * @param initial Initial text in field
+   * @return Text field Node
+   */
   public TextField makeInputField(String ID, Consumer<String> response, String initial) {
     TextField result = new TextField();
     result.getStyleClass().add(INPUT_FIELD);
@@ -59,12 +64,24 @@ public class UINodeFactory {
     return result;
   }
 
+  /**
+   * Creates a label node.
+   * @param text text to put in label.
+   * @param ID CSS ID and NOde ID of label.
+   * @return Label Node.
+   */
   public Label makeLabel(String text, String ID) {
     Label label = new Label(text);
     label.getStyleClass().add(ID);
     return (Label)setID(ID, label);
   }
 
+  /**
+   * Makes an HBox Node.
+   * @param rowFormatting CSS ID for HBox.
+   * @param nodes Nodes to put into HBox.
+   * @return Hbox full of nodes.
+   */
   public HBox makeRow(String rowFormatting, Node ... nodes) {
     HBox row = new HBox();
     row.getChildren().addAll(nodes);
@@ -73,6 +90,12 @@ public class UINodeFactory {
     return row;
   }
 
+  /**
+   * Creates a VBox Node.
+   * @param rowFormatting CSS ID for VBox.
+   * @param nodes Nodes to put in VBox.
+   * @return VBox Node.
+   */
   public VBox makeCol(String rowFormatting, Node ... nodes) {
     VBox col = new VBox();
     col.getChildren().addAll(nodes);
@@ -81,16 +104,12 @@ public class UINodeFactory {
     return col;
   }
 
-
-  //TODO delete?
-  public ColorPicker makeColorPicker(String id, Consumer<Color> response, Color color) {
-    ColorPicker cp = new ColorPicker(color);
-    cp.setOnAction(e -> response.accept(cp.getValue()));
-    cp.getStyleClass().add(COLOR_PICKER);
-    cp.setMaxWidth(MAX_SIZE);
-    return (ColorPicker) setID(id, cp);
-  }
-
+  /**
+   * Creates choice box node.
+   * @param boxID CSS ID for the choice box
+   * @param entries The string entries to have in the box.
+   * @return The choice box node
+   */
   public ChoiceBox makeChoiceBox(String boxID, String ... entries){
     ChoiceBox cb = new ChoiceBox(FXCollections.observableList(Arrays.asList(entries)));
     cb.getStyleClass().add(boxID);
