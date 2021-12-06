@@ -117,7 +117,7 @@ public class BuilderButtons {
 
     private void goHome() {
         HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight, myController);
-        homeScreen.setMainDisplay("Home");
+        homeScreen.setMainDisplay();
     }
 
     public String getClassName(GamePiece gamePiece) {
