@@ -136,8 +136,10 @@ public class JSONReader {
         return new GameSettings(mapList);
     }
 
+    /*
+    Check if any major setting map is missing
+     */
     private boolean isMissingSettings(Map<String, Map<String, String>> mapList) {
-
         for (String keyString : GAME_SETTINGS) {
             if (mapList.get(keyString) == null || mapList.get(keyString).isEmpty()) {
                 myErrorView.showError(MISSING_CONTENT);
@@ -150,6 +152,9 @@ public class JSONReader {
         return false;
     }
 
+    /*
+    Check if any item is missing
+     */
     private boolean isMissingItems(Map<String, Map<String, String>> mapList, String keyString) {
         Set<String> parameterSet = mapList.get(keyString).keySet();
         for (String parameter : SETTING_PARAMETERS.get(keyString)) {
@@ -208,6 +213,9 @@ public class JSONReader {
         return null;
     }
 
+    /*
+    Check if stringBoard is null or the dimension for rows matches
+     */
     private boolean isMissingBoardStrings(List<List<String>> stringBoard, int numOfRows, int numOfCols) {
         if (stringBoard == null || stringBoard.size() != numOfRows) {
             myErrorView.showError(WRONG_BOARD_DIMENSION);
@@ -216,6 +224,9 @@ public class JSONReader {
         return isColMismatch(stringBoard, numOfCols);
     }
 
+    /*
+    Check if the dimension for columns matches
+     */
     private boolean isColMismatch(List<List<String>> stringBoard, int numOfCols) {
         for (List<String> row : stringBoard) {
             if (row == null || row.isEmpty() || row.size() != numOfCols) {
@@ -249,6 +260,9 @@ public class JSONReader {
         return null;
     }
 
+    /*
+    Check if either game objects or creatures are missing in the json file
+     */
     private boolean isMissingValues(Map<Integer, String> conversionMap, String objectType) {
         for (Integer keyValue : conversionMap.keySet()) {
             if (conversionMap.get(keyValue) == null || conversionMap.get(keyValue).isEmpty()) {
@@ -264,6 +278,9 @@ public class JSONReader {
         return false;
     }
 
+    /*
+    Check if any index for game objects is missing
+     */
     private boolean isMissingIndices(Set<Integer> indexSet, List<Integer> objectIndices) {
         for (int index : objectIndices) {
             if (!indexSet.contains(index)) {
@@ -293,6 +310,9 @@ public class JSONReader {
         return null;
     }
 
+    /*
+    Write information from JSONBoard into boardInfo
+     */
     private void updateBoardInfo(List<List<Integer>> boardInfo, JSONArray JSONBoard) {
         Iterator<JSONArray> iterator = JSONBoard.iterator();
         while (iterator.hasNext()){
@@ -306,11 +326,21 @@ public class JSONReader {
         }
     }
 
+    /*
+    Check if the board information is incomplete
+     */
     private boolean isMissingBoardInfo(List<List<Integer>> boardInfo, int numOfRows, int numOfCols) {
         if (boardInfo == null || boardInfo.size() != numOfRows) {
             myErrorView.showError(WRONG_BOARD_DIMENSION);
             return true;
         }
+        return isBoardColMismatches(boardInfo, numOfCols);
+    }
+
+    /*
+    Check if the dimension for columns matches
+     */
+    private boolean isBoardColMismatches(List<List<Integer>> boardInfo, int numOfCols) {
         for (List<Integer> row : boardInfo) {
             if (row == null || row.isEmpty() || row.size() != numOfCols) {
                 myErrorView.showError(WRONG_BOARD_DIMENSION);
@@ -349,6 +379,10 @@ public class JSONReader {
         return null;
     }
 
+    /**
+     * Access the most recent file path
+     * @return most recent file path
+     */
     public String getMostRecentPath() {
         return myPath;
     }
