@@ -10,7 +10,9 @@ import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 
 public class PopupFactory {
+
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
+  public static final String HIGH_SCORE_V_BOX = "HighScoreVBox";
   private ResourceBundle myResources;
   private String language;
   private UINodeFactory myNodeFactory;
@@ -30,7 +32,7 @@ public class PopupFactory {
    */
   public Popup makePopup(String title) {
     Popup scorePopup = new Popup();
-    myVBox = (VBox) myNodeFactory.makeCol("HighScoreVBox");
+    myVBox = (VBox) myNodeFactory.makeCol(HIGH_SCORE_V_BOX);
     Label scoreTitle = myNodeFactory.makeLabel(myResources.getString(title), TITLE_ID);
     myVBox.getChildren().add(scoreTitle);
     scorePopup.getContent().add(myVBox);

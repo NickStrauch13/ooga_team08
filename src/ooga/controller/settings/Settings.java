@@ -3,6 +3,7 @@ package ooga.controller.settings;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class Settings {
     private String myLanguage;
     private String myGameType;

@@ -119,7 +119,7 @@
 .statsHolder {
     -fx-alignment: center;
     -fx-font-size: 22px;
-    -fx-spacing: 20px;
+    -fx-spacing: 40px;
     -fx-padding: 10px;
 }
 
@@ -153,8 +153,8 @@
   -fx-font-size: 20;
 }
 
-.livesTextID, .levelTextID, .scoreTextID, .gameTypeID, .gameTypeTextID, .numLivesID, .numScoreID, .numLevelID, .inputTextID{
- -fx-text-fill: LabelFontColor;
+.livesTextID, .levelTextID, .scoreTextID, .gameTypeID, .gameTypeTextID, .numLivesID, .numScoreID, .numLevelID, .inputTextID, .ProfileHeaderID, .ProfileScoreID{
+  -fx-text-fill: LabelFontColor;
 }
 
 .ScoreExitID{
@@ -179,4 +179,41 @@
 .GameOverRestartID {
     -fx-background-color: ResetButtonColor;
 }
+.bottomRowFormatID{
+  -fx-font-size: 16px;
+  -fx-spacing: 20px;
+  -fx-padding: 10px;
+  -fx-text-fill: #fffcc8;
+}
 
+.langBoxID{
+  -fx-min-width: 132px;
+  -fx-min-height: 20;
+}
+
+.cssModeLabelID{
+  -fx-text-fill: #fffcc8;
+}
+.LangLabelID{
+  -fx-text-fill: #fffcc8;
+}
+
+.PlayerLabelID{
+  -fx-font-size: 36px;
+  -fx-padding: 30px;
+  -fx-text-fill: #fffcc8;
+}
+
+.PlayerTopScoreID{
+  -fx-font-size: 28px;
+  -fx-padding: 20px;
+  -fx-text-fill: #fffcc8;
+}
+
+.GameSelectID{
+  -fx-text-fill: #fffcc8;
+}
+.gameSelectBoxID{
+  -fx-min-width: 200px;
+  -fx-min-height: 20;
+}

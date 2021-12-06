@@ -3,6 +3,7 @@ package ooga.controller;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import javafx.stage.Stage;
@@ -32,6 +33,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final int HEIGHT = 600;
     public final int CELL_SIZE = 25;
     private int cellSize;
+    private static final String CSS_FILE_EXTENSION = "%s.css";
 
 
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
@@ -85,6 +87,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private String language;
     private String UILanguage;
     private String cssFileName;
+    private String cssUIFileName;
 
     /**
      * The constructor of the game controller that starts and controls the overall communication between the frontend and backend
@@ -100,6 +103,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         cssFileName = DEFAULT_CSS_FILE;
+        myUsername = DEFAULT_USERNAME;
+        File scoreFile = new File(SCORE_PATH);
+        myCSVReader = new CSVReader(new FileReader(scoreFile));
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
         language = myLanguages.getString(DEFAULT_LANGUAGE);
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
@@ -110,12 +116,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         myStage.show();
         animationSpeed = ANIMATION_SPEED;
         myErrorView = new ErrorView(DEFAULT_LANGUAGE);
-        File scoreFile = new File(SCORE_PATH);
-        myCSVReader = new CSVReader(new FileReader(scoreFile));
         myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
                 CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                 CSVWriter.DEFAULT_LINE_END);
-        myUsername = DEFAULT_USERNAME;
         cellSize = DEFAULT_CELL_SIZE;
     }
 
@@ -128,7 +131,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * @param path The directory of a layout file
      */
     public void initializeGame(String path) {
-        int numOfRows, numOfCols;
         try {
             myReader = new JSONReader(language, path);
             assembleBoards();
@@ -155,26 +157,27 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         JSONContainer container = myReader.readJSONConfig();
-        myGameSettings = container.getMyGameSettings();
-        language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE"));
-        cssFileName = myGameSettings.getGeneralSettings().get("CSS_FILE_NAME");
-        setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE")));
-        int numOfRows = container.getMyNumOfRows();
-        int numOfCols = container.getMyNumOfCols();
 
-        gameObjectMap = createGameObjectMap();
-        creatureMap = createCreatureMap();
-        stringBoard = container.getMyStringBoard();
-        myBoard = new Board(numOfRows, numOfCols);
-        initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
-        myBoardView = new BoardView(this);
-        initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
+        if (container != null && !container.isMissingContent()) {
+            // TODO: if exception being thrown, shouldn't run the following code
+            myGameSettings = container.getMyGameSettings();
+            language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE").trim());
+            cssFileName = myGameSettings.getGeneralSettings().get("CSS_FILE_NAME").trim();
+            setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE").trim()));
+            int numOfRows = container.getMyNumOfRows();
+            int numOfCols = container.getMyNumOfCols();
 
-        myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),
-            myBoard.getMyCPUCreatures(),
-            cellSize,
-            myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+            gameObjectMap = createGameObjectMap();
+            creatureMap = createCreatureMap();
+            stringBoard = container.getMyStringBoard();
+            myBoard = new Board(numOfRows, numOfCols);
+            initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
+            myBoardView = new BoardView(this);
+            initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
 
+            myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
+                    cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+        }
     }
 
     public Map<Integer,String> createGameObjectMap() {
@@ -357,7 +360,8 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         try {
             myCSVWriter.close();
         } catch (IOException e) {
-
+            //TODO
+            myErrorView.showError(IOE_EXCEPTION);
         }
     }
 
@@ -367,12 +371,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * @return List of string arrays where each String array is a single username:score combo.
      */
     public List<String[]> getScoreData() {
-        List allScoreData = new ArrayList();
-        try {
-            allScoreData = myCSVReader.readAll();
-        } catch (IOException e) {
-            //TODO
-        }
+        List allScoreData = readCSV();
         return findTopTenScores(allScoreData);
     }
 
@@ -402,6 +401,21 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         while (topTen.size() > HIGH_SCORE_VALS) {
             topTen.remove(topTen.size() - 1);
         }
+    }
+
+    /**
+     * Returns the top score for the given username.
+     * @return String value representing the integer score.
+     */
+    public String getTopScoreForUser(){
+        List<String[]> scoreData = readCSV();
+        String score = Integer.toString(0);
+        for(int i=0; i<scoreData.size(); i++){
+            if(Integer.parseInt(scoreData.get(i)[1]) > Integer.parseInt(score) && myUsername.equals(scoreData.get(i)[0])){
+                score = scoreData.get(i)[1];
+            }
+        }
+        return score;
     }
 
     public int getLevel() {
@@ -446,8 +460,23 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myUsername;
     }
 
+    /**
+     * Returns the CSS file being used. Priority returns the UI choice box selection css mode over data file css
+     * @return the CSS file path as a string.
+     */
     public String getViewMode() {
+        if(cssUIFileName != null){
+            return cssUIFileName;
+        }
         return cssFileName;
+    }
+
+    /**
+     * Sets the CSS file being used.
+     * @param cssName CSS file name WITHOUT .css on the end.
+     */
+    public void setViewMode(String cssName){
+        cssUIFileName = String.format(CSS_FILE_EXTENSION, cssName);
     }
 
     /**
@@ -520,6 +549,17 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     public void setCellSize(int newSize) {
         cellSize = newSize;
+    }
+
+    private List<String[]> readCSV(){
+        List<String[]> allCSVData = new ArrayList<>();
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
+            allCSVData = csvReader.readAll();
+        } catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION);
+        }
+        return allCSVData;
     }
 
 

@@ -16,7 +16,12 @@ import ooga.view.gameDisplay.keyActions.KeyViewAction;
 import ooga.view.gameDisplay.top.GameStats;
 
 public class SimulationManager {
+
     private static final String KEY_PATH = "ooga.view.gameDisplay.keyActions.%sKey";
+    public static final String INVINCIBLE_PACMAN_PNG = "ooga/view/resources/viewIcons/invinciblePacman.png";
+    public static final String PACMAN_IMAGE_PNG = "ooga/view/resources/viewIcons/pacmanImage.png";
+    public static final String BLUE_GHOST_PNG = "ooga/view/resources/viewIcons/blueGhost.png";
+    public static final String GHOST_IMAGE_PNG = "ooga/view/resources/viewIcons/ghostImage.png";
     private ViewerControllerInterface myController;
     private Timeline myAnimation;
     private double myAnimationRate;
@@ -25,7 +30,7 @@ public class SimulationManager {
     private BoardView myBoardView;
     private GameStats myGameStats;
     private GameDisplay myGameDisplay;
-    private GameButtons gameButtons;
+    private GameButtons myGameButtons;
     private int currentLevel;
     private boolean poweredUpTemp = false;
     private boolean invincibilityTemp = false;
@@ -40,7 +45,6 @@ public class SimulationManager {
         myGameStats = gameStats;
         currentLevel = 1;
         myGameDisplay = gameDisplay;
-        gameButtons = new GameButtons();
     }
 
 
@@ -130,22 +134,19 @@ public class SimulationManager {
         myBoardView.getInitialBoard().getChildren().remove(myBoardView.getMyGrid());
         myBoardView.resetBoardView();
         myController.loadNextLevel(myBoardView);
-        gameButtons.playPause();
+        myGameButtons.playPause();
     }
 
-//    private boolean checkWallAtCollision(){
-//
-//    }
 
     private boolean makePacmanInvincible(boolean lastInvincible){
         for (MovingPiece movingPiece : myBoardView.getCreatureList()){
             if (movingPiece==myBoardView.getUserPiece() && lastInvincible!=myController.getIsInvincible()){
                 if (myController.getIsInvincible()){
-                    Image invinciblePacman = new Image("ooga/view/resources/viewIcons/invinciblePacman.png");
+                    Image invinciblePacman = new Image(INVINCIBLE_PACMAN_PNG);
                     movingPiece.getMyCreature().setImage(invinciblePacman);
                 }
                 else{
-                    Image normalPacman = new Image("ooga/view/resources/viewIcons/pacmanImage.png");
+                    Image normalPacman = new Image(PACMAN_IMAGE_PNG);
                     movingPiece.getMyCreature().setImage(normalPacman);
                 }
             }
@@ -157,11 +158,11 @@ public class SimulationManager {
         for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
             if (lastPoweredUp!= myController.getIsPoweredUp() && movingPiece!=myBoardView.getUserPiece()){
                 if (myController.getIsPoweredUp()){
-                    Image blueGhost = new Image("ooga/view/resources/viewIcons/blueGhost.png");
+                    Image blueGhost = new Image(BLUE_GHOST_PNG);
                     movingPiece.getMyCreature().setImage(blueGhost);
                 }
                 else{
-                    Image normalGhost = new Image("ooga/view/resources/viewIcons/ghostImage.png");
+                    Image normalGhost = new Image(GHOST_IMAGE_PNG);
                     movingPiece.getMyCreature().setImage(normalGhost);
                 }
             }
@@ -214,8 +215,8 @@ public class SimulationManager {
         }
     }
 
-    public BoardView getMyBoardView() {
-        return myBoardView;
+    public void linkGameButtons(GameButtons gameButtons){
+        myGameButtons = gameButtons;
     }
 
 }
