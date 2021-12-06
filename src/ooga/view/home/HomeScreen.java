@@ -96,7 +96,7 @@ public class HomeScreen {
     return bottomHBox;
   }
 
-  public void setUserName(String userName) { myController.setUsername(userName); }
+  private void setUserName(String userName) { myController.setUsername(userName); }
 
   private void readFile(){
     FileChooser fileChooser = new FileChooser();
@@ -125,8 +125,8 @@ public class HomeScreen {
 
   private void startNewGame() {
     readFile();
-    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, "Default", myController.getLanguage(),  "Pacman", myController, myController.getBoardView());
-    gameDisplay.setMainDisplay("Pacman");
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight,  myController.getLanguage(), myController, myController.getBoardView());
+    gameDisplay.setMainDisplay();
   }
 
   private void startBoardBuilder() {
@@ -146,13 +146,12 @@ public class HomeScreen {
     highScoreView.showPopup(myStage, scorePopup);
   }
 
-  public void addScores(List<String[]> scores, VBox box) {
+  private void addScores(List<String[]> scores, VBox box) {
     for(String[] score: scores){
       String scoreText = String.format(SCORE_DIVIDER, score[0], score[1]);
       Label entry = myNodeBuilder.makeLabel(scoreText, "ScoreEntryID");
       box.getChildren().add(entry);
     }
-
   }
 
   /**
@@ -160,9 +159,9 @@ public class HomeScreen {
    */
   public void startNewGameForViewTests(String filePath){
     myController.initializeGame(filePath);
-    GameDisplay gd = new GameDisplay(myStage, myWidth, myHeight, "Default",
-        myController.getLanguage(),  "Pacman", myController, myController.getBoardView());
-    gd.setMainDisplay("Test");
+    GameDisplay gd = new GameDisplay(myStage, myWidth, myHeight,
+        myController.getLanguage(), myController, myController.getBoardView());
+    gd.setMainDisplay();
   }
 
 

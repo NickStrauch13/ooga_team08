@@ -27,7 +27,7 @@ public class GameDisplay {
     private SimulationManager mySimManager;
     private ResourceBundle myResources;
 
-    public GameDisplay(Stage stage, int width, int height, String viewMode, String language, String gameType, ViewerControllerInterface controller, BoardView boardView) {
+    public GameDisplay(Stage stage, int width, int height, String language, ViewerControllerInterface controller, BoardView boardView) {
         myController = controller;
         myBoardView = boardView;
         myGameStats = new GameStats(myController);
@@ -44,11 +44,9 @@ public class GameDisplay {
 
     /**
      * Sets the new scene which will show the actual pacman games
-     * @param title The title for the stage
      */
-    public void setMainDisplay(String title) {
+    public void setMainDisplay() {
         setupScene();
-        myStage.setTitle(title);
         myStage.setScene(myScene);
     }
 
