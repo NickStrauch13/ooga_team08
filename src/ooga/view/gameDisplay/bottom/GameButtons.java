@@ -12,6 +12,9 @@ import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.SimulationManager;
 import ooga.view.home.HomeScreen;
 
+/**
+ * The Class that creates the buttons on the game screen.
+ */
 public class GameButtons {
 
   private static final int SPACING = 5;
@@ -38,8 +41,6 @@ public class GameButtons {
   private SimulationManager mySimManager;
   private Button playPauseButton;
 
-  public GameButtons(){};
-
   public GameButtons(Stage stage, int width, int height, ViewerControllerInterface controller, SimulationManager simManager, String language){
     myController = controller;
     mySimManager = simManager;
@@ -51,7 +52,10 @@ public class GameButtons {
     myLanguage = language;
   }
 
-
+  /**
+   * Creates the HBox that holds the buttons on the game screen. (return home, play, reset)
+   * @return The HBox that holds the game buttons
+   */
   public Node makeButtonBox(){
     HBox buttonBox = new HBox();
     buttonBox.setSpacing(SPACING);
@@ -65,7 +69,9 @@ public class GameButtons {
     return buttonBox;
   }
 
-
+  /**
+   * Sends the user back to the home page.
+   */
   public void goHome(){
     mySimManager.playPause();
     mySimManager.stopAnimation();
@@ -73,6 +79,9 @@ public class GameButtons {
     homeScreen.setMainDisplay();
   }
 
+  /**
+   * Plays or pauses the game.
+   */
   public void playPause(){
     if(mySimManager.playPause()){
       playPauseButton.setGraphic(PAUSE_ICON);
@@ -84,6 +93,9 @@ public class GameButtons {
     }
   }
 
+  /**
+   * Restarts the user's current game.
+   */
   public void restartGame(){
     goHome();
     myController.restartGame();

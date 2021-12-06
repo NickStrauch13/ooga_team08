@@ -25,18 +25,14 @@ import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
 public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface {
 
-    // TODO: Constant values should be in a file probably - enum? -> settings.properties
     private final double ANIMATION_SPEED = 0.3;
     private final int HIGH_SCORE_VALS = 10;
-    private final int WIDTH = 1000; // TODO: properties file
-    private final int HEIGHT = 600;
+    private final int WIDTH = 1200;
+    private final int HEIGHT = 700;
     public final int CELL_SIZE = 25;
     private int cellSize;
     private static final String CSS_FILE_EXTENSION = "%s.css";
-
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
-
-    // TODO: Should be put into a properties file?
     public static final String TITLE = "Start Screen";
 
     // TODO: exceptions.properties
@@ -51,14 +47,11 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
     private static final int FIVE_HUNDRED = 500;
     private static int DEFAULT_CELL_SIZE = 24;
-
     private static final String[] BLANK_ENTRY = new String[]{"", "-1"};
-
     private Game myGame;
     private Board myBoard;
     private BoardView myBoardView;
