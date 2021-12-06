@@ -19,7 +19,10 @@ import javafx.scene.paint.Color;
 import ooga.controller.ViewerControllerInterface;
 
 public class UINodeFactory {
+
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
+  public static final String INPUT_FIELD = "input-field";
+  public static final String COLOR_PICKER = "color-picker";
   private static String DEFAULT_STYLESHEET;
   private ResourceBundle myResources;
   private static final double MAX_SIZE = 150.0;
@@ -49,7 +52,7 @@ public class UINodeFactory {
 
   public TextField makeInputField(String ID, Consumer<String> response, String initial) {
     TextField result = new TextField();
-    result.getStyleClass().add("input-field");
+    result.getStyleClass().add(INPUT_FIELD);
     result.setOnKeyReleased(e -> response.accept(result.getText()));
     result.setText(initial);
     result.setId(ID);
@@ -83,7 +86,7 @@ public class UINodeFactory {
   public ColorPicker makeColorPicker(String id, Consumer<Color> response, Color color) {
     ColorPicker cp = new ColorPicker(color);
     cp.setOnAction(e -> response.accept(cp.getValue()));
-    cp.getStyleClass().add("color-picker");
+    cp.getStyleClass().add(COLOR_PICKER);
     cp.setMaxWidth(MAX_SIZE);
     return (ColorPicker) setID(id, cp);
   }
