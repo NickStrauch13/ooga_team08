@@ -178,3 +178,14 @@
 .livesTextID, .levelTextID, .scoreTextID, .gameTypeID, .gameTypeTextID, .numLivesID, .numScoreID, .numLevelID, .inputTextID{
  -fx-text-fill: LabelFontColor;
 }
+
+.bottomRowFormatID{
+  -fx-font-size: 16px;
+  -fx-spacing: 20px;
+  -fx-padding: 10px;
+}
+
+.langBoxID{
+  -fx-min-width: 132px;
+  -fx-min-height: 20;
+}

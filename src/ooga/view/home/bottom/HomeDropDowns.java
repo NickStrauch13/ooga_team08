@@ -3,6 +3,7 @@ package ooga.view.home.bottom;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
@@ -34,7 +35,8 @@ public class HomeDropDowns {
     ChoiceBox languageBox = myNodeBuilder.makeChoiceBox("langBoxID", myResources.getString("English"),
         myResources.getString("Spanish"), myResources.getString("Italian"),myResources.getString("French"), myResources.getString("Esperanto"));
     languageBox.setOnAction(e->changeLanguage((String)languageBox.getSelectionModel().getSelectedItem()));
-    Node langVBox = myNodeBuilder.makeCol("langColFormatID", languageBox);
+    Label langLabel = myNodeBuilder.makeLabel(myResources.getString("LangLabel"), "LangLabelID");
+    Node langVBox = myNodeBuilder.makeCol("langColFormatID", langLabel, languageBox);
     Node bottomHBox = myNodeBuilder.makeRow("bottomRowFormatID", langVBox);
     return bottomHBox;
   }
