@@ -160,7 +160,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE")));
         int numOfRows = container.getMyNumOfRows();
         int numOfCols = container.getMyNumOfCols();
-
         gameObjectMap = createGameObjectMap();
         creatureMap = createCreatureMap();
         stringBoard = container.getMyStringBoard();
@@ -168,9 +167,8 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
-
         myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
-                cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+                cellSize, myGameSettings.getGeneralSettings());
 
     }
 

@@ -27,6 +27,10 @@ public class ExtralifePiece extends GamePiece{
     setMyPiece(makeNode());
   }
 
+  public String getMyClass() {
+    return this.getClass().getSimpleName();
+  }
+
   @Override
   protected Circle makeNode(){
     Circle dot = new Circle(dotRadius);

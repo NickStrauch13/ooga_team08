@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import ooga.controller.JSONBuilder;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.gameDisplay.center.BoardView;
@@ -29,9 +30,8 @@ public class BuilderButtons {
     private ArrayList<Node> objectList;
     private GamePiece selected;
     private BuilderDisplay myBuilderDisplay;
-    private  Collection<String> stringList;
+    private  Collection<String> classMap;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-
 
 
     public BuilderButtons(Stage stage, int width, int height,ViewerControllerInterface controller, BoardView boardView, BuilderDisplay builderDisplay){
@@ -44,7 +44,7 @@ public class BuilderButtons {
         myBoardView = boardView;
         objectList = new ArrayList<>();
         myBuilderDisplay = builderDisplay;
-        stringList = myController.createCreatureMap().values();
+        classMap = myController.createCreatureMap().values();
     }
 
     public HBox makeGameObjectsRow() {
@@ -60,10 +60,6 @@ public class BuilderButtons {
         return myHbox;
     }
 
-    public VBox makeCenterVBox(HBox top, HBox bottom) {
-        return myNodeBuilder.makeCol("statsHolder", top, bottom);
-    }
-
     public VBox makeSelectedVBox()  {
         Label selectedText = myNodeBuilder.makeLabel(myResources.getString("SelectedText"), "selectedTextID");
         selectedPane = new StackPane();
@@ -76,9 +72,13 @@ public class BuilderButtons {
     }
 
     public HBox makeBottomHBox() {
-        Button buildBoardButton = myNodeBuilder.makeButton("Build Board", null, "homeScreenButton", "buildBoardButton", e -> myBuilderDisplay.buildBoardFile());
+        Button buildBoardButton = myNodeBuilder.makeButton("Build Board", null, "homeScreenButton", "buildBoardButton", e -> myBuilderDisplay.compileBoard());
         VBox center = makeCenterVBox(makeCreatureRow(), makeGameObjectsRow());
         return myNodeBuilder.makeRow("statsHolder",makeSelectedVBox(), center, buildBoardButton);
+    }
+
+    public VBox makeCenterVBox(HBox top, HBox bottom) {
+        return myNodeBuilder.makeCol("statsHolder", top, bottom);
     }
 
     public StackPane createObjectDisplay(GamePiece gamePiece) {
@@ -92,7 +92,7 @@ public class BuilderButtons {
     private void changeSelected(GamePiece gamePiece) {
         selectedPane.getChildren().remove(1);
         GamePiece newGamePiece;
-        if (stringList.contains(getClassName(gamePiece))) {
+        if (classMap.contains(getClassName(gamePiece))) {
             newGamePiece = myBoardView.addBoardPiece(0,0,getClassName(gamePiece), null);
         }
         else {

@@ -105,6 +105,18 @@ public class BoardView {
     return gamePiece;
   }
 
+  public MovingPiece creatureReflection(String creatureName, Map<String,String> myCreatureValues){
+    MovingPiece creaturePiece = null;
+    try {
+      Class<?> clazz = Class.forName(creatureName);
+      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class,Map.class)
+              .newInstance(myController.getCellSize(),myCreatureValues);
+    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
+      e.printStackTrace(); //TODO improve? or is this already handled in controller
+    }
+    return creaturePiece;
+  }
+
   /**
    * Getter method for the javaFX group holding the board.
    * @return javaFX Group
@@ -140,7 +152,7 @@ public class BoardView {
    */
   public void removeNode(String nodeID){
     String removedID = "#" + nodeID;
-    Node nodeInGrid = myGrid.lookup(removedID);
+    Node nodeInGrid = getNodeInGrid(removedID);
     Node nodeInGroup = myGroup.lookup(removedID);
     if(myGrid.getChildren().remove(nodeInGrid)){
       myNodeList.remove(nodeInGrid);
@@ -175,16 +187,8 @@ public class BoardView {
     return myGrid;
   }
 
-  public MovingPiece creatureReflection(String creatureName, Map<String,String> myCreatureValues){
-    MovingPiece creaturePiece = null;
-    try {
-      Class<?> clazz = Class.forName(creatureName);
-      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class,Map.class)
-          .newInstance(myController.getCellSize(),myCreatureValues);
-    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
-      e.printStackTrace(); //TODO improve? or is this already handled in controller
-    }
-    return creaturePiece;
+  public Node getNodeInGrid(String removedID) {
+    return myGrid.lookup(removedID);
   }
 
 

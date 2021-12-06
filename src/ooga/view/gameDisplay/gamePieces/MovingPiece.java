@@ -87,6 +87,8 @@ public abstract class MovingPiece extends GamePiece{
     return null;
   }
 
+  public abstract String getMyClass();
+
   public ImageView getMyCreature() {
     return myCreature;
   }

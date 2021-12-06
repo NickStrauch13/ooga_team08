@@ -19,8 +19,6 @@
   ScoreEntryColor: white;
   ScoreExitColor: #9efffa;
   LabelFontColor: #444444;
-
-
 }
 
 .homeRowFormat {
@@ -178,4 +176,9 @@
 
 .GameOverRestartID {
     -fx-background-color: ResetButtonColor;
+}
+
+.gray-block {
+    -fx-background-color: #D3D3D3;
+    -fx-fill-color: #D3D3D3;
 }

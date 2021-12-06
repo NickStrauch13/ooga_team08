@@ -26,6 +26,10 @@ public class WallPiece extends GamePiece{
     setMyPiece(makeNode());
   }
 
+  public String getMyClass() {
+    return this.getClass().getSimpleName();
+  }
+
   @Override
   protected Rectangle makeNode(){
     Rectangle wall = new Rectangle(getCellSize(), getCellSize());

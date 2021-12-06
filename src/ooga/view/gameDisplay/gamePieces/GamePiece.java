@@ -42,6 +42,8 @@ public abstract class GamePiece{
     node.setId(generalID);
   }
 
+  public abstract String getMyClass();
+
   protected int getCellSize(){
     return myCellSize;
   }

@@ -28,6 +28,10 @@ public class ScoremultiplierPiece extends GamePiece{
     setMyPiece(makeNode());
   }
 
+  public String getMyClass() {
+    return this.getClass().getSimpleName();
+  }
+
   @Override
   protected Rectangle makeNode(){
     Rectangle rect = new Rectangle(edge,edge);
