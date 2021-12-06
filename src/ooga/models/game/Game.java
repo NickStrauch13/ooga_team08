@@ -44,6 +44,7 @@ public class Game implements PickupGame {
     public Game(Board board){
         myBoard=board;
     }
+
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize, Map<String, String> generalSettings){
         myBoard=board;
         pickUpsLeft = numPickUps;

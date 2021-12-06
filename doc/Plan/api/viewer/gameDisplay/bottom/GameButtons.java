@@ -29,5 +29,5 @@ public interface GameButtons {
     /**
      * Rests the game the displayed grid when starting a new level
      */
-    void reset();
+    void restartGame();
 }

@@ -1,45 +1,66 @@
-public interface InfoContainer {
+package ooga.controller;
 
+import java.util.List;
+import java.util.Map;
+
+public interface JSONContainer {
     /**
      * Check if the number of rows of the board is equal to the claimed size
+     *
      * @return Whether the row number of the board is equal to the claimed value
      */
-    public boolean checkNumOfRows();
+    boolean checkNumOfRows();
 
     /**
      * Check if the number of columns of the board is equal to the claimed value
+     *
      * @return Whether the column number of the board is equal to the claimed value
      */
-    public boolean checkNumOfCols();
+    boolean checkNumOfCols();
 
     /**
      * Access a 2-D list that contains status values for all cells on the board
+     *
      * @return the values of all cells in the board
      */
-    public List<List<Integer>> getMyInfo();
+    List<List<Integer>> getMyInfo();
+
+    /**
+     * Access a 2-D list that contains the string value of all cells on the board
+     *
+     * @return the string values of all cells in the board
+     */
+    List<List<String>> getMyStringBoard();
 
     /**
      * Access the number of rows of the board
+     *
      * @return the number of rows of the board
      */
-    public int getMyNumOfRows();
+    int getMyNumOfRows();
 
     /**
      * Access the number of columns of the board
+     *
      * @return the number of columns of the board
      */
-    public int getMyNumOfCols();
+    int getMyNumOfCols();
 
     /**
      * Returns the hashmap containing the stationary game objects
+     *
      * @return the map of game objects
      */
-    public Map<Integer, String> getMyConversionMap();
+    Map<Integer, String> getMyConversionMap();
 
     /**
      * Returns the hashmap containing the moving game objects "creatures"
+     *
      * @return the creature map
      */
-    public Map<Integer, String> getMyCreatureMap();
+    Map<Integer, String> getMyCreatureMap();
 
+    GameSettings getMyGameSettings();
+
+    boolean isMissingContent();
 }

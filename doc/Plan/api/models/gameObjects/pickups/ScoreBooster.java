@@ -1,8 +1,8 @@
-public interface scoreBooster extends pickup {
+public interface ScoreBooster extends Pickup {
 
     /**
      * handles interaction with user controlled object, called when intersecting with user
      */
-    void interact();
+    void interact(PickupGame pickupGame);
 
 }

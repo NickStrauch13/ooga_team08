@@ -47,11 +47,14 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-    private static final int MILLION = 1000000;
-    private static final int ONE_HUNDRED = 100;
-    private static final int FIVE_HUNDRED = 500;
-    private static int DEFAULT_CELL_SIZE = 24;
-    private static final String[] BLANK_ENTRY = new String[]{"", "-1"};
+
+    private final int MILLION = 1000000;
+    private final int ONE_HUNDRED = 100;
+    private final int FIVE_HUNDRED = 500;
+    private int DEFAULT_CELL_SIZE = 24;
+
+    private final String[] BLANK_ENTRY = new String[]{"", "-1"};
+
     private Game myGame;
     private Board myBoard;
     private BoardView myBoardView;
@@ -60,7 +63,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
     private JSONReader myReader;
-    private CSVReader myCSVReader;
+//    private CSVReader myCSVReader;
     private CSVWriter myCSVWriter;
     private Map<Integer, String> gameObjectMap;
     private List<List<String>> stringBoard;
@@ -79,6 +82,10 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String DEFAULT_USERNAME = "Guest";
     private final String SCORE_PATH = "./data/highscores/HighScores.csv";
 
+    // TODO: 1. move CSV stuff into a new class -> IOParser
+    //       2. createObjectMap
+    //       3. gameStatistics - need active methods
+    //       4. around 400 lines
 
     /**
      * The constructor of the game controller that starts and controls the overall communication between the frontend and backend
@@ -115,16 +122,15 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     Initialize the reader and writer for the CSV IO.
      */
     private void initializeCSVIO(){
-
         try {
             File scoreFile = new File(SCORE_PATH);
-            myCSVReader = new CSVReader(new FileReader(scoreFile));
+//            myCSVReader = new CSVReader(new FileReader(scoreFile));
             myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
         }
         catch (IOException e){
-            myErrorView.showError(IOE_EXCEPTION);
+            myErrorView.showError(IOE_EXCEPTION_CSV);
         }
     }
 
@@ -156,9 +162,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         } catch (ParseException e) {
             myErrorView.showError(PARSE_EXCEPTION);
         }
-//        catch (NullPointerException e) {
-//            myErrorView.showError(NULL_POINTER_EXCEPTION);
-//        }
     }
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -222,7 +225,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
     }
 
-    //TODO: hardcoded, need to refactored
+    //TODO: hardcoded, need to refactored - enum
     public Map<Integer,String> createGameObjectMap() {
          return Map.ofEntries(
                  Map.entry(0,"WALL"),
@@ -268,18 +271,22 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col++) {
                 String objectName = stringBoard.get(row).get(col);//TODO MAKE SURE NOT SETTINGS
-                if (!objectName.equals("EMPTY")) {
-                    if (gameObjectMap.containsValue(objectName)) {
-                        boardView.addBoardPiece(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
-                    } else {
-                        if (objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
-                            boardView.addUserCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
-                        } else if (objectName.equals("CPUGHOST")) {
-                            boardView.addCPUCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
-                        }
+                addPieces(gameObjectMap, boardView, row, col, objectName);
+            }
+        }
+    }
 
-                    }
+    private void addPieces(Map<Integer, String> gameObjectMap, BoardView boardView, int row, int col, String objectName) {
+        if (!objectName.equals("EMPTY")) {
+            if (gameObjectMap.containsValue(objectName)) {
+                boardView.addBoardPiece(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+            } else {
+                if (objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
+                    boardView.addUserCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                } else if (objectName.equals("CPUGHOST")) {
+                    boardView.addCPUCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
                 }
+
             }
         }
     }
@@ -408,6 +415,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      *
      * @param nameAndScore String array where the first element is the name and the second element is the score
      */
+    @Deprecated
     public void addScoreToCSV(String[] nameAndScore) {
         myCSVWriter.writeNext(nameAndScore);
         try {
@@ -420,11 +428,11 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      *
      * @return List of string arrays where each String array is a single username:score combo.
      */
+    @Deprecated
     public List<String[]> getScoreData() {
         List allScoreData = readCSV();
         return findTopTenScores(allScoreData);
     }
-
 
     private List<String[]> findTopTenScores(List<String[]> allScores) {
         List<String[]> topTen = new ArrayList<>();
@@ -457,6 +465,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * Returns the top score for the given username.
      * @return String value representing the integer score.
      */
+    @Deprecated
     public String getTopScoreForUser(){
         List<String[]> scoreData = readCSV();
         String score = Integer.toString(0);
@@ -468,10 +477,23 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return score;
     }
 
+    private List<String[]> readCSV(){
+        List<String[]> allCSVData = new ArrayList<>();
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
+            allCSVData = csvReader.readAll();
+        } catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION_CSV);
+        }
+        return allCSVData;
+    }
+
+    @Deprecated
     public int getLevel() {
         return myGame.getLevel();
     }
 
+    @Deprecated
     public boolean isGameOver() {
         return myGame.isGameOver();
     }
@@ -534,22 +556,27 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      *
      * @return Integer values representing time.
      */
+    @Deprecated
     public int getGameTime() {
         return myGame.getTime();
     }
 
+    @Deprecated
     public void addOneMillionPoints() {
         getGame().addScore(MILLION);
     }
 
+    @Deprecated
     public void addOneHundredPoints() {
         getGame().addScore(ONE_HUNDRED);
     }
 
+    @Deprecated
     public void addFiveHundredPoints() {
         getGame().addScore(FIVE_HUNDRED);
     }
 
+    @Deprecated
     public void resetGhosts() {
         List<CPUCreature> ghosts = getGame().getCPUs();
         for (CPUCreature ghost : ghosts) {
@@ -557,42 +584,52 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         }
     }
 
+    @Deprecated
     public void addLife() {
         getGame().addLives(1);
     }
 
+    @Deprecated
     public void goToNextLevel() {
         getGame().nextLevel();
     }
 
+    @Deprecated
     public void powerUp() {
         getGame().getUser().setPoweredUp(true);
     }
 
+    @Deprecated
     public void FreezeGhosts() {
         getGame().getCPUs().removeAll(getGame().getCPUs());
     }//TODO (billion, billion)
 
+    @Deprecated
     public void RemoveOneMillionPoints() {
         getGame().addScore(-MILLION);
     }
 
+    @Deprecated
     public void resetUserPosition() {
         getGame().getUser().die();
     }
 
+    @Deprecated
     public void loseLife() {
         getGame().addLives(-1);
     }
 
+    @Deprecated
     public void gameOver() {
         getGame().endGame();
     }
 
+    @Deprecated
     public int getTimer() {
         return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
     }
 
+    @Deprecated
     public String getGameType() {
         return myGameSettings.getGeneralSettings().get("GAME_TITLE");
     }
@@ -601,14 +638,4 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         cellSize = newSize;
     }
 
-    private List<String[]> readCSV(){
-        List<String[]> allCSVData = new ArrayList<>();
-        try {
-            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
-            allCSVData = csvReader.readAll();
-        } catch (IOException e) {
-            myErrorView.showError(IOE_EXCEPTION);
-        }
-        return allCSVData;
-    }
 }
