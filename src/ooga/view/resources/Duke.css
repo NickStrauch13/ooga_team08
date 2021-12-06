@@ -119,7 +119,7 @@
 .statsHolder {
     -fx-alignment: center;
     -fx-font-size: 22px;
-    -fx-spacing: 20px;
+    -fx-spacing: 40px;
     -fx-padding: 10px;
 }
 
@@ -153,8 +153,8 @@
   -fx-font-size: 20;
 }
 
-.livesTextID, .levelTextID, .scoreTextID, .gameTypeID, .gameTypeTextID, .numLivesID, .numScoreID, .numLevelID, .inputTextID{
- -fx-text-fill: LabelFontColor;
+.livesTextID, .levelTextID, .scoreTextID, .gameTypeID, .gameTypeTextID, .numLivesID, .numScoreID, .numLevelID, .inputTextID, .ProfileHeaderID, .ProfileScoreID{
+  -fx-text-fill: LabelFontColor;
 }
 
 .ScoreExitID{
