@@ -110,6 +110,11 @@ public class JSONReader {
                 Map.entry("WINLEVEL", winLevelSettings));
 
         // TODO: should all food items be a map?
+//        for (String keyString : mapList.keySet()) {
+//            if (mapList.get(keyString) == null) {
+//                return null;
+//            }
+//        }
         return new GameSettings(mapList);
     }
 
