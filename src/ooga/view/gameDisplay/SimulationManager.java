@@ -25,7 +25,7 @@ public class SimulationManager {
     private BoardView myBoardView;
     private GameStats myGameStats;
     private GameDisplay myGameDisplay;
-    private GameButtons gameButtons;
+    private GameButtons myGameButtons;
     private int currentLevel;
     private boolean poweredUpTemp = false;
     private boolean invincibilityTemp = false;
@@ -40,7 +40,6 @@ public class SimulationManager {
         myGameStats = gameStats;
         currentLevel = 1;
         myGameDisplay = gameDisplay;
-        gameButtons = new GameButtons();
     }
 
 
@@ -130,12 +129,9 @@ public class SimulationManager {
         myBoardView.getInitialBoard().getChildren().remove(myBoardView.getMyGrid());
         myBoardView.resetBoardView();
         myController.loadNextLevel(myBoardView);
-        gameButtons.playPause();
+        myGameButtons.playPause();
     }
 
-//    private boolean checkWallAtCollision(){
-//
-//    }
 
     private boolean makePacmanInvincible(boolean lastInvincible){
         for (MovingPiece movingPiece : myBoardView.getCreatureList()){
@@ -214,8 +210,8 @@ public class SimulationManager {
         }
     }
 
-    public BoardView getMyBoardView() {
-        return myBoardView;
+    public void linkGameButtons(GameButtons gameButtons){
+        myGameButtons = gameButtons;
     }
 
 }
