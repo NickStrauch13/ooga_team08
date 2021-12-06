@@ -81,7 +81,6 @@ public class Game implements PickupGame {
         POSSIBLE_FIRST_STEPS.add(-1);
         POSSIBLE_FIRST_STEPS.add(1);
         POSSIBLE_FIRST_STEPS.add(myBoard.getCols());
-        System.out.println(POSSIBLE_FIRST_STEPS);
     }
     private String randomDirection(){
         Random r = new Random();
