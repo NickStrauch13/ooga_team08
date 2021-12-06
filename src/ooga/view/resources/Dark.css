@@ -196,3 +196,9 @@
 .LangLabelID{
   -fx-text-fill: #fffcc8;
 }
+
+.PlayerLabelID{
+  -fx-font-size: 36px;
+  -fx-padding: 30px;
+  -fx-text-fill: #fffcc8;
+}

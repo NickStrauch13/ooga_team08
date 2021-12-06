@@ -190,3 +190,8 @@
   -fx-min-width: 132px;
   -fx-min-height: 20;
 }
+
+.PlayerLabelID{
+  -fx-font-size: 36px;
+  -fx-padding: 30px;
+}

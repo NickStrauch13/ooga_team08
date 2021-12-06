@@ -17,6 +17,7 @@ import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
+import ooga.view.home.HomeScreen;
 import ooga.view.popups.PopupFactory;
 
 public class HomeButtons {
@@ -28,6 +29,8 @@ public class HomeButtons {
   private static final String SCORE_DIVIDER = "%s-----------%s";
   private int myHeight;
   private int myWidth;
+  private String myUsername;
+  private Label myPlayerNameLabel;
 
   public HomeButtons(ViewerControllerInterface controller, Stage stage, int width, int height){
     myController = controller;
@@ -36,6 +39,7 @@ public class HomeButtons {
     myStage = stage;
     myWidth = width;
     myHeight = height;
+    myUsername = myResources.getString("Guest");
   }
 
   /**
@@ -50,11 +54,16 @@ public class HomeButtons {
     TextField userName = myNodeBuilder.makeInputField("userNameFieldID", e -> setUserName(e), "");
     Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton, buildBoardButton);//TODO buildBoardButton
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
-    return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
+    myPlayerNameLabel = myNodeBuilder.makeLabel(String.format(myResources.getString("PlayerLabel"), myUsername), "PlayerLabelID");
+    return myNodeBuilder.makeCol("homeRowFormat", row1, row2, myPlayerNameLabel);
   }
 
 
-  private void setUserName(String userName) { myController.setUsername(userName); }
+  private void setUserName(String userName) {
+    myUsername = userName;
+    myController.setUsername(userName);
+    myPlayerNameLabel.setText(String.format(myResources.getString("PlayerLabel"), myUsername));
+  }
 
   private void displayHighScores(){
     PopupFactory highScoreView = new PopupFactory(myController);
