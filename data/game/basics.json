@@ -46,7 +46,7 @@
     "IS_PICKUPS_A_VALID_WIN_CONDITION": "1"
   },
 
-  "PACMAN" : {
+  "PACMAN": {
     "USER_IMAGE": "ooga/view/resources/viewIcons/pacmanImage.png"
   },
 
