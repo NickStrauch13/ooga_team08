@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -21,9 +22,10 @@ import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.popups.PopupFactory;
 
+//TODO refactor into home button class and bottom dropdowns class
 public class HomeScreen {
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
-  private static String DEFAULT_STYLESHEET;
+  private static String defaultStylesheet;
   private BorderPane root;
   private int myWidth;
   private int myHeight;
@@ -41,8 +43,8 @@ public class HomeScreen {
     myHeight = height;
     myStage = stage;
     myScene = new Scene(root, myWidth, myHeight);
-    DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
-    myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
+    defaultStylesheet = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
+    myScene.getStylesheets().add(getClass().getResource(defaultStylesheet).toExternalForm());
     myNodeBuilder = new UINodeFactory(myController);
     myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
   }
@@ -54,7 +56,6 @@ public class HomeScreen {
 
   public Scene createScene(){
     setupScene();
-    //Add css styling?
     return myScene;
   }
 
@@ -69,9 +70,10 @@ public class HomeScreen {
   }
 
   private void setupScene() {
-    //Add code here to add more features to the home screen...
     Node row = homeButtons();
     root.setCenter(row);
+    Node bottomRow = homeDropDowns();
+    root.setBottom(bottomRow);
 }
 
   private Node homeButtons(){
@@ -83,6 +85,15 @@ public class HomeScreen {
     Node row1 = myNodeBuilder.makeRow("homeColFormat", highScoresButton, newGameButton, buildBoardButton);//TODO buildBoardButton
     Node row2 = myNodeBuilder.makeRow("homeColFormat", inputText, userName);
     return myNodeBuilder.makeCol("homeRowFormat", row1, row2);
+  }
+
+  private Node homeDropDowns(){
+    ChoiceBox languageBox = myNodeBuilder.makeChoiceBox("langBoxID", myResources.getString("English"),
+        myResources.getString("Spanish"), myResources.getString("Italian"),myResources.getString("French"), myResources.getString("Esperanto"));
+    languageBox.setOnAction(e->changeLanguage((String)languageBox.getSelectionModel().getSelectedItem()));
+    Node langVBox = myNodeBuilder.makeCol("langColFormatID", languageBox);
+    Node bottomHBox = myNodeBuilder.makeRow("bottomRowFormatID", langVBox);
+    return bottomHBox;
   }
 
   public void setUserName(String userName) { myController.setUsername(userName); }
@@ -104,6 +115,13 @@ public class HomeScreen {
 
     }
   }
+
+  private void changeLanguage(String newLang){
+    myController.setUILanguage(newLang);
+    HomeScreen newHome  = new HomeScreen(myStage, myWidth, myHeight, myController);
+    newHome.setMainDisplay("Pacman");
+  }
+
 
   private void startNewGame() {
     if (readFile()) {

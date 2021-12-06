@@ -83,6 +83,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private GameSettings myGameSettings;
     private final String SCORE_PATH = "./data/highscores/HighScores.csv";
     private String language;
+    private String UILanguage;
     private String cssFileName;
 
     /**
@@ -414,13 +415,25 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myGame.isGameOver();
     }
 
+    /**
+     * Returns the language of the game. If the user has input a language from the dropdown, it has priority.
+     * @return String representing language name.
+     */
     public String getLanguage() {
+        if(UILanguage != null){
+            return UILanguage;
+        }
         return language;
     }
 
     /**
+     * Sets the UI input language for the game.
+     * @param lang String representing the language name.
+     */
+    public void setUILanguage(String lang){UILanguage = lang;}
+
+    /**
      * Sets the username string for the game.
-     *
      * @param username String inputted by user on the home screen. Defaults to "Guest"
      */
     public void setUsername(String username) {
