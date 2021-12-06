@@ -200,9 +200,30 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private void extractInfoFromContainer(JSONContainer container) {
         myGameSettings = container.getMyGameSettings();
         stringBoard = container.getMyStringBoard();
-        language = myLanguages.getString(myGameSettings.getGeneralSettings().getOrDefault("LANGUAGE", DEFAULT_LANGUAGE).trim());
+        setupLanguage();
+        setupCSSFile();
+        setupCellSize();
+    }
+
+    private void setupCellSize() {
+        setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().getOrDefault("CELL_SIZE", String.valueOf(DEFAULT_CELL_SIZE)).trim()));
+        if (myGameSettings.getGeneralSettings().get("CELL_SIZE") == null) {
+            myErrorView.showError("Need to specify cell size!");
+        }
+    }
+
+    private void setupCSSFile() {
         cssFileName = myGameSettings.getGeneralSettings().getOrDefault("CSS_FILE_NAME", DEFAULT_CSS_FILE).trim();
-        setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE").trim()));
+        if (myGameSettings.getGeneralSettings().get("CSS_FILE_NAME") == null) {
+            myErrorView.showError("Need to specify CSS file path!");
+        }
+    }
+
+    private void setupLanguage() {
+        language = myLanguages.getString(myGameSettings.getGeneralSettings().getOrDefault("LANGUAGE", DEFAULT_LANGUAGE).trim());
+        if (myGameSettings.getGeneralSettings().get("LANGUAGE") == null) {
+            myErrorView.showError("Need a language in your setting!");
+        }
     }
 
     /*
@@ -215,10 +236,21 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
     }
 
+    //TODO: hardcoded, need to refactored
     public Map<Integer,String> createGameObjectMap() {
-         return Map.ofEntries(Map.entry(0,"WALL"),Map.entry(1,"SCOREBOOSTER"),Map.entry(2 ,"STATECHANGER"),
-                Map.entry(3 , "SCOREMULTIPLIER"),Map.entry( 6 , "PORTAL"),Map.entry( 7 , "GHOSTSLOWER"), Map.entry(8 , "EXTRALIFE"),
-                Map.entry( 9 , "EMPTY"), Map.entry( 10, "INVINCIBILITY"),Map.entry(11 , "SPEEDCUTTER"), Map.entry(12 , "WINLEVEL"));
+         return Map.ofEntries(
+                 Map.entry(0,"WALL"),
+                 Map.entry(1,"SCOREBOOSTER"),
+                 Map.entry(2 ,"STATECHANGER"),
+                 Map.entry(3 , "SCOREMULTIPLIER"),
+                 Map.entry( 6 , "PORTAL"),
+                 Map.entry( 7 , "GHOSTSLOWER"),
+                 Map.entry(8 , "EXTRALIFE"),
+                 Map.entry( 9 , "EMPTY"),
+                 Map.entry( 10, "INVINCIBILITY"),
+                 Map.entry(11 , "SPEEDCUTTER"),
+                 Map.entry(12 , "WINLEVEL")
+         );
 
     }
 
