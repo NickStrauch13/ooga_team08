@@ -15,6 +15,16 @@ import ooga.view.popups.PopupFactory;
 import java.util.ResourceBundle;
 
 public class GameDisplay {
+
+    public static final String GAME_OVER_POPUP = "GameOverPopup";
+    public static final String GO_HOME_BUTTON = "GoHomeButton";
+    public static final String GAME_OVER_HOME = "GameOverHome";
+    public static final String GAME_OVER_HOME_ID = "GameOverHomeID";
+    public static final String GAME_OVER_RESTART_ID = "GameOverRestartID";
+    public static final String RESET = "Reset";
+    public static final String HOME_ROW_FORMAT = "homeRowFormat";
+    public static final String EXIT_INSTRUCTIONS = "ExitInstructions";
+    public static final String SCORE_EXIT_ID = "ScoreExitID";
     private Stage myStage;
     private Scene myScene;
     private BorderPane root;
@@ -54,12 +64,14 @@ public class GameDisplay {
     public void showGameOverPopup() {
         UINodeFactory UINodeFactory = new UINodeFactory(myController);
         PopupFactory myPopupFactory = new PopupFactory(myController);
-        Popup gameOverPopup = myPopupFactory.makePopup("GameOverPopup");
-        Node popupHome = UINodeFactory.makeButton(myResources.getString("GoHomeButton"), null, "GameOverHome","GameOverHomeID", e -> myGameButtons.goHome());
-        Node popupRestart = UINodeFactory.makeButton(myResources.getString("Reset"), null, "GameOverHome","GameOverRestartID", e -> myGameButtons.restartGame());
-        HBox buttonRow =(HBox) UINodeFactory.makeRow("homeRowFormat", popupHome, popupRestart);
+        Popup gameOverPopup = myPopupFactory.makePopup(GAME_OVER_POPUP);
+        Node popupHome = UINodeFactory.makeButton(myResources.getString(GO_HOME_BUTTON), null,
+            GAME_OVER_HOME, GAME_OVER_HOME_ID, e -> myGameButtons.goHome());
+        Node popupRestart = UINodeFactory.makeButton(myResources.getString(RESET), null,
+            GAME_OVER_HOME, GAME_OVER_RESTART_ID, e -> myGameButtons.restartGame());
+        HBox buttonRow =(HBox) UINodeFactory.makeRow(HOME_ROW_FORMAT, popupHome, popupRestart);
         myPopupFactory.getMyVBox().getChildren().addAll(buttonRow);
-        myPopupFactory.addExitInfo("ExitInstructions", "ScoreExitID");
+        myPopupFactory.addExitInfo(EXIT_INSTRUCTIONS, SCORE_EXIT_ID);
         myPopupFactory.showPopup(myStage, gameOverPopup);
     }
 
