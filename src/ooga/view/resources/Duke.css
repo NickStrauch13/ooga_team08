@@ -209,3 +209,11 @@
   -fx-padding: 20px;
   -fx-text-fill: #fffcc8;
 }
+
+.GameSelectID{
+  -fx-text-fill: #fffcc8;
+}
+.gameSelectBoxID{
+  -fx-min-width: 200px;
+  -fx-min-height: 20;
+}

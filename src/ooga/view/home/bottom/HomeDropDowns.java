@@ -1,5 +1,6 @@
 package ooga.view.home.bottom;
 
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
@@ -7,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
+import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.home.HomeScreen;
 
 public class HomeDropDowns {
@@ -17,6 +19,7 @@ public class HomeDropDowns {
   private Stage myStage;
   private int myHeight;
   private int myWidth;
+  private static final String GAME_FILE_PATH = "./data/game/%s.json";
 
   public HomeDropDowns(ViewerControllerInterface controller, Stage stage, int width, int height){
     myController = controller;
@@ -34,7 +37,8 @@ public class HomeDropDowns {
   public Node makeDropDowns(){
     Node langVBox = makeLangVBox();
     Node cssModeVBox = makeCSSVBox();
-    Node bottomHBox = myNodeBuilder.makeRow("bottomRowFormatID", langVBox, cssModeVBox);
+    Node gameSelectVBox = makeGameSelectBox();
+    Node bottomHBox = myNodeBuilder.makeRow("bottomRowFormatID", langVBox, cssModeVBox, gameSelectVBox);
     return bottomHBox;
   }
 
@@ -55,6 +59,14 @@ public class HomeDropDowns {
     return cssVBox;
   }
 
+  private Node makeGameSelectBox(){
+    ChoiceBox gameBox = myNodeBuilder.makeChoiceBox("gameSelectBoxID", "Pacman", "mrsPacman", "PacmanExtreme", "MazeGame", "EasyMaze"); //TODO
+    gameBox.setOnAction((e->loadGame((String)gameBox.getSelectionModel().getSelectedItem())));
+    Label gameSelectLabel = myNodeBuilder.makeLabel(myResources.getString("gameSelectText"), "GameSelectID");
+    Node gameSelectVBox = myNodeBuilder.makeCol("gameSelectorBoxID",gameSelectLabel, gameBox);
+    return gameSelectVBox;
+  }
+
   private void changeLanguage(String newLang){
     myController.setUILanguage(newLang);
     HomeScreen newHome  = new HomeScreen(myStage, myWidth, myHeight, myController);
@@ -66,5 +78,12 @@ public class HomeDropDowns {
     HomeScreen newCSSHome = new HomeScreen(myStage, myWidth, myHeight, myController);
     newCSSHome.setMainDisplay();
   }
+
+  private void loadGame(String gameFileName){
+    myController.initializeGame(String.format(GAME_FILE_PATH, gameFileName));
+    GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, myController.getLanguage(), myController, myController.getBoardView());
+    gameDisplay.setMainDisplay();
+  }
+
 
 }
