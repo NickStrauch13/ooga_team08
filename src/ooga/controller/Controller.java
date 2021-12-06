@@ -34,12 +34,10 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private int cellSize;
     private static final String CSS_FILE_EXTENSION = "%s.css";
 
-
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
 
     // TODO: Should be put into a properties file?
     public static final String TITLE = "Start Screen";
-    public static final String gameType = "Pacman"; //TODO update gameType variable
 
     // TODO: exceptions.properties
     // TODO: refactor into viewController and boardController if I have time
@@ -53,8 +51,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-    //    private final String EXCEPTION = "Something is wrong here!";
-
 
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
@@ -67,7 +63,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private Board myBoard;
     private BoardView myBoardView;
     private double animationSpeed;
-    private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
@@ -618,6 +613,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     public void setCellSize(int newSize) {
         cellSize = newSize;
     }
+
     private List<String[]> readCSV(){
         List<String[]> allCSVData = new ArrayList<>();
         try {
@@ -628,5 +624,4 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         }
         return allCSVData;
     }
-
 }

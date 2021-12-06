@@ -39,7 +39,6 @@ public class JSONReader {
     private final String WRONG_BOARD_DIMENSION = "The dimension of the board does not match.";
     private final String WRONG_COL_DIMENSION = "The column dimension of the board does not match.";
 
-
 //    private final List<String> FOOD_PARAMETERS = List.of("POWERUP_COLOR", "POWERUP_SIZE");
     private final List<String> GAME_SETTINGS = List.of(
             "SETTINGS", "PACMAN",
@@ -99,7 +98,6 @@ public class JSONReader {
      * @throws IOException
      * @throws ParseException
      */
-    //TODO: add deprecated methods
     public JSONContainer readJSONConfig() {
         JSONObject jsonData = extractJSONObject();
 
@@ -130,7 +128,7 @@ public class JSONReader {
             mapList.put(parameter, getSettingMap(jsonData, parameter));
         }
 
-        if (isMissingSettings(mapList)) return null;
+//        if (isMissingSettings(mapList)) return null;
 
         return new GameSettings(mapList);
     }
@@ -144,9 +142,9 @@ public class JSONReader {
                 myErrorView.showError(MISSING_CONTENT);
                 return true;
             }
-            else { // if all elements required in the mapList
-                return isMissingItems(mapList, keyString);
-            }
+//            else { // if all elements required in the mapList
+//                return isMissingItems(mapList, keyString);
+//            }
         }
         return false;
     }
@@ -204,7 +202,7 @@ public class JSONReader {
                 stringBoard.addAll(Collections.singleton(innerList));
             }
 
-            if (isMissingBoardStrings(stringBoard, numOfRows, numOfCols)) return null;
+//            if (isMissingBoardStrings(stringBoard, numOfRows, numOfCols)) return null;
             return stringBoard;
         }
         catch (IndexOutOfBoundsException e) {myErrorView.showError(INDEX_OUT_BOUNDS_EXCEPTION);}
@@ -220,7 +218,8 @@ public class JSONReader {
             myErrorView.showError(WRONG_BOARD_DIMENSION);
             return true;
         }
-        return isColMismatch(stringBoard, numOfCols);
+//        return isColMismatch(stringBoard, numOfCols);
+        return false;
     }
 
     /*
@@ -250,7 +249,7 @@ public class JSONReader {
                 String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
                 conversionMap.put(key, stringValue);
             }
-            if (isMissingValues(conversionMap, objectType)) return null;
+//            if (isMissingValues(conversionMap, objectType)) return null;
             return conversionMap;
         }
         catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);}
@@ -268,11 +267,11 @@ public class JSONReader {
                 myErrorView.showError(MISSING_INDEX);
                 return true;
             }
-            else {
-                Set<Integer> indexSet = conversionMap.keySet();
-                List<Integer> objectIndices = OBJECT_PARAMETERS.get(objectType);
-                return isMissingIndices(indexSet, objectIndices);
-            }
+//            else {
+//                Set<Integer> indexSet = conversionMap.keySet();
+//                List<Integer> objectIndices = OBJECT_PARAMETERS.get(objectType);
+//                return isMissingIndices(indexSet, objectIndices);
+//            }
         }
         return false;
     }
@@ -300,7 +299,7 @@ public class JSONReader {
         try {
             JSONArray JSONBoard = (JSONArray) jsonData.get("BOARD");
             updateBoardInfo(boardInfo, JSONBoard);
-            if (isMissingBoardInfo(boardInfo, numOfRows, numOfCols)) return null;
+//            if (isMissingBoardInfo(boardInfo, numOfRows, numOfCols)) return null;
             return boardInfo;
         }
         catch (NullPointerException e) { myErrorView.showError(NULL_POINTER_EXCEPTION_BOARD);}
@@ -333,8 +332,10 @@ public class JSONReader {
             myErrorView.showError(WRONG_BOARD_DIMENSION);
             return true;
         }
-        return isBoardColMismatches(boardInfo, numOfCols);
+//        return isBoardColMismatches(boardInfo, numOfCols);
+        return false;
     }
+
 
     /*
     Check if the dimension for columns matches
