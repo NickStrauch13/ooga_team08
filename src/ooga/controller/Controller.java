@@ -3,6 +3,7 @@ package ooga.controller;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import javafx.stage.Stage;
@@ -102,6 +103,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         cssFileName = DEFAULT_CSS_FILE;
+        myUsername = DEFAULT_USERNAME;
+        File scoreFile = new File(SCORE_PATH);
+        myCSVReader = new CSVReader(new FileReader(scoreFile));
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
         language = myLanguages.getString(DEFAULT_LANGUAGE);
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
@@ -112,12 +116,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         myStage.show();
         animationSpeed = ANIMATION_SPEED;
         myErrorView = new ErrorView(DEFAULT_LANGUAGE);
-        File scoreFile = new File(SCORE_PATH);
-        myCSVReader = new CSVReader(new FileReader(scoreFile));
         myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
                 CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                 CSVWriter.DEFAULT_LINE_END);
-        myUsername = DEFAULT_USERNAME;
         cellSize = DEFAULT_CELL_SIZE;
     }
 
@@ -371,13 +372,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * @return List of string arrays where each String array is a single username:score combo.
      */
     public List<String[]> getScoreData() {
-        List allScoreData = new ArrayList();
-        try {
-            allScoreData = myCSVReader.readAll();
-        } catch (IOException e) {
-            //TODO
-            myErrorView.showError(IOE_EXCEPTION);
-        }
+        List allScoreData = readCSV();
         return findTopTenScores(allScoreData);
     }
 
@@ -407,6 +402,21 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         while (topTen.size() > HIGH_SCORE_VALS) {
             topTen.remove(topTen.size() - 1);
         }
+    }
+
+    /**
+     * Returns the top score for the given username.
+     * @return String value representing the integer score.
+     */
+    public String getTopScoreForUser(){
+        List<String[]> scoreData = readCSV();
+        String score = Integer.toString(0);
+        for(int i=0; i<scoreData.size(); i++){
+            if(Integer.parseInt(scoreData.get(i)[1]) > Integer.parseInt(score) && myUsername.equals(scoreData.get(i)[0])){
+                score = scoreData.get(i)[1];
+            }
+        }
+        return score;
     }
 
     public int getLevel() {
@@ -540,6 +550,17 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     public void setCellSize(int newSize) {
         cellSize = newSize;
+    }
+
+    private List<String[]> readCSV(){
+        List<String[]> allCSVData = new ArrayList<>();
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
+            allCSVData = csvReader.readAll();
+        } catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION);
+        }
+        return allCSVData;
     }
 
 

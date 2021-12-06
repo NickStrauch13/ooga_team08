@@ -46,5 +46,6 @@ public interface ViewerControllerInterface {
     Map<Integer,String> createCreatureMap();
     void setUILanguage(String lang);
     void setViewMode(String cssName);
+    public String getTopScoreForUser();
 
 }

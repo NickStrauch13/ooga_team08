@@ -202,3 +202,9 @@
   -fx-padding: 30px;
   -fx-text-fill: #fffcc8;
 }
+
+.PlayerTopScoreID{
+  -fx-font-size: 28px;
+  -fx-padding: 20px;
+  -fx-text-fill: #fffcc8;
+}
