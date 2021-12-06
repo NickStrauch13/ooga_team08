@@ -1,5 +1,6 @@
 package ooga.view.home.center;
 
+import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
@@ -7,11 +8,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
+import ooga.view.boardBuilder.BuilderDisplay;
 import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.popups.PopupFactory;
 
@@ -34,7 +38,11 @@ public class HomeButtons {
     myHeight = height;
   }
 
-  private Node makeCenterButtons(){
+  /**
+   * Creates the buttons for the home screen display.
+   * @return VBox containing all the button nodes.
+   */
+  public Node makeCenterButtons(){
     Button highScoresButton = myNodeBuilder.makeButton(myResources.getString("HighScores"),null, "homeScreenButton","highScoresButton",e -> displayHighScores());
     Button newGameButton = myNodeBuilder.makeButton(myResources.getString("NewGame"), null,"homeScreenButton","newGameButton",e -> startNewGame());
     Button buildBoardButton = myNodeBuilder.makeButton(myResources.getString("BuildBoard"), null,"homeScreenButton","buildBoardButton",e -> startBoardBuilder());
@@ -72,5 +80,28 @@ public class HomeButtons {
     readFile();
     GameDisplay gameDisplay = new GameDisplay(myStage, myWidth, myHeight, myController.getLanguage(), myController, myController.getBoardView());
     gameDisplay.setMainDisplay();
+  }
+
+  private boolean readFile(){
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("LoadFile");
+    fileChooser.getExtensionFilters().addAll(new ExtensionFilter("JSON", "*.json"));
+    File selectedFile = fileChooser.showOpenDialog(myStage);
+    if (selectedFile == null) {
+      return false;
+    }
+    else {
+      myController.initializeGame(selectedFile.getPath());
+      if (myController.getBoardView() == null) {
+        return false;
+      }
+      return true;
+
+    }
+  }
+
+  private void startBoardBuilder() {
+    BuilderDisplay builderDisplay = new BuilderDisplay(myStage, myWidth, myHeight, myController);
+    builderDisplay.setMainDisplay("Board Builder");
   }
 }

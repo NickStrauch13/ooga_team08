@@ -35,7 +35,7 @@ public class Game implements PickupGame {
     private List<CPUCreature> activeCPUCreatures;
     private int myCellSize;
     private int powerupEndtime=-1;
-    private double CPUSpeed = 2;
+    private double CPUSpeed = 1;
     private UserCreature myUserControlled;
     private Set<String> visitedNodes = new HashSet<>();
     private Queue<String> queue = new ArrayDeque<String>();

@@ -58,7 +58,7 @@ public class GameButtons {
     mySimManager.playPause();
     mySimManager.stopAnimation();
     HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight, myController);
-    homeScreen.setMainDisplay("Home");
+    homeScreen.setMainDisplay();
   }
 
   public void playPause(){
