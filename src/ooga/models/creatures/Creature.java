@@ -2,9 +2,7 @@ package ooga.models.creatures;
 
 public abstract class Creature {
 
-
-
-    double standardSpeed=1;
+    private static final double standardSpeed=1;
     double speed=standardSpeed;
     int myXpos;
     int myYpos;
@@ -47,6 +45,7 @@ public abstract class Creature {
 
     public abstract void moveTo(int newXPos,int newYPos);
     public abstract void die();
+
     public int getXpos() {
        return myXpos;
     }

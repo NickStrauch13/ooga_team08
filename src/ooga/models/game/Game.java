@@ -133,7 +133,7 @@ public class Game implements PickupGame {
     }
 
     private void preyWinLoss(){
-        if (checkPickUps()&& isPickups) {
+        if (checkPickUps() && isPickups) {
             nextLevel();
             return;
         }
