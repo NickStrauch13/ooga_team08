@@ -45,6 +45,6 @@ public interface ViewerControllerInterface {
     Map<Integer,String> createGameObjectMap();
     Map<Integer,String> createCreatureMap();
     void setUILanguage(String lang);
-
+    void setViewMode(String cssName);
 
 }

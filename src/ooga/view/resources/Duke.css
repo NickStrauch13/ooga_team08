@@ -183,9 +183,17 @@
   -fx-font-size: 16px;
   -fx-spacing: 20px;
   -fx-padding: 10px;
+  -fx-text-fill: #fffcc8;
 }
 
 .langBoxID{
   -fx-min-width: 132px;
   -fx-min-height: 20;
+}
+
+.cssModeLabelID{
+  -fx-text-fill: #fffcc8;
+}
+.LangLabelID{
+  -fx-text-fill: #fffcc8;
 }

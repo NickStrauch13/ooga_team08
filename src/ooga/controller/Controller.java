@@ -32,6 +32,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final int HEIGHT = 600;
     public final int CELL_SIZE = 25;
     private int cellSize;
+    private static final String CSS_FILE_EXTENSION = "%s.css";
 
 
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
@@ -85,6 +86,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private String language;
     private String UILanguage;
     private String cssFileName;
+    private String cssUIFileName;
 
     /**
      * The constructor of the game controller that starts and controls the overall communication between the frontend and backend
@@ -449,8 +451,23 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return myUsername;
     }
 
+    /**
+     * Returns the CSS file being used. Priority returns the UI choice box selection css mode over data file css
+     * @return the CSS file path as a string.
+     */
     public String getViewMode() {
+        if(cssUIFileName != null){
+            return cssUIFileName;
+        }
         return cssFileName;
+    }
+
+    /**
+     * Sets the CSS file being used.
+     * @param cssName CSS file name WITHOUT .css on the end.
+     */
+    public void setViewMode(String cssName){
+        cssUIFileName = String.format(CSS_FILE_EXTENSION, cssName);
     }
 
     /**
