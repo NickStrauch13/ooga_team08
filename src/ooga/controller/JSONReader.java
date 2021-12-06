@@ -64,18 +64,19 @@ public class JSONReader {
     public JSONContainer readJSONConfig() {
         JSONObject jsonData = extractJSONObject();
 
+        // if cannot extract jsonData file
+        if (jsonData == null){
+            return null;
+        }
+
         int numOfRows = getDimension(jsonData, "ROW_NUMBER");
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
-//        String gameType = (String) jsonData.get("GAME_TYPE");
-//        String language = (String) jsonData.get("LANGUAGE");
 
         List<List<Integer>> boardInfo = getBoardInfo(jsonData);
 
-//        Map<Integer, String> conversionMap = getConversionMap(jsonData);
         Map<Integer, String> conversionMap = getConversionMap(jsonData, "OBJECT_MAP");
         Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
         List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap);
-
         GameSettings gameSettings = getGameSettings(jsonData);
 
         return new JSONContainer(numOfRows, numOfCols, boardInfo, stringBoard, conversionMap, creatureMap, gameSettings);
