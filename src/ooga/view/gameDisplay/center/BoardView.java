@@ -108,6 +108,7 @@ public class BoardView {
     return gamePiece;
   }
 
+
   /**
    * Getter method for the javaFX group holding the board.
    * @return javaFX Group
@@ -180,15 +181,17 @@ public class BoardView {
     return myGrid;
   }
 
-  private MovingPiece creatureReflection(String creatureName, Map<String,String> myCreatureValues){
+
+  private MovingPiece creatureReflection(String creatureName, Map<String,String> myCreatureValues) {
     MovingPiece creaturePiece = null;
     try {
       Class<?> clazz = Class.forName(creatureName);
-      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class,Map.class)
-          .newInstance(myController.getCellSize(),myCreatureValues);
-    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
+      creaturePiece = (MovingPiece) clazz.getDeclaredConstructor(Integer.class, Map.class)
+          .newInstance(myController.getCellSize(), myCreatureValues);
+    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
       e.printStackTrace(); //TODO improve? or is this already handled in controller
     }
     return creaturePiece;
   }
+
 }

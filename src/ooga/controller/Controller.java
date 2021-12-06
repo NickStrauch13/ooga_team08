@@ -2,12 +2,12 @@ package ooga.controller;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-
 import java.io.*;
-
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javafx.stage.Stage;
 import java.lang.Integer;
-
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.game.Board;
 import ooga.models.game.CollisionManager;
@@ -163,7 +163,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         JSONContainer container = myReader.readJSONConfig();
-
         if (container != null && !container.isMissingContent()) {
             // TODO: if exception being thrown, shouldn't run the following code
             int numOfRows = container.getMyNumOfRows();

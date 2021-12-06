@@ -25,22 +25,8 @@ public class Board {
         return portalLocations;
     }
 
-    public void setPortalsGone(){
-        portalLocations = null;
-    }
-
     public ArrayList<int[]> getWallLocations() {
         return wallLocations;
-    }
-
-    public void removePortal(int[] portalLocation){
-        int index=0;
-        for (int[] portal: portalLocations){
-            if (Arrays.equals(portalLocation,portal)){
-                index = portalLocations.indexOf(portal);
-            }
-        }
-        portalLocations.remove(index);
     }
 
     public Board(int numRows, int numCols){
