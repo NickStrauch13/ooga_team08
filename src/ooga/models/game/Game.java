@@ -411,6 +411,7 @@ public class Game implements PickupGame {
         }
         myUserControlled.die();
         lives=3;
+        score=0;
         pickUpsLeft = startingPickUps;
         gameOver=false;
     }
