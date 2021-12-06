@@ -51,7 +51,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-
+    private final String DEFAULT_TITLE = "Game";
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
     private static final int FIVE_HUNDRED = 500;
@@ -200,23 +200,14 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     private void setupCellSize() {
         setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().getOrDefault("CELL_SIZE", String.valueOf(DEFAULT_CELL_SIZE)).trim()));
-        if (myGameSettings.getGeneralSettings().get("CELL_SIZE") == null) {
-            myErrorView.showError("Need to specify cell size!");
-        }
     }
 
     private void setupCSSFile() {
         cssFileName = myGameSettings.getGeneralSettings().getOrDefault("CSS_FILE_NAME", DEFAULT_CSS_FILE).trim();
-        if (myGameSettings.getGeneralSettings().get("CSS_FILE_NAME") == null) {
-            myErrorView.showError("Need to specify CSS file path!");
-        }
     }
 
     private void setupLanguage() {
         language = myLanguages.getString(myGameSettings.getGeneralSettings().getOrDefault("LANGUAGE", DEFAULT_LANGUAGE).trim());
-        if (myGameSettings.getGeneralSettings().get("LANGUAGE") == null) {
-            myErrorView.showError("Need a language in your setting!");
-        }
     }
 
     /*
@@ -600,11 +591,17 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     }
 
     public int getTimer() {
-        return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
+        if (myGameSettings.getGeneralSettings().get("TIMER") != null) {
+            return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
+        }
+        return -1;
     }
 
     public String getGameType() {
-        return myGameSettings.getGeneralSettings().get("GAME_TITLE");
+        if (myGameSettings.getGeneralSettings().get("GAME_TITLE") != null){
+            return myGameSettings.getGeneralSettings().get("GAME_TITLE");
+        }
+        return DEFAULT_TITLE;
     }
 
     public void setCellSize(int newSize) {

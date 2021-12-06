@@ -65,13 +65,11 @@ public class Game implements PickupGame {
         boardXSize=cellSize*board.getCols();
         boardYSize=cellSize*board.getRows();
         gameSettings = generalSettings;
-        timer=Integer.parseInt(gameSettings.get("TIMER"));
-        lives = Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
-        isHard = gameSettings.get("HARD").equals("1");
+        setTimer();
+        setLives();
+        setDifficulty();
+        setIsPredator();
         startTime=timer;
-        lives=Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
         adjustGhostCollisions();
         createPossibleSteps();
     }
@@ -480,6 +478,42 @@ public class Game implements PickupGame {
     public void wallStateChange(boolean toSet){
         for (int[] wall:getWallLocations()){
             myBoard.setWallatCell(wall,toSet);
+        }
+    }
+
+    private void setIsPredator() {
+        if (gameSettings.get("USER_IS_PREDATOR") != null) {
+            isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
+        }
+        else {
+            isPredator = false;
+        }
+    }
+
+    private void setDifficulty() {
+        if (gameSettings.get("HARD") != null) {
+            isHard = gameSettings.get("HARD").equals("1");
+        }
+        else {
+            isHard = true;
+        }
+    }
+
+    private void setLives() {
+        if (gameSettings.get("LIVES") != null) {
+            lives = Integer.parseInt(gameSettings.get("LIVES"));
+        }
+        else {
+            lives = 3;
+        }
+    }
+
+    private void setTimer() {
+        if (gameSettings.get("TIMER") != null) {
+            timer=Integer.parseInt(gameSettings.get("TIMER"));
+        }
+        else {
+            timer = -1;
         }
     }
 }

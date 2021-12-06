@@ -103,8 +103,7 @@ public class BoardView {
         gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class, Map.class)
                 .newInstance(myController.getCellSize(), myObjectValues);
     }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
-      //TODO I think this is already checked in the controller parsing of the json file..
-      e.printStackTrace(); //TODO make better
+      e.printStackTrace();
     }
     return gamePiece;
   }
