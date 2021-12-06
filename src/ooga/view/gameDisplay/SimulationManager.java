@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import ooga.controller.CheatController;
 import ooga.controller.ViewerControllerInterface;
+import ooga.view.gameDisplay.bottom.GameButtons;
 import ooga.view.gameDisplay.center.BoardView;
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 import ooga.view.gameDisplay.keyActions.KeyViewAction;
@@ -24,6 +25,7 @@ public class SimulationManager {
     private BoardView myBoardView;
     private GameStats myGameStats;
     private GameDisplay myGameDisplay;
+    private GameButtons gameButtons;
     private int currentLevel;
     private boolean poweredUpTemp = false;
     private boolean invincibilityTemp = false;
@@ -38,6 +40,7 @@ public class SimulationManager {
         myGameStats = gameStats;
         currentLevel = 1;
         myGameDisplay = gameDisplay;
+        gameButtons = new GameButtons();
     }
 
 
@@ -77,33 +80,47 @@ public class SimulationManager {
         myAnimation = null;
     }
 
-    private void step() { //TODO REFACTOR THIS METHOD :(
+    private void step() {
         if(myAnimation != null && myAnimation.getStatus() != Status.PAUSED) {
            myController.step(currentDirection);
-           if (myController.getLevel() > currentLevel) {
-               currentLevel = myController.getLevel();
-               myAnimationRate += currentLevel/2.0;
-               myAnimation.setRate(myAnimationRate);
-               resetBoardView();
-               stopAnimation();
-               updateStats();
-               return;
-           }
-           if (myController.isGameOver()) {
-               myController.addScoreToCSV(new String[]{myController.getUsername(),Integer.toString(myController.getScore())});
-               myGameDisplay.showGameOverPopup();
-               stopAnimation();
-               return;
-           }
+            if (checkLevel()) {return;}
+            if (checkGameState()) {return;}
             updateMovingPiecePositions();
-            String nodeCollision = myBoardView.getUserCollision();
-            if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
-                myBoardView.removeNode(nodeCollision);
-            }
+            dealWithCollisions();
             poweredUpTemp = powerUpGhosts(poweredUpTemp);
             invincibilityTemp = makePacmanInvincible(invincibilityTemp);
             updateStats();
         }
+    }
+
+    private void dealWithCollisions() {
+        String nodeCollision = myBoardView.getUserCollision();
+        if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
+            myBoardView.removeNode(nodeCollision);
+        }
+    }
+
+    private boolean checkGameState() {
+        if (myController.isGameOver()) {
+           myController.addScoreToCSV(new String[]{myController.getUsername(),Integer.toString(myController.getScore())});
+           myGameDisplay.showGameOverPopup();
+           stopAnimation();
+            return true;
+       }
+        return false;
+    }
+
+    private boolean checkLevel() {
+        if (myController.getLevel() > currentLevel) {
+            currentLevel = myController.getLevel();
+            myAnimationRate += currentLevel/2.0;
+            myAnimation.setRate(myAnimationRate);
+            resetBoardView();
+            stopAnimation();
+            updateStats();
+            return true;
+        }
+        return false;
     }
 
     private void resetBoardView() {
@@ -113,6 +130,7 @@ public class SimulationManager {
         myBoardView.getInitialBoard().getChildren().remove(myBoardView.getMyGrid());
         myBoardView.resetBoardView();
         myController.loadNextLevel(myBoardView);
+        gameButtons.playPause();
     }
 
 //    private boolean checkWallAtCollision(){
@@ -175,7 +193,12 @@ public class SimulationManager {
         myGameStats.setTimeText(myController.getGameTime());
     }
 
+    /**
+     * Hadles the KeyAction reflection when the user presses a key.
+     * @param code The code of the key pressed by the user.
+     */
     public void handleKeyInput(KeyCode code){
+        String prevDirection = currentDirection;
         try {
             String reflectionCode = code.toString();
             if(code.toString().length() > 1) {
@@ -187,7 +210,7 @@ public class SimulationManager {
             KeyViewAction keyAction = (KeyViewAction) clazz.getDeclaredConstructor(BoardView.class, ViewerControllerInterface.class).newInstance(myBoardView,myController);
             keyAction.doAction();
         }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e){
-            //Unknown key pressed. No view action required.
+            currentDirection = prevDirection;
         }
     }
 

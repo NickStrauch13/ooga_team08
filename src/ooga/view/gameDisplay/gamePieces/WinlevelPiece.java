@@ -10,13 +10,14 @@ import java.util.Map;
  * Class that represents the dot pickup pieces in the view board.
  */
 public class WinlevelPiece extends GamePiece{
-  public static final int edge = 25;
-  private Color myColor = Color.GREEN;
-  private int dotRadius = 9;
+  private Color myColor;
+  private int dotRadius;
   private static final String CSS_ID = "dotPiece";
 
   public WinlevelPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
+    dotRadius = getCellSize()/2;
+    myColor = Color.LIMEGREEN;
     if (myValues != null) {
       if(myValues.containsKey("POWERUP_COLOR")){
         String rgbValues= myValues.get("POWERUP_COLOR"); //TODO PARSE OUT NEGATIVE DATA

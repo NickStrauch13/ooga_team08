@@ -23,17 +23,16 @@ import java.util.List;
 
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
-public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface{
+public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface {
 
     // TODO: Constant values should be in a file probably - enum? -> settings.properties
     private final double ANIMATION_SPEED = 0.3;
     private final int HIGH_SCORE_VALS = 10;
     private final int WIDTH = 1000; // TODO: properties file
     private final int HEIGHT = 600;
-
-
-
+    public final int CELL_SIZE = 25;
     private int cellSize;
+
 
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
 
@@ -52,13 +51,14 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-//    private final String EXCEPTION = "Something is wrong here!";
+    //    private final String EXCEPTION = "Something is wrong here!";
     private static final String DEFAULT_USERNAME = "Guest";
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
     private static final int FIVE_HUNDRED = 500;
+    private static int DEFAULT_CELL_SIZE;
 
-    private static final String[] BLANK_ENTRY = new String[]{"","-1"};
+    private static final String[] BLANK_ENTRY = new String[]{"", "-1"};
 
     private Game myGame;
     private Board myBoard;
@@ -85,10 +85,9 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private String language;
     private String cssFileName;
 
-    // TODO: Probably bad design to mix stage and board initialization at the same time. Will talk to my TA about this.
-    // TODO: Maybe let the controller do readFile by moving readFile() from HomeScreen to Controller?
     /**
      * The constructor of the game controller that starts and controls the overall communication between the frontend and backend
+     *
      * @param stage the Stage object for the view
      * @throws IOException
      * @throws ParseException
@@ -98,7 +97,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException  {
+    public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         cssFileName = DEFAULT_CSS_FILE;
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
         language = myLanguages.getString(DEFAULT_LANGUAGE);
@@ -112,16 +111,19 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         myErrorView = new ErrorView(DEFAULT_LANGUAGE);
         File scoreFile = new File(SCORE_PATH);
         myCSVReader = new CSVReader(new FileReader(scoreFile));
-        myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true),',',CSVWriter.NO_QUOTE_CHARACTER,
-            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-            CSVWriter.DEFAULT_LINE_END);
+        myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
+                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                CSVWriter.DEFAULT_LINE_END);
         myUsername = DEFAULT_USERNAME;
+        cellSize = DEFAULT_CELL_SIZE;
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
     // TODO: Throw vs. try/catch here
+
     /**
      * Initialize a Pacman game
+     *
      * @param path The directory of a layout file
      */
     public void initializeGame(String path) {
@@ -130,26 +132,19 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
             myReader = new JSONReader(language, path);
             assembleBoards();
             //TODO get lives from JSON file
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             myErrorView.showError(CLASS_NOT_FOUND);     // TODO: Need better exception handling if we are going with try/catch
-        }
-        catch (InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             myErrorView.showError(INVOCATION_TARGET);
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             myErrorView.showError(ILLEGAL_ACCESS);
-        }
-        catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException e) {
             myErrorView.showError(NO_SUCH_METHOD);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             myErrorView.showError(IOE_EXCEPTION);
-        }
-        catch (InstantiationException e) {
+        } catch (InstantiationException e) {
             myErrorView.showError(INSTANTIATION_EXCEPTION);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             myErrorView.showError(PARSE_EXCEPTION);
         }
 //        catch (NullPointerException e) {
@@ -158,8 +153,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     }
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-
-
         JSONContainer container = myReader.readJSONConfig();
         myGameSettings = container.getMyGameSettings();
         language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE"));
@@ -168,18 +161,28 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         int numOfRows = container.getMyNumOfRows();
         int numOfCols = container.getMyNumOfCols();
 
-        gameObjectMap = container.getMyConversionMap();
-
-        //TODO: Currently creatureMap is never accessed
-        creatureMap = container.getMyCreatureMap();
+        gameObjectMap = createGameObjectMap();
+        creatureMap = createCreatureMap();
         stringBoard = container.getMyStringBoard();
         myBoard = new Board(numOfRows, numOfCols);
         initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         myBoardView = new BoardView(this);
         initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
-        myGame = new Game(myBoard,myBoard.getNumPickupsAtStart(), myBoard.getMyUser(),myBoard.getMyCPUCreatures() ,
-            cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
-        myGame.setGameType(myGameSettings.getGeneralSettings().get("GAME_TYPE"));
+
+        myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
+                cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+
+    }
+
+    public Map<Integer,String> createGameObjectMap() {
+         return Map.ofEntries(Map.entry(0,"WALL"),Map.entry(1,"SCOREBOOSTER"),Map.entry(2 ,"STATECHANGER"),
+                Map.entry(3 , "SCOREMULTIPLIER"),Map.entry( 6 , "PORTAL"),Map.entry( 7 , "GHOSTSLOWER"), Map.entry(8 , "EXTRALIFE"),
+                Map.entry( 9 , "EMPTY"), Map.entry( 10, "INVINCIBILITY"),Map.entry(11 , "SPEEDCUTTER"), Map.entry(12 , "WINLEVEL"));
+
+    }
+
+    public Map<Integer,String> createCreatureMap() {
+        return Map.ofEntries(Map.entry(4,"PACMAN"),Map.entry(5,"CPUGHOST"));
     }
 
     /*
@@ -187,14 +190,13 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     private void initializeBoard(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         for (int row = 0; row < numOfRows; row++) {
-            for (int col = 0; col < numOfCols; col ++) {
+            for (int col = 0; col < numOfCols; col++) {
                 String objectName = stringBoard.get(row).get(col);
                 if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
                     myBoard.createGameObject(row, col, objectName);
-                }
-                else if (creatureMap.containsValue(objectName)){
-                    myBoard.createCreature(col* cellSize +3, row* cellSize +3, objectName,
-                        cellSize -5);
+                } else if (creatureMap.containsValue(objectName)) {
+                    myBoard.createCreature(col * cellSize + 3, row * cellSize + 3, objectName,
+                            cellSize - 5);
                 }
             }
         }
@@ -205,66 +207,62 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard, BoardView boardView) {
         for (int row = 0; row < numOfRows; row++) {
-            for (int col = 0; col < numOfCols; col ++) {
+            for (int col = 0; col < numOfCols; col++) {
                 String objectName = stringBoard.get(row).get(col);//TODO MAKE SURE NOT SETTINGS
-                if (myGameSettings.getAllSettings().containsKey(objectName) && !myGameSettings.getAllSettings().get(objectName).isEmpty()) {
-                    if(!objectName.equals("EMPTY")) {
-                        if (gameObjectMap.containsValue(objectName)) {
-                            boardView.addBoardPiece(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                if (!objectName.equals("EMPTY")) {
+                    if (gameObjectMap.containsValue(objectName)) {
+                        boardView.addBoardPiece(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                    } else {
+                        if (objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
+                            boardView.addUserCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
+                        } else if (objectName.equals("CPUGHOST")) {
+                            boardView.addCPUCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
                         }
-                        else {
-                            if(objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
-                                boardView.addUserCreature(row, col, objectName,myGameSettings.getAllSettings().get(objectName));
-                            }
-                            else if (objectName.equals("CPUGHOST")){
-                                boardView.addCPUCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
-                            }
 
-                        }
                     }
                 }
             }
         }
     }
 
-
-    public int getCellCoordinate(double pixels){
-        return ((int)pixels)/ cellSize;
+    public int getCellCoordinate(double pixels) {
+        return ((int) pixels) / cellSize;
     }
 
     /**
      * Get the number of lives remained
+     *
      * @return the number of lives remained
      */
     public int getLives() {
         return myGame.getLives(); //TODO change this to the model's get lives
     }
-    public Game getGame(){
+
+    public Game getGame() {
         return myGame;
     }
 
     /**
      * Get the current game scores
+     *
      * @return the current game scores
      */
     public int getScore() {
         return myGame.getScore();
     }
 
-    /**
-     * Get the game category
-     * @return the game category
-     */
-    public String getGameType() {
-        return gameType;
+
+    public boolean getIsPoweredUp() {
+        return myGame.getUser().isPoweredUp();
     }
 
-    public boolean getIsPoweredUp(){return myGame.getUser().isPoweredUp();}
-
-    public boolean getIsInvincible() {return myGame.getUser().isInvincible();}
+    public boolean getIsInvincible() {
+        return myGame.getUser().isInvincible();
+    }
 
     /**
      * Get the BoardView object of the game
+     *
      * @return the Boardview object
      */
     public BoardView getBoardView() {
@@ -273,6 +271,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     /**
      * Get the dimension of each cell
+     *
      * @return the size of a cell in the board
      */
     public int getCellSize() {
@@ -281,24 +280,27 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     /**
      * Update and sync each frame of the game with the last direction used
+     *
      * @param direction the string value for the direction
      */
-    public void step(String direction)  {
+    public void step(String direction) {
         myGame.setLastDirection(direction);
         myGame.step();
     }
 
     /**
      * Access the current coordinates of the user
-     * @return (x,y) of the current position
+     *
+     * @return (x, y) of the current position
      */
     public int[] getUserPosition() {
-        int [] newPosition = {myBoard.getMyUser().getXpos(), myBoard.getMyUser().getYpos()};
+        int[] newPosition = {myBoard.getMyUser().getXpos(), myBoard.getMyUser().getYpos()};
         return newPosition;
     }
 
     /**
      * Gets the new ghost position of the ghost identified by the given ID
+     *
      * @param nodeID
      * @return
      */
@@ -314,16 +316,17 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     /**
      * METHOD ONLY FOR TESTFX TESTS. Needed some way to load in a file into the file chooser.
      */
-    public void changeToGameScreen(String filePath){
+    public void changeToGameScreen(String filePath) {
         myStartScreen.startNewGameForViewTests(filePath);
     }
 
     /**
      * Sends information about the collision to the backend
+     *
      * @param nodeID
      * @return
      */
-    public boolean handleCollision(String nodeID){
+    public boolean handleCollision(String nodeID) {
         collisionManager.setCollision(nodeID);
         return myGame.dealWithCollision(collisionManager);
     }
@@ -331,7 +334,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     public void loadNextLevel(BoardView boardView) {
         myGame.resetGame();
-        initializeBoardView(myBoard.getRows(), myBoard.getCols(), gameObjectMap, stringBoard,boardView);
+        initializeBoardView(myBoard.getRows(), myBoard.getCols(), gameObjectMap, stringBoard, boardView);
     }
 
     /**
@@ -344,39 +347,41 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     /**
      * Adds a new Username:Score combo to the high score CSV file
+     *
      * @param nameAndScore String array where the first element is the name and the second element is the score
      */
-    public void addScoreToCSV(String[] nameAndScore){
+    public void addScoreToCSV(String[] nameAndScore) {
         myCSVWriter.writeNext(nameAndScore);
         try {
             myCSVWriter.close();
-        }catch(IOException e){
+        } catch (IOException e) {
 
         }
     }
 
     /**
      * Read high score CSV and get the top ten scores.
+     *
      * @return List of string arrays where each String array is a single username:score combo.
      */
-    public List<String[]> getScoreData(){
+    public List<String[]> getScoreData() {
         List allScoreData = new ArrayList();
         try {
             allScoreData = myCSVReader.readAll();
-        }catch(IOException e){
+        } catch (IOException e) {
             //TODO
         }
         return findTopTenScores(allScoreData);
     }
 
 
-    private List<String[]> findTopTenScores(List<String[]> allScores){
+    private List<String[]> findTopTenScores(List<String[]> allScores) {
         List<String[]> topTen = new ArrayList<>();
         int numToDisplay = HIGH_SCORE_VALS;
-        if(allScores.size() < HIGH_SCORE_VALS){
+        if (allScores.size() < HIGH_SCORE_VALS) {
             numToDisplay = allScores.size();
         }
-        for(int i = 0; i < numToDisplay; i++){
+        for (int i = 0; i < numToDisplay; i++) {
             topTen.add(BLANK_ENTRY);
         }
         optimizeTopTen(allScores, topTen, numToDisplay);
@@ -411,68 +416,83 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     /**
      * Sets the username string for the game.
+     *
      * @param username String inputted by user on the home screen. Defaults to "Guest"
      */
-    public void setUsername(String username){
+    public void setUsername(String username) {
         myUsername = username;
     }
 
     /**
      * Returns the username for the current game.
+     *
      * @return String representing username
      */
-    public String getUsername(){
+    public String getUsername() {
         return myUsername;
     }
 
     public String getViewMode() {
         return cssFileName;
     }
+
     /**
      * Returns the current time of the game.
+     *
      * @return Integer values representing time.
      */
-    public int getGameTime(){
+    public int getGameTime() {
         return myGame.getTime();
     }
 
-    public void addOneMillionPoints(){
+    public void addOneMillionPoints() {
         getGame().addScore(MILLION);
     }
-    public void addOneHundredPoints(){
+
+    public void addOneHundredPoints() {
         getGame().addScore(ONE_HUNDRED);
     }
-    public void addFiveHundredPoints(){
+
+    public void addFiveHundredPoints() {
         getGame().addScore(FIVE_HUNDRED);
     }
-    public void resetGhosts(){
-        List<CPUCreature> ghosts =  getGame().getCPUs();
-        for(CPUCreature ghost: ghosts){
+
+    public void resetGhosts() {
+        List<CPUCreature> ghosts = getGame().getCPUs();
+        for (CPUCreature ghost : ghosts) {
             ghost.die();
         }
     }
-    public void addLife(){
+
+    public void addLife() {
         getGame().addLives(1);
     }
-    public void goToNextLevel(){
+
+    public void goToNextLevel() {
         getGame().nextLevel();
     }
+
     public void powerUp() {
         getGame().getUser().setPoweredUp(true);
     }
-    public void FreezeGhosts(){
+
+    public void FreezeGhosts() {
         getGame().getCPUs().removeAll(getGame().getCPUs());
     }//TODO (billion, billion)
-    public void RemoveOneMillionPoints(){
+
+    public void RemoveOneMillionPoints() {
         getGame().addScore(-MILLION);
     }
-    public void resetUserPosition(){
+
+    public void resetUserPosition() {
         getGame().getUser().die();
     }
-    public void loseLife(){
+
+    public void loseLife() {
         getGame().addLives(-1);
     }
-    public void gameOver(){
+
+    public void gameOver() {
         getGame().endGame();
     }
 
@@ -480,8 +500,13 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
     }
 
-    public void setCellSize(int cell_size) {
-        cellSize = cell_size;
+    public String getGameType() {
+        return myGameSettings.getGeneralSettings().get("GAME_TITLE");
     }
+
+    public void setCellSize(int newSize) {
+        cellSize = newSize;
+    }
+
 
 }

@@ -5,6 +5,7 @@ import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ViewerControllerInterface {
     public void initializeGame(String path);
@@ -43,6 +44,9 @@ public interface ViewerControllerInterface {
     public void loseLife();
     public void gameOver();
     public int getTimer();
+    public void setCellSize(int newSize);
+    public Map<Integer,String> createGameObjectMap();
+    public Map<Integer,String> createCreatureMap();
 
 
 }

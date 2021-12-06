@@ -11,7 +11,6 @@ public class StateChanger extends Pickup {
 
     public void interact(PickupGame pickupGame){
         int currentStep = pickupGame.getStepCounter();
-        pickupGame.setBfsThreshold(4);
         pickupGame.setPowerupEndtime(currentStep+POWERUP_TIME);
         pickupGame.getUser().setPoweredUp(true);
         super.interact(pickupGame);

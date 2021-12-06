@@ -36,16 +36,18 @@
 
   "SETTINGS": {
     "LANGUAGE": "ENGLISH",
-    "GAME_TYPE": "PACMAN",
+    "GAME_TITLE": "Maze",
     "TIMER": "40000",
     "LIVES": "-1",
-    "CELL_SIZE": "25",
+    "CELL_SIZE": "24",
     "CSS_FILE_NAME" : "Default.css",
-    "USER_IS_PREDATOR" : "0"
+    "USER_IS_PREDATOR" : "0",
+    "HARD" : "1",
+    "IS_PICKUPS_A_VALID_WIN_CONDITION": "0"
   },
 
   "PACMAN" : {
-    "USER_IMAGE":"ooga/view/resources/viewIcons/pacmanImage.png"
+    "USER_IMAGE":"ooga/view/resources/viewIcons/bigLadyBug.png"
   },
 
   "CPUGHOST": {
@@ -97,8 +99,8 @@
   },
 
   "WINLEVEL": {
-    "POWERUP_COLOR": "40,179,58",
-    "POWERUP_SIZE": "8"
+    "POWERUP_COLOR": "10,255,20",
+    "POWERUP_SIZE": "14"
   }
 
 }

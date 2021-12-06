@@ -36,12 +36,14 @@
 
   "SETTINGS": {
     "LANGUAGE": "ENGLISH",
-    "GAME_TYPE": "PACMAN",
+    "GAME_TITLE": "PACMAN",
     "TIMER": "40000",
     "LIVES": "3",
-    "CELL_SIZE": "25",
+    "CELL_SIZE": "24",
     "CSS_FILE_NAME" : "Default.css",
-    "USER_IS_PREDATOR" : "1"
+    "USER_IS_PREDATOR" : "1",
+    "HARD" : "1",
+    "IS_PICKUPS_A_VALID_WIN_CONDITION": "1"
   },
 
   "PACMAN" : {
