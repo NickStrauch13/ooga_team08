@@ -80,18 +80,15 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private String myUsername;
     private ErrorView myErrorView;
     private ResourceBundle myLanguages;
-
     private GameSettings myGameSettings;
     private String language;
     private String UILanguage;
     private String cssFileName;
     private String cssUIFileName;
-
     private final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
     private final String DEFAULT_CSS_FILE = "Default.css";
     private final String DEFAULT_LANGUAGE = "ENGLISH";
     private final String DEFAULT_USERNAME = "Guest";
-
     private final String SCORE_PATH = "./data/highscores/HighScores.csv";
 
 
