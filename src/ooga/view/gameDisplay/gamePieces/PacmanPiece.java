@@ -22,6 +22,7 @@ public class PacmanPiece extends MovingPiece {
         setMyPiece(makeNode());
     }
 
+
     @Override
     protected Node makeNode(){
         ImageView pacman = new ImageView(imagePath);

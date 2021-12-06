@@ -35,6 +35,7 @@ public class ScoreboosterPiece extends GamePiece{
     setMyPiece(makeNode());
   }
 
+
   @Override
   protected Circle makeNode(){
     Circle dot = new Circle(dotRadius);

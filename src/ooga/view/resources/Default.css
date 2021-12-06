@@ -1,5 +1,4 @@
 
-
 .root{
   -fx-font-family: "Arial";
   -fx-background-color: AliceBlue;
@@ -19,8 +18,6 @@
   ScoreEntryColor: white;
   ScoreExitColor: #9efffa;
   LabelFontColor: #444444;
-
-
 }
 
 .homeRowFormat {

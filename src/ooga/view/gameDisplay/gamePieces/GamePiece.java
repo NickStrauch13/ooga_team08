@@ -48,9 +48,6 @@ public abstract class GamePiece{
     return myCellSize;
   }
 
-  public void setCellSize(int newSize) {
-    myCellSize = newSize;
-  }
 
   protected Color parseRGBs(String rgbColor){
     String[] colorValues = rgbColor.split(COMMA); //TODO PARSE OUT NEGATIVE DATA

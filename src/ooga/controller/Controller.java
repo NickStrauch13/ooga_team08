@@ -2,8 +2,8 @@ package ooga.controller;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import java.io.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import javafx.stage.Stage;
@@ -17,7 +17,6 @@ import ooga.view.home.HomeScreen;
 import ooga.view.popups.ErrorView;
 import org.json.simple.parser.ParseException;
 import java.awt.*;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.List;
@@ -35,16 +34,15 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private int cellSize;
     private static final String CSS_FILE_EXTENSION = "%s.css";
 
-
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
 
     // TODO: Should be put into a properties file?
     public static final String TITLE = "Start Screen";
-    public static final String gameType = "Pacman"; //TODO update gameType variable
 
     // TODO: exceptions.properties
     // TODO: refactor into viewController and boardController if I have time
 
+    private final String IOE_EXCEPTION_CSV = "IOE exceptions for CSV file path. Please check your CSV file";
     private final String IOE_EXCEPTION = "IOE exceptions";
     private final String NULL_POINTER_EXCEPTION = "Null pointer exception controller";
     private final String PARSE_EXCEPTION = "Parse exception!";
@@ -53,12 +51,11 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-    //    private final String EXCEPTION = "Something is wrong here!";
-    private static final String DEFAULT_USERNAME = "Guest";
+
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
     private static final int FIVE_HUNDRED = 500;
-    private static int DEFAULT_CELL_SIZE;
+    private static int DEFAULT_CELL_SIZE = 24;
 
     private static final String[] BLANK_ENTRY = new String[]{"", "-1"};
 
@@ -66,7 +63,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private Board myBoard;
     private BoardView myBoardView;
     private double animationSpeed;
-    private ArrayList<MovingPiece> myMovingPieces;
     private HomeScreen myStartScreen;
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
@@ -79,47 +75,64 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private String myUsername;
     private ErrorView myErrorView;
     private ResourceBundle myLanguages;
-    private static final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
-    private static final String DEFAULT_CSS_FILE = "Default.css";
-    private static final String DEFAULT_LANGUAGE = "ENGLISH";
     private GameSettings myGameSettings;
-    private final String SCORE_PATH = "./data/highscores/HighScores.csv";
     private String language;
     private String UILanguage;
     private String cssFileName;
     private String cssUIFileName;
+    private final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
+    private final String DEFAULT_CSS_FILE = "Default.css";
+    private final String DEFAULT_LANGUAGE = "ENGLISH";
+    private final String DEFAULT_USERNAME = "Guest";
+    private final String SCORE_PATH = "./data/highscores/HighScores.csv";
+
 
     /**
      * The constructor of the game controller that starts and controls the overall communication between the frontend and backend
      *
      * @param stage the Stage object for the view
-     * @throws IOException
-     * @throws ParseException
-     * @throws ClassNotFoundException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
-    public Controller(Stage stage) throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public Controller(Stage stage){
         cssFileName = DEFAULT_CSS_FILE;
         myUsername = DEFAULT_USERNAME;
-        File scoreFile = new File(SCORE_PATH);
-        myCSVReader = new CSVReader(new FileReader(scoreFile));
         myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
         language = myLanguages.getString(DEFAULT_LANGUAGE);
+
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
         collisionManager = new CollisionManager();
+
+        myErrorView = new ErrorView(DEFAULT_LANGUAGE);
+        initializeStage(stage);
+        initializeCSVIO();
+
+        myUsername = DEFAULT_USERNAME;
+        cellSize = DEFAULT_CELL_SIZE;
+    }
+
+    private void initializeStage(Stage stage) {
+        animationSpeed = ANIMATION_SPEED;
         myStage = stage;
         myStage.setTitle(TITLE);
         myStage.setScene(myStartScreen.createScene());
         myStage.show();
-        animationSpeed = ANIMATION_SPEED;
-        myErrorView = new ErrorView(DEFAULT_LANGUAGE);
-        myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
-                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                CSVWriter.DEFAULT_LINE_END);
-        cellSize = DEFAULT_CELL_SIZE;
+    }
+
+    // TODO: need to handle incorrect CSV path as well
+    /*
+    Initialize the reader and writer for the CSV IO.
+     */
+    private void initializeCSVIO(){
+
+        try {
+            File scoreFile = new File(SCORE_PATH);
+            myCSVReader = new CSVReader(new FileReader(scoreFile));
+            myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+        }
+        catch (IOException e){
+            myErrorView.showError(IOE_EXCEPTION);
+        }
     }
 
     // TODO: I think this should be private, and I definitely need to refactor this as well
@@ -136,7 +149,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
             assembleBoards();
             //TODO get lives from JSON file
         } catch (ClassNotFoundException e) {
-            myErrorView.showError(CLASS_NOT_FOUND);     // TODO: Need better exception handling if we are going with try/catch
+            myErrorView.showError(CLASS_NOT_FOUND);
         } catch (InvocationTargetException e) {
             myErrorView.showError(INVOCATION_TARGET);
         } catch (IllegalAccessException e) {
@@ -157,21 +170,15 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         JSONContainer container = myReader.readJSONConfig();
-
         if (container != null && !container.isMissingContent()) {
             // TODO: if exception being thrown, shouldn't run the following code
-            myGameSettings = container.getMyGameSettings();
-            language = myLanguages.getString(myGameSettings.getGeneralSettings().get("LANGUAGE").trim());
-            cssFileName = myGameSettings.getGeneralSettings().get("CSS_FILE_NAME").trim();
-            setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().get("CELL_SIZE").trim()));
             int numOfRows = container.getMyNumOfRows();
             int numOfCols = container.getMyNumOfCols();
 
-            gameObjectMap = createGameObjectMap();
-            creatureMap = createCreatureMap();
-            stringBoard = container.getMyStringBoard();
-            myBoard = new Board(numOfRows, numOfCols);
-            initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
+            extractInfoFromContainer(container);
+
+            constructBoard(numOfRows, numOfCols);
+
             myBoardView = new BoardView(this);
             initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
 
@@ -180,10 +187,63 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         }
     }
 
+    /*
+    Extract setting information from the Container to set up the game
+     */
+    private void extractInfoFromContainer(JSONContainer container) {
+        myGameSettings = container.getMyGameSettings();
+        stringBoard = container.getMyStringBoard();
+        setupLanguage();
+        setupCSSFile();
+        setupCellSize();
+    }
+
+    private void setupCellSize() {
+        setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().getOrDefault("CELL_SIZE", String.valueOf(DEFAULT_CELL_SIZE)).trim()));
+        if (myGameSettings.getGeneralSettings().get("CELL_SIZE") == null) {
+            myErrorView.showError("Need to specify cell size!");
+        }
+    }
+
+    private void setupCSSFile() {
+        cssFileName = myGameSettings.getGeneralSettings().getOrDefault("CSS_FILE_NAME", DEFAULT_CSS_FILE).trim();
+        if (myGameSettings.getGeneralSettings().get("CSS_FILE_NAME") == null) {
+            myErrorView.showError("Need to specify CSS file path!");
+        }
+    }
+
+    private void setupLanguage() {
+        language = myLanguages.getString(myGameSettings.getGeneralSettings().getOrDefault("LANGUAGE", DEFAULT_LANGUAGE).trim());
+        if (myGameSettings.getGeneralSettings().get("LANGUAGE") == null) {
+            myErrorView.showError("Need a language in your setting!");
+        }
+    }
+
+    /*
+    Create objects required and construct the game board
+     */
+    private void constructBoard(int numOfRows, int numOfCols) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        gameObjectMap = createGameObjectMap();
+        creatureMap = createCreatureMap();
+        myBoard = new Board(numOfRows, numOfCols);
+        initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
+    }
+
+    //TODO: hardcoded, need to refactored
     public Map<Integer,String> createGameObjectMap() {
-         return Map.ofEntries(Map.entry(0,"WALL"),Map.entry(1,"SCOREBOOSTER"),Map.entry(2 ,"STATECHANGER"),
-                Map.entry(3 , "SCOREMULTIPLIER"),Map.entry( 6 , "PORTAL"),Map.entry( 7 , "GHOSTSLOWER"), Map.entry(8 , "EXTRALIFE"),
-                Map.entry( 9 , "EMPTY"), Map.entry( 10, "INVINCIBILITY"),Map.entry(11 , "SPEEDCUTTER"), Map.entry(12 , "WINLEVEL"));
+         return Map.ofEntries(
+                 Map.entry(0,"WALL"),
+                 Map.entry(1,"SCOREBOOSTER"),
+                 Map.entry(2 ,"STATECHANGER"),
+                 Map.entry(3 , "SCOREMULTIPLIER"),
+                 Map.entry( 6 , "PORTAL"),
+                 Map.entry( 7 , "GHOSTSLOWER"),
+                 Map.entry(8 , "EXTRALIFE"),
+                 Map.entry( 9 , "EMPTY"),
+                 Map.entry( 10, "INVINCIBILITY"),
+                 Map.entry(11 , "SPEEDCUTTER"),
+                 Map.entry(12 , "WINLEVEL")
+         );
 
     }
 
@@ -561,6 +621,4 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         }
         return allCSVData;
     }
-
-
 }
