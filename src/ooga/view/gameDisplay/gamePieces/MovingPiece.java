@@ -32,6 +32,7 @@ public abstract class MovingPiece extends GamePiece{
     myCreature.setY(y);
   }
 
+  @Deprecated
   /**
    * Returns the X position in pixels of the moving piece
    * @return pixel value
@@ -41,7 +42,7 @@ public abstract class MovingPiece extends GamePiece{
     return myCreature.getLayoutX();
   }
 
-
+  @Deprecated
   /**
    * Returns the Y position in pixels of the moving piece
    * @return pixel value

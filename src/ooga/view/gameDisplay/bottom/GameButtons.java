@@ -13,7 +13,17 @@ import ooga.view.gameDisplay.SimulationManager;
 import ooga.view.home.HomeScreen;
 
 public class GameButtons {
+
   private static final int SPACING = 5;
+  public static final String GO_HOME_BUTTON = "GoHomeButton";
+  public static final String HOME_BUTTON_ID = "HomeButtonID";
+  public static final String PAUSE_PLAY_BUTTON = "PausePlayButton";
+  public static final String PLAY_BUTTON_ID = "PlayButtonID";
+  public static final String RESET = "Reset";
+  public static final String RESET_BUTTON = "ResetButton";
+  public static final String RESET_BUTTON_ID = "ResetButtonID";
+  public static final String BOTTOM_GAME_BUTTONS = "BottomGameButtons";
+  public static final String PAUSE_BUTTON_ID = "PauseButtonID";
   private UINodeFactory myNodeBuilder;
   private Stage myStage;
   private int myWidth;
@@ -45,11 +55,13 @@ public class GameButtons {
   public Node makeButtonBox(){
     HBox buttonBox = new HBox();
     buttonBox.setSpacing(SPACING);
-    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("GoHomeButton"), null, "GoHomeButton","HomeButtonID" ,e -> goHome()));
-    playPauseButton = myNodeBuilder.makeButton("",PLAY_ICON, "PausePlayButton", "PlayButtonID",e -> playPause());
+    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString(GO_HOME_BUTTON), null,
+        GO_HOME_BUTTON, HOME_BUTTON_ID,e -> goHome()));
+    playPauseButton = myNodeBuilder.makeButton("",PLAY_ICON, PAUSE_PLAY_BUTTON, PLAY_BUTTON_ID,e -> playPause());
     buttonBox.getChildren().add(playPauseButton);
-    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString("Reset"), null, "ResetButton","ResetButtonID", e -> restartGame()));
-    buttonBox.getStyleClass().add("BottomGameButtons");
+    buttonBox.getChildren().add(myNodeBuilder.makeButton(myResources.getString(RESET), null,
+        RESET_BUTTON, RESET_BUTTON_ID, e -> restartGame()));
+    buttonBox.getStyleClass().add(BOTTOM_GAME_BUTTONS);
     return buttonBox;
   }
 
@@ -65,7 +77,7 @@ public class GameButtons {
     if(mySimManager.playPause()){
       playPauseButton.setGraphic(PAUSE_ICON);
       playPauseButton.getStyleClass().clear();
-      playPauseButton.getStyleClass().add("PauseButtonID");
+      playPauseButton.getStyleClass().add(PAUSE_BUTTON_ID);
     }
     else{
       resetPlayButtonIcon();
@@ -83,7 +95,7 @@ public class GameButtons {
   private void resetPlayButtonIcon(){
     playPauseButton.setGraphic(PLAY_ICON);
     playPauseButton.getStyleClass().clear();
-    playPauseButton.getStyleClass().add("PlayButtonID");
+    playPauseButton.getStyleClass().add(PLAY_BUTTON_ID);
   }
 
 }
