@@ -10,7 +10,6 @@ import java.util.Map;
  * Class that represents the dot pickup pieces in the view board.
  */
 public class WinlevelPiece extends GamePiece{
-  public static final int edge = 25;
   private Color myColor;
   private int dotRadius;
   private static final String CSS_ID = "dotPiece";
@@ -29,10 +28,6 @@ public class WinlevelPiece extends GamePiece{
       }
     }
     setMyPiece(makeNode());
-  }
-
-  public String getMyClass() {
-    return this.getClass().getSimpleName();
   }
 
   @Override

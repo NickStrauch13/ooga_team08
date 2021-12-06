@@ -27,12 +27,13 @@ public class GameDisplay {
     private SimulationManager mySimManager;
     private ResourceBundle myResources;
 
-    public GameDisplay(Stage stage, int width, int height, String viewMode, String language, String gameType, ViewerControllerInterface controller, BoardView boardView) {
+    public GameDisplay(Stage stage, int width, int height, String language, ViewerControllerInterface controller, BoardView boardView) {
         myController = controller;
         myBoardView = boardView;
         myGameStats = new GameStats(myController);
         mySimManager = new SimulationManager(myController,myGameStats, boardView, this);
         myGameButtons = new GameButtons(stage, width, height, myController, mySimManager, language);
+        mySimManager.linkGameButtons(myGameButtons);
         myStage = stage;
         root = new BorderPane();
         myScene = new Scene(root, width, height);
@@ -44,11 +45,9 @@ public class GameDisplay {
 
     /**
      * Sets the new scene which will show the actual pacman games
-     * @param title The title for the stage
      */
-    public void setMainDisplay(String title) {
+    public void setMainDisplay() {
         setupScene();
-        myStage.setTitle(title);
         myStage.setScene(myScene);
     }
 
@@ -58,7 +57,7 @@ public class GameDisplay {
         Popup gameOverPopup = myPopupFactory.makePopup("GameOverPopup");
         Node popupHome = UINodeFactory.makeButton(myResources.getString("GoHomeButton"), null, "GameOverHome","GameOverHomeID", e -> myGameButtons.goHome());
         Node popupRestart = UINodeFactory.makeButton(myResources.getString("Reset"), null, "GameOverHome","GameOverRestartID", e -> myGameButtons.restartGame());
-        HBox buttonRow =(HBox) UINodeFactory.makeRow("homeRowFormat", popupHome, popupRestart);
+        HBox buttonRow = UINodeFactory.makeRow("homeRowFormat", popupHome, popupRestart);
         myPopupFactory.getMyVBox().getChildren().addAll(buttonRow);
         myPopupFactory.addExitInfo("ExitInstructions", "ScoreExitID");
         myPopupFactory.showPopup(myStage, gameOverPopup);

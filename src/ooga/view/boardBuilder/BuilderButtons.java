@@ -72,7 +72,7 @@ public class BuilderButtons {
     }
 
     public HBox makeBottomHBox() {
-        Button buildBoardButton = myNodeBuilder.makeButton("Build Board", null, "homeScreenButton", "buildBoardButton", e -> myBuilderDisplay.compileBoard());
+        Button buildBoardButton = myNodeBuilder.makeButton("Build Board", null, "homeScreenButton", "buildBoardButton", e -> myBuilderDisplay.newGameWithBoard());
         VBox center = makeCenterVBox(makeCreatureRow(), makeGameObjectsRow());
         return myNodeBuilder.makeRow("statsHolder",makeSelectedVBox(), center, buildBoardButton);
     }
@@ -117,7 +117,7 @@ public class BuilderButtons {
 
     private void goHome() {
         HomeScreen homeScreen = new HomeScreen(myStage, myWidth, myHeight, myController);
-        homeScreen.setMainDisplay("Home");
+        homeScreen.setMainDisplay();
     }
 
     public String getClassName(GamePiece gamePiece) {

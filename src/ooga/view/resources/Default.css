@@ -1,5 +1,4 @@
 
-
 .root{
   -fx-font-family: "Arial";
   -fx-background-color: AliceBlue;
@@ -117,7 +116,7 @@
 .statsHolder {
     -fx-alignment: center;
     -fx-font-size: 22px;
-    -fx-spacing: 20px;
+    -fx-spacing: 40px;
     -fx-padding: 10px;
 }
 
@@ -178,7 +177,27 @@
     -fx-background-color: ResetButtonColor;
 }
 
-.gray-block {
-    -fx-background-color: #D3D3D3;
-    -fx-fill-color: #D3D3D3;
+.bottomRowFormatID{
+  -fx-font-size: 16px;
+  -fx-spacing: 20px;
+  -fx-padding: 10px;
+}
+
+.langBoxID{
+  -fx-min-width: 132px;
+  -fx-min-height: 20;
+}
+
+.PlayerLabelID{
+  -fx-font-size: 36px;
+  -fx-padding: 30px;
+}
+
+.PlayerTopScoreID{
+  -fx-font-size: 28px;
+  -fx-padding: 20px;
+}
+.gameSelectBoxID{
+  -fx-min-width: 200px;
+  -fx-min-height: 20;
 }

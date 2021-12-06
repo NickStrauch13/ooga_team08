@@ -8,8 +8,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.controller.JSONBuilder;
 import ooga.controller.ViewerControllerInterface;
-import ooga.models.game.Board;
 import ooga.view.UINodeFactory.UINodeFactory;
+import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
 import javafx.scene.Scene;
@@ -86,8 +86,10 @@ public class BuilderDisplay {
         root.setBottom(myBuilderButtons.makeBottomHBox());
     }
 
-    public void compileBoard() {
-        myJSONBuilder.compileBoard(myBoardManager.getUserAdded());
+    public void newGameWithBoard() {
+        myController.initializeGame(String.format(myJSONBuilder.getBoardPath(), "MyBoard"));
+        GameDisplay gameDisplay = new GameDisplay(myStage, (int)myScene.getWidth(),  (int)myScene.getHeight(), myController.getLanguage(), myController, myController.getBoardView());
+        gameDisplay.setMainDisplay();
     }
 
 }

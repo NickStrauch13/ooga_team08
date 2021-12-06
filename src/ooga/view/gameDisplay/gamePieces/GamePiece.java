@@ -42,15 +42,10 @@ public abstract class GamePiece{
     node.setId(generalID);
   }
 
-  public abstract String getMyClass();
-
   protected int getCellSize(){
     return myCellSize;
   }
 
-  public void setCellSize(int newSize) {
-    myCellSize = newSize;
-  }
 
   protected Color parseRGBs(String rgbColor){
     String[] colorValues = rgbColor.split(COMMA); //TODO PARSE OUT NEGATIVE DATA

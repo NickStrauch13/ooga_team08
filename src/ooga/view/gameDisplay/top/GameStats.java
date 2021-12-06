@@ -9,6 +9,30 @@ import javafx.scene.Node;
 import java.util.ResourceBundle;
 
 public class GameStats {
+
+    public static final String STATS_HOLDER = "statsHolder";
+    public static final String LEVEL_TEXT = "LevelText";
+    public static final String LEVEL_TEXT_ID = "levelTextID";
+    public static final String NUM_LEVEL_ID = "numLevelID";
+    public static final String STATS_FORMAT = "statsFormat";
+    public static final String GAME_TYPE_ID = "gameTypeID";
+    public static final String GAME_TEXT = "GameText";
+    public static final String GAME_TYPE_TEXT_ID = "gameTypeTextID";
+    public static final String STATS_FORMAT1 = "statsFormat";
+    public static final String NUM_SCORE_ID = "numScoreID";
+    public static final String SCORE_TEXT_ID = "scoreTextID";
+    public static final String SCORE_TEXT = "ScoreText";
+    public static final String STATS_FORMAT2 = "statsFormat";
+    public static final String TIME_ID = "timeID";
+    public static final String TIMER_TEXT = "TimerText";
+    public static final String TIMER_TEXT_ID = "timerTextID";
+    public static final String TIMER_FORMAT = "timerFormat";
+    public static final String NUM_LIVES_ID = "numLivesID";
+    public static final String LIVES_TEXT = "LivesText";
+    public static final String LIVES_TEXT_ID = "livesTextID";
+    public static final String STATS_FORMAT3 = "statsFormat";
+    public static final String TIME_FORMAT = "%d";
+    public static final String EMPTY = "";
     private UINodeFactory nodeBuilder;
     private ViewerControllerInterface myController;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -19,39 +43,67 @@ public class GameStats {
     private Label numLivesText;
     private Label numLevelText;
     private Label timeText;
+    private PlayerProfile myPlayerProfile;
 
     public GameStats(ViewerControllerInterface controller) {
         myController = controller;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         nodeBuilder = new UINodeFactory(myController);
         DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
+        myPlayerProfile = new PlayerProfile(controller);
     }
 
     public HBox makeStatLabels(int timer, int lives){
-        numLivesText = nodeBuilder.makeLabel(SPACE + myController.getLives(), "numLivesID");
-        Label livesText = nodeBuilder.makeLabel(myResources.getString("LivesText"), "livesTextID");
-        Node livesVBox = nodeBuilder.makeCol("statsFormat", livesText, numLivesText);
-        timeText = nodeBuilder.makeLabel(SPACE+myController.getGameTime(), "timeID");
-        Label timerText = nodeBuilder.makeLabel(myResources.getString("TimerText"), "timerTextID");
-        Node timerVBox = nodeBuilder.makeCol("timerFormat", timerText, timeText);
-        numScoreText = nodeBuilder.makeLabel(SPACE + myController.getScore(), "numScoreID");
-        Label scoreText = nodeBuilder.makeLabel(myResources.getString("ScoreText"), "scoreTextID");
-        Node scoreVBox = nodeBuilder.makeCol("statsFormat", scoreText, numScoreText);
-        Label gameType = nodeBuilder.makeLabel("" + myController.getGameType(), "gameTypeID");
-        Label gameText = nodeBuilder.makeLabel(myResources.getString("GameText"), "gameTypeTextID");
-        Node gameTypeVBox = nodeBuilder.makeCol("statsFormat", gameText, gameType);
-        Label levelText = nodeBuilder.makeLabel(myResources.getString("LevelText"), "levelTextID");
-        numLevelText = nodeBuilder.makeLabel(SPACE + myController.getLevel(), "numLevelID");
-        Node levelVBox = nodeBuilder.makeCol("statsFormat", levelText, numLevelText);
-        HBox myHBox;
-        myHBox = nodeBuilder.makeRow("statsHolder", scoreVBox,gameTypeVBox, levelVBox);
+        Node livesVBox = makeLivesBox();
+        Node timerVBox = makeTimerBox();
+        Node scoreVBox = makeScoreBox();
+        Node gameTypeVBox = makeGameTitleBox();
+        Node levelVBox = makeLevelBox();
+        Node playerBox = myPlayerProfile.generateProfile();
+        HBox myHBox = nodeBuilder.makeRow(STATS_HOLDER, scoreVBox,gameTypeVBox, levelVBox);
         if (timer >= 0) {
             myHBox.getChildren().add(timerVBox);
         }
         if (lives >=0) {
             myHBox.getChildren().add(livesVBox);
         }
+        myHBox.getChildren().add(playerBox);
         return myHBox;
+    }
+
+    private Node makeLevelBox() {
+        Label levelText = nodeBuilder.makeLabel(myResources.getString(LEVEL_TEXT), LEVEL_TEXT_ID);
+        numLevelText = nodeBuilder.makeLabel(SPACE + myController.getLevel(), NUM_LEVEL_ID);
+        Node levelVBox = nodeBuilder.makeCol(STATS_FORMAT, levelText, numLevelText);
+        return levelVBox;
+    }
+
+    private Node makeGameTitleBox() {
+        Label gameType = nodeBuilder.makeLabel(EMPTY + myController.getGameType(), GAME_TYPE_ID);
+        Label gameText = nodeBuilder.makeLabel(myResources.getString(GAME_TEXT), GAME_TYPE_TEXT_ID);
+        Node gameTypeVBox = nodeBuilder.makeCol(STATS_FORMAT1, gameText, gameType);
+        return gameTypeVBox;
+    }
+
+    private Node makeScoreBox() {
+        numScoreText = nodeBuilder.makeLabel(SPACE + myController.getScore(), NUM_SCORE_ID);
+        Label scoreText = nodeBuilder.makeLabel(myResources.getString(SCORE_TEXT), SCORE_TEXT_ID);
+        Node scoreVBox = nodeBuilder.makeCol(STATS_FORMAT2, scoreText, numScoreText);
+        return scoreVBox;
+    }
+
+    private Node makeTimerBox() {
+        timeText = nodeBuilder.makeLabel(SPACE+myController.getGameTime(), TIME_ID);
+        Label timerText = nodeBuilder.makeLabel(myResources.getString(TIMER_TEXT), TIMER_TEXT_ID);
+        Node timerVBox = nodeBuilder.makeCol(TIMER_FORMAT, timerText, timeText);
+        return timerVBox;
+    }
+
+    private Node makeLivesBox() {
+        numLivesText = nodeBuilder.makeLabel(SPACE + myController.getLives(), NUM_LIVES_ID);
+        Label livesText = nodeBuilder.makeLabel(myResources.getString(LIVES_TEXT), LIVES_TEXT_ID);
+        Node livesVBox = nodeBuilder.makeCol(STATS_FORMAT3, livesText, numLivesText);
+        return livesVBox;
     }
 
     /**
@@ -59,7 +111,7 @@ public class GameStats {
      * @param score integer score value
      */
     public void setScoreText(int score) {
-        numScoreText.setText(String.format("%d",score));
+        numScoreText.setText(String.format(TIME_FORMAT,score));
     }
 
     /**
@@ -67,20 +119,20 @@ public class GameStats {
      * @param lives int number of lives
      */
     public void setLivesText(int lives) {
-        numLivesText.setText(String.format("%d",lives));
+        numLivesText.setText(String.format(TIME_FORMAT,lives));
     }
 
     /**
      * Sets the current time label from the game.
      * @param time integer time value
      */
-    public void setTimeText(int time){timeText.setText(String.format("%d", time));}
+    public void setTimeText(int time){timeText.setText(String.format(TIME_FORMAT, time));}
 
     /**
      * Sets the number of levels text.
      * @param level integer number of lives.
      */
     public void setLevelText(int level) {
-        numLevelText.setText(String.format("%d", level));
+        numLevelText.setText(String.format(TIME_FORMAT, level));
     }
 }

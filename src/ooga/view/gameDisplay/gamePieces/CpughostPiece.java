@@ -22,10 +22,6 @@ public class CpughostPiece extends MovingPiece {
         setMyPiece(makeNode());
     }
 
-    public String getMyClass() {
-        return this.getClass().getSimpleName();
-    }
-
     @Override
     protected Node makeNode(){
         ImageView pacman = new ImageView(imagePath);

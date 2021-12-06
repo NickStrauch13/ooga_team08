@@ -6,6 +6,7 @@ import java.util.*;
 
 import ooga.controller.settings.Settings;
 import ooga.view.popups.ErrorView;
+import org.apache.commons.lang3.ObjectUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,14 +18,17 @@ public class JSONReader {
     private static final String NUMBER_FORMAT_EXCEPTION_DIM = "Check the number format for the dimension value!";
     private static final String NUMBER_FORMAT_EXCEPTION_BOARD = "Check the number format for values within the board!";
     private static final String NUMBER_FORMAT_EXCEPTION_MAP = "Check the number format for keys in the map!";
+    private static final String NUMBER_FORMAT_EXCEPTION_SETTING = "Check the number format for keys in the settings!";
 
     private static final String CLASS_CAST_EXCEPTION_DIM = "Make sure the data type for the dimension is correct!";
     private static final String CLASS_CAST_EXCEPTION_BOARD = "Make sure the data type within the board is correct!";
     private static final String CLASS_CAST_EXCEPTION_MAP = "Make sure the data type for the map is correct!";
+    private static final String CLASS_CAST_EXCEPTION_SETTING = "Make sure the data type for the setting is correct!";
 
     private final String NULL_POINTER_EXCEPTION_DIM = "Check your dimension names in the json file!";
-    private final String NULL_POINTER_EXCEPTION_BOARD = "Check your board name in the json file!";
-    private final String NULL_POINTER_EXCEPTION_MAP = "Check your names for maps in the json file!";
+    private final String NULL_POINTER_EXCEPTION_BOARD = "Check your board content in the json file!";
+    private final String NULL_POINTER_EXCEPTION_MAP = "Check your map content in the json file!";
+    private final String NULL_POINTER_EXCEPTION_SETTING = "Check your names for settings in the json file!";
 
     private final String INDEX_OUT_BOUNDS_EXCEPTION = "Check if the dimension of the board is correct!";
     private final String IOE_EXCEPTION = "IOE exceptions";
@@ -32,7 +36,6 @@ public class JSONReader {
 
     /*
     TODO: Other exceptions maybe for the frontend or controller?
-    MissingResourceException -> Wrong values in map,
     myGame NullPointer,
     ClassNotFoundException for wrong key in map
     How to handle values on board but not in map keys?
@@ -58,7 +61,7 @@ public class JSONReader {
      * @throws ParseException
      */
     //TODO: add deprecated methods
-    public JSONContainer readJSONConfig() throws IOException, ParseException {
+    public JSONContainer readJSONConfig() {
         JSONObject jsonData = extractJSONObject();
 
         int numOfRows = getDimension(jsonData, "ROW_NUMBER");
@@ -84,7 +87,6 @@ public class JSONReader {
      */
     private GameSettings getGameSettings(JSONObject jsonData) {
         Map<String, String> settingMap = getSettingMap(jsonData, "SETTINGS");
-        Settings basicSettings = new Settings(settingMap);
         Map<String, String> userSettings = getSettingMap(jsonData, "PACMAN");
         Map<String, String> CPUSettings = getSettingMap(jsonData, "CPUGHOST");
         Map<String, String> wallSettings = getSettingMap(jsonData, "WALL");
@@ -116,41 +118,43 @@ public class JSONReader {
     private Map<String, String> getSettingMap(JSONObject jsonData, String objectType) {
 
         Map<String, String> conversionMap = new HashMap();
-        Map<String,String> JSONMap = ((HashMap)jsonData.get(objectType));
-        if (JSONMap != null) {
-            for (Object keyObject : JSONMap.keySet()) {
-                String keyString = keyObject.toString().trim();
-//                int key = Integer.parseInt(keyString.trim());
-                String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
-                conversionMap.put(keyString, stringValue);
+        try {
+            Map<String,String> JSONMap = ((HashMap)jsonData.get(objectType));
+            if (JSONMap != null) {
+                for (Object keyObject : JSONMap.keySet()) {
+                    String keyString = keyObject.toString().trim();
+                    String stringValue = JSONMap.get(keyObject).trim().toUpperCase();
+                    conversionMap.put(keyString, stringValue);
+                }
             }
+            return conversionMap;
         }
-        return conversionMap;
+
+        catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_SETTING);}
+        catch (NumberFormatException e){myErrorView.showError(NUMBER_FORMAT_EXCEPTION_SETTING);}
+        catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_SETTING);}
+        return null;
     }
 
     /*
     Extract the name of each game object using the conversion map
      */
-    private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) {
+    private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap) throws NullPointerException {
         List<List<String>> stringBoard = new ArrayList<>();
         try {
             for (int i = 0; i < boardInfo.size(); i++) {
                 List<String> innerList = new ArrayList<>();
                 for (int j = 0; j < boardInfo.get(0).size(); j++) {
                     int currentValue = boardInfo.get(i).get(j);
-
-//                innerList.add(conversionMap.get(currentValue));
-                    // TODO: Wait for refactoring from the backend
                     innerList.add(conversionMap.containsKey(currentValue) ? conversionMap.get(currentValue) : creatureMap.get(currentValue));
-
                 }
                 stringBoard.addAll(Collections.singleton(innerList));
             }
+            return stringBoard;
         }
-        catch (IndexOutOfBoundsException e) {
-            myErrorView.showError(INDEX_OUT_BOUNDS_EXCEPTION);
-        }
-        return stringBoard;
+        catch (IndexOutOfBoundsException e) {myErrorView.showError(INDEX_OUT_BOUNDS_EXCEPTION);}
+        catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_BOARD);}
+        return null;
     }
 
     /*
@@ -168,17 +172,12 @@ public class JSONReader {
                 String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
                 conversionMap.put(key, stringValue);
             }
+            return conversionMap;
         }
-        catch (NullPointerException e) {
-            myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);
-        }
-        catch (NumberFormatException e){
-            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_MAP);
-        }
-        catch (ClassCastException e) {
-            myErrorView.showError(CLASS_CAST_EXCEPTION_MAP);
-        }
-        return conversionMap;
+        catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);}
+        catch (NumberFormatException e){myErrorView.showError(NUMBER_FORMAT_EXCEPTION_MAP);}
+        catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_MAP);}
+        return null;
     }
 
     /**
@@ -200,17 +199,12 @@ public class JSONReader {
                 }
                 boardInfo.addAll(Collections.singleton(innerList));
             }
+            return boardInfo;
         }
-        catch (NullPointerException e) {
-            myErrorView.showError(NULL_POINTER_EXCEPTION_BOARD);
-        }
-        catch (NumberFormatException e){
-            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_BOARD);
-        }
-        catch (ClassCastException e) {
-            myErrorView.showError(CLASS_CAST_EXCEPTION_BOARD);
-        }
-        return boardInfo;
+        catch (NullPointerException e) { myErrorView.showError(NULL_POINTER_EXCEPTION_BOARD);}
+        catch (NumberFormatException e){myErrorView.showError(NUMBER_FORMAT_EXCEPTION_BOARD);}
+        catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_BOARD);}
+        return null;
     }
 
     /*

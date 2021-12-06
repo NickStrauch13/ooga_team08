@@ -20,9 +20,6 @@ public class PacmanPiece extends MovingPiece {
         setMyPiece(makeNode());
     }
 
-    public String getMyClass() {
-        return this.getClass().getSimpleName();
-    }
 
     @Override
     protected Node makeNode(){

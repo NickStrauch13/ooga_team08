@@ -10,12 +10,16 @@ import java.util.Map;
  * Class that represents the dot pickup pieces in the view board.
  */
 public class ScoremultiplierPiece extends GamePiece{
-  private int edge = 7;
-  private Color myColor=Color.GREEN;
+  private static final int DEFAULT_RAD = 7;
+  private static final Color DEFAULT_COLOR = Color.BURLYWOOD;
+  private int edge;
+  private Color myColor;
   private static final String CSS_ID = "dotPiece";
 
   public ScoremultiplierPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
+    edge = DEFAULT_RAD;
+    myColor = DEFAULT_COLOR;
     if (myValues != null) {
       if(myValues.containsKey("POWERUP_COLOR")){
         String rgbValues= myValues.get("POWERUP_COLOR"); //TODO PARSE OUT NEGATIVE DATA
@@ -28,9 +32,6 @@ public class ScoremultiplierPiece extends GamePiece{
     setMyPiece(makeNode());
   }
 
-  public String getMyClass() {
-    return this.getClass().getSimpleName();
-  }
 
   @Override
   protected Rectangle makeNode(){
