@@ -34,9 +34,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
     private static final String CSS_FILE_EXTENSION = "%s.css";
     private final Dimension DEFAULT_SIZE = new Dimension(WIDTH, HEIGHT);
     public static final String TITLE = "Start Screen";
-
-    // TODO: exceptions.properties
-
     private final String IOE_EXCEPTION_CSV = "IOE exceptions for CSV file path. Please check your CSV file";
     private final String IOE_EXCEPTION = "IOE exceptions";
     private final String NULL_POINTER_EXCEPTION = "Null pointer exception controller";

@@ -12,34 +12,31 @@ import org.json.simple.parser.ParseException;
 
 public class JSONReader {
 
-    // TODO: Should be placed into properties files or enum?
-    private final String NUMBER_FORMAT_EXCEPTION_DIM = "Check the number format for the dimension value!";
-    private final String NUMBER_FORMAT_EXCEPTION_BOARD = "Check the number format for values within the board!";
-    private final String NUMBER_FORMAT_EXCEPTION_STRING_BOARD = "Check the number format for values within the string board!";
-    private final String NUMBER_FORMAT_EXCEPTION_MAP = "Check the number format for keys in the map!";
-    private final String NUMBER_FORMAT_EXCEPTION_SETTING = "Check the number format for keys in the settings!";
-    private final String NUMBER_FORMAT_EXCEPTION_VALUES = "Check the number format for values in the settings!";
+    private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
+    private ResourceBundle myResource = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "English");
+    private final String NUMBER_FORMAT_EXCEPTION_DIM = "NUMBER_FORMAT_EXCEPTION_DIM";
+    private final String NUMBER_FORMAT_EXCEPTION_BOARD = "NUMBER_FORMAT_EXCEPTION_BOARD";
+    private final String NUMBER_FORMAT_EXCEPTION_STRING_BOARD = "NUMBER_FORMAT_EXCEPTION_STRING_BOARD";
+    private final String NUMBER_FORMAT_EXCEPTION_MAP = "NUMBER_FORMAT_EXCEPTION_MAP";
+    private final String NUMBER_FORMAT_EXCEPTION_VALUES = "NUMBER_FORMAT_EXCEPTION_VALUES";
 
 
-    private final String CLASS_CAST_EXCEPTION_DIM = "Make sure the data type for the dimension is correct!";
-    private final String CLASS_CAST_EXCEPTION_BOARD = "Make sure the data type within the board is correct!";
-    private final String CLASS_CAST_EXCEPTION_MAP = "Make sure the data type for the map is correct!";
-    private final String CLASS_CAST_EXCEPTION_SETTING = "Make sure the data type for the setting is correct!";
+    private final String CLASS_CAST_EXCEPTION_DIM = "CLASS_CAST_EXCEPTION_DIM";
+    private final String CLASS_CAST_EXCEPTION_BOARD = "CLASS_CAST_EXCEPTION_BOARD";
+    private final String CLASS_CAST_EXCEPTION_MAP = "CLASS_CAST_EXCEPTION_MAP";
+    private final String CLASS_CAST_EXCEPTION_SETTING = "CLASS_CAST_EXCEPTION_SETTING";
 
-    private String NULL_POINTER_EXCEPTION_DIM = "Check your dimension names in the json file!";
-    private String NULL_POINTER_EXCEPTION_BOARD = "Check your board content in the json file!";
-    private String NULL_POINTER_EXCEPTION_MAP = "Check your map content in the json file!";
-    private String NULL_POINTER_EXCEPTION_SETTING = "Check your names for settings in the json file!";
+    private String NULL_POINTER_EXCEPTION_DIM = "NULL_POINTER_EXCEPTION_DIM";
+    private String NULL_POINTER_EXCEPTION_BOARD = "NULL_POINTER_EXCEPTION_BOARD";
+    private String NULL_POINTER_EXCEPTION_MAP = "NULL_POINTER_EXCEPTION_MAP";
+    private String NULL_POINTER_EXCEPTION_SETTING = "NULL_POINTER_EXCEPTION_SETTING";
 
-    private final String INDEX_OUT_BOUNDS_EXCEPTION = "Check if the dimension of the board is correct!";
-    private final String IOE_EXCEPTION = "IOE exceptions";
-    private final String PARSE_EXCEPTION = "Parse exceptions";
-    private final String MISSING_CONTENT = "Please check your game file because you have empty strings";
-    private final String MISSING_INDEX = "Please check your game object maps in the file because you are missing game objects";
+    private final String INDEX_OUT_BOUNDS_EXCEPTION = "INDEX_OUT_BOUNDS_EXCEPTION";
+    private final String IOE_EXCEPTION = "IOE_EXCEPTION";
+    private final String PARSE_EXCEPTION = "PARSE_EXCEPTION";
+    private final String MISSING_INDEX = "MISSING_INDEX";
 
-    private final String WRONG_BOARD_DIMENSION = "The dimension of the board does not match.";
-    private final String WRONG_COL_DIMENSION = "The column dimension of the board does not match.";
-    private final String SPLIT_ERROR = "Recheck the data splitting!";
+    private final String SPLIT_ERROR = "SPLIT_ERROR";
     private final int COLOR_CHANNELS = 3;
 
 //    private final List<String> FOOD_PARAMETERS = List.of("POWERUP_COLOR", "POWERUP_SIZE");
@@ -53,6 +50,7 @@ public class JSONReader {
             "WINLEVEL");
     private final List<String> INTEGER_ELEMENTS = List.of("TIMER", "LIVES", "CELL_SIZE", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION", "POWERUP_SIZE");
     private final List<String> PARSE_ELEMENTS = List.of("WALL_COLOR", "POWERUP_COLOR");
+
 
 //    private final Map<String, List<String>> SETTING_PARAMETERS =
 //             Map.ofEntries(
@@ -219,8 +217,8 @@ public class JSONReader {
             }
             return conversionMap;
         }
-        catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_SETTING);}
-        catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_SETTING);}
+        catch (NullPointerException e) {myErrorView.showError(myResource.getString(NULL_POINTER_EXCEPTION_SETTING));}
+        catch (ClassCastException e) {myErrorView.showError(myResource.getString(CLASS_CAST_EXCEPTION_SETTING));}
 
         return null;
     }
@@ -243,8 +241,8 @@ public class JSONReader {
 //            if (isMissingBoardStrings(stringBoard, numOfRows, numOfCols)) return null;
             return stringBoard;
         }
-        catch (IndexOutOfBoundsException e) {myErrorView.showError(INDEX_OUT_BOUNDS_EXCEPTION);}
-        catch (NullPointerException e) {myErrorView.showError(NUMBER_FORMAT_EXCEPTION_STRING_BOARD);}
+        catch (IndexOutOfBoundsException e) {myErrorView.showError(myResource.getString(INDEX_OUT_BOUNDS_EXCEPTION));}
+        catch (NullPointerException e) {myErrorView.showError(myResource.getString(NUMBER_FORMAT_EXCEPTION_STRING_BOARD));}
         return null;
     }
 
@@ -290,9 +288,9 @@ public class JSONReader {
 //            if (isMissingValues(conversionMap, objectType)) return null;
             return conversionMap;
         }
-        catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_MAP);}
-        catch (NumberFormatException e){myErrorView.showError(NUMBER_FORMAT_EXCEPTION_MAP);}
-        catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_MAP);}
+        catch (NullPointerException e) {myErrorView.showError(myResource.getString(NULL_POINTER_EXCEPTION_MAP));}
+        catch (NumberFormatException e){myErrorView.showError(myResource.getString(NUMBER_FORMAT_EXCEPTION_MAP));}
+        catch (ClassCastException e) {myErrorView.showError(myResource.getString(CLASS_CAST_EXCEPTION_MAP));}
         return null;
     }
 
@@ -340,9 +338,9 @@ public class JSONReader {
 //            if (isMissingBoardInfo(boardInfo, numOfRows, numOfCols)) return null;
             return boardInfo;
         }
-        catch (NullPointerException e) { myErrorView.showError(NULL_POINTER_EXCEPTION_BOARD);}
-        catch (NumberFormatException e){myErrorView.showError(NUMBER_FORMAT_EXCEPTION_BOARD);}
-        catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_BOARD);}
+        catch (NullPointerException e) { myErrorView.showError(myResource.getString(NULL_POINTER_EXCEPTION_BOARD));}
+        catch (NumberFormatException e){myErrorView.showError(myResource.getString(NUMBER_FORMAT_EXCEPTION_BOARD));}
+        catch (ClassCastException e) {myErrorView.showError(myResource.getString(CLASS_CAST_EXCEPTION_BOARD));}
         return null;
     }
 
@@ -397,9 +395,9 @@ public class JSONReader {
             rowString = (String) jsonData.get(row_number);
             return Integer.parseInt(rowString.trim());
         }
-        catch (NullPointerException e){myErrorView.showError(NULL_POINTER_EXCEPTION_DIM);}
-        catch (NumberFormatException e) {myErrorView.showError(NUMBER_FORMAT_EXCEPTION_DIM);}
-        catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_DIM);}
+        catch (NullPointerException e){myErrorView.showError(myResource.getString(NULL_POINTER_EXCEPTION_DIM));}
+        catch (NumberFormatException e) {myErrorView.showError(myResource.getString(NUMBER_FORMAT_EXCEPTION_DIM));}
+        catch (ClassCastException e) {myErrorView.showError(myResource.getString(CLASS_CAST_EXCEPTION_DIM));}
         return 0;
     }
 
@@ -412,8 +410,8 @@ public class JSONReader {
             Object jsonContent = parser.parse(new FileReader(myPath));
             return (JSONObject) jsonContent;
         }
-        catch (IOException e) {myErrorView.showError(IOE_EXCEPTION);}
-        catch (ParseException e) {myErrorView.showError(PARSE_EXCEPTION);}
+        catch (IOException e) {myErrorView.showError(myResource.getString(IOE_EXCEPTION));}
+        catch (ParseException e) {myErrorView.showError(myResource.getString(PARSE_EXCEPTION));}
         return null;
     }
 
