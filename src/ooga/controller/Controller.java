@@ -81,11 +81,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
     private final String DEFAULT_USERNAME = "Guest";
     private final String SCORE_PATH = "./data/highscores/HighScores.csv";
 
-    // TODO: 1. move CSV stuff into a new class -> IOParser
-    //       2. createObjectMap
-    //       3. gameStatistics - need active methods
-    //       4. around 400 lines
-
     /**
      * The constructor of the game controller that starts and controls the overall communication between the frontend and backend
      *
@@ -279,7 +274,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     /**
      * Get the BoardView object of the game
-     *
      * @return the Boardview object
      */
     public BoardView getBoardView() {
@@ -288,7 +282,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     /**
      * Get the dimension of each cell
-     *
      * @return the size of a cell in the board
      */
     public int getCellSize() {
@@ -297,7 +290,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     /**
      * Update and sync each frame of the game with the last direction used
-     *
      * @param direction the string value for the direction
      */
     public void step(String direction) {
@@ -306,7 +298,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     /**
      * Access the current coordinates of the user
-     *
      * @return (x, y) of the current position
      */
     public int[] getUserPosition() {
@@ -378,7 +369,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     /**
      * Returns the username for the current game.
-     *
      * @return String representing username
      */
     public String getUsername() {
@@ -419,9 +409,9 @@ public class Controller implements BasicController, ViewerControllerInterface {
     public GameController getGameController() {
         return gameController;
     }
+
     /**
      * Adds a new Username:Score combo to the high score CSV file
-     *
      * @param nameAndScore String array where the first element is the name and the second element is the score
      */
     public void addScoreToCSV(String[] nameAndScore) {
@@ -433,7 +423,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     /**
      * Read high score CSV and get the top ten scores.
-     *
      * @return List of string arrays where each String array is a single username:score combo.
      */
     public List<String[]> getScoreData() {
