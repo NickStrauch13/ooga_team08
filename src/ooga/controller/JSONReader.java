@@ -115,7 +115,6 @@ public class JSONReader {
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
 
         List<List<Integer>> boardInfo = getBoardInfo(jsonData, numOfRows, numOfCols);
-
         Map<Integer, String> conversionMap = getConversionMap(jsonData, "OBJECT_MAP");
         Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
         List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap, numOfRows, numOfCols);
@@ -163,31 +162,41 @@ public class JSONReader {
 
         for (String parameter : parameterSet) {
 
-            if (INTEGER_ELEMENTS.contains(parameter)) {
-                try {
-                    Integer values = Integer.parseInt(settings.get(parameter));
-                }
-                catch (NumberFormatException e) {
-                    myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
-                    return true;
-                }
-            }
-            else if (PARSE_ELEMENTS.contains(parameter)) {
-                String[] RGBs = settings.get(parameter).split(",");
+            if (handleNumberElements(settings, parameter)) return true;
+        }
+        return false;
+    }
 
-                if (RGBs.length != COLOR_CHANNELS) {
-                    myErrorView.showError(SPLIT_ERROR);
-                    return true;
-                }
-                for (String rbgValue : RGBs) {
-                    try {
-                        Integer values = Integer.parseInt(rbgValue);
-                    }
-                    catch (NumberFormatException ee) {
-                        myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
-                        return true;
-                    }
-                }
+    private boolean handleNumberElements(Map<String, String> settings, String parameter) {
+        if (INTEGER_ELEMENTS.contains(parameter)) {
+            if (handleSingleValue(settings, parameter)) return true;
+        }
+        else if (PARSE_ELEMENTS.contains(parameter)) {
+            String[] RGBs = settings.get(parameter).split(",");
+            if (handleRGBValues(RGBs)) return true;
+        }
+        return false;
+    }
+
+    private boolean handleSingleValue(Map<String, String> settings, String parameter) {
+        try {Integer values = Integer.parseInt(settings.get(parameter));}
+        catch (NumberFormatException e) {
+            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleRGBValues(String[] RGBs) {
+        if (RGBs.length != COLOR_CHANNELS) {
+            myErrorView.showError(SPLIT_ERROR);
+            return true;
+        }
+        for (String rbgValue : RGBs) {
+            try {Integer values = Integer.parseInt(rbgValue);}
+            catch (NumberFormatException ee) {
+                myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
+                return true;
             }
         }
         return false;
@@ -295,23 +304,23 @@ public class JSONReader {
         return null;
     }
 
-    /*
-    Check if either game objects or creatures are missing in the json file
-     */
-    private boolean isMissingValues(Map<Integer, String> conversionMap, String objectType) {
-        for (Integer keyValue : conversionMap.keySet()) {
-            if (conversionMap.get(keyValue) == null || conversionMap.get(keyValue).isEmpty()) {
-                myErrorView.showError(MISSING_INDEX);
-                return true;
-            }
-//            else {
-//                Set<Integer> indexSet = conversionMap.keySet();
-//                List<Integer> objectIndices = OBJECT_PARAMETERS.get(objectType);
-//                return isMissingIndices(indexSet, objectIndices);
+//    /*
+//    Check if either game objects or creatures are missing in the json file
+//     */
+//    private boolean isMissingValues(Map<Integer, String> conversionMap, String objectType) {
+//        for (Integer keyValue : conversionMap.keySet()) {
+//            if (conversionMap.get(keyValue) == null || conversionMap.get(keyValue).isEmpty()) {
+//                myErrorView.showError(MISSING_INDEX);
+//                return true;
 //            }
-        }
-        return false;
-    }
+////            else {
+////                Set<Integer> indexSet = conversionMap.keySet();
+////                List<Integer> objectIndices = OBJECT_PARAMETERS.get(objectType);
+////                return isMissingIndices(indexSet, objectIndices);
+////            }
+//        }
+//        return false;
+//    }
 //
 //    /*
 //    Check if any index for game objects is missing
@@ -405,7 +414,7 @@ public class JSONReader {
     /*
     Extract the entire JSON object for further parsing
      */
-    private JSONObject extractJSONObject() {
+    JSONObject extractJSONObject() {
         JSONParser parser = new JSONParser();
         try {
             Object jsonContent = parser.parse(new FileReader(myPath));

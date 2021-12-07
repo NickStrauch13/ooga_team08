@@ -1,5 +1,6 @@
 package ooga.controller;
 
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JSONReaderTest {
 
-    final String FILE_PATH = "data/test/vanillaTest.json";
-    final String WRONG_PATH = "data/test/vanillaTet.json";
+    final String FILE_PATH = "data/test/controller/basicBoardInfo.json";
+    final String EMPTY_PATH = "data/test/controller/absoluteEmptyTest.json";
+
 
     final Set<String> GAME_SETTINGS = Set.of(
             "SETTINGS", "PACMAN",
@@ -122,11 +124,19 @@ class JSONReaderTest {
         assertTrue(isSame);
     }
 
+    @Test
+    void testParseException() {
+        reader = new JSONReader("English", EMPTY_PATH);
+        ParseException expectedException = assertThrows(ParseException.class, () -> {
+            JSONObject jsonData = reader.extractJSONObject();
+        });
+    }
+
 //    @Test
 //    public void IOExceptionThrown() {
-//        JSONReader reader = new JSONReader("English", WRONG_PATH);
+//        JSONReader reader = new JSONReader("English", EMPTY_PATH);
 //
-////        String message = "data\\test\\vanillaTet.json (???????????)";
+//        String message = "data\\test\\vanillaTet.json (???????????)";
 //        Exception expectedException = assertThrows(IOException.class, () -> {
 //            reader.readJSONConfig();
 //        });
