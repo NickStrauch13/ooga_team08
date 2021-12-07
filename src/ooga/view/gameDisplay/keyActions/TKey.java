@@ -18,6 +18,6 @@ public class TKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.goToNextLevel();
+    myController.getGameController().goToNextLevel();
   }
 }
