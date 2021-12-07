@@ -79,7 +79,7 @@ public class GameStats {
 
     private Node makeLevelBox() {
         Label levelText = nodeBuilder.makeLabel(myResources.getString(LEVEL_TEXT), LEVEL_TEXT_ID);
-        numLevelText = nodeBuilder.makeLabel(SPACE + myController.getLevel(), NUM_LEVEL_ID);
+        numLevelText = nodeBuilder.makeLabel(SPACE + myController.getGameController().getLevel(), NUM_LEVEL_ID);
         Node levelVBox = nodeBuilder.makeCol(STATS_FORMAT, levelText, numLevelText);
         return levelVBox;
     }
@@ -92,21 +92,21 @@ public class GameStats {
     }
 
     private Node makeScoreBox() {
-        numScoreText = nodeBuilder.makeLabel(SPACE + myController.getScore(), NUM_SCORE_ID);
+        numScoreText = nodeBuilder.makeLabel(SPACE + myController.getGameController().getScore(), NUM_SCORE_ID);
         Label scoreText = nodeBuilder.makeLabel(myResources.getString(SCORE_TEXT), SCORE_TEXT_ID);
         Node scoreVBox = nodeBuilder.makeCol(STATS_FORMAT2, scoreText, numScoreText);
         return scoreVBox;
     }
 
     private Node makeTimerBox() {
-        timeText = nodeBuilder.makeLabel(SPACE+myController.getGameTime(), TIME_ID);
+        timeText = nodeBuilder.makeLabel(SPACE+myController.getGameController().getGameTime(), TIME_ID);
         Label timerText = nodeBuilder.makeLabel(myResources.getString(TIMER_TEXT), TIMER_TEXT_ID);
         Node timerVBox = nodeBuilder.makeCol(TIMER_FORMAT, timerText, timeText);
         return timerVBox;
     }
 
     private Node makeLivesBox() {
-        numLivesText = nodeBuilder.makeLabel(SPACE + myController.getLives(), NUM_LIVES_ID);
+        numLivesText = nodeBuilder.makeLabel(SPACE + myController.getGameController().getLives(), NUM_LIVES_ID);
         Label livesText = nodeBuilder.makeLabel(myResources.getString(LIVES_TEXT), LIVES_TEXT_ID);
         Node livesVBox = nodeBuilder.makeCol(STATS_FORMAT3, livesText, numLivesText);
         return livesVBox;

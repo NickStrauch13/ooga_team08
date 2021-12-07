@@ -16,6 +16,6 @@ public class QKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.FreezeGhosts();
+    myController.getGameController().FreezeGhosts();
   }
 }
