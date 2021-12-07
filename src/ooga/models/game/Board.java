@@ -24,6 +24,7 @@ public class Board {
     private static final String WALLSTRING = "WALL";
     private static final String PORTALSTRING = "PORTAL";
 
+
     /**
      * Constructor for Board class
      * @param numRows number of rows on board
@@ -138,21 +139,6 @@ public class Board {
         return myBoardObjects[row][col].isWall();
     }
 
-    /**
-     * Sets wall at cell, used to dynamically update use of walls
-     * @param position position of the cell in grid coordinates
-     * @param set boolean referencing new state of wall
-     */
-    public void setWallatCell(int[] position, boolean set){
-        myBoardObjects[position[0]][position[1]].setWall(set);
-    }
-
-    /**
-     * Gets game object out at certain position
-     * @param row row index of desired game object
-     * @param col col index of desired game object
-     * @return game object at row,col position
-     */
     public GameObject getGameObject(int row, int col){
         return myBoardObjects[row][col];
     }
@@ -224,11 +210,4 @@ public class Board {
         return portalLocations;
     }
 
-    /**
-     * Gets list of all wall locations on board
-     * @return list of all wall locations on board
-     */
-    public ArrayList<int[]> getWallLocations() {
-        return wallLocations;
     }
-}
