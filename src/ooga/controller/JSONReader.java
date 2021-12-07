@@ -4,9 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import ooga.controller.settings.Settings;
 import ooga.view.popups.ErrorView;
-import org.apache.commons.lang3.ObjectUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,6 +18,8 @@ public class JSONReader {
     private final String NUMBER_FORMAT_EXCEPTION_STRING_BOARD = "Check the number format for values within the string board!";
     private final String NUMBER_FORMAT_EXCEPTION_MAP = "Check the number format for keys in the map!";
     private final String NUMBER_FORMAT_EXCEPTION_SETTING = "Check the number format for keys in the settings!";
+    private final String NUMBER_FORMAT_EXCEPTION_VALUES = "Check the number format for values in the settings!";
+
 
     private final String CLASS_CAST_EXCEPTION_DIM = "Make sure the data type for the dimension is correct!";
     private final String CLASS_CAST_EXCEPTION_BOARD = "Make sure the data type within the board is correct!";
@@ -34,11 +34,13 @@ public class JSONReader {
     private final String INDEX_OUT_BOUNDS_EXCEPTION = "Check if the dimension of the board is correct!";
     private final String IOE_EXCEPTION = "IOE exceptions";
     private final String PARSE_EXCEPTION = "Parse exceptions";
-    private final String MISSING_CONTENT = "Please check your game file because you are missing some inputs";
+    private final String MISSING_CONTENT = "Please check your game file because you have empty strings";
     private final String MISSING_INDEX = "Please check your game object maps in the file because you are missing game objects";
 
     private final String WRONG_BOARD_DIMENSION = "The dimension of the board does not match.";
     private final String WRONG_COL_DIMENSION = "The column dimension of the board does not match.";
+    private final String SPLIT_ERROR = "Recheck the data splitting!";
+    private final int COLOR_CHANNELS = 3;
 
 //    private final List<String> FOOD_PARAMETERS = List.of("POWERUP_COLOR", "POWERUP_SIZE");
     private final List<String> GAME_SETTINGS = List.of(
@@ -49,6 +51,8 @@ public class JSONReader {
             "EXTRALIFE", "INVINCIBILITY",
             "PORTAL", "SPEEDCUTTER",
             "WINLEVEL");
+    private final List<String> INTEGER_ELEMENTS = List.of("TIMER", "LIVES", "CELL_SIZE", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION", "POWERUP_SIZE");
+    private final List<String> PARSE_ELEMENTS = List.of("WALL_COLOR", "POWERUP_COLOR");
 
     private final Map<String, List<String>> SETTING_PARAMETERS =
              Map.ofEntries(
@@ -129,7 +133,7 @@ public class JSONReader {
             mapList.put(parameter, getSettingMap(jsonData, parameter));
         }
 
-//        if (isMissingSettings(mapList)) return null;
+        if (isMissingSettings(mapList)) return null;
 
         return new GameSettings(mapList);
     }
@@ -138,14 +142,20 @@ public class JSONReader {
     Check if any major setting map is missing
      */
     private boolean isMissingSettings(Map<String, Map<String, String>> mapList) {
-        for (String keyString : GAME_SETTINGS) {
-            if (mapList.get(keyString) == null || mapList.get(keyString).isEmpty()) {
-                myErrorView.showError(MISSING_CONTENT);
-                return true;
+//        System.out.println(GAME_SETTINGS);
+        for (String keyString : mapList.keySet()) {
+//            System.out.println(keyString);
+            if (mapList.get(keyString) != null) {
+                if (mapList.get(keyString).isEmpty()) {
+                    myErrorView.showError(MISSING_CONTENT);
+                    return true;
+                }
+                else {
+                    if (isMissingItems(mapList, keyString)) {
+                        return true;
+                    }
+                }
             }
-//            else { // if all elements required in the mapList
-//                return isMissingItems(mapList, keyString);
-//            }
         }
         return false;
     }
@@ -154,15 +164,52 @@ public class JSONReader {
     Check if any item is missing
      */
     private boolean isMissingItems(Map<String, Map<String, String>> mapList, String keyString) {
-        Set<String> parameterSet = mapList.get(keyString).keySet();
-        for (String parameter : SETTING_PARAMETERS.get(keyString)) {
-            if (!parameterSet.contains(parameter)) {
-                myErrorView.showError(MISSING_CONTENT);
-                return true;
+        Map<String, String> settings = mapList.get(keyString);
+        Set<String> parameterSet = settings.keySet();
+
+//        System.out.println(parameterSet);
+        for (String parameter : parameterSet) {
+//            System.out.println(parameter);
+//            System.out.println(INTEGER_ELEMENTS.contains(parameter));
+//            System.out.println(PARSE_ELEMENTS.contains(parameter));
+
+            if (INTEGER_ELEMENTS.contains(parameter)) {
+                try {
+                    Integer values = Integer.parseInt(settings.get(parameter));
+                }
+                catch (NumberFormatException e) {
+                    myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
+                    return true;
+                }
+            }
+            else if (PARSE_ELEMENTS.contains(parameter)) {
+                String[] RGBs = settings.get(parameter).split(",");
+
+                if (RGBs.length != COLOR_CHANNELS) {
+                    myErrorView.showError(SPLIT_ERROR);
+                    return true;
+                }
+                for (String rbgValue : RGBs) {
+                    try {
+                        Integer values = Integer.parseInt(rbgValue);
+                    }
+                    catch (NumberFormatException ee) {
+                        myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
+
+
+//        for (String parameter : SETTING_PARAMETERS.get(keyString)) {
+//            if (!parameterSet.contains(parameter)) {
+//                myErrorView.showError(MISSING_CONTENT);
+//                return true;
+//            }
+//        }
 
     /*
     Extract information about the translation from String values to object names
@@ -182,7 +229,6 @@ public class JSONReader {
             return conversionMap;
         }
         catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_SETTING);}
-        catch (NumberFormatException e){myErrorView.showError(NUMBER_FORMAT_EXCEPTION_SETTING);}
         catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_SETTING);}
 
         return null;

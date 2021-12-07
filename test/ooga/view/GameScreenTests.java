@@ -18,6 +18,7 @@ import org.testfx.api.FxRobot;
 import util.DukeApplicationTest;
 
 public class GameScreenTests extends DukeApplicationTest {
+
   private Controller myController;
   private Button playButton;
   private Button resetButton;
@@ -261,6 +262,7 @@ public class GameScreenTests extends DukeApplicationTest {
     assertEquals(startLives-1, finalLives);
     clickOn(resetButton);
   }
+
 
 
 

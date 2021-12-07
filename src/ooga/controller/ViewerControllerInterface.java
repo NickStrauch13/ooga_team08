@@ -10,37 +10,18 @@ public interface ViewerControllerInterface {
     List<String[]> getScoreData();
     String getLanguage();
     void setUsername(String username);
-//    int getLives();
     void restartGame();
-//    int getScore();
     void step(String direction);
-//    int getLevel();
-//    boolean isGameOver();
+
     void addScoreToCSV(String[] nameAndScore);
     String getUsername();
-//    boolean handleCollision(String nodeID);
     void loadNextLevel(BoardView boardView);
-//    boolean getIsPoweredUp();
     int[] getUserPosition();
     int[] getGhostPosition(String nodeID);
     int getCellSize();
     String getGameType();
-//    boolean getIsInvincible();
     String getViewMode();
     GameController getGameController();
-//    int getGameTime();
-//    void addOneMillionPoints();
-//    void addOneHundredPoints();
-//    void addFiveHundredPoints();
-//    void resetGhosts();
-//    void addLife();
-//    void goToNextLevel();
-//    void powerUp();
-//    void FreezeGhosts();
-//    void RemoveOneMillionPoints();
-//    void resetUserPosition();
-//    void loseLife();
-//    void gameOver();
     int getTimer();
     void setCellSize(int newSize);
     Map<Integer,String> createGameObjectMap();
@@ -49,4 +30,44 @@ public interface ViewerControllerInterface {
     void setViewMode(String cssName);
     String getTopScoreForUser();
 
+    @Deprecated
+    int getGameTime();
+    @Deprecated
+    void addOneMillionPoints();
+    @Deprecated
+    void addOneHundredPoints();
+    @Deprecated
+    void addFiveHundredPoints();
+    @Deprecated
+    void resetGhosts();
+    @Deprecated
+    void addLife();
+    @Deprecated
+    void goToNextLevel();
+    @Deprecated
+    void powerUp();
+    @Deprecated
+    void FreezeGhosts();
+    @Deprecated
+    void RemoveOneMillionPoints();
+    @Deprecated
+    void resetUserPosition();
+    @Deprecated
+    void loseLife();
+    @Deprecated
+    void gameOver();
+    @Deprecated
+    boolean getIsInvincible();
+    @Deprecated
+    boolean getIsPoweredUp();
+    @Deprecated
+    boolean handleCollision(String nodeID);
+    @Deprecated
+    int getLevel();
+    @Deprecated
+    boolean isGameOver();
+    @Deprecated
+    int getScore();
+    @Deprecated
+    int getLives();
 }
