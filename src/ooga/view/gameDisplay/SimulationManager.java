@@ -215,6 +215,10 @@ public class SimulationManager {
         }
     }
 
+    /**
+     * Connects the GameButton class to the SimManager
+     * @param gameButtons GameButton class
+     */
     public void linkGameButtons(GameButtons gameButtons){
         myGameButtons = gameButtons;
     }

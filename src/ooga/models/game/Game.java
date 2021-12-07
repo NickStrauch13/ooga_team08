@@ -12,26 +12,17 @@ import java.util.*;
 
 public class Game implements PickupGame {
 
-    private String gameType = "";
-    private int bfsThreshold = 1;
-    private int standardBFSThreshold = 1;
     private boolean gameOver=false;
     private String lastDirection;
-    private String lastCPUDirection;
     private int boardXSize;
     private int timer;
     private int boardYSize;
-    private static final int WALL_STATE = 1;
     private static final int EAT_CREATURE_SCORE = 400;
     private static final String[] POSSIBLE_DIRECTIONS= new String[]{"DOWN","RIGHT","LEFT","UP"};
     private ResourceBundle myCreatureResources;
     private static final String CREATURE_RESOURCE_PACKAGE = "ooga.models.creatures.resources.";
     private static final String GAME_RESOURCE_PACKAGE = "ooga.models.resources.";
     private ArrayList<Integer> POSSIBLE_FIRST_STEPS = new ArrayList<Integer>(){};
-    public int getStepCounter() {
-        return stepCounter;
-    }
-
     private int stepCounter;
     private int lives;
     private int score;
@@ -42,17 +33,18 @@ public class Game implements PickupGame {
     private int myCellSize;
     private int powerupEndtime=-1;
     private UserCreature myUserControlled;
-    private Set<String> visitedNodes = new HashSet<>();
-    private Queue<String> queue = new ArrayDeque<String>();
     private int startingPickUps;
     private Map<String, String> gameSettings;
     private boolean isPredator;
     private boolean isHard;
+    private boolean isPickups;
     private int startTime;
+    private ArrayList<int[]> levelPortalLocations;
 
     public Game(Board board){
         myBoard=board;
     }
+
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize, Map<String, String> generalSettings){
         myBoard=board;
         pickUpsLeft = numPickUps;
@@ -65,6 +57,7 @@ public class Game implements PickupGame {
         boardXSize=cellSize*board.getCols();
         boardYSize=cellSize*board.getRows();
         gameSettings = generalSettings;
+<<<<<<< HEAD
         setTimer();
         setLives();
         setDifficulty();
@@ -72,6 +65,23 @@ public class Game implements PickupGame {
         startTime=timer;
         adjustGhostCollisions();
         createPossibleSteps();
+=======
+        setGameSettings();
+        startTime=timer;
+        adjustGhostCollisions();
+        createPossibleSteps();
+        levelPortalLocations = (ArrayList<int[]>)myBoard.getPortalLocations().clone();
+    }
+
+    private void setGameSettings(){
+        timer=Integer.parseInt(gameSettings.get("TIMER"));
+        lives = Integer.parseInt(gameSettings.get("LIVES"));
+        isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
+        isHard = gameSettings.get("HARD").equals("1");
+        lives=Integer.parseInt(gameSettings.get("LIVES"));
+        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
+        isPickups = gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION").equals("1");
+>>>>>>> master
     }
 
     private void createPossibleSteps(){
@@ -79,8 +89,8 @@ public class Game implements PickupGame {
         POSSIBLE_FIRST_STEPS.add(-1);
         POSSIBLE_FIRST_STEPS.add(1);
         POSSIBLE_FIRST_STEPS.add(myBoard.getCols());
-        System.out.println(POSSIBLE_FIRST_STEPS);
     }
+
     private String randomDirection(){
         Random r = new Random();
         return POSSIBLE_DIRECTIONS[r.nextInt(POSSIBLE_DIRECTIONS.length)];
@@ -109,39 +119,49 @@ public class Game implements PickupGame {
     public void step() {
         timer--;
         if(isPredator){
-            if(timer==0){
-                endGame();
-            }
-            if(checkLives()){
-                nextLevel();
-            }
+            predatorWinLoss();
         }
         else {
-            if (checkPickUps()) {
-                nextLevel();
-                return;
-            }
-
-            if (checkLives()||timer==0) {
-                endGame();
-                return;
-            }
+            preyWinLoss();
         }
-
         if (stepCounter%myUserControlled.getSpeed()==0){
             moveUser();
         }
         moveCPUCreaturesPacman();
-
         stepCounter++;
+        resetPowerups(stepCounter);
+    }
 
+    private void predatorWinLoss(){
+        if(timer==0){
+            endGame();
+            return;
+        }
+        if(checkLives()){
+            nextLevel();
+            return;
+        }
+    }
+
+    private void preyWinLoss(){
+        if (checkPickUps() && isPickups) {
+            nextLevel();
+            return;
+        }
+        if (checkLives()||timer==0) {
+            endGame();
+            return;
+        }
+    }
+
+    private void resetPowerups(int stepCounter){
         if (stepCounter == powerupEndtime){
             myUserControlled.setPoweredUp(false);
             myUserControlled.setSpeed(myUserControlled.getStandardSpeed());
             myUserControlled.setInvincible(false);
-            setBfsThreshold(standardBFSThreshold);
         }
     }
+
     public int getTime(){
         return timer/100;
     }
@@ -162,7 +182,6 @@ public class Game implements PickupGame {
         for (CPUCreature currentCreature : activeCPUCreatures){
             if (ghostFullyInCell(currentCreature)){
                 currentCreature.setCurrentDirection(generateDirectionArray(adjustedMovement(currentCreature)));
-                //System.out.println(adjustedMovement(Integer.parseInt(myGameTypeThresholds.getString(gameType)),currentCreature));
             }
             if (stepCounter%currentCreature.getSpeed()==0) {
                 moveToNewPossiblePosition(currentCreature,currentCreature.getCurrentDirection());
@@ -171,6 +190,16 @@ public class Game implements PickupGame {
     }
 
     private boolean moveToNewPossiblePosition(Creature currentCreature, int[] direction){
+        int actualNewPositionX = (currentCreature.getXpos()+direction[0] + boardXSize) %boardXSize;
+        int actualNewPositionY = (currentCreature.getYpos()+direction[1] + boardYSize) %boardYSize;
+
+        if (checkCorners(currentCreature,direction)){
+            currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
+        }
+        return checkCorners(currentCreature,direction);
+    }
+
+    private boolean checkCorners(Creature currentCreature,int[] direction){
         int xDirection = direction[0];
         int yDirection = direction[1];
         int xCorner = (xDirection+1)%2;
@@ -182,14 +211,7 @@ public class Game implements PickupGame {
         int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize-xCorner*currentCreature.getSize()/2;
         int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize-yCorner*currentCreature.getSize()/2;
 
-        int actualNewPositionX = (currentCreature.getXpos()+xDirection + boardXSize) %boardXSize;
-        int actualNewPositionY = (currentCreature.getYpos()+yDirection + boardYSize) %boardYSize;
-
-        if (!getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y)){
-            currentCreature.moveTo(actualNewPositionX,actualNewPositionY);
-            return true;
-        }
-        return false;
+        return !getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y);
     }
 
     private String adjustedMovement(CPUCreature cpu) {
@@ -213,36 +235,15 @@ public class Game implements PickupGame {
           return randomDirection();
         }
         int firstStep = potentialPath.getLast()-potentialPath.get(potentialPath.size()-2);
-        if (Math.abs(firstStep)>1){
-            if (firstStep<0){
-                cpuDirection = "DOWN";
-            }
-            else {
-                cpuDirection = "UP";
-            }
-        }
-        else{
-            if (firstStep>0){
-                cpuDirection = "LEFT";
-            }
-            else {
-                cpuDirection = "RIGHT";
-            }
-        }
+        cpuDirection = POSSIBLE_DIRECTIONS[POSSIBLE_FIRST_STEPS.indexOf(firstStep)];
         return cpuDirection;
     }
 
-    private LinkedList<Integer> getPathtoUser(
-            Map<Integer,List<Integer>> adj,
-            int s, int dest, int v)
-    {
+    private LinkedList<Integer> getPathtoUser(Map<Integer,List<Integer>> adj, int s, int dest, int v) {
         int pred[] = new int[v];
-
         if (!BFS(adj, s, dest, v,pred)) {
-            //System.out.println("Given source and destination are not connected");
             return null;
         }
-
         LinkedList<Integer> path = new LinkedList<Integer>();
         int crawl = dest;
         path.add(crawl);
@@ -250,13 +251,10 @@ public class Game implements PickupGame {
             path.add(pred[crawl]);
             crawl = pred[crawl];
         }
-
-
 //        System.out.println("Path is ::");
 //        for (int i = path.size() - 1; i >= 0; i--) {
 //            System.out.print(path.get(i) + " ");
 //        }
-
         return path;
     }
 
@@ -264,7 +262,6 @@ public class Game implements PickupGame {
         LinkedList<Integer> queue = new LinkedList<Integer>();
         boolean visited[] = new boolean[v];
         setBFSInitials(visited,pred,v);
-
         visited[src] = true;
         queue.add(src);
         while (!queue.isEmpty()) {
@@ -274,7 +271,6 @@ public class Game implements PickupGame {
                     visited[adj.get(u).get(i)] = true;
                     pred[adj.get(u).get(i)] = u;
                     queue.add(adj.get(u).get(i));
-
                     if (adj.get(u).get(i) == dest)
                         return true;
                 }
@@ -409,6 +405,7 @@ public class Game implements PickupGame {
      */
     public void nextLevel(){
         level+=1;
+        resetPortals();
         timer= (int) (5000/Math.pow(1.1,level));
     }
 
@@ -453,22 +450,32 @@ public class Game implements PickupGame {
         return true;
     }
 
-    public void setBfsThreshold(int bfsThreshold) {
-        this.bfsThreshold = bfsThreshold;
-    }
-
     public ArrayList<int[]> getPortalLocations(){
-        return myBoard.getPortalLocations();
+        return levelPortalLocations;
     }
 
     public ArrayList<int[]> getWallLocations(){
         return myBoard.getWallLocations();
     }
 
-    public void setPortalsGone(){myBoard.setPortalsGone();}
+    public int getStepCounter() {
+        return stepCounter;
+    }
 
-    public void removePortal(int[] portalLocations){
-        myBoard.removePortal(portalLocations);
+    public void setPortalsGone(){levelPortalLocations=null;}
+
+    public void removePortal(int[] portalLocation){
+        int index=-1;
+        for (int[] currentPortal : levelPortalLocations){
+            if (Arrays.equals(portalLocation,currentPortal)){
+                index = levelPortalLocations.indexOf(currentPortal);
+            }
+        }
+        levelPortalLocations.remove(index);
+    }
+
+    private void resetPortals(){
+        levelPortalLocations = (ArrayList<int[]>)myBoard.getPortalLocations().clone();
     }
 
     public void addLife(){
