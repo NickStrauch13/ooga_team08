@@ -428,10 +428,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
         myCSVWriter.writeNext(nameAndScore);
         try {
             myCSVWriter.close();
-        } catch (IOException e) {
-            //TODO
-            myErrorView.showError(IOE_EXCEPTION_CSV);
-        }
+        } catch (IOException e) {}
     }
 
     /**
