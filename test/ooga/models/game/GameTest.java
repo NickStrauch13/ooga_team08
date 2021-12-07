@@ -351,7 +351,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testSetPoweredEndTime(){
-
+        assertEquals(true, g.setPowerupEndtime(0));
     }
 
 

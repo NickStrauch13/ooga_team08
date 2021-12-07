@@ -430,8 +430,9 @@ public class Game implements PickupGame {
         return gameOver;
     }
 
-    public void setPowerupEndtime(int powerupEndtime) {
+    public boolean setPowerupEndtime(int powerupEndtime) {
         this.powerupEndtime = powerupEndtime;
+        return true;
     }
 
     public boolean setLastDirection(String lastDirection) {
