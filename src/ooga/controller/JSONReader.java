@@ -36,7 +36,7 @@ public class JSONReader {
     private final String PARSE_EXCEPTION = "PARSE_EXCEPTION";
     private final String MISSING_INDEX = "MISSING_INDEX";
 
-    private final String SPLIT_ERROR = "Recheck the data splitting!";
+    private final String SPLIT_ERROR = "SPLIT_ERROR";
     private final int COLOR_CHANNELS = 3;
 
 //    private final List<String> FOOD_PARAMETERS = List.of("POWERUP_COLOR", "POWERUP_SIZE");
@@ -50,37 +50,6 @@ public class JSONReader {
             "WINLEVEL");
     private final List<String> INTEGER_ELEMENTS = List.of("TIMER", "LIVES", "CELL_SIZE", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION", "POWERUP_SIZE");
     private final List<String> PARSE_ELEMENTS = List.of("WALL_COLOR", "POWERUP_COLOR");
-
-
-//    private final Map<String, List<String>> SETTING_PARAMETERS =
-//             Map.ofEntries(
-//                     Map.entry("SETTINGS" ,List.of("LANGUAGE", "GAME_TITLE", "TIMER", "LIVES", "CELL_SIZE",
-//                             "CSS_FILE_NAME", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION")),
-//                     Map.entry("PACMAN" , List.of("USER_IMAGE")),
-//                     Map.entry( "CPUGHOST" ,  List.of("CPU_IMAGE")),
-//                     Map.entry( "WALL" ,  List.of("WALL_COLOR")),
-//                     Map.entry("SCOREBOOSTER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry( "STATECHANGER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry( "SCOREMULTIPLIER",  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("GHOSTSLOWER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("EXTRALIFE" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("INVINCIBILITY" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("PORTAL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("SPEEDCUTTER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("WINLEVEL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE"))
-//                     );
-//
-//    private final Map<String, List<Integer>> OBJECT_PARAMETERS =
-//            Map.ofEntries(
-//                    Map.entry("OBJECT_MAP" ,
-//                            List.of(
-//                                    0, 1, 2, 3,
-//                                    6, 7, 8, 9,
-//                                    10, 11, 12
-//                            )
-//                    ),
-//                    Map.entry("CREATURE_MAP" ,List.of(4, 5))
-//            );
 
     private final String myPath;
     private ErrorView myErrorView;
@@ -113,7 +82,6 @@ public class JSONReader {
         int numOfCols = getDimension(jsonData, "COL_NUMBER");
 
         List<List<Integer>> boardInfo = getBoardInfo(jsonData, numOfRows, numOfCols);
-
         Map<Integer, String> conversionMap = getConversionMap(jsonData, "OBJECT_MAP");
         Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
         List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap, numOfRows, numOfCols);
@@ -161,43 +129,45 @@ public class JSONReader {
 
         for (String parameter : parameterSet) {
 
-            if (INTEGER_ELEMENTS.contains(parameter)) {
-                try {
-                    Integer values = Integer.parseInt(settings.get(parameter));
-                }
-                catch (NumberFormatException e) {
-                    myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
-                    return true;
-                }
-            }
-            else if (PARSE_ELEMENTS.contains(parameter)) {
-                String[] RGBs = settings.get(parameter).split(",");
-
-                if (RGBs.length != COLOR_CHANNELS) {
-                    myErrorView.showError(SPLIT_ERROR);
-                    return true;
-                }
-                for (String rbgValue : RGBs) {
-                    try {
-                        Integer values = Integer.parseInt(rbgValue);
-                    }
-                    catch (NumberFormatException ee) {
-                        myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
-                        return true;
-                    }
-                }
-            }
+            if (handleNumberElements(settings, parameter)) return true;
         }
         return false;
     }
 
+    private boolean handleNumberElements(Map<String, String> settings, String parameter) {
+        if (INTEGER_ELEMENTS.contains(parameter)) {
+            if (handleSingleValue(settings, parameter)) return true;
+        }
+        else if (PARSE_ELEMENTS.contains(parameter)) {
+            String[] RGBs = settings.get(parameter).split(",");
+            if (handleRGBValues(RGBs)) return true;
+        }
+        return false;
+    }
 
-//        for (String parameter : SETTING_PARAMETERS.get(keyString)) {
-//            if (!parameterSet.contains(parameter)) {
-//                myErrorView.showError(MISSING_CONTENT);
-//                return true;
-//            }
-//        }
+    private boolean handleSingleValue(Map<String, String> settings, String parameter) {
+        try {Integer values = Integer.parseInt(settings.get(parameter));}
+        catch (NumberFormatException e) {
+            myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleRGBValues(String[] RGBs) {
+        if (RGBs.length != COLOR_CHANNELS) {
+            myErrorView.showError(SPLIT_ERROR);
+            return true;
+        }
+        for (String rbgValue : RGBs) {
+            try {Integer values = Integer.parseInt(rbgValue);}
+            catch (NumberFormatException ee) {
+                myErrorView.showError(NUMBER_FORMAT_EXCEPTION_VALUES);
+                return true;
+            }
+        }
+        return false;
+    }
 
     /*
     Extract information about the translation from String values to object names
@@ -293,23 +263,23 @@ public class JSONReader {
         return null;
     }
 
-    /*
-    Check if either game objects or creatures are missing in the json file
-     */
-    private boolean isMissingValues(Map<Integer, String> conversionMap, String objectType) {
-        for (Integer keyValue : conversionMap.keySet()) {
-            if (conversionMap.get(keyValue) == null || conversionMap.get(keyValue).isEmpty()) {
-                myErrorView.showError(myResource.getString(MISSING_INDEX));
-                return true;
-            }
-//            else {
-//                Set<Integer> indexSet = conversionMap.keySet();
-//                List<Integer> objectIndices = OBJECT_PARAMETERS.get(objectType);
-//                return isMissingIndices(indexSet, objectIndices);
+//    /*
+//    Check if either game objects or creatures are missing in the json file
+//     */
+//    private boolean isMissingValues(Map<Integer, String> conversionMap, String objectType) {
+//        for (Integer keyValue : conversionMap.keySet()) {
+//            if (conversionMap.get(keyValue) == null || conversionMap.get(keyValue).isEmpty()) {
+//                myErrorView.showError(MISSING_INDEX);
+//                return true;
 //            }
-        }
-        return false;
-    }
+////            else {
+////                Set<Integer> indexSet = conversionMap.keySet();
+////                List<Integer> objectIndices = OBJECT_PARAMETERS.get(objectType);
+////                return isMissingIndices(indexSet, objectIndices);
+////            }
+//        }
+//        return false;
+//    }
 //
 //    /*
 //    Check if any index for game objects is missing
@@ -403,7 +373,7 @@ public class JSONReader {
     /*
     Extract the entire JSON object for further parsing
      */
-    private JSONObject extractJSONObject() {
+    JSONObject extractJSONObject() {
         JSONParser parser = new JSONParser();
         try {
             Object jsonContent = parser.parse(new FileReader(myPath));

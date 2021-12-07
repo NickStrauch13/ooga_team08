@@ -116,9 +116,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
         }
-        catch (IOException e){
-            myErrorView.showError(IOE_EXCEPTION_CSV);
-        }
+        catch (IOException e){}
     }
 
     /**
@@ -475,7 +473,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
             CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
             allCSVData = csvReader.readAll();
         } catch (IOException e) {
-            myErrorView.showError(IOE_EXCEPTION_CSV);
         }
         return allCSVData;
     }

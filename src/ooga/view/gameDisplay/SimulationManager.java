@@ -7,7 +7,6 @@ import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
-import ooga.controller.CheatController;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.gameDisplay.bottom.GameButtons;
 import ooga.view.gameDisplay.center.BoardView;
