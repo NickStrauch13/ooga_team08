@@ -45,7 +45,6 @@ public class JSONReader {
     private final String SPLIT_ERROR = "SPLIT_ERROR";
     private final int COLOR_CHANNELS = 3;
 
-//    private final List<String> FOOD_PARAMETERS = List.of("POWERUP_COLOR", "POWERUP_SIZE");
     private final List<String> GAME_SETTINGS = List.of(
             "SETTINGS", "PACMAN",
             "CPUGHOST", "WALL",
@@ -214,38 +213,12 @@ public class JSONReader {
                 stringBoard.addAll(Collections.singleton(innerList));
             }
 
-//            if (isMissingBoardStrings(stringBoard, numOfRows, numOfCols)) return null;
             return stringBoard;
         }
         catch (IndexOutOfBoundsException e) {myErrorView.showError(myResource.getString(INDEX_OUT_BOUNDS_EXCEPTION));}
         catch (NullPointerException e) {myErrorView.showError(myResource.getString(NUMBER_FORMAT_EXCEPTION_STRING_BOARD));}
         return null;
     }
-
-//    /*
-//    Check if stringBoard is null or the dimension for rows matches
-//     */
-//    private boolean isMissingBoardStrings(List<List<String>> stringBoard, int numOfRows, int numOfCols) {
-//        if (stringBoard == null || stringBoard.size() != numOfRows) {
-//            myErrorView.showError(WRONG_BOARD_DIMENSION);
-//            return true;
-//        }
-////        return isColMismatch(stringBoard, numOfCols);
-//        return false;
-//    }
-//
-//    /*
-//    Check if the dimension for columns matches
-//     */
-//    private boolean isColMismatch(List<List<String>> stringBoard, int numOfCols) {
-//        for (List<String> row : stringBoard) {
-//            if (row == null || row.isEmpty() || row.size() != numOfCols) {
-//                myErrorView.showError(WRONG_COL_DIMENSION);
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     /*
     Extract information about the translation from integer values to object names
@@ -261,7 +234,6 @@ public class JSONReader {
                 String stringValue = JSONMap.get(keyObject).toString().trim().toUpperCase();
                 conversionMap.put(key, stringValue);
             }
-//            if (isMissingValues(conversionMap, objectType)) return null;
             return conversionMap;
         }
         catch (NullPointerException e) {myErrorView.showError(myResource.getString(NULL_POINTER_EXCEPTION_MAP));}
@@ -269,37 +241,6 @@ public class JSONReader {
         catch (ClassCastException e) {myErrorView.showError(myResource.getString(CLASS_CAST_EXCEPTION_MAP));}
         return null;
     }
-
-//    /*
-//    Check if either game objects or creatures are missing in the json file
-//     */
-//    private boolean isMissingValues(Map<Integer, String> conversionMap, String objectType) {
-//        for (Integer keyValue : conversionMap.keySet()) {
-//            if (conversionMap.get(keyValue) == null || conversionMap.get(keyValue).isEmpty()) {
-//                myErrorView.showError(MISSING_INDEX);
-//                return true;
-//            }
-////            else {
-////                Set<Integer> indexSet = conversionMap.keySet();
-////                List<Integer> objectIndices = OBJECT_PARAMETERS.get(objectType);
-////                return isMissingIndices(indexSet, objectIndices);
-////            }
-//        }
-//        return false;
-//    }
-//
-//    /*
-//    Check if any index for game objects is missing
-//     */
-//    private boolean isMissingIndices(Set<Integer> indexSet, List<Integer> objectIndices) {
-//        for (int index : objectIndices) {
-//            if (!indexSet.contains(index)) {
-//                myErrorView.showError(MISSING_INDEX);
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     /**
      * Extract status information of the board from the JSON file
@@ -335,32 +276,6 @@ public class JSONReader {
             boardInfo.addAll(Collections.singleton(innerList));
         }
     }
-
-//    /*
-//    Check if the board information is incomplete
-//     */
-//    private boolean isMissingBoardInfo(List<List<Integer>> boardInfo, int numOfRows, int numOfCols) {
-//        if (boardInfo == null || boardInfo.size() != numOfRows) {
-//            myErrorView.showError(WRONG_BOARD_DIMENSION);
-//            return true;
-//        }
-////        return isBoardColMismatches(boardInfo, numOfCols);
-//        return false;
-//    }
-//
-//
-//    /*
-//    Check if the dimension for columns matches
-//     */
-//    private boolean isBoardColMismatches(List<List<Integer>> boardInfo, int numOfCols) {
-//        for (List<Integer> row : boardInfo) {
-//            if (row == null || row.isEmpty() || row.size() != numOfCols) {
-//                myErrorView.showError(WRONG_BOARD_DIMENSION);
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     /*
     Extract information about the number of rows/columns from the json file
