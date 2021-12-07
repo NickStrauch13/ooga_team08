@@ -40,7 +40,7 @@ public class SimulationManager {
     public SimulationManager(ViewerControllerInterface controller, GameStats gameStats, BoardView boardView, GameDisplay gameDisplay) {
         myController = controller;
         myBoardView = boardView;
-        myAnimationRate = initialAnimationRate; //TODO link to json
+        myAnimationRate = initialAnimationRate*(controller.getCellSize()/25.0); //TODO link to json
         currentDirection = "RIGHT";//TODO allow user to set this value. Call the json key "Starting direction"
         myGameStats = gameStats;
         currentLevel = 1;

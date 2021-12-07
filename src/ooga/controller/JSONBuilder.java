@@ -1,9 +1,11 @@
 package ooga.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,7 +17,7 @@ public class JSONBuilder {
     private static final int ROW = 0;
     private static final int COL = 1;
     private static final int CLASSNAME = 2;
-    private static final String EMPTY = "EMPTY";
+    private static final String WALL = "WALL";
     private Controller myController;
     private  Map<Integer, String> myObjectMap;
     private  Map<Integer, String> myCreatureMap;
@@ -28,13 +30,13 @@ public class JSONBuilder {
 
     private void createJSONFile() {
         JSONObject jsonObject = new JSONObject();
-        JSONObject rowNumber =  new JSONObject();
-        JSONObject colNumber =  new JSONObject();
         JSONArray myJSONArray = new JSONArray();
-        jsonObject.put("BOARD", myJSONArray);
-        compileJSONArray(myJSONArray);
         jsonObject.put("ROW_NUMBER", String.format("%d",fileBoard.length));
         jsonObject.put("COL_NUMBER", String.format("%d",fileBoard[0].length));
+        compileJSONArray(myJSONArray);
+        jsonObject.put("BOARD", myJSONArray);
+        jsonObject.put("OBJECT_MAP", myCreatureMap);
+        jsonObject.put("CREATURE_MAP", myObjectMap);
         try {
             FileWriter file = new FileWriter(FILE_PATH);
             file.write(jsonObject.toJSONString());
@@ -60,6 +62,7 @@ public class JSONBuilder {
         createJSONFile();
     }
 
+
     private String classToInt(String className, Map<Integer, String> myMap) {
         for (Map.Entry<Integer, String> myClass : myMap.entrySet())
         {
@@ -76,7 +79,7 @@ public class JSONBuilder {
             myJSONArray.add(newRow);
             for (int c = 0; c < fileBoard[0].length; c++) {
                 if (fileBoard[r][c] == null) {
-                    String empty  = classToInt(EMPTY, myObjectMap);
+                    String empty  = classToInt(WALL, myObjectMap);
                     newRow.add(empty);
                 }
                 else {
