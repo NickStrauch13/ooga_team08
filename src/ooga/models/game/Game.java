@@ -57,16 +57,9 @@ public class Game implements PickupGame {
         boardXSize=cellSize*board.getCols();
         boardYSize=cellSize*board.getRows();
         gameSettings = generalSettings;
-<<<<<<< HEAD
-        setTimer();
-        setLives();
-        setDifficulty();
-        setIsPredator();
-        startTime=timer;
+        setGameSettings();
         adjustGhostCollisions();
         createPossibleSteps();
-=======
-        setGameSettings();
         startTime=timer;
         adjustGhostCollisions();
         createPossibleSteps();
@@ -74,14 +67,11 @@ public class Game implements PickupGame {
     }
 
     private void setGameSettings(){
-        timer=Integer.parseInt(gameSettings.get("TIMER"));
-        lives = Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
-        isHard = gameSettings.get("HARD").equals("1");
-        lives=Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
-        isPickups = gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION").equals("1");
->>>>>>> master
+        setTimer();
+        setLives();
+        setDifficulty();
+        setIsPredator();
+        startTime=timer;
     }
 
     private void createPossibleSteps(){

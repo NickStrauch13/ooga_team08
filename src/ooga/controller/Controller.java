@@ -47,19 +47,12 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-<<<<<<< HEAD
     private final String DEFAULT_TITLE = "Game";
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
     private static final int FIVE_HUNDRED = 500;
     private static int DEFAULT_CELL_SIZE = 24;
-=======
 
-    private final int MILLION = 1000000;
-    private final int ONE_HUNDRED = 100;
-    private final int FIVE_HUNDRED = 500;
-    private int DEFAULT_CELL_SIZE = 24;
->>>>>>> master
 
     private final String[] BLANK_ENTRY = new String[]{"", "-1"};
 
