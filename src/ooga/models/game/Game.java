@@ -41,10 +41,23 @@ public class Game implements PickupGame {
     private int startTime;
     private ArrayList<int[]> levelPortalLocations;
 
+    /**
+     * Simple constructor for Game class
+     * @param board board on which game is played
+     */
     public Game(Board board){
         myBoard=board;
     }
 
+    /**
+     * Complex constructor for game class
+     * @param board board on which game is played
+     * @param numPickUps number of pickups at beginning of game
+     * @param userPlayer user controlled creature
+     * @param CPUCreatures list of all CPU controlled creatures
+     * @param cellSize size of cell on the board
+     * @param generalSettings Map of game settings obtained from file
+     */
     public Game(Board board, int numPickUps, UserCreature userPlayer, List<CPUCreature> CPUCreatures,int cellSize, Map<String, String> generalSettings){
         myBoard=board;
         pickUpsLeft = numPickUps;
@@ -86,26 +99,46 @@ public class Game implements PickupGame {
         return POSSIBLE_DIRECTIONS[r.nextInt(POSSIBLE_DIRECTIONS.length)];
     }
 
-    public UserCreature getUser(){
-        return myUserControlled;
-    }
+    /**
+     * gets user controlled object in the game
+     * @return user controlled object in the game
+     */
+    public UserCreature getUser(){return myUserControlled;}
 
-    public GameObject getGameObject(int row, int col){
-        return myBoard.getGameObject(row,col);
-    }
-    public List<CPUCreature> getCPUs(){
-        return activeCPUCreatures;
-    }
+    /**
+     * Gets game object out at certain position
+     * @param row row index of desired game object
+     * @param col col index of desired game object
+     * @return game object at row,col position
+     */
+    public GameObject getGameObject(int row, int col){return myBoard.getGameObject(row,col);}
 
-    public void setUserSpeed(double i){
-        myUserControlled.setSpeed(i);
-    }
+    /**
+     * Gets list of all CPU creatures in the game
+     * @return list of all CPU creatures objects
+     */
+    public List<CPUCreature> getCPUs(){return activeCPUCreatures;}
+
+    /**
+     * Sets new speed for the user controlled creature
+     * @param newSpeed desired new speed of user controlled creature
+     */
+    public void setUserSpeed(double newSpeed){myUserControlled.setSpeed(newSpeed);}
+
+    /**
+     * alters CPU speed by inputted multiplier
+     * @param multiplier value to multiply current CPU speed by
+     */
     public void setCPUSpeed(double multiplier){
         for(CPUCreature creature: activeCPUCreatures) {
             creature.setSpeed(creature.getSpeed()*multiplier);
         }
     }
 
+    /**
+     * step function that gets called at each step of program
+     * Checks win/loss conditions, updates positions of moving objects, and handles resetting powerups if necessary
+     */
     public void step() {
         timer--;
         if(isPredator){
@@ -152,14 +185,20 @@ public class Game implements PickupGame {
         }
     }
 
-    public int getTime(){
-        return timer/100;
-    }
+    /**
+     * gets the current time of the animation
+     * @return the current time of the animation
+     */
+    public int getTime(){return timer/100;}
 
     private void adjustGhostCollisions(){
         myUserControlled.setPoweredUp(isPredator);
     }
 
+    /**
+     * moves creature to a certain cell on board
+     * @param cellIndex index of cell (equal to row index*numCols+ col index)
+     */
     public void moveCreatureToCell(int[]cellIndex){
         myUserControlled.moveTo(cellIndex[1]*myCellSize+1,cellIndex[0]*myCellSize+1);
     }
@@ -290,13 +329,14 @@ public class Game implements PickupGame {
         return myBoard.getisWallAtCell(row, col);
     }
 
-    public int getCellCoordinate(double pixels){
-        return ((int)pixels)/myCellSize;
-    }
+    /**
+     * gets cell coordinate based on pixel value
+     * @param pixels pixel value
+     * @return cell coordinate at a certain pixel value
+     */
+    public int getCellCoordinate(double pixels){return ((int)pixels)/myCellSize;}
 
-    private boolean checkPickUps(){
-        return pickUpsLeft ==0;
-    }
+    private boolean checkPickUps(){return pickUpsLeft ==0;}
 
     private boolean checkLives(){return lives == 0;}
 
@@ -308,6 +348,11 @@ public class Game implements PickupGame {
         lives-=1;
     };
 
+    /**
+     * Handles collisions of user with other objects
+     * @param cm Collision manager instance with the object of collision within it
+     * @return true if collision dealt executed, false if not or collided with wall
+     */
     public boolean dealWithCollision(CollisionManager cm){
         if(cm.checkIfCollision()){
             if(cm.isCreature()){
@@ -320,12 +365,27 @@ public class Game implements PickupGame {
         cm.setCollision(null);
         return false;
     }
+
+    /**
+     * decreases the number of pickups left by 1
+     */
     public void updatePickupsLeft(){
         pickUpsLeft--;
     }
+
+    /**
+     * adds certain number of lives
+     * @param numLives number of lives to be added
+     */
     public void addLives(int numLives){
         lives+=numLives;
     }
+
+    /**
+     * Handles collision with pickups
+     * @param cm CollisionManager instance
+     * @return true if colliding with anything but wall, false if wall
+     */
     public boolean creatureVSPickupCollision(CollisionManager cm) {
         String[] collisionIndex = cm.getCurrentCollision().split(",");
         GameObject collidingPickup = myBoard.getGameObject(Integer.parseInt(collisionIndex[0]) , Integer.parseInt(collisionIndex[1]));
@@ -364,15 +424,23 @@ public class Game implements PickupGame {
 
     /**
      * Adds points to the score which is housed in this class.
+     * @param scoreToBeAdded score to be added
      */
     public void addScore(int scoreToBeAdded){
         score+=scoreToBeAdded;
     }
 
+    /**
+     * Multiply score by certain variable
+     * @param multiplier value to multiply score by
+     */
     public void multiplyScore(int multiplier){
         score*=multiplier;
     }
 
+    /**
+     * reset the game to its original state
+     */
     public void resetGame(){
         resetCreatureStates();
     }
@@ -411,49 +479,73 @@ public class Game implements PickupGame {
         return directionArray;
     }
 
-    public int getLives() {
-        return lives;
-    }
+    /**
+     * gets the number of lives left
+     * @return lives left
+     */
+    public int getLives() {return lives;}
 
-    public int getScore() {
-        return score;
-    }
+    /**
+     * gets the score
+     * @return score
+     */
+    public int getScore() {return score;}
 
-    public int getLevel() {
-        return level;
-    }
+    /**
+     * gets the current level
+     * @return current level
+     */
+    public int getLevel() {return level;}
 
-    public Board getMyBoard() {
-        return myBoard;
-    }
+    /**
+     * gets the board
+     * @return board
+     */
+    public Board getMyBoard() {return myBoard;}
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
+    /**
+     * checks whether game should end
+     * @return true if game should end, false if not
+     */
+    public boolean isGameOver() {return gameOver;}
 
-    public void setPowerupEndtime(int powerupEndtime) {
-        this.powerupEndtime = powerupEndtime;
-    }
+    /**
+     * sets the end time for a powerup
+     * @param powerupEndtime
+     */
+    public void setPowerupEndtime(int powerupEndtime) {this.powerupEndtime = powerupEndtime;}
 
+    /**
+     * sets the last direction of user creature
+     * @param lastDirection direction to be set to last
+     * @return true when complete
+     */
     public boolean setLastDirection(String lastDirection) {
         this.lastDirection = lastDirection;
         return true;
     }
 
-    public ArrayList<int[]> getPortalLocations(){
-        return levelPortalLocations;
-    }
+    /**
+     * gets remaining portal locations on current level
+     * @return remaining portal locations on current level
+     */
+    public ArrayList<int[]> getPortalLocations(){return levelPortalLocations;}
 
-    public ArrayList<int[]> getWallLocations(){
-        return myBoard.getWallLocations();
-    }
+    /**
+     * gets the number of times step has been run
+     * @return number of times step has been run
+     */
+    public int getStepCounter() {return stepCounter;}
 
-    public int getStepCounter() {
-        return stepCounter;
-    }
-
+    /**
+     * removes all portals from board
+     */
     public void setPortalsGone(){levelPortalLocations=null;}
 
+    /**
+     * removes one portal from board
+     * @param portalLocation location of portal to be removed
+     */
     public void removePortal(int[] portalLocation){
         int index=-1;
         for (int[] currentPortal : levelPortalLocations){
@@ -468,13 +560,10 @@ public class Game implements PickupGame {
         levelPortalLocations = (ArrayList<int[]>)myBoard.getPortalLocations().clone();
     }
 
+    /**
+     * adds one life
+     */
     public void addLife(){
         lives++;
-    }
-
-    public void wallStateChange(boolean toSet){
-        for (int[] wall:getWallLocations()){
-            myBoard.setWallatCell(wall,toSet);
-        }
     }
 }
