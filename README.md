@@ -70,6 +70,7 @@ U, I, O, P, A, S. The keys have the following functions:
 ### Notes/Assumptions
 
 Assumptions or Simplifications: 
+* IMPORTANT: Our gameScreenTest class tests work perfectly for everyone in our group EXCEPT for Neil. Our code is identical (we have triple checked) yet Neil's test in the class seem to fail. We believe that it has something to do with the fx robot and his Macbook pro. We have tried to trouble shoot this for hours but we cannot get it to work on his computer. Please be aware of this while running tests.
 * The ghosts do not spawn in a box like how they do in actual pacman. Instead, the user can place the ghosts wherever they want in the data file.
 * We assume that the file only has one user controlled creature. You can add multiple user controlled creatures without crashing
 the program, but only one will be move-able.
