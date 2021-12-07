@@ -36,7 +36,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
     public static final String TITLE = "Start Screen";
 
     // TODO: exceptions.properties
-    // TODO: refactor into viewController and boardController if I have time
 
     private final String IOE_EXCEPTION_CSV = "IOE exceptions for CSV file path. Please check your CSV file";
     private final String IOE_EXCEPTION = "IOE exceptions";
@@ -115,14 +114,12 @@ public class Controller implements BasicController, ViewerControllerInterface {
         myStage.show();
     }
 
-    // TODO: need to handle incorrect CSV path as well
     /*
     Initialize the reader and writer for the CSV IO.
      */
     private void initializeCSVIO(){
         try {
             File scoreFile = new File(SCORE_PATH);
-//            myCSVReader = new CSVReader(new FileReader(scoreFile));
             myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
@@ -131,9 +128,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
             myErrorView.showError(IOE_EXCEPTION_CSV);
         }
     }
-
-    // TODO: I think this should be private, and I definitely need to refactor this as well
-    // TODO: Throw vs. try/catch here
 
     /**
      * Initialize a Pacman game
@@ -144,29 +138,20 @@ public class Controller implements BasicController, ViewerControllerInterface {
         try {
             myReader = new JSONReader(language, path);
             assembleBoards();
-            activateGame();
-            //TODO get lives from JSON file
-        } catch (ClassNotFoundException e) {
-            myErrorView.showError(CLASS_NOT_FOUND);
-        } catch (InvocationTargetException e) {
-            myErrorView.showError(INVOCATION_TARGET);
-        } catch (IllegalAccessException e) {
-            myErrorView.showError(ILLEGAL_ACCESS);
-        } catch (NoSuchMethodException e) {
-            myErrorView.showError(NO_SUCH_METHOD);
-        } catch (IOException e) {
-            myErrorView.showError(IOE_EXCEPTION);
-        } catch (InstantiationException e) {
-            myErrorView.showError(INSTANTIATION_EXCEPTION);
-        } catch (ParseException e) {
-            myErrorView.showError(PARSE_EXCEPTION);
+
         }
+        catch (ClassNotFoundException e) {myErrorView.showError(CLASS_NOT_FOUND);}
+        catch (InvocationTargetException e) {myErrorView.showError(INVOCATION_TARGET);}
+        catch (IllegalAccessException e) {myErrorView.showError(ILLEGAL_ACCESS);}
+        catch (NoSuchMethodException e) {myErrorView.showError(NO_SUCH_METHOD);}
+        catch (IOException e) {myErrorView.showError(IOE_EXCEPTION);}
+        catch (InstantiationException e) {myErrorView.showError(INSTANTIATION_EXCEPTION);}
+        catch (ParseException e) {myErrorView.showError(PARSE_EXCEPTION);}
     }
 
     private void assembleBoards() throws IOException, ParseException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         JSONContainer container = myReader.readJSONConfig();
         if (container != null && !container.isMissingContent()) {
-            // TODO: if exception being thrown, shouldn't run the following code
             int numOfRows = container.getMyNumOfRows();
             int numOfCols = container.getMyNumOfCols();
 
@@ -175,14 +160,10 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
             myBoardView = new BoardView(this);
             initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
-
+            myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
+                    cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+            gameController = new GameController(myGame);
         }
-    }
-
-    private void activateGame() {
-        myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
-                cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
-        gameController = new GameController(myGame);
     }
 
     /*
@@ -337,14 +318,13 @@ public class Controller implements BasicController, ViewerControllerInterface {
      * Gets the new ghost position of the ghost identified by the given ID
      *
      * @param nodeID
-     * @return
+     * @return The current ghost coordinates
      */
     public int[] getGhostPosition(String nodeID) {
         if (myBoard.getMyCPU(nodeID) != null) {
             int[] newPosition = {myBoard.getMyCPU(nodeID).getXpos(), myBoard.getMyCPU(nodeID).getYpos()};
             return newPosition;
         }
-        //System.out.print("NOT FOUND IN CREATURE ARRAY");
         return null;
     }
 
@@ -355,6 +335,10 @@ public class Controller implements BasicController, ViewerControllerInterface {
         myStartScreen.startNewGameForViewTests(filePath);
     }
 
+    /**
+     * Load the settings for next level
+     * @param boardView BoardView object for next level
+     */
     public void loadNextLevel(BoardView boardView) {
         myGame.resetGame();
         initializeBoardView(myBoard.getRows(), myBoard.getCols(), gameObjectMap, stringBoard, boardView);
@@ -412,6 +396,10 @@ public class Controller implements BasicController, ViewerControllerInterface {
         return cssFileName;
     }
 
+    /**
+     * Set the cell size in the grid system
+     * @param newSize The length of a cell size
+     */
     public void setCellSize(int newSize) {
         cellSize = newSize;
     }
@@ -424,6 +412,10 @@ public class Controller implements BasicController, ViewerControllerInterface {
         cssUIFileName = String.format(CSS_FILE_EXTENSION, cssName);
     }
 
+    /**
+     * Get the game controller
+     * @return GameController object
+     */
     public GameController getGameController() {
         return gameController;
     }
@@ -436,10 +428,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
         myCSVWriter.writeNext(nameAndScore);
         try {
             myCSVWriter.close();
-        } catch (IOException e) {
-            //TODO
-            myErrorView.showError(IOE_EXCEPTION);
-        }
+        } catch (IOException e) {}
     }
 
     /**
@@ -505,6 +494,10 @@ public class Controller implements BasicController, ViewerControllerInterface {
         return allCSVData;
     }
 
+    /**
+     * Get the timer condition
+     * @return Whether the condition is timer
+     */
     public int getTimer() {
         if (myGameSettings.getGeneralSettings().get("TIMER") != null) {
             return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));

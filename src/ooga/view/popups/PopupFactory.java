@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import ooga.controller.ViewerControllerInterface;
 import ooga.view.UINodeFactory.UINodeFactory;
 
-public class PopupFactory {
+public class PopupFactory{
 
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   public static final String HIGH_SCORE_V_BOX = "HighScoreVBox";
