@@ -61,6 +61,9 @@ public class GameDisplay {
         myStage.setScene(myScene);
     }
 
+    /**
+     * Displays the game over popup on the stage.
+     */
     public void showGameOverPopup() {
         UINodeFactory UINodeFactory = new UINodeFactory(myController);
         PopupFactory myPopupFactory = new PopupFactory(myController);
@@ -69,7 +72,7 @@ public class GameDisplay {
             GAME_OVER_HOME, GAME_OVER_HOME_ID, e -> myGameButtons.goHome());
         Node popupRestart = UINodeFactory.makeButton(myResources.getString(RESET), null,
             GAME_OVER_HOME, GAME_OVER_RESTART_ID, e -> myGameButtons.restartGame());
-        HBox buttonRow =(HBox) UINodeFactory.makeRow(HOME_ROW_FORMAT, popupHome, popupRestart);
+        HBox buttonRow = UINodeFactory.makeRow(HOME_ROW_FORMAT, popupHome, popupRestart);
         myPopupFactory.getMyVBox().getChildren().addAll(buttonRow);
         myPopupFactory.addExitInfo(EXIT_INSTRUCTIONS, SCORE_EXIT_ID);
         myPopupFactory.showPopup(myStage, gameOverPopup);

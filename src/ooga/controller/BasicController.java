@@ -9,26 +9,35 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public interface BasicController {
-    public void initializeGame(String path);
-    public int getCellCoordinate(double pixels);
-//    public int getLives();
-//    public int getScore();
-    public String getGameType();
-//    public boolean getIsPoweredUp();
-    public BoardView getBoardView();
-    public int getCellSize();
-    public void step(String direction);
-    public int[] getUserPosition();
-    public int[] getGhostPosition(String nodeID);
-    public void changeToGameScreen(String filePath);
-//    public boolean handleCollision(String nodeID);
-    public void loadNextLevel(BoardView boardView);
-    public void restartGame();
-    public void addScoreToCSV(String[] nameAndScore);
-    public List<String[]> getScoreData();
-//    public int getLevel();
-//    public boolean isGameOver();
-    public String getLanguage();
-    public void setUsername(String username);
-    public String getUsername();
+    void initializeGame(String path);
+    int getCellCoordinate(double pixels);
+
+    String getGameType();
+    BoardView getBoardView();
+    int getCellSize();
+    void step(String direction);
+    int[] getUserPosition();
+    int[] getGhostPosition(String nodeID);
+    void changeToGameScreen(String filePath);
+    void loadNextLevel(BoardView boardView);
+    void restartGame();
+    void addScoreToCSV(String[] nameAndScore);
+    List<String[]> getScoreData();
+
+    String getLanguage();
+    void setUsername(String username);
+    String getUsername();
+
+    @Deprecated
+    int getLevel();
+    @Deprecated
+    boolean isGameOver();
+    @Deprecated
+    boolean handleCollision(String nodeID);
+    @Deprecated
+    boolean getIsPoweredUp();
+    @Deprecated
+    int getLives();
+    @Deprecated
+    int getScore();
 }

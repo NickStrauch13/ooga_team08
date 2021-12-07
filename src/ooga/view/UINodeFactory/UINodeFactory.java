@@ -39,7 +39,8 @@ public class UINodeFactory {
    * @param response Button action.
    * @return Button node
    */
-  public Button makeButton(String property, ImageView icon, String buttonStyle, String ID, EventHandler<ActionEvent> response) {
+  public Button makeButton(String property, ImageView icon, String buttonStyle, String ID,
+      EventHandler<ActionEvent> response) {
     Button result = new Button(property, icon);
     result.setOnAction(response);
     result.getStyleClass().add(buttonStyle);
@@ -82,7 +83,7 @@ public class UINodeFactory {
    * @param nodes Nodes to put into HBox.
    * @return Hbox full of nodes.
    */
-  public HBox makeRow(String rowFormatting, Node ... nodes) {
+  public HBox makeRow(String rowFormatting, Node... nodes) {
     HBox row = new HBox();
     row.getChildren().addAll(nodes);
     row.setSpacing(SPACING);
@@ -96,7 +97,7 @@ public class UINodeFactory {
    * @param nodes Nodes to put in VBox.
    * @return VBox Node.
    */
-  public VBox makeCol(String rowFormatting, Node ... nodes) {
+  public VBox makeCol(String rowFormatting, Node... nodes) {
     VBox col = new VBox();
     col.getChildren().addAll(nodes);
     col.setSpacing(SPACING);
@@ -110,7 +111,7 @@ public class UINodeFactory {
    * @param entries The string entries to have in the box.
    * @return The choice box node
    */
-  public ChoiceBox makeChoiceBox(String boxID, String ... entries){
+  public ChoiceBox makeChoiceBox(String boxID, String... entries){
     ChoiceBox cb = new ChoiceBox(FXCollections.observableList(Arrays.asList(entries)));
     cb.getStyleClass().add(boxID);
     return (ChoiceBox) setID(boxID, cb);
