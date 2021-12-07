@@ -54,35 +54,35 @@ public class JSONReader {
     private final List<String> INTEGER_ELEMENTS = List.of("TIMER", "LIVES", "CELL_SIZE", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION", "POWERUP_SIZE");
     private final List<String> PARSE_ELEMENTS = List.of("WALL_COLOR", "POWERUP_COLOR");
 
-    private final Map<String, List<String>> SETTING_PARAMETERS =
-             Map.ofEntries(
-                     Map.entry("SETTINGS" ,List.of("LANGUAGE", "GAME_TITLE", "TIMER", "LIVES", "CELL_SIZE",
-                             "CSS_FILE_NAME", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION")),
-                     Map.entry("PACMAN" , List.of("USER_IMAGE")),
-                     Map.entry( "CPUGHOST" ,  List.of("CPU_IMAGE")),
-                     Map.entry( "WALL" ,  List.of("WALL_COLOR")),
-                     Map.entry("SCOREBOOSTER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-                     Map.entry( "STATECHANGER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-                     Map.entry( "SCOREMULTIPLIER",  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-                     Map.entry("GHOSTSLOWER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-                     Map.entry("EXTRALIFE" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-                     Map.entry("INVINCIBILITY" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-                     Map.entry("PORTAL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-                     Map.entry("SPEEDCUTTER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-                     Map.entry("WINLEVEL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE"))
-                     );
-
-    private final Map<String, List<Integer>> OBJECT_PARAMETERS =
-            Map.ofEntries(
-                    Map.entry("OBJECT_MAP" ,
-                            List.of(
-                                    0, 1, 2, 3,
-                                    6, 7, 8, 9,
-                                    10, 11, 12
-                            )
-                    ),
-                    Map.entry("CREATURE_MAP" ,List.of(4, 5))
-            );
+//    private final Map<String, List<String>> SETTING_PARAMETERS =
+//             Map.ofEntries(
+//                     Map.entry("SETTINGS" ,List.of("LANGUAGE", "GAME_TITLE", "TIMER", "LIVES", "CELL_SIZE",
+//                             "CSS_FILE_NAME", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION")),
+//                     Map.entry("PACMAN" , List.of("USER_IMAGE")),
+//                     Map.entry( "CPUGHOST" ,  List.of("CPU_IMAGE")),
+//                     Map.entry( "WALL" ,  List.of("WALL_COLOR")),
+//                     Map.entry("SCOREBOOSTER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
+//                     Map.entry( "STATECHANGER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
+//                     Map.entry( "SCOREMULTIPLIER",  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
+//                     Map.entry("GHOSTSLOWER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
+//                     Map.entry("EXTRALIFE" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
+//                     Map.entry("INVINCIBILITY" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
+//                     Map.entry("PORTAL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
+//                     Map.entry("SPEEDCUTTER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
+//                     Map.entry("WINLEVEL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE"))
+//                     );
+//
+//    private final Map<String, List<Integer>> OBJECT_PARAMETERS =
+//            Map.ofEntries(
+//                    Map.entry("OBJECT_MAP" ,
+//                            List.of(
+//                                    0, 1, 2, 3,
+//                                    6, 7, 8, 9,
+//                                    10, 11, 12
+//                            )
+//                    ),
+//                    Map.entry("CREATURE_MAP" ,List.of(4, 5))
+//            );
 
     private final String myPath;
     private ErrorView myErrorView;
@@ -99,6 +99,7 @@ public class JSONReader {
 
     /**
      * Read data from JSON file into a JSONReader object
+     * If cannot extract jsonData, return null
      * @return the returned JSONReader object with info from the JSON game configuration file
      * @throws IOException
      * @throws ParseException
@@ -106,7 +107,6 @@ public class JSONReader {
     public JSONContainer readJSONConfig() {
         JSONObject jsonData = extractJSONObject();
 
-        // if cannot extract jsonData file
         if (jsonData == null){
             return null;
         }
@@ -142,15 +142,9 @@ public class JSONReader {
     Check if any major setting map is missing
      */
     private boolean isMissingSettings(Map<String, Map<String, String>> mapList) {
-//        System.out.println(GAME_SETTINGS);
         for (String keyString : mapList.keySet()) {
-//            System.out.println(keyString);
             if (mapList.get(keyString) != null) {
-                if (mapList.get(keyString).isEmpty()) {
-                    myErrorView.showError(MISSING_CONTENT);
-                    return true;
-                }
-                else {
+                if (!mapList.get(keyString).isEmpty()){
                     if (isMissingItems(mapList, keyString)) {
                         return true;
                     }
@@ -167,11 +161,7 @@ public class JSONReader {
         Map<String, String> settings = mapList.get(keyString);
         Set<String> parameterSet = settings.keySet();
 
-//        System.out.println(parameterSet);
         for (String parameter : parameterSet) {
-//            System.out.println(parameter);
-//            System.out.println(INTEGER_ELEMENTS.contains(parameter));
-//            System.out.println(PARSE_ELEMENTS.contains(parameter));
 
             if (INTEGER_ELEMENTS.contains(parameter)) {
                 try {
@@ -257,30 +247,30 @@ public class JSONReader {
         return null;
     }
 
-    /*
-    Check if stringBoard is null or the dimension for rows matches
-     */
-    private boolean isMissingBoardStrings(List<List<String>> stringBoard, int numOfRows, int numOfCols) {
-        if (stringBoard == null || stringBoard.size() != numOfRows) {
-            myErrorView.showError(WRONG_BOARD_DIMENSION);
-            return true;
-        }
-//        return isColMismatch(stringBoard, numOfCols);
-        return false;
-    }
-
-    /*
-    Check if the dimension for columns matches
-     */
-    private boolean isColMismatch(List<List<String>> stringBoard, int numOfCols) {
-        for (List<String> row : stringBoard) {
-            if (row == null || row.isEmpty() || row.size() != numOfCols) {
-                myErrorView.showError(WRONG_COL_DIMENSION);
-                return true;
-            }
-        }
-        return false;
-    }
+//    /*
+//    Check if stringBoard is null or the dimension for rows matches
+//     */
+//    private boolean isMissingBoardStrings(List<List<String>> stringBoard, int numOfRows, int numOfCols) {
+//        if (stringBoard == null || stringBoard.size() != numOfRows) {
+//            myErrorView.showError(WRONG_BOARD_DIMENSION);
+//            return true;
+//        }
+////        return isColMismatch(stringBoard, numOfCols);
+//        return false;
+//    }
+//
+//    /*
+//    Check if the dimension for columns matches
+//     */
+//    private boolean isColMismatch(List<List<String>> stringBoard, int numOfCols) {
+//        for (List<String> row : stringBoard) {
+//            if (row == null || row.isEmpty() || row.size() != numOfCols) {
+//                myErrorView.showError(WRONG_COL_DIMENSION);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /*
     Extract information about the translation from integer values to object names
@@ -322,19 +312,19 @@ public class JSONReader {
         }
         return false;
     }
-
-    /*
-    Check if any index for game objects is missing
-     */
-    private boolean isMissingIndices(Set<Integer> indexSet, List<Integer> objectIndices) {
-        for (int index : objectIndices) {
-            if (!indexSet.contains(index)) {
-                myErrorView.showError(MISSING_INDEX);
-                return true;
-            }
-        }
-        return false;
-    }
+//
+//    /*
+//    Check if any index for game objects is missing
+//     */
+//    private boolean isMissingIndices(Set<Integer> indexSet, List<Integer> objectIndices) {
+//        for (int index : objectIndices) {
+//            if (!indexSet.contains(index)) {
+//                myErrorView.showError(MISSING_INDEX);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /**
      * Extract status information of the board from the JSON file
@@ -371,31 +361,31 @@ public class JSONReader {
         }
     }
 
-    /*
-    Check if the board information is incomplete
-     */
-    private boolean isMissingBoardInfo(List<List<Integer>> boardInfo, int numOfRows, int numOfCols) {
-        if (boardInfo == null || boardInfo.size() != numOfRows) {
-            myErrorView.showError(WRONG_BOARD_DIMENSION);
-            return true;
-        }
-//        return isBoardColMismatches(boardInfo, numOfCols);
-        return false;
-    }
-
-
-    /*
-    Check if the dimension for columns matches
-     */
-    private boolean isBoardColMismatches(List<List<Integer>> boardInfo, int numOfCols) {
-        for (List<Integer> row : boardInfo) {
-            if (row == null || row.isEmpty() || row.size() != numOfCols) {
-                myErrorView.showError(WRONG_BOARD_DIMENSION);
-                return true;
-            }
-        }
-        return false;
-    }
+//    /*
+//    Check if the board information is incomplete
+//     */
+//    private boolean isMissingBoardInfo(List<List<Integer>> boardInfo, int numOfRows, int numOfCols) {
+//        if (boardInfo == null || boardInfo.size() != numOfRows) {
+//            myErrorView.showError(WRONG_BOARD_DIMENSION);
+//            return true;
+//        }
+////        return isBoardColMismatches(boardInfo, numOfCols);
+//        return false;
+//    }
+//
+//
+//    /*
+//    Check if the dimension for columns matches
+//     */
+//    private boolean isBoardColMismatches(List<List<Integer>> boardInfo, int numOfCols) {
+//        for (List<Integer> row : boardInfo) {
+//            if (row == null || row.isEmpty() || row.size() != numOfCols) {
+//                myErrorView.showError(WRONG_BOARD_DIMENSION);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /*
     Extract information about the number of rows/columns from the json file
