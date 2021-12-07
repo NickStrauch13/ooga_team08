@@ -25,8 +25,42 @@ import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
 public class Controller implements BasicController, ViewerControllerInterface {
 
+    private static final String LANGUAGES = "languages";
+    private static final char COMMA = ',';
+    private static final String SIZE = "CELL_SIZE";
+    private static final String CSS_FILE_NAME = "CSS_FILE_NAME";
+    private static final String LANGUAGE = "LANGUAGE";
+    private static final String WALL = "WALL";
+    private static final String SCOREBOOSTER = "SCOREBOOSTER";
+    private static final String STATECHANGER = "STATECHANGER";
+    private static final String SCOREMULTIPLIER = "SCOREMULTIPLIER";
+    private static final String PORTAL = "PORTAL";
+    private static final String GHOSTSLOWER = "GHOSTSLOWER";
+    private static final String EXTRALIFE = "EXTRALIFE";
+    private static final String EMPTY = "EMPTY";
+    private static final String INVINCIBILITY = "INVINCIBILITY";
+    private static final String SPEEDCUTTER = "SPEEDCUTTER";
+    private static final String WINLEVEL = "WINLEVEL";
+    private static final int ZERO = 0;
+    private static final int ONE_INDEX = 1;
+    private static final int SECOND_INDEX = 2;
+    private static final int THIRD_INDEX = 3;
+    private static final int SIXTH_INDEX = 6;
+    private static final int SEVENTH_INDEX = 7;
+    private static final int EIGHTH_INDEX = 8;
+    private static final int NINTH = 9;
+    private static final int TENTH = 10;
+    private static final int ELEVENTH = 11;
+    private static final int TWELVE = 12;
+    private static final int PACMAN_INDEX = 4;
+    private static final String PACMAN = "PACMAN";
+    private static final String CPUGHOST = "CPUGHOST";
+    private static final int ENEMY_INDEX = 5;
+    private static final CPUCreature NULL_CREATURE = null;
+    private static final String TIMER = "TIMER";
+    private static final String GAME_TITLE = "GAME_TITLE";
     private final double ANIMATION_SPEED = 0.3;
-    private final int HIGH_SCORE_VALS = 10;
+    private final int HIGH_SCORE_VALS = TENTH;
     private final int WIDTH = 1200;
     private final int HEIGHT = 700;
     public final int CELL_SIZE = 25;
@@ -86,7 +120,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
     public Controller(Stage stage){
         cssFileName = DEFAULT_CSS_FILE;
         myUsername = DEFAULT_USERNAME;
-        myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + "languages");
+        myLanguages = ResourceBundle.getBundle(LANGUAGE_RESOURCE_PACKAGE + LANGUAGES);
         language = myLanguages.getString(DEFAULT_LANGUAGE);
 
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
@@ -112,7 +146,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
     private void initializeCSVIO(){
         try {
             File scoreFile = new File(SCORE_PATH);
-            myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
+            myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), COMMA, CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
         }
@@ -168,15 +202,15 @@ public class Controller implements BasicController, ViewerControllerInterface {
     }
 
     private void setupCellSize() {
-        setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().getOrDefault("CELL_SIZE", String.valueOf(DEFAULT_CELL_SIZE)).trim()));
+        setCellSize(Integer.parseInt(myGameSettings.getGeneralSettings().getOrDefault(SIZE, String.valueOf(DEFAULT_CELL_SIZE)).trim()));
     }
 
     private void setupCSSFile() {
-        cssFileName = myGameSettings.getGeneralSettings().getOrDefault("CSS_FILE_NAME", DEFAULT_CSS_FILE).trim();
+        cssFileName = myGameSettings.getGeneralSettings().getOrDefault(CSS_FILE_NAME, DEFAULT_CSS_FILE).trim();
     }
 
     private void setupLanguage() {
-        language = myLanguages.getString(myGameSettings.getGeneralSettings().getOrDefault("LANGUAGE", DEFAULT_LANGUAGE).trim());
+        language = myLanguages.getString(myGameSettings.getGeneralSettings().getOrDefault(LANGUAGE, DEFAULT_LANGUAGE).trim());
     }
 
     /*
@@ -192,30 +226,30 @@ public class Controller implements BasicController, ViewerControllerInterface {
     //TODO: hardcoded, need to refactored - enum
     public Map<Integer,String> createGameObjectMap() {
          return Map.ofEntries(
-                 Map.entry(0,"WALL"),
-                 Map.entry(1,"SCOREBOOSTER"),
-                 Map.entry(2 ,"STATECHANGER"),
-                 Map.entry(3 , "SCOREMULTIPLIER"),
-                 Map.entry( 6 , "PORTAL"),
-                 Map.entry( 7 , "GHOSTSLOWER"),
-                 Map.entry(8 , "EXTRALIFE"),
-                 Map.entry( 9 , "EMPTY"),
-                 Map.entry( 10, "INVINCIBILITY"),
-                 Map.entry(11 , "SPEEDCUTTER"),
-                 Map.entry(12 , "WINLEVEL")
+                 Map.entry(ZERO, WALL),
+                 Map.entry(ONE_INDEX, SCOREBOOSTER),
+                 Map.entry(SECOND_INDEX, STATECHANGER),
+                 Map.entry(THIRD_INDEX, SCOREMULTIPLIER),
+                 Map.entry(SIXTH_INDEX, PORTAL),
+                 Map.entry(SEVENTH_INDEX, GHOSTSLOWER),
+                 Map.entry(EIGHTH_INDEX, EXTRALIFE),
+                 Map.entry(NINTH, EMPTY),
+                 Map.entry(TENTH, INVINCIBILITY),
+                 Map.entry(ELEVENTH, SPEEDCUTTER),
+                 Map.entry(TWELVE, WINLEVEL)
          );
     }
 
     public Map<Integer,String> createCreatureMap() {
-        return Map.ofEntries(Map.entry(4,"PACMAN"),Map.entry(5,"CPUGHOST"));
+        return Map.ofEntries(Map.entry(PACMAN_INDEX, PACMAN),Map.entry(ENEMY_INDEX, CPUGHOST));
     }
 
     /*
     Initialize all game objects within the Board object
      */
     private void initializeBoard(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        for (int row = 0; row < numOfRows; row++) {
-            for (int col = 0; col < numOfCols; col++) {
+        for (int row = ZERO; row < numOfRows; row++) {
+            for (int col = ZERO; col < numOfCols; col++) {
                 String objectName = stringBoard.get(row).get(col);
                 addObjects(gameObjectMap, row, col, objectName);
             }
@@ -223,11 +257,11 @@ public class Controller implements BasicController, ViewerControllerInterface {
     }
 
     private void addObjects(Map<Integer, String> gameObjectMap, int row, int col, String objectName) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
+        if (gameObjectMap.containsValue(objectName) && !objectName.equals(EMPTY)) {
             myBoard.createGameObject(row, col, objectName);
         } else if (creatureMap.containsValue(objectName)) {
-            myBoard.createCreature(col * cellSize + 3, row * cellSize + 3, objectName,
-                    cellSize-5);
+            myBoard.createCreature(col * cellSize + THIRD_INDEX, row * cellSize + THIRD_INDEX, objectName,
+                    cellSize- ENEMY_INDEX);
         }
     }
 
@@ -235,8 +269,8 @@ public class Controller implements BasicController, ViewerControllerInterface {
     Initialize all pieces within the BoardView object
      */
     private void initializeBoardView(int numOfRows, int numOfCols, Map<Integer, String> gameObjectMap, List<List<String>> stringBoard, BoardView boardView) {
-        for (int row = 0; row < numOfRows; row++) {
-            for (int col = 0; col < numOfCols; col++) {
+        for (int row = ZERO; row < numOfRows; row++) {
+            for (int col = ZERO; col < numOfCols; col++) {
                 String objectName = stringBoard.get(row).get(col);//TODO MAKE SURE NOT SETTINGS
                 addPieces(gameObjectMap, boardView, row, col, objectName);
             }
@@ -244,13 +278,13 @@ public class Controller implements BasicController, ViewerControllerInterface {
     }
 
     private void addPieces(Map<Integer, String> gameObjectMap, BoardView boardView, int row, int col, String objectName) {
-        if (!objectName.equals("EMPTY")) {
+        if (!objectName.equals(EMPTY)) {
             if (gameObjectMap.containsValue(objectName)) {
                 boardView.addBoardPiece(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
             } else {
-                if (objectName.equals("PACMAN")) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
+                if (objectName.equals(PACMAN)) { //TODO I added this in as a temporary fix. We need a way to tell if the creature is user controlled or CPU controlled. Maybe have the user specify what piece they want to control in the json file?
                     boardView.addUserCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
-                } else if (objectName.equals("CPUGHOST")) {
+                } else if (objectName.equals(CPUGHOST)) {
                     boardView.addCPUCreature(row, col, objectName, myGameSettings.getAllSettings().get(objectName));
                 }
 
@@ -307,7 +341,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
      * @return The current ghost coordinates
      */
     public int[] getGhostPosition(String nodeID) {
-        if (myBoard.getMyCPU(nodeID) != null) {
+        if (myBoard.getMyCPU(nodeID) != NULL_CREATURE) {
             int[] newPosition = {myBoard.getMyCPU(nodeID).getXpos(), myBoard.getMyCPU(nodeID).getYpos()};
             return newPosition;
         }
@@ -431,7 +465,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
         if (allScores.size() < HIGH_SCORE_VALS) {
             numToDisplay = allScores.size();
         }
-        for (int i = 0; i < numToDisplay; i++) {
+        for (int i = ZERO; i < numToDisplay; i++) {
             topTen.add(BLANK_ENTRY);
         }
         optimizeTopTen(allScores, topTen, numToDisplay);
@@ -440,15 +474,15 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
         for (String[] score : allScores) {
-            for (int i = 0; i < numToDisplay; i++) {
-                if (Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])) {
+            for (int i = ZERO; i < numToDisplay; i++) {
+                if (Integer.parseInt(score[ONE_INDEX]) > Integer.parseInt(topTen.get(i)[ONE_INDEX])) {
                     topTen.add(i, score);
                     break;
                 }
             }
         }
         while (topTen.size() > HIGH_SCORE_VALS) {
-            topTen.remove(topTen.size() - 1);
+            topTen.remove(topTen.size() - ONE_INDEX);
         }
     }
 
@@ -458,10 +492,10 @@ public class Controller implements BasicController, ViewerControllerInterface {
      */
     public String getTopScoreForUser(){
         List<String[]> scoreData = readCSV();
-        String score = Integer.toString(0);
-        for(int i=0; i<scoreData.size(); i++){
-            if(Integer.parseInt(scoreData.get(i)[1]) > Integer.parseInt(score) && myUsername.equals(scoreData.get(i)[0])){
-                score = scoreData.get(i)[1];
+        String score = Integer.toString(ZERO);
+        for(int i = ZERO; i<scoreData.size(); i++){
+            if(Integer.parseInt(scoreData.get(i)[ONE_INDEX]) > Integer.parseInt(score) && myUsername.equals(scoreData.get(i)[ZERO])){
+                score = scoreData.get(i)[ONE_INDEX];
             }
         }
         return score;
@@ -482,15 +516,15 @@ public class Controller implements BasicController, ViewerControllerInterface {
      * @return Whether the condition is timer
      */
     public int getTimer() {
-        if (myGameSettings.getGeneralSettings().get("TIMER") != null) {
-            return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
+        if (myGameSettings.getGeneralSettings().get(TIMER) != null) {
+            return Integer.parseInt(myGameSettings.getGeneralSettings().get(TIMER));
         }
-        return -1;
+        return -ONE_INDEX;
     }
 
     public String getGameType() {
-        if (myGameSettings.getGeneralSettings().get("GAME_TITLE") != null){
-            return myGameSettings.getGeneralSettings().get("GAME_TITLE");
+        if (myGameSettings.getGeneralSettings().get(GAME_TITLE) != null){
+            return myGameSettings.getGeneralSettings().get(GAME_TITLE);
         }
         return DEFAULT_TITLE;
     }
@@ -575,7 +609,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     @Deprecated
     public void addLife() {
-        getGame().addLives(1);
+        getGame().addLives(ONE_INDEX);
     }
 
     @Deprecated
@@ -605,7 +639,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
     @Deprecated
     public void loseLife() {
-        getGame().addLives(-1);
+        getGame().addLives(-ONE_INDEX);
     }
 
     @Deprecated

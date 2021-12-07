@@ -19,7 +19,13 @@ public class JSONReader {
     private final String NUMBER_FORMAT_EXCEPTION_STRING_BOARD = "NUMBER_FORMAT_EXCEPTION_STRING_BOARD";
     private final String NUMBER_FORMAT_EXCEPTION_MAP = "NUMBER_FORMAT_EXCEPTION_MAP";
     private final String NUMBER_FORMAT_EXCEPTION_VALUES = "NUMBER_FORMAT_EXCEPTION_VALUES";
-
+    private static final String ROW_NUMBER = "ROW_NUMBER";
+    private static final String COL_NUMBER = "COL_NUMBER";
+    private static final String OBJECT_MAP = "OBJECT_MAP";
+    private static final String CREATURE_MAP = "CREATURE_MAP";
+    private static final String COMMA = ",";
+    private static final int ZERO = 0;
+    private static final String BOARD = "BOARD";
 
     private final String CLASS_CAST_EXCEPTION_DIM = "CLASS_CAST_EXCEPTION_DIM";
     private final String CLASS_CAST_EXCEPTION_BOARD = "CLASS_CAST_EXCEPTION_BOARD";
@@ -78,12 +84,13 @@ public class JSONReader {
             return null;
         }
 
-        int numOfRows = getDimension(jsonData, "ROW_NUMBER");
-        int numOfCols = getDimension(jsonData, "COL_NUMBER");
+        int numOfRows = getDimension(jsonData, ROW_NUMBER);
+        int numOfCols = getDimension(jsonData, COL_NUMBER);
 
         List<List<Integer>> boardInfo = getBoardInfo(jsonData, numOfRows, numOfCols);
-        Map<Integer, String> conversionMap = getConversionMap(jsonData, "OBJECT_MAP");
-        Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
+
+        Map<Integer, String> conversionMap = getConversionMap(jsonData, OBJECT_MAP);
+        Map<Integer, String> creatureMap = getConversionMap(jsonData, CREATURE_MAP);
         List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap, numOfRows, numOfCols);
         GameSettings gameSettings = getGameSettings(jsonData);
 
@@ -198,9 +205,9 @@ public class JSONReader {
     private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, int numOfRows, int numOfCols){
         List<List<String>> stringBoard = new ArrayList<>();
         try {
-            for (int i = 0; i < boardInfo.size(); i++) {
+            for (int i = ZERO; i < boardInfo.size(); i++) {
                 List<String> innerList = new ArrayList<>();
-                for (int j = 0; j < boardInfo.get(0).size(); j++) {
+                for (int j = ZERO; j < boardInfo.get(ZERO).size(); j++) {
                     int currentValue = boardInfo.get(i).get(j);
                     innerList.add(conversionMap.containsKey(currentValue) ? conversionMap.get(currentValue) : creatureMap.get(currentValue));
                 }
@@ -302,7 +309,7 @@ public class JSONReader {
     private List<List<Integer>> getBoardInfo(JSONObject jsonData, int numOfRows, int numOfCols) {
         List<List<Integer>> boardInfo = new ArrayList<>();
         try {
-            JSONArray JSONBoard = (JSONArray) jsonData.get("BOARD");
+            JSONArray JSONBoard = (JSONArray) jsonData.get(BOARD);
             updateBoardInfo(boardInfo, JSONBoard);
 //            if (isMissingBoardInfo(boardInfo, numOfRows, numOfCols)) return null;
             return boardInfo;

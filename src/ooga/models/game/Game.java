@@ -10,6 +10,16 @@ import java.util.*;
 
 public class Game implements PickupGame {
 
+    private static final String DIRECTIONS = "directions";
+    private static final int TIME_CONSTANT = 100;
+    private static final int TWO = 2;
+    private static final int DIRECTION_BOUND = 4;
+    private static final String IS_PICKUPS_A_VALID_WIN_CONDITION = "IS_PICKUPS_A_VALID_WIN_CONDITION";
+    private static final String USER_IS_PREDATOR = "USER_IS_PREDATOR";
+    private static final String HARD = "HARD";
+    private static final String ONE_STRING = "1";
+    private static final String LIVES = "LIVES";
+    private static final String TIMER = "TIMER";
     private boolean gameOver=false;
     private String lastDirection;
     private int boardXSize;
@@ -62,7 +72,7 @@ public class Game implements PickupGame {
         startingPickUps = numPickUps;
         myUserControlled = userPlayer;
         activeCPUCreatures = CPUCreatures;
-        myCreatureResources = ResourceBundle.getBundle(CREATURE_RESOURCE_PACKAGE + "directions");
+        myCreatureResources = ResourceBundle.getBundle(CREATURE_RESOURCE_PACKAGE + DIRECTIONS);
         level=1;
         myCellSize = cellSize;
         boardXSize=cellSize*board.getCols();
@@ -187,7 +197,7 @@ public class Game implements PickupGame {
      * gets the current time of the animation
      * @return the current time of the animation
      */
-    public int getTime(){return timer/100;}
+    public int getTime(){return timer/ TIME_CONSTANT;}
 
     private void adjustGhostCollisions(){
         myUserControlled.setPoweredUp(isPredator);
@@ -229,14 +239,14 @@ public class Game implements PickupGame {
     private boolean checkCorners(Creature currentCreature,int[] direction){
         int xDirection = direction[0];
         int yDirection = direction[1];
-        int xCorner = (xDirection+1)%2;
-        int yCorner = (yDirection+1)%2;
+        int xCorner = (xDirection+1)% TWO;
+        int yCorner = (yDirection+1)% TWO;
 
-        int corner1X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize+xCorner*currentCreature.getSize()/2;
-        int corner1Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize+yCorner*currentCreature.getSize()/2;
+        int corner1X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/ TWO +xDirection)%boardXSize+xCorner*currentCreature.getSize()/ TWO;
+        int corner1Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/ TWO +yDirection)%boardYSize+yCorner*currentCreature.getSize()/ TWO;
 
-        int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/2+xDirection)%boardXSize-xCorner*currentCreature.getSize()/2;
-        int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/2+yDirection)%boardYSize-yCorner*currentCreature.getSize()/2;
+        int corner2X = (currentCreature.getCenterX()+xDirection*currentCreature.getSize()/ TWO +xDirection)%boardXSize-xCorner*currentCreature.getSize()/ TWO;
+        int corner2Y = (currentCreature.getCenterY()+yDirection*currentCreature.getSize()/ TWO +yDirection)%boardYSize-yCorner*currentCreature.getSize()/ TWO;
 
         return !getIsWallAtPosition(corner1X,corner1Y)&&!getIsWallAtPosition(corner2X,corner2Y);
     }
@@ -248,7 +258,7 @@ public class Game implements PickupGame {
             movementDirection = bfsChase(cpu);
         }
         else{
-            movementDirection = POSSIBLE_DIRECTIONS[r.nextInt(4)];
+            movementDirection = POSSIBLE_DIRECTIONS[r.nextInt(DIRECTION_BOUND)];
         }
         return movementDirection;
     }
@@ -261,7 +271,7 @@ public class Game implements PickupGame {
         if (potentialPath==null){
           return randomDirection();
         }
-        int firstStep = potentialPath.getLast()-potentialPath.get(potentialPath.size()-2);
+        int firstStep = potentialPath.getLast()-potentialPath.get(potentialPath.size()- TWO);
         cpuDirection = POSSIBLE_DIRECTIONS[POSSIBLE_FIRST_STEPS.indexOf(firstStep)];
         return cpuDirection;
     }
@@ -575,8 +585,8 @@ public class Game implements PickupGame {
 
 
     private void setIsPickupsWinCondition() {
-        if (gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION") != null) {
-            isPickups = Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))<0;
+        if (gameSettings.get(IS_PICKUPS_A_VALID_WIN_CONDITION) != null) {
+            isPickups = Integer.parseInt(gameSettings.get(IS_PICKUPS_A_VALID_WIN_CONDITION))<0;
         }
         else {
             isPickups = false;
@@ -585,8 +595,8 @@ public class Game implements PickupGame {
 
 
     private void setIsPredator() {
-        if (gameSettings.get("USER_IS_PREDATOR") != null) {
-            isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
+        if (gameSettings.get(USER_IS_PREDATOR) != null) {
+            isPredator= Integer.parseInt(gameSettings.get(USER_IS_PREDATOR))<0;
         }
         else {
             isPredator = false;
@@ -594,8 +604,8 @@ public class Game implements PickupGame {
     }
 
     private void setDifficulty() {
-        if (gameSettings.get("HARD") != null) {
-            isHard = gameSettings.get("HARD").equals("1");
+        if (gameSettings.get(HARD) != null) {
+            isHard = gameSettings.get(HARD).equals(ONE_STRING);
         }
         else {
             isHard = true;
@@ -603,8 +613,8 @@ public class Game implements PickupGame {
     }
 
     private void setLives() {
-        if (gameSettings.get("LIVES") != null) {
-            lives = Integer.parseInt(gameSettings.get("LIVES"));
+        if (gameSettings.get(LIVES) != null) {
+            lives = Integer.parseInt(gameSettings.get(LIVES));
         }
         else {
             lives = 3;
@@ -612,16 +622,16 @@ public class Game implements PickupGame {
     }
 
     private void setTimer() {
-        if (gameSettings.get("TIMER") != null) {
-            timer=Integer.parseInt(gameSettings.get("TIMER"));
+        if (gameSettings.get(TIMER) != null) {
+            timer=Integer.parseInt(gameSettings.get(TIMER));
         }
         else {
             timer = -1;
         }
     }
     private void setIsPickups() {
-        if (gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION") != null) {
-            isPickups=Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))==1;
+        if (gameSettings.get(IS_PICKUPS_A_VALID_WIN_CONDITION) != null) {
+            isPickups=Integer.parseInt(gameSettings.get(IS_PICKUPS_A_VALID_WIN_CONDITION))==1;
         }
         else {
             isPickups=true;

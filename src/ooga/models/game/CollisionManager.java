@@ -1,6 +1,7 @@
 package ooga.models.game;
 
 public class CollisionManager {
+    private static final String COMMA = ",";
     private String currentCollision;
 
     /**
@@ -37,7 +38,7 @@ public class CollisionManager {
      * @return
      */
     public boolean isCreature(){
-        return(!currentCollision.contains(","));
+        return(!currentCollision.contains(COMMA));
     }
 
 

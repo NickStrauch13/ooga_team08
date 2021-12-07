@@ -5,12 +5,8 @@ import ooga.controller.Controller;
 import ooga.controller.JSONContainer;
 import ooga.controller.JSONReader;
 import ooga.models.creatures.cpuControl.CPUCreature;
-import ooga.models.creatures.userControl.UserCreature;
-import ooga.models.creatures.userControl.UserPacman;
 import ooga.models.game.Board;
 import ooga.models.game.Game;
-import ooga.models.game.PickupGame;
-import ooga.models.gameObjects.GameObject;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +23,7 @@ public class ExtraLifeTest extends DukeApplicationTest {
     private List<CPUCreature> creatureList;
     private Board newBoard;
     private Game g;
-    private UserPacman userPacman;
+
     private int numPickups;
     private Controller myController;
 
@@ -51,7 +47,7 @@ public class ExtraLifeTest extends DukeApplicationTest {
         myController.getGame().setLastDirection("RIGHT");
         // myController.initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         numPickups = 10;
-        userPacman=(UserPacman) myController.getGame().getUser();
+
         CPUCreature c1 = new CPUCreature(100,100);
         c1.setId("CREATURE123");
         c1.setCurrentDirection(new int[]{0,1});

@@ -13,6 +13,7 @@ public class ErrorView {
 
   private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
   public static final String ERROR_TITLE = "ErrorTitle";
+  private static final String LOGS_DEFAULT_LOG = "logs/default.log";
   private ResourceBundle myResources;
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -29,7 +30,7 @@ public class ErrorView {
   public void showError(String message) {
     LOGGER.log(Level.WARNING, message);
     try {
-      FileHandler fh=new FileHandler("logs/default.log", true);
+      FileHandler fh=new FileHandler(LOGS_DEFAULT_LOG, true);
 
       LOGGER.addHandler(fh);
     }catch(IOException ioException){

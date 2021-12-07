@@ -22,6 +22,12 @@ import java.util.ResourceBundle;
  * Author: Neil Mosca
  */
 public class BuilderDisplay {
+    private static final String WALL = "WALL";
+    private static final String D_D_S = "%d,%d,%s";
+    private static final String BOARD_BUILDER_HOLDER = "boardBuilderHolder";
+    private static final String BOARD_BUILDER_TEXT = "BoardBuilderText";
+    private static final String BUILDER_TEXT_ID = "BuilderTextID";
+    private static final String MY_BOARD = "MyBoard";
     private Stage myStage;
     private Scene myScene;
     private BorderPane root;
@@ -73,8 +79,8 @@ public class BuilderDisplay {
         myBoardView.getMyGrid().setVgap(SPACING);
         for (int r = 0; r < DEFAULT_BOARD_SIZE; r++) {
             for (int c = 0; c < DEFAULT_BOARD_SIZE; c++) {
-                GamePiece wall = myBoardView.addBoardPiece(r, c, "WALL", null);
-                wall.getPiece().setId(String.format("%d,%d,%s", r, c,wall.getClass().getSimpleName()));
+                GamePiece wall = myBoardView.addBoardPiece(r, c, WALL, null);
+                wall.getPiece().setId(String.format(D_D_S, r, c,wall.getClass().getSimpleName()));
                 wall.getPiece().setOnMouseClicked(e -> myBoardManager.updateGrid(wall.getPiece()));
 
             }
@@ -82,8 +88,8 @@ public class BuilderDisplay {
     }
 
     private void setupScene(){
-        Label boardBuilderText = myNodeBuilder.makeLabel(myResources.getString("BoardBuilderText"), "BuilderTextID");
-        Node myHbox = myNodeBuilder.makeRow("boardBuilderHolder", boardBuilderText);
+        Label boardBuilderText = myNodeBuilder.makeLabel(myResources.getString(BOARD_BUILDER_TEXT), BUILDER_TEXT_ID);
+        Node myHbox = myNodeBuilder.makeRow(BOARD_BUILDER_HOLDER, boardBuilderText);
         root.setTop(myHbox);
         setupBoard();
         root.setCenter(myBoardView.getInitialBoard());
@@ -95,7 +101,7 @@ public class BuilderDisplay {
      */
     public void newGameWithBoard() {
         myJSONBuilder.compileBoard(myBoardManager.getUserAdded());
-        myController.initializeGame(String.format(myJSONBuilder.getBoardPath(), "MyBoard"));
+        myController.initializeGame(String.format(myJSONBuilder.getBoardPath(), MY_BOARD));
         GameDisplay gameDisplay = new GameDisplay(myStage, (int)myScene.getWidth(),  (int)myScene.getHeight(), myController.getLanguage(), myController, myController.getBoardView());
         gameDisplay.setMainDisplay();
     }

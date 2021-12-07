@@ -4,6 +4,7 @@ import ooga.models.game.PickupGame;
 
 public class SpeedCutter extends Pickup {
     private static final int POWERUP_TIME=5000;
+    private static final int TWO = 2;
 
     /**
      * constructor for pickup, sets position on board
@@ -20,13 +21,13 @@ public class SpeedCutter extends Pickup {
      */
     public void interact(PickupGame pickupGame){
         int currentStep = pickupGame.getStepCounter();
-        pickupGame.setUserSpeed(pickupGame.getUser().getSpeed()*2);
+        pickupGame.setUserSpeed(pickupGame.getUser().getSpeed()* TWO);
         super.interact(pickupGame);
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-                        pickupGame.setUserSpeed(pickupGame.getUser().getSpeed()/2);
+                        pickupGame.setUserSpeed(pickupGame.getUser().getSpeed()/ TWO);
                     }
                 },
                 POWERUP_TIME

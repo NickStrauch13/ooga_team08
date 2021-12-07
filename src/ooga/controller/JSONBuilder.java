@@ -13,6 +13,13 @@ import org.json.simple.JSONObject;
  */
 public class JSONBuilder {
 
+    private static final String ROW_NUMBER = "ROW_NUMBER";
+    private static final String COL_NUMBER = "COL_NUMBER";
+    private static final String D_FORMATTER = "%d";
+    private static final String BOARD = "BOARD";
+    private static final String OBJECT_MAP = "OBJECT_MAP";
+    private static final String CREATURE_MAP = "CREATURE_MAP";
+    private static final String COMMA = ",";
     private final String FILE_PATH = "./data/boardBuilderBoards/output.json";
     private static final int DEFAULT_BOARD_SIZE = 10;
     private static final int ROW = 0;
@@ -37,12 +44,12 @@ public class JSONBuilder {
     private void createJSONFile() {
         JSONObject jsonObject = new JSONObject();
         JSONArray myJSONArray = new JSONArray();
-        jsonObject.put("ROW_NUMBER", String.format("%d",fileBoard.length));
-        jsonObject.put("COL_NUMBER", String.format("%d",fileBoard[0].length));
+        jsonObject.put(ROW_NUMBER, String.format(D_FORMATTER,fileBoard.length));
+        jsonObject.put(COL_NUMBER, String.format(D_FORMATTER,fileBoard[0].length));
         compileJSONArray(myJSONArray);
-        jsonObject.put("BOARD", myJSONArray);
-        jsonObject.put("OBJECT_MAP", myCreatureMap);
-        jsonObject.put("CREATURE_MAP", myObjectMap);
+        jsonObject.put(BOARD, myJSONArray);
+        jsonObject.put(OBJECT_MAP, myCreatureMap);
+        jsonObject.put(CREATURE_MAP, myObjectMap);
         try {
             FileWriter file = new FileWriter(FILE_PATH);
             file.write(jsonObject.toJSONString());
@@ -84,7 +91,7 @@ public class JSONBuilder {
         for (Map.Entry<Integer, String> myClass : myMap.entrySet())
         {
             if (myClass.getValue().equals(className)) {
-                return String.format("%d", myClass.getKey());
+                return String.format(D_FORMATTER, myClass.getKey());
             }
         }
         return classToInt(className, myCreatureMap);
@@ -137,7 +144,7 @@ public class JSONBuilder {
      * @return
      */
     public String[] splitId(String id) {
-        return id.split(",");
+        return id.split(COMMA);
     }
 
     private boolean inObjectMap(String className) {
