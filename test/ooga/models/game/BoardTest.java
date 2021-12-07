@@ -40,7 +40,6 @@ public class BoardTest {
     @Test
     public void TestGetGameObject(){
         assert(newBoard.getGameObject(0,0).getClass().getName().equals("ooga.models.gameObjects.walls.BasicWall"));
-
     }
     @Test
     public void testGetIsWallAtCellTrue(){
