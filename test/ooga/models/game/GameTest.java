@@ -27,12 +27,13 @@ public class GameTest extends DukeApplicationTest {
     private UserCreature userPacman;
     private int numPickups;
     private Controller myController;
+    private Controller myController2;
 
     @Override
     public void start(Stage stage)
             throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         myController = new Controller(stage);
-
+        myController2 = new Controller(stage);
     }
     @BeforeEach
     public void initializeGame() throws IOException, ParseException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -41,7 +42,7 @@ public class GameTest extends DukeApplicationTest {
         JSONReader reader = new JSONReader("English","data/test/vanillaTest.json");
         JSONContainer container = reader.readJSONConfig();
 
-
+        myController2.initializeGame("data/test/chocolateTest.json");
         myController.initializeGame("data/test/vanillaTest.json");
         List<List<String>> stringBoard = container.getMyStringBoard();
         newBoard=myController.getGameController().getGame().getMyBoard();
@@ -364,9 +365,64 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testPredatorWinLossTimer0(){
-        myController.initializeGame("data/test/chocolateTest.json");
-        myController.step("LEFT");
+g=myController2.getGameController().getGame();
+        myController2.step("LEFT");
+        myController2.step("LEFT");
         assertTrue(g.isGameOver());
+    }
+    @Test
+    public void testPredatorWinNoLives(){
+        g=myController2.getGameController().getGame();
+        g.addLives(-3);
+        myController2.step("LEFT");
+        assertEquals(g.getLevel(),2);
+    }
+    @Test
+    public void testPreyLoseNoLives(){
+        g.addLives(-3);
+        myController.step("LEFT");
+        assertEquals(g.isGameOver(),true);
+    }
+    @Test
+    public void testresetpowerups(){
+        g.setPowerupEndtime(1);
+        myController.step("LEFT");
+        assertEquals(g.getUser().isPoweredUp(),false);
+    }
+    @Test
+    public void testmultScore(){
+        g.multiplyScore(2);
+        myController.step("LEFT");
+        assertEquals(g.getScore(),0);
+    }
+    @Test
+    public void testGetPortals(){
+
+        assertEquals(g.getPortalLocations().size(),0);
+    }
+    @Test
+    public void testGetStepCounter(){
+
+        assertEquals(g.getStepCounter(),0);
+    }
+    @Test
+    public void testSetPortalsGone(){
+        g.setPortalsGone();
+        assertEquals(g.getPortalLocations(),null);
+    }
+    @Test
+    public void testremovePortalsGone(){
+        try {
+            g.removePortal(new int[]{1, 1});
+        }
+        catch(IndexOutOfBoundsException e) {
+            assertEquals(g.getPortalLocations().size(), 0);
+        }
+    }
+    @Test
+    public void testReSetPortalsGone(){
+        g.setPortalsGone();
+        assertEquals(g.getPortalLocations(),null);
     }
 
 

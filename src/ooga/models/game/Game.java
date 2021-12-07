@@ -83,6 +83,7 @@ public class Game implements PickupGame {
         adjustGhostCollisions();
         createPossibleSteps();
         setIsPickups();
+
         levelPortalLocations = (ArrayList<int[]>)myBoard.getPortalLocations().clone();
     }
 
@@ -550,7 +551,9 @@ public class Game implements PickupGame {
      * gets the number of times step has been run
      * @return number of times step has been run
      */
-    public int getStepCounter() {return stepCounter;}
+    public int getStepCounter() {
+        return stepCounter;
+    }
 
 
     /**
@@ -596,7 +599,7 @@ public class Game implements PickupGame {
 
     private void setIsPredator() {
         if (gameSettings.get(USER_IS_PREDATOR) != null) {
-            isPredator= Integer.parseInt(gameSettings.get(USER_IS_PREDATOR))<0;
+            isPredator= Integer.parseInt(gameSettings.get(USER_IS_PREDATOR))==1;
         }
         else {
             isPredator = false;
