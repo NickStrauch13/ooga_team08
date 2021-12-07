@@ -3,7 +3,6 @@ package ooga.controller;
 import javafx.stage.Stage;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
-import ooga.models.creatures.userControl.UserPacman;
 import ooga.models.game.Board;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
@@ -27,7 +26,6 @@ class ControllerDeprecatedTest extends DukeApplicationTest {
     private List<CPUCreature> creatureList;
     private Board newBoard;
     private Game g;
-    private UserPacman userPacman;
     private int numPickups;
     private Controller myController;
     private BoardView myBoardView;
@@ -54,7 +52,6 @@ class ControllerDeprecatedTest extends DukeApplicationTest {
         myController.getGameController().getGame().setLastDirection("RIGHT");
         myBoardView = myController.getBoardView();
         numPickups = 10;
-        userPacman=(UserPacman) myController.getGameController().getGame().getUser();
         CPUCreature c1 = new CPUCreature(100,100);
         c1.setId("CREATURE123");
         c1.setCurrentDirection(new int[]{0,1});
