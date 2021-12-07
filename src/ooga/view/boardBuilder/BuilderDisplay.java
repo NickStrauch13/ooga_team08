@@ -15,6 +15,12 @@ import ooga.view.gameDisplay.gamePieces.GamePiece;
 import ooga.view.gameDisplay.top.GameStats;
 import java.util.ResourceBundle;
 
+/**
+ * This class sets up the board builder display
+ * Uses a boardview that can be edited to produce a game board
+ * BuilderButtons adds the different GamePieces
+ * Author: Neil Mosca
+ */
 public class BuilderDisplay {
     private Stage myStage;
     private Scene myScene;
@@ -84,6 +90,9 @@ public class BuilderDisplay {
         root.setBottom(myBuilderButtons.makeBottomHBox());
     }
 
+    /**
+     * Starts a new game with the board that was edited by the user
+     */
     public void newGameWithBoard() {
         myJSONBuilder.compileBoard(myBoardManager.getUserAdded());
         myController.initializeGame(String.format(myJSONBuilder.getBoardPath(), "MyBoard"));
