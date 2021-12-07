@@ -36,6 +36,9 @@ public class BuilderButtons {
     private BuilderDisplay myBuilderDisplay;
     private  Collection<String> classMap;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
+    public static final String GO_HOME_BUTTON = "GoHomeButton";
+    public static final String GAME_OVER_HOME = "GameOverHome";
+    public static final String GAME_OVER_HOME_ID = "GameOverHomeID";
 
     /**
      * Constructor initializes the screen's properties
@@ -155,7 +158,9 @@ public class BuilderButtons {
         StackPane ghostDisplay =  createObjectDisplay(myBoardView.addBoardPiece(0,0,"CPUGHOST", null));
         Label pacmanText = myNodeBuilder.makeLabel(myResources.getString("PacmanText"), "pacmanTextID");
         StackPane pacmanDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"PACMAN", null));
-        HBox myHbox = myNodeBuilder.makeRow("statsHolder", ghostText,ghostDisplay, pacmanText,pacmanDisplay);
+        Button homeButton = myNodeBuilder.makeButton(myResources.getString(GO_HOME_BUTTON), null,
+                GAME_OVER_HOME, GAME_OVER_HOME_ID, e -> goHome());
+        HBox myHbox = myNodeBuilder.makeRow("statsHolder", ghostText,ghostDisplay, pacmanText,pacmanDisplay,homeButton);
         return myHbox;
     }
 
