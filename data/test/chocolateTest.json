@@ -34,13 +34,13 @@
   "SETTINGS": {
     "LANGUAGE": "ENGLISH",
     "GAME_TITLE": "PACMAN",
-    "TIMER": "1",
+    "TIMER": "2",
     "LIVES": "3",
     "CELL_SIZE": "24",
     "CSS_FILE_NAME" : "Default.css",
     "USER_IS_PREDATOR" : "1",
-    "HARD" : "1",
-    "IS_PICKUPS_A_VALID_WIN_CONDITION": "1"
+    "HARD" : "0",
+    "IS_PICKUPS_A_VALID_WIN_CONDITION": "0"
   },
   "PACMAN": {
     "USER_IMAGE": "ooga/view/resources/viewIcons/pacmanImage.png"
