@@ -4,6 +4,9 @@ import ooga.models.game.PickupGame;
 
 public class GhostSlower extends Pickup {
     private static final int POWERUP_TIME=5000;
+    private static final double MULTIPLIER = 2.0;
+    private static final double DOUBLE = 0.5;
+    private static final double HALF = DOUBLE;
 
     /**
      * constructor for pickup, sets position on board
@@ -19,7 +22,7 @@ public class GhostSlower extends Pickup {
      */
     public void interact(PickupGame pickupGame){
 
-        pickupGame.setCPUSpeed(2.0);
+        pickupGame.setCPUSpeed(MULTIPLIER);
 
         super.interact(pickupGame);
         new java.util.Timer().schedule(
@@ -27,7 +30,7 @@ public class GhostSlower extends Pickup {
                     @Override
                     public void run() {
 
-                        pickupGame.setCPUSpeed(0.5);
+                        pickupGame.setCPUSpeed(HALF);
                     }
                 },
                 POWERUP_TIME

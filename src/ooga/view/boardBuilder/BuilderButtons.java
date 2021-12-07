@@ -23,6 +23,24 @@ import java.util.*;
  * Author: Neil Mosca
  */
 public class BuilderButtons {
+    private static final String GAME_OBJECTS = "GameObjects";
+    private static final String POWER_UP_TEXT_ID = "powerUpTextID";
+    private static final String STATS_HOLDER = "statsHolder";
+    private static final String EMPTY = "EMPTY";
+    private static final String WALL = "WALL";
+    private static final String SELECTED_TEXT = "SelectedText";
+    private static final String SELECTED_TEXT_ID = "selectedTextID";
+    private static final String STATS_FORMAT = "statsFormat";
+    private static final String BUILD_BOARD = "Build Board";
+    private static final String HOME_SCREEN_BUTTON = "homeScreenButton";
+    private static final String BUILD_BOARD_BUTTON = "buildBoardButton";
+    private static final String GHOST_TEXT = "GhostText";
+    private static final String GHOST_TEXT_ID = "ghostTextID";
+    private static final String CPUGHOST = "CPUGHOST";
+    private static final String PACMAN_TEXT_ID = "pacmanTextID";
+    private static final String PACMAN = "PACMAN";
+    private static final String PACMAN_TEXT = "PacmanText";
+    private static final int SLOP = 5;
     private ViewerControllerInterface myController;
     private Stage myStage;
     private int myWidth;
@@ -71,10 +89,10 @@ public class BuilderButtons {
      */
     public HBox makeGameObjectsRow() {
         Object[] stringList = myController.createGameObjectMap().values().toArray();
-        Label gameObjectText = myNodeBuilder.makeLabel(myResources.getString("GameObjects"), "powerUpTextID");
-        HBox myHbox = myNodeBuilder.makeRow("statsHolder", gameObjectText);
+        Label gameObjectText = myNodeBuilder.makeLabel(myResources.getString(GAME_OBJECTS), POWER_UP_TEXT_ID);
+        HBox myHbox = myNodeBuilder.makeRow(STATS_HOLDER, gameObjectText);
         for (int i = 0; i < stringList.length; i++) {
-            if (!stringList[i].toString().equals("EMPTY")) {
+            if (!stringList[i].toString().equals(EMPTY)) {
                 Node myNode = createObjectDisplay(myBoardView.addBoardPiece(0,0, stringList[i].toString(),null));
                 myHbox.getChildren().add(myNode);
             }
@@ -88,14 +106,14 @@ public class BuilderButtons {
      * @return
      */
     public VBox makeSelectedVBox()  {
-        Label selectedText = myNodeBuilder.makeLabel(myResources.getString("SelectedText"), "selectedTextID");
+        Label selectedText = myNodeBuilder.makeLabel(myResources.getString(SELECTED_TEXT), SELECTED_TEXT_ID);
         selectedPane = new StackPane();
         Rectangle selectedHolder = new Rectangle(100.0, 100.0, Color.LIGHTGRAY);
-        GamePiece wallPiece = myBoardView.addBoardPiece(0,0,"WALL", null);
+        GamePiece wallPiece = myBoardView.addBoardPiece(0,0, WALL, null);
         selectedPane.getChildren().addAll(selectedHolder, wallPiece.getPiece());
         selected = wallPiece;
         selectedPane.setAlignment(wallPiece.getPiece(), Pos.CENTER);
-        return myNodeBuilder.makeCol("statsFormat", selectedText, selectedPane);
+        return myNodeBuilder.makeCol(STATS_FORMAT, selectedText, selectedPane);
     }
 
     /**
@@ -103,9 +121,9 @@ public class BuilderButtons {
      * @return
      */
     public HBox makeBottomHBox() {
-        Button buildBoardButton = myNodeBuilder.makeButton("Build Board", null, "homeScreenButton", "buildBoardButton", e -> myBuilderDisplay.newGameWithBoard());
+        Button buildBoardButton = myNodeBuilder.makeButton(BUILD_BOARD, null, HOME_SCREEN_BUTTON, BUILD_BOARD_BUTTON, e -> myBuilderDisplay.newGameWithBoard());
         VBox center = makeCenterVBox(makeCreatureRow(), makeGameObjectsRow());
-        return myNodeBuilder.makeRow("statsHolder",makeSelectedVBox(), center, buildBoardButton);
+        return myNodeBuilder.makeRow(STATS_HOLDER,makeSelectedVBox(), center, buildBoardButton);
     }
 
     /**
@@ -115,7 +133,7 @@ public class BuilderButtons {
      * @return
      */
     public VBox makeCenterVBox(HBox top, HBox bottom) {
-        return myNodeBuilder.makeCol("statsHolder", top, bottom);
+        return myNodeBuilder.makeCol(STATS_HOLDER, top, bottom);
     }
 
     /**
@@ -156,13 +174,13 @@ public class BuilderButtons {
      * @return
      */
     public HBox makeCreatureRow() {
-        Label ghostText = myNodeBuilder.makeLabel(myResources.getString("GhostText"), "ghostTextID");
-        StackPane ghostDisplay =  createObjectDisplay(myBoardView.addBoardPiece(0,0,"CPUGHOST", null));
-        Label pacmanText = myNodeBuilder.makeLabel(myResources.getString("PacmanText"), "pacmanTextID");
-        StackPane pacmanDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0,"PACMAN", null));
+        Label ghostText = myNodeBuilder.makeLabel(myResources.getString(GHOST_TEXT), GHOST_TEXT_ID);
+        StackPane ghostDisplay =  createObjectDisplay(myBoardView.addBoardPiece(0,0, CPUGHOST, null));
+        Label pacmanText = myNodeBuilder.makeLabel(myResources.getString(PACMAN_TEXT), PACMAN_TEXT_ID);
+        StackPane pacmanDisplay = createObjectDisplay(myBoardView.addBoardPiece(0,0, PACMAN, null));
         Button homeButton = myNodeBuilder.makeButton(myResources.getString(GO_HOME_BUTTON), null,
                 GAME_OVER_HOME, GAME_OVER_HOME_ID, e -> goHome());
-        HBox myHbox = myNodeBuilder.makeRow("statsHolder", ghostText,ghostDisplay, pacmanText,pacmanDisplay,homeButton);
+        HBox myHbox = myNodeBuilder.makeRow(STATS_HOLDER, ghostText,ghostDisplay, pacmanText,pacmanDisplay,homeButton);
         return myHbox;
     }
 
@@ -179,7 +197,7 @@ public class BuilderButtons {
      */
     public String getClassName(GamePiece gamePiece) {
         String className = gamePiece.getClass().getSimpleName();
-        return className.substring(0, className.length()-5).toUpperCase();
+        return className.substring(0, className.length()- SLOP).toUpperCase();
     }
 
     /**

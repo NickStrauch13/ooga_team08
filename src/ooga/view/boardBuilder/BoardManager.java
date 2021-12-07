@@ -13,6 +13,8 @@ import java.util.Collection;
  * Author: Neil Mosca
  */
 public class BoardManager {
+    private static final String D_D_S = "%d,%d,%s";
+    private static final String FORMAT = ",";
     private ArrayList<String> userAdded;
     private BoardView myBoardView;
     private ViewerControllerInterface myController;
@@ -53,7 +55,7 @@ public class BoardManager {
     }
 
     private void updateUserAdded(int row, int col, GamePiece newNode) {
-        newNode.getPiece().setId(String.format("%d,%d,%s", row, col, myBuilderButtons.getClassName(newNode)));
+        newNode.getPiece().setId(String.format(D_D_S, row, col, myBuilderButtons.getClassName(newNode)));
         if (!userAdded.contains(newNode.getPiece().getId())) {
             userAdded.add(newNode.getPiece().getId());
         }
@@ -72,7 +74,7 @@ public class BoardManager {
      * @return
      */
     public int getPosition(String myID, int i ) {
-        String[] position = myID.split(",");
+        String[] position = myID.split(FORMAT);
         return Integer.parseInt(position[i]);
     }
 

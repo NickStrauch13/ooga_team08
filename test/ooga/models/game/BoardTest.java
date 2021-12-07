@@ -5,7 +5,7 @@ import ooga.controller.Controller;
 import ooga.controller.JSONContainer;
 import ooga.controller.JSONReader;
 import ooga.models.creatures.cpuControl.CPUCreature;
-import ooga.models.creatures.userControl.UserPacman;
+import ooga.models.creatures.userControl.UserCreature;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import util.DukeApplicationTest;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +21,8 @@ public class BoardTest extends DukeApplicationTest {
     private List<CPUCreature> creatureList;
     private Board newBoard;
     private Game g;
-    private UserPacman userPacman;
     private int numPickups;
+    UserCreature userPacman;
     private Controller myController;
     private CPUCreature c1;
     @Override
@@ -46,7 +45,7 @@ public class BoardTest extends DukeApplicationTest {
         myController.getGame().setLastDirection("RIGHT");
         // myController.initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         numPickups = 10;
-        userPacman=(UserPacman) myController.getGame().getUser();
+        userPacman= myController.getGame().getUser();
 
         g=myController.getGame();
         c1=g.getCPUs().get(0);

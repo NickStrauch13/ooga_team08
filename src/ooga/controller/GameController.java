@@ -10,6 +10,7 @@ import ooga.view.popups.ErrorView;
 import java.util.List;
 
 public class GameController {
+    private static final int ONE_LIFE = 1;
     private final int MILLION = 1000000;
     private final int ONE_HUNDRED = 100;
     private final int FIVE_HUNDRED = 500;
@@ -163,7 +164,7 @@ public class GameController {
      * Add one more life
      */
     public void addLife() {
-        getGame().addLives(1);
+        getGame().addLives(ONE_LIFE);
     }
 
     /**
@@ -205,7 +206,7 @@ public class GameController {
      * Lose 1 extra life
      */
     public void loseLife() {
-        getGame().addLives(-1);
+        getGame().addLives(-ONE_LIFE);
     }
 
     /**

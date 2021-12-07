@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 public abstract class GamePiece{
 
   public static final String CELL_INDEX_FORMAT = "%d,$d";
+  private static final int MOD_256 = 256;
   private int myRow;
   private int myCol;
   private Node myPiece;
@@ -85,7 +86,7 @@ public abstract class GamePiece{
    */
   protected Color parseRGBs(String rgbColor){
     String[] colorValues = rgbColor.split(COMMA);
-    return Color.rgb(Integer.parseInt(colorValues[0])%256,Integer.parseInt(colorValues[1])%256,Integer.parseInt(colorValues[2])%256);
+    return Color.rgb(Integer.parseInt(colorValues[0])% MOD_256,Integer.parseInt(colorValues[1])% MOD_256,Integer.parseInt(colorValues[2])% MOD_256);
   }
 
 
