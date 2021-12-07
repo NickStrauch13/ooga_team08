@@ -64,10 +64,10 @@ public class GameScreenTests extends DukeApplicationTest {
   public void clickOnResetButtonAfterGameWasStarted(){
     clickOn(playButton);
     sleep(500);
-    int prevScore = myController.getScore();
+    int prevScore = myController.getGameController().getScore();
     clickOn(resetButton);
     sleep(400);
-    int resetScore = myController.getScore();
+    int resetScore = myController.getGameController().getScore();
     assertNotEquals(prevScore, resetScore);
   }
 
@@ -105,11 +105,11 @@ public class GameScreenTests extends DukeApplicationTest {
   @Test
   public void startGameAndLetPacmanDieOnceAndThenCheckLives(){
     clickOn(playButton);
-    int startLives = myController.getLives();
+    int startLives = myController.getGameController().getLives();
     sleep(700);
     robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
     sleep(5000);
-    int finalLives = myController.getLives();
+    int finalLives = myController.getGameController().getLives();
     assertNotEquals(startLives, finalLives);
     clickOn(resetButton);
   }
@@ -117,14 +117,14 @@ public class GameScreenTests extends DukeApplicationTest {
   @Test
   public void startGameAndEatGhostToGetScoreBoost(){
     clickOn(playButton);
-    int startScore = myController.getScore();
+    int startScore = myController.getGameController().getScore();
     robot.press(KeyCode.DOWN).release(KeyCode.DOWN);
     sleep(1500);
     robot.press(KeyCode.RIGHT).release(KeyCode.RIGHT);
     sleep(400);
     robot.press(KeyCode.LEFT).release(KeyCode.LEFT);
     sleep(2000);
-    int finalScore = myController.getScore();
+    int finalScore = myController.getGameController().getScore();
     assertNotEquals(startScore, finalScore);
     clickOn(resetButton);
   }
@@ -132,10 +132,10 @@ public class GameScreenTests extends DukeApplicationTest {
   @Test
   public void addLifeUsingCheatKeyA(){
     clickOn(playButton);
-    int startLives = myController.getLives();
+    int startLives = myController.getGameController().getLives();
     robot.press(KeyCode.A).release(KeyCode.A);
     sleep(100);
-    int finalLives = myController.getLives();
+    int finalLives = myController.getGameController().getLives();
     assertEquals(startLives+1, finalLives);
     clickOn(resetButton);
   }
@@ -145,16 +145,16 @@ public class GameScreenTests extends DukeApplicationTest {
     clickOn(playButton);
     robot.press(KeyCode.E).release(KeyCode.E);
     sleep(100);
-    assert(myController.getGame().isGameOver());
+    assert(myController.getGameController().getGame().isGameOver());
     clickOn(resetButton);
   }
 
   @Test
   public void addMillionScoreUsingCheatKeyP(){
     clickOn(playButton);
-    int startScore = myController.getScore()+100;
+    int startScore = myController.getGameController().getScore()+100;
     robot.press(KeyCode.P).release(KeyCode.P);
-    int finalScore = myController.getScore();
+    int finalScore = myController.getGameController().getScore();
     sleep(100);
     assertEquals(startScore+1000000, finalScore);
     clickOn(resetButton);
@@ -164,19 +164,19 @@ public class GameScreenTests extends DukeApplicationTest {
   @Test
   public void AddFiveHundredScoreUsingCheatKeyI(){
     clickOn(playButton);
-    int score = myController.getScore();
+    int score = myController.getGameController().getScore();
     robot.press(KeyCode.I).release(KeyCode.I);
     sleep(100);
-    assert(myController.getScore()==score+600);
+    assert(myController.getGameController().getScore()==score+600);
     clickOn(resetButton);
   }
 
   @Test
   public void addOneHundredScoreUsingCheatKeyO(){
     clickOn(playButton);
-    int startScore = myController.getScore() +100;
+    int startScore = myController.getGameController().getScore() +100;
     robot.press(KeyCode.O).release(KeyCode.O);
-    int finalScore = myController.getScore();
+    int finalScore = myController.getGameController().getScore();
     sleep(100);
     assertEquals(startScore+100, finalScore);
     clickOn(resetButton);
@@ -188,7 +188,7 @@ public class GameScreenTests extends DukeApplicationTest {
 
     robot.press(KeyCode.Q).release(KeyCode.Q);
     sleep(100);
-    assert(myController.getGame().getCPUs().size()==0);
+    assert(myController.getGameController().getGame().getCPUs().size()==0);
     clickOn(resetButton);
   }
   @Test
@@ -199,21 +199,21 @@ public class GameScreenTests extends DukeApplicationTest {
 
     clickOn(playButton);
     robot.press(KeyCode.R).release(KeyCode.R);
-    System.out.println(myController.getGame().getUser().getXpos());
-    System.out.println(myController.getGame().getUser().getHomeX());
-    System.out.println(myController.getGame().getUser().getYpos());
-    System.out.println(myController.getGame().getUser().getHomeY());
-    assert(myController.getGame().getUser().getXpos()==myController.getGame().getUser().getHomeX());
-    assert(myController.getGame().getUser().getYpos()==myController.getGame().getUser().getHomeY());
+    System.out.println(myController.getGameController().getGame().getUser().getXpos());
+    System.out.println(myController.getGameController().getGame().getUser().getHomeX());
+    System.out.println(myController.getGameController().getGame().getUser().getYpos());
+    System.out.println(myController.getGameController().getGame().getUser().getHomeY());
+    assert(myController.getGameController().getGame().getUser().getXpos()==myController.getGameController().getGame().getUser().getHomeX());
+    assert(myController.getGameController().getGame().getUser().getYpos()==myController.getGameController().getGame().getUser().getHomeY());
     clickOn(resetButton);
   }
 
   @Test
   public void removeOneMillionScoreUsingCheatKeyS(){
     clickOn(playButton);
-    int startScore = myController.getScore();
+    int startScore = myController.getGameController().getScore();
     robot.press(KeyCode.S).release(KeyCode.S);
-    int finalScore = myController.getScore();
+    int finalScore = myController.getGameController().getScore();
     assertEquals(startScore-999900, finalScore);
     clickOn(resetButton);
   }
@@ -221,9 +221,9 @@ public class GameScreenTests extends DukeApplicationTest {
   @Test
   public void goToNextLevelWithCheatKeyT(){
     clickOn(playButton);
-    int startLevel = myController.getLevel();
+    int startLevel = myController.getGameController().getLevel();
     robot.press(KeyCode.T).release(KeyCode.T);
-    int finalLevel = myController.getLevel();
+    int finalLevel = myController.getGameController().getLevel();
     sleep(100);
     assertEquals(startLevel+1, finalLevel);
     clickOn(resetButton);
@@ -234,7 +234,7 @@ public class GameScreenTests extends DukeApplicationTest {
     clickOn(playButton);
     clickOn(playButton);
     robot.press(KeyCode.W).release(KeyCode.W);
-    for(CPUCreature creature: myController.getGame().getCPUs()) {
+    for(CPUCreature creature: myController.getGameController().getGame().getCPUs()) {
       assert (creature.getXpos() == creature.getHomeX());
       assert (creature.getYpos() == creature.getHomeY());
     }
@@ -247,17 +247,17 @@ public class GameScreenTests extends DukeApplicationTest {
     robot.press(KeyCode.U).release(KeyCode.U);
     sleep(100);
 
-    assert(myController.getIsPoweredUp());
+    assert(myController.getGameController().getIsPoweredUp());
     clickOn(resetButton);
   }
 
   @Test
   public void RemoveLifeUsingCheatKeyY(){
     clickOn(playButton);
-    int startLives = myController.getLives();
+    int startLives = myController.getGameController().getLives();
     robot.press(KeyCode.Y).release(KeyCode.Y);
     sleep(100);
-    int finalLives = myController.getLives();
+    int finalLives = myController.getGameController().getLives();
     assertEquals(startLives-1, finalLives);
     clickOn(resetButton);
   }

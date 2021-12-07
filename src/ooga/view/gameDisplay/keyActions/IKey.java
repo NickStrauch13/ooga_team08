@@ -18,6 +18,6 @@ public class IKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.addFiveHundredPoints();
+    myController.getGameController().addFiveHundredPoints();
   }
 }

@@ -18,6 +18,6 @@ public class YKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.loseLife();
+    myController.getGameController().loseLife();
   }
 }

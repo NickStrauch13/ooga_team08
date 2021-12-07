@@ -18,6 +18,6 @@ public class UKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.powerUp();
+    myController.getGameController().powerUp();
   }
 }

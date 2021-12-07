@@ -78,13 +78,11 @@ public class Game implements PickupGame {
     }
 
     private void setGameSettings(){
-        timer=Integer.parseInt(gameSettings.get("TIMER"));
-        lives = Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
-        isHard = gameSettings.get("HARD").equals("1");
-        lives=Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
-        isPickups = gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION").equals("1");
+        setIsPredator();
+        setDifficulty();
+        setLives();
+        setTimer();
+        setIsPickupsWinCondition();
     }
 
     private void createPossibleSteps(){
@@ -565,5 +563,50 @@ public class Game implements PickupGame {
      */
     public void addLife(){
         lives++;
+    }
+
+    private void setIsPickupsWinCondition() {
+        if (gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION") != null) {
+            isPickups = Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))<0;
+        }
+        else {
+            isPickups = false;
+        }
+    }
+
+    private void setIsPredator() {
+        if (gameSettings.get("USER_IS_PREDATOR") != null) {
+            isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
+        }
+        else {
+            isPredator = false;
+        }
+    }
+
+    private void setDifficulty() {
+        if (gameSettings.get("HARD") != null) {
+            isHard = gameSettings.get("HARD").equals("1");
+        }
+        else {
+            isHard = true;
+        }
+    }
+
+    private void setLives() {
+        if (gameSettings.get("LIVES") != null) {
+            lives = Integer.parseInt(gameSettings.get("LIVES"));
+        }
+        else {
+            lives = 3;
+        }
+    }
+
+    private void setTimer() {
+        if (gameSettings.get("TIMER") != null) {
+            timer=Integer.parseInt(gameSettings.get("TIMER"));
+        }
+        else {
+            timer = -1;
+        }
     }
 }

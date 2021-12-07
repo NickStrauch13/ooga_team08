@@ -11,7 +11,7 @@ import java.util.List;
 public interface CheatControllerInterface {
     public void initializeGame(String path);
     public int getCellCoordinate(double pixels);
-    public int getLives();
+//    public int getLives();
     public Game getGame();
     public int getScore();
     public String getGameType();
