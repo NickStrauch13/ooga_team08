@@ -51,25 +51,51 @@ Maze Game, and even a puzzle game. Other variants could easily be made such as a
 various rooms before the user can escape. Another possible variant would be a survival game where the user has to run away from
 the computer controlled creatures for as long as possible while the timer keeps track of the user's time. From the game screen,
 the user can also reset the game using the Reset button, the user can return to the home page, and the user can play and pause
-the current game.
-
-
+the current game. We also included 12 cheat keys for the user to use. The cheat keys are Q, W, E, R, T, Y,
+U, I, O, P, A, S. The keys have the following functions:
+* Q : Freezes all ghosts in their current position permanently.
+* W: Resets the ghosts' positions.
+* E: Ends the game.
+* R: Resets the user position.
+* T: Advances to the next Level.
+* Y: Lose one life.
+* U: Makes ghosts blue (edible).
+* I: Adds 500 points to the user's current score.
+* O: Adds 100 points to the user's current score.
+* P: Adds 1,000,000 points to the user's current score.
+* A: Adds one life.
+* S: Removes 1,000,000 points from user's current score.
 
 
 ### Notes/Assumptions
 
 Assumptions or Simplifications: 
 * The ghosts do not spawn in a box like how they do in actual pacman. Instead, the user can place the ghosts wherever they want in the data file.
-* 
+* We assume that the file only has one user controlled creature. You can add multiple user controlled creatures without crashing
+the program, but only one will be move-able.
 
 Interesting data files:
+* Pacman.json is a vanilla pacman game with multiple CPUs. This file shows basic pacman functionality.
+* PacmanExtreme.json is a pacman game with lots of custom power-ups added in. This file shows the power-ups' functionality.
+* mrsPacman.json is a pacman game with different textures and creature image files. This file shows how the entire game board view is dependent on the data file.
+* MazeGame.json is a large maze game. It should be noted that sometimes the user has to maximize their window to play if their monitor is not large enough. This file shows an entirely new game variant and shows a different lose condiction.
+Instead of losing the game when you run out of lives, you lose in the maze game by not reaching the finish before the timer runs out.
+* EasyMaze.json shows a simple maze that utilizes the portal power-up mechanic. This game is great for showing how the game gets harder as you get to a higher level.
+* basics.json is an extremely simple pacman game with only one ghost. This game file is great for experimenting with the cheat keys.
+* Puzzle.json is a unique puzzle game where you have to figure out how to navigate around the map using the empty space "loop around" mechanic from traditional pacman.
+* There are additional game files as well so feel free to try them out!
 
 Known Bugs:
 * It is extremely rare, but sometimes the ghosts "hesitate" before eating you when you are not moving. This has to do with the BFS
 path finding algorithm making the ghost think it is already in the same location as the pacman when it really isn't.
 
 Challenge Features:
-
+* We added a Board Builder that allows the user to create a pacman game file through an intuitive GUI. After building the board, the user can then play pacman on their very own board.
+The board builder works by converting the UI data into a json file that can be processed by our game engine. This feature is a great way to easily make new games to play around with.
 
 ### Impressions
+This project was very enlightening. We all agreed that we felt very prepared to complete this project with good design, as we were able to 
+apply what we learned throughout the semester. We worked well as a team, had tons of in person meetings, and we all got to know each other very well.
+We are happy with how our end project turned out; however, we know there is always room for improvement. We worked as hard as we could, yet there are still
+a few things that we would have liked to refactor if we had additional time. Overall, we felt this project was an excellent way to complete the semester.
 
