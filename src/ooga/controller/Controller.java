@@ -138,7 +138,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
         try {
             myReader = new JSONReader(language, path);
             assembleBoards();
-            activateGame();
+
         }
         catch (ClassNotFoundException e) {myErrorView.showError(CLASS_NOT_FOUND);}
         catch (InvocationTargetException e) {myErrorView.showError(INVOCATION_TARGET);}
@@ -160,13 +160,10 @@ public class Controller implements BasicController, ViewerControllerInterface {
 
             myBoardView = new BoardView(this);
             initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
+            myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
+                    cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+            gameController = new GameController(myGame);
         }
-    }
-
-    private void activateGame() {
-        myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
-                cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
-        gameController = new GameController(myGame);
     }
 
     /*
