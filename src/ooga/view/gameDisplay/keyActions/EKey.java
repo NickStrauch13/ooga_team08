@@ -18,6 +18,6 @@ public class EKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.gameOver();
+    myController.getGameController().gameOver();
   }
 }

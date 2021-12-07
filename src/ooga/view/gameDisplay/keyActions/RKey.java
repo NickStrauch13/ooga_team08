@@ -17,6 +17,6 @@ public class RKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.resetUserPosition();
+    myController.getGameController().resetUserPosition();
   }
 }

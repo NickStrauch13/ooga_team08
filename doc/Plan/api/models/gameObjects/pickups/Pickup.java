@@ -1,8 +1,8 @@
-public interface stateChanger extends pickup {
+public interface Pickup extends GameObject{
 
     /**
      * handles interaction with user controlled object, called when intersecting with user
      */
-    void interact();
+    void abstract interact(PickupGame pickupGame);
 
 }
