@@ -163,4 +163,8 @@ public class JSONBuilder {
         return FILE_PATH;
     }
 
+    public String[][] getFileBoard() {
+        return fileBoard;
+    }
+
 }

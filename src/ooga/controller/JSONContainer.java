@@ -17,7 +17,7 @@ public class JSONContainer {
 
     private GameSettings mySettings;
 
-    @Deprecated
+//    @Deprecated
     /**
      * @deprecated The constructor of a JSON Reader object that holds all info from the json configuration file
      * @param rows number of rows of the board
@@ -25,16 +25,16 @@ public class JSONContainer {
      * @param boardInfo A 2-d list that contains a status value for each cell
      * @param stringBoard A 2-d list that contains a string value for each cell
      */
-    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, String type, String language) {
-        myNumOfRows = rows;
-        myNumOfCols = cols;
-        myInfo = boardInfo;
-        myStringBoard = stringBoard;
-        myConversionMap = conversionMap;
-        myCreatureMap = creatureMap;
-        gameType = type;
-        myLanguage = language;
-    }
+//    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, String type, String language) {
+//        myNumOfRows = rows;
+//        myNumOfCols = cols;
+//        myInfo = boardInfo;
+//        myStringBoard = stringBoard;
+//        myConversionMap = conversionMap;
+//        myCreatureMap = creatureMap;
+//        gameType = type;
+//        myLanguage = language;
+//    }
 
     /**
      * The constructor of a JSON Reader object that holds all info from the json configuration file
@@ -50,11 +50,8 @@ public class JSONContainer {
         myStringBoard = stringBoard;
         myConversionMap = conversionMap;
         myCreatureMap = creatureMap;
-//        gameType = type;
-//        myLanguage = language;
         mySettings = gameSettings;
-        //TODO: 1. have mySettings here as part of the container
-        //      2. having a setting object in parallel
+
     }
 
     /**
@@ -121,10 +118,18 @@ public class JSONContainer {
         return myCreatureMap;
     }
 
+    /**
+     * Returns the GameSetting object that contains all info about game settings
+     * @return GameSetting object
+     */
     public GameSettings getMyGameSettings() {
         return mySettings;
     }
 
+    /**
+     * Check if there is any missing content in the container
+     * @return Whether there is any missing content in the container
+     */
     public boolean isMissingContent() {
         if (myInfo != null && myStringBoard != null && myConversionMap != null && myCreatureMap != null && mySettings != null && myNumOfRows != FIRST_INDEX && myNumOfCols != FIRST_INDEX) {
             return false;

@@ -1,7 +1,5 @@
 package ooga.controller;
 
-import ooga.controller.settings.Settings;
-
 import java.util.Map;
 
 public class GameSettings {
