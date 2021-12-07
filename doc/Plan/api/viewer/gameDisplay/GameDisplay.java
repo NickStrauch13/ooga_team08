@@ -23,4 +23,9 @@ public interface GameDisplay {
      * Sets up the gameDisplay scene
      */
     void setupScene();
+
+    /**
+     * Displays the game over popup on the stage.
+     */
+    void showGameOverPopup();
 }
