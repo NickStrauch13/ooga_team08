@@ -3,6 +3,7 @@ package ooga.models.creatures;
 public abstract class Creature {
 
     private static final double standardSpeed=1;
+    private static final int HALFER = 2;
     double currentSpeed=standardSpeed;
     int myXpos;
     int myYpos;
@@ -35,13 +36,13 @@ public abstract class Creature {
      * Gets the center of the creature's x position
      * @return returns the center of creature x position
      */
-    public int getCenterX(){return myXpos+size/2;}
+    public int getCenterX(){return myXpos+size/ HALFER;}
 
     /**
      * Gets the center of the creature's y position
      * @return returns the center of creature y position
      */
-    public int getCenterY(){return myYpos+size/2;}
+    public int getCenterY(){return myYpos+size/ HALFER;}
 
     /**
      * Gets home x position of the creature

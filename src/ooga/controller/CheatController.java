@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Deprecated
 public class CheatController {
+    private static final int ONE_LIFE = 1;
     CheatControllerInterface myController;
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
@@ -30,7 +31,7 @@ public class CheatController {
         }
     }
     public void addLife(){
-        myController.getGame().addLives(1);
+        myController.getGame().addLives(ONE_LIFE);
     }
     public void goToNextLevel(){
         myController.getGame().nextLevel();
@@ -48,7 +49,7 @@ public class CheatController {
         myController.getGame().getUser().die();
     }
     public void loseLife(){
-        myController.getGame().addLives(-1);
+        myController.getGame().addLives(-ONE_LIFE);
     }
     public void gameOver(){
         myController.getGame().endGame();

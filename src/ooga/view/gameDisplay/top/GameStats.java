@@ -33,6 +33,8 @@ public class GameStats {
     public static final String STATS_FORMAT3 = "statsFormat";
     public static final String TIME_FORMAT = "%d";
     public static final String EMPTY = "";
+    private static final String PERIOD = ".";
+    private static final String SLASH = "/";
     private UINodeFactory nodeBuilder;
     private ViewerControllerInterface myController;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
@@ -49,7 +51,7 @@ public class GameStats {
         myController = controller;
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + myController.getLanguage());
         nodeBuilder = new UINodeFactory(myController);
-        DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
+        DEFAULT_STYLESHEET = SLASH + DEFAULT_RESOURCE_PACKAGE.replace(PERIOD, SLASH) + myController.getViewMode();
         myPlayerProfile = new PlayerProfile(controller);
     }
 

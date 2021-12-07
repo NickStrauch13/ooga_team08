@@ -5,7 +5,6 @@ import ooga.controller.Controller;
 import ooga.controller.JSONContainer;
 import ooga.controller.JSONReader;
 import ooga.models.creatures.cpuControl.CPUCreature;
-import ooga.models.creatures.userControl.UserPacman;
 import ooga.models.game.Board;
 import ooga.models.game.Game;
 import org.json.simple.parser.ParseException;
@@ -24,7 +23,7 @@ public class PortalTest extends DukeApplicationTest {
     private List<CPUCreature> creatureList;
     private Board newBoard;
     private Game g;
-    private UserPacman userPacman;
+
     private int numPickups;
     private Controller myController;
 
@@ -48,7 +47,7 @@ public class PortalTest extends DukeApplicationTest {
         myController.getGame().setLastDirection("RIGHT");
         // myController.initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         numPickups = 10;
-        userPacman=(UserPacman) myController.getGame().getUser();
+
         CPUCreature c1 = new CPUCreature(100,100);
         c1.setId("CREATURE123");
         c1.setCurrentDirection(new int[]{0,1});

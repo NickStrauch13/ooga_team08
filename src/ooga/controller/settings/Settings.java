@@ -5,6 +5,12 @@ import java.util.Map;
 
 @Deprecated
 public class Settings {
+    private static final String LANGUAGE = "LANGUAGE";
+    private static final String GAME_TYPE = "GAME_TYPE";
+    private static final String TIMER = "TIMER";
+    private static final String WIN_CONDITION = "WIN_CONDITION";
+    private static final String CELL_SIZE = "CELL_SIZE";
+    private static final int ONE = 1;
     private String myLanguage;
     private String myGameType;
     private String myWinCondition;
@@ -18,11 +24,11 @@ public class Settings {
 
 
     public Settings(Map<String, String> settingMap) {
-        myLanguage = settingMap.get("LANGUAGE");
-        myGameType = settingMap.get("GAME_TYPE");
-        myTimer = settingMap.get("TIMER");
-        myWinCondition = settingMap.get("WIN_CONDITION");
-        myCellSize = settingMap.get("CELL_SIZE");
+        myLanguage = settingMap.get(LANGUAGE);
+        myGameType = settingMap.get(GAME_TYPE);
+        myTimer = settingMap.get(TIMER);
+        myWinCondition = settingMap.get(WIN_CONDITION);
+        myCellSize = settingMap.get(CELL_SIZE);
     }
 
 //    public void initializeSettings(Map<String, String> settings) {
@@ -51,7 +57,7 @@ public class Settings {
     }
 
     public boolean isShowTimer() {
-        return Integer.parseInt(myTimer.trim()) == 1;
+        return Integer.parseInt(myTimer.trim()) == ONE;
     }
 
 

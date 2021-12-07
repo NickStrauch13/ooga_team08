@@ -22,6 +22,7 @@ public class SimulationManager {
     public static final String PACMAN_IMAGE_PNG = "ooga/view/resources/viewIcons/pacmanImage.png";
     public static final String BLUE_GHOST_PNG = "ooga/view/resources/viewIcons/blueGhost.png";
     public static final String GHOST_IMAGE_PNG = "ooga/view/resources/viewIcons/ghostImage.png";
+    private static final String RIGHT = "RIGHT";
     private ViewerControllerInterface myController;
     private Timeline myAnimation;
     private double myAnimationRate;
@@ -41,7 +42,7 @@ public class SimulationManager {
         myController = controller;
         myBoardView = boardView;
         myAnimationRate = initialAnimationRate*(controller.getCellSize()/25.0); //TODO link to json
-        currentDirection = "RIGHT";//TODO allow user to set this value. Call the json key "Starting direction"
+        currentDirection = RIGHT;//TODO allow user to set this value. Call the json key "Starting direction"
         myGameStats = gameStats;
         currentLevel = 1;
         myGameDisplay = gameDisplay;
@@ -71,7 +72,7 @@ public class SimulationManager {
         myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DELAY), e -> step()));
         myAnimation.setRate(myAnimationRate);
         myAnimation.play();
-        currentDirection = "RIGHT"; //TODO allow user to set this value. Call the json key "Starting direction"
+        currentDirection = RIGHT; //TODO allow user to set this value. Call the json key "Starting direction"
     }
 
     /**

@@ -12,6 +12,13 @@ import org.json.simple.parser.ParseException;
 
 public class JSONReader {
 
+    private static final String ROW_NUMBER = "ROW_NUMBER";
+    private static final String COL_NUMBER = "COL_NUMBER";
+    private static final String OBJECT_MAP = "OBJECT_MAP";
+    private static final String CREATURE_MAP = "CREATURE_MAP";
+    private static final String COMMA = ",";
+    private static final int ZERO = 0;
+    private static final String BOARD = "BOARD";
     // TODO: Should be placed into properties files or enum?
     private final String NUMBER_FORMAT_EXCEPTION_DIM = "Check the number format for the dimension value!";
     private final String NUMBER_FORMAT_EXCEPTION_BOARD = "Check the number format for values within the board!";
@@ -74,14 +81,14 @@ public class JSONReader {
 
     private final Map<String, List<Integer>> OBJECT_PARAMETERS =
             Map.ofEntries(
-                    Map.entry("OBJECT_MAP" ,
+                    Map.entry(OBJECT_MAP,
                             List.of(
-                                    0, 1, 2, 3,
+                                    ZERO, 1, 2, 3,
                                     6, 7, 8, 9,
                                     10, 11, 12
                             )
                     ),
-                    Map.entry("CREATURE_MAP" ,List.of(4, 5))
+                    Map.entry(CREATURE_MAP,List.of(4, 5))
             );
 
     private final String myPath;
@@ -111,13 +118,13 @@ public class JSONReader {
             return null;
         }
 
-        int numOfRows = getDimension(jsonData, "ROW_NUMBER");
-        int numOfCols = getDimension(jsonData, "COL_NUMBER");
+        int numOfRows = getDimension(jsonData, ROW_NUMBER);
+        int numOfCols = getDimension(jsonData, COL_NUMBER);
 
         List<List<Integer>> boardInfo = getBoardInfo(jsonData, numOfRows, numOfCols);
 
-        Map<Integer, String> conversionMap = getConversionMap(jsonData, "OBJECT_MAP");
-        Map<Integer, String> creatureMap = getConversionMap(jsonData, "CREATURE_MAP");
+        Map<Integer, String> conversionMap = getConversionMap(jsonData, OBJECT_MAP);
+        Map<Integer, String> creatureMap = getConversionMap(jsonData, CREATURE_MAP);
         List<List<String>> stringBoard = getStringBoard(boardInfo, conversionMap, creatureMap, numOfRows, numOfCols);
         GameSettings gameSettings = getGameSettings(jsonData);
 
@@ -183,7 +190,7 @@ public class JSONReader {
                 }
             }
             else if (PARSE_ELEMENTS.contains(parameter)) {
-                String[] RGBs = settings.get(parameter).split(",");
+                String[] RGBs = settings.get(parameter).split(COMMA);
 
                 if (RGBs.length != COLOR_CHANNELS) {
                     myErrorView.showError(SPLIT_ERROR);
@@ -240,9 +247,9 @@ public class JSONReader {
     private List<List<String>> getStringBoard(List<List<Integer>> boardInfo, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, int numOfRows, int numOfCols){
         List<List<String>> stringBoard = new ArrayList<>();
         try {
-            for (int i = 0; i < boardInfo.size(); i++) {
+            for (int i = ZERO; i < boardInfo.size(); i++) {
                 List<String> innerList = new ArrayList<>();
-                for (int j = 0; j < boardInfo.get(0).size(); j++) {
+                for (int j = ZERO; j < boardInfo.get(ZERO).size(); j++) {
                     int currentValue = boardInfo.get(i).get(j);
                     innerList.add(conversionMap.containsKey(currentValue) ? conversionMap.get(currentValue) : creatureMap.get(currentValue));
                 }
@@ -344,7 +351,7 @@ public class JSONReader {
     private List<List<Integer>> getBoardInfo(JSONObject jsonData, int numOfRows, int numOfCols) {
         List<List<Integer>> boardInfo = new ArrayList<>();
         try {
-            JSONArray JSONBoard = (JSONArray) jsonData.get("BOARD");
+            JSONArray JSONBoard = (JSONArray) jsonData.get(BOARD);
             updateBoardInfo(boardInfo, JSONBoard);
 //            if (isMissingBoardInfo(boardInfo, numOfRows, numOfCols)) return null;
             return boardInfo;
@@ -409,7 +416,7 @@ public class JSONReader {
         catch (NullPointerException e){myErrorView.showError(NULL_POINTER_EXCEPTION_DIM);}
         catch (NumberFormatException e) {myErrorView.showError(NUMBER_FORMAT_EXCEPTION_DIM);}
         catch (ClassCastException e) {myErrorView.showError(CLASS_CAST_EXCEPTION_DIM);}
-        return 0;
+        return ZERO;
     }
 
     /*

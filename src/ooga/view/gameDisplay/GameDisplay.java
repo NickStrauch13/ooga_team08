@@ -25,6 +25,8 @@ public class GameDisplay {
     public static final String HOME_ROW_FORMAT = "homeRowFormat";
     public static final String EXIT_INSTRUCTIONS = "ExitInstructions";
     public static final String SCORE_EXIT_ID = "ScoreExitID";
+    private static final String PERIOD = ".";
+    private static final String SLASH = "/";
     private Stage myStage;
     private Scene myScene;
     private BorderPane root;
@@ -48,7 +50,7 @@ public class GameDisplay {
         root = new BorderPane();
         myScene = new Scene(root, width, height);
         myScene.setOnKeyPressed(e -> mySimManager.handleKeyInput(e.getCode()));
-        DEFAULT_STYLESHEET = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/") + myController.getViewMode();
+        DEFAULT_STYLESHEET = SLASH + DEFAULT_RESOURCE_PACKAGE.replace(PERIOD, SLASH) + myController.getViewMode();
         myScene.getStylesheets().add(getClass().getResource(DEFAULT_STYLESHEET).toExternalForm());
         myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     }

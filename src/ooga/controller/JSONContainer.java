@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class JSONContainer {
 
+    private static final int FIRST_INDEX = 0;
     private List<List<Integer>> myInfo;
     private List<List<String>> myStringBoard;
     private int myNumOfRows;
@@ -69,7 +70,7 @@ public class JSONContainer {
      * @return Whether the column number of the board is equal to the claimed value
      */
     public boolean checkNumOfCols() {
-        return myInfo.get(0).size() == myNumOfCols;
+        return myInfo.get(FIRST_INDEX).size() == myNumOfCols;
     }
 
     /**
@@ -125,7 +126,7 @@ public class JSONContainer {
     }
 
     public boolean isMissingContent() {
-        if (myInfo != null && myStringBoard != null && myConversionMap != null && myCreatureMap != null && mySettings != null && myNumOfRows != 0 && myNumOfCols != 0) {
+        if (myInfo != null && myStringBoard != null && myConversionMap != null && myCreatureMap != null && mySettings != null && myNumOfRows != FIRST_INDEX && myNumOfCols != FIRST_INDEX) {
             return false;
         }
         return true;

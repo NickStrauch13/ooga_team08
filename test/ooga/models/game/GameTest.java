@@ -6,21 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javafx.application.Application;
-import javafx.scene.control.Button;
-
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import ooga.controller.Controller;
 import ooga.controller.JSONContainer;
 import ooga.controller.JSONReader;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
-import ooga.models.creatures.userControl.UserPacman;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testfx.api.FxRobot;
 import util.DukeApplicationTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +24,7 @@ public class GameTest extends DukeApplicationTest {
     private List<CPUCreature> creatureList;
     private Board newBoard;
     private Game g;
-    private UserPacman userPacman;
+    private UserCreature userPacman;
     private int numPickups;
     private Controller myController;
 
@@ -54,7 +48,7 @@ public class GameTest extends DukeApplicationTest {
         myController.getGameController().getGame().setLastDirection("RIGHT");
        // myController.initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         numPickups = 10;
-        userPacman=(UserPacman) myController.getGameController().getGame().getUser();
+        userPacman= myController.getGameController().getGame().getUser();
         CPUCreature c1 = new CPUCreature(100,100);
         c1.setId("CREATURE123");
         c1.setCurrentDirection(new int[]{0,1});
@@ -368,13 +362,12 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(g.getLives(),13);
     }
 
-
-
-
-
-
-
-
+    @Test
+    public void testPredatorWinLossTimer0(){
+        myController.initializeGame("data/test/chocolateTest.json");
+        myController.step("LEFT");
+        assertTrue(g.isGameOver());
+    }
 
 
 
