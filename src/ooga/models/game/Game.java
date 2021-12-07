@@ -288,7 +288,7 @@ public class Game implements PickupGame {
         return myBoard.getisWallAtCell(row, col);
     }
 
-    public int getCellCoordinate(double pixels){
+    private int getCellCoordinate(double pixels){
         return ((int)pixels)/myCellSize;
     }
 
@@ -394,7 +394,7 @@ public class Game implements PickupGame {
     public void nextLevel(){
         level+=1;
         resetPortals();
-        timer= (int) (5000/Math.pow(1.1,level));
+        timer= (int) (startTime/Math.pow(1.1,level));
     }
 
     /**
@@ -429,8 +429,9 @@ public class Game implements PickupGame {
         return gameOver;
     }
 
-    public void setPowerupEndtime(int powerupEndtime) {
+    public boolean setPowerupEndtime(int powerupEndtime) {
         this.powerupEndtime = powerupEndtime;
+        return true;
     }
 
     public boolean setLastDirection(String lastDirection) {
@@ -440,10 +441,6 @@ public class Game implements PickupGame {
 
     public ArrayList<int[]> getPortalLocations(){
         return levelPortalLocations;
-    }
-
-    public ArrayList<int[]> getWallLocations(){
-        return myBoard.getWallLocations();
     }
 
     public int getStepCounter() {
@@ -468,12 +465,6 @@ public class Game implements PickupGame {
 
     public void addLife(){
         lives++;
-    }
-
-    public void wallStateChange(boolean toSet){
-        for (int[] wall:getWallLocations()){
-            myBoard.setWallatCell(wall,toSet);
-        }
     }
 
     private void setIsPredator() {

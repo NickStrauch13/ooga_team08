@@ -36,20 +36,6 @@
     ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
   ],
 
-  "OBJECT_MAP": {
-    "0" : "WALL",
-    "1" : "SCOREBOOSTER",
-    "2" : "STATECHANGER",
-    "3" : "SCOREMULTIPLIER",
-    "6" : "PORTAL",
-    "7" : "GHOSTSLOWER",
-    "8" : "EXTRALIFE",
-    "9" : "EMPTY",
-    "10" : "INVINCIBILITY",
-    "11" : "SPEEDCUTTER",
-    "12" : "WINLEVEL"
-  },
-
   "CREATURE_MAP": {
     "4" : "PACMAN",
     "5" : "CPUGHOST"
