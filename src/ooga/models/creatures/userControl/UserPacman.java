@@ -4,6 +4,4 @@ public class UserPacman extends UserCreature {
     public UserPacman(Integer xPos, Integer yPos) {
         super(xPos, yPos);
     }
-
-
 }

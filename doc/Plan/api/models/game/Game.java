@@ -33,9 +33,6 @@ public interface GameI {
 
     boolean creatureVSPickupCollision(CollisionManager cm);
 
-    /**
-     * Adds points to the score which is housed in this class.
-     */
     void addScore(int scoreToBeAdded);
 
     void multiplyScore(int multiplier);
@@ -76,5 +73,4 @@ public interface GameI {
 
     void addLife();
 
-    void wallStateChange(boolean toSet);
 }

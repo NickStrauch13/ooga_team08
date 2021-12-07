@@ -5,13 +5,20 @@ import ooga.models.game.PickupGame;
 public class GhostSlower extends Pickup {
     private static final int POWERUP_TIME=5000;
 
+    /**
+     * constructor for pickup, sets position on board
+     * @param row row index of pickup
+     * @param col column index of pickup
+     */
     public GhostSlower(Integer row, Integer col) {
         super(row, col);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void interact(PickupGame pickupGame){
 
-        int currentStep = pickupGame.getStepCounter();
         pickupGame.setCPUSpeed(2.0);
 
         super.interact(pickupGame);

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PickupTest extends DukeApplicationTest {
+public class ScoreBoosterTest extends DukeApplicationTest {
     private Map<String,String> map;
     private List<CPUCreature> creatureList;
     private Board newBoard;
@@ -54,6 +54,12 @@ public class PickupTest extends DukeApplicationTest {
         c1.setCurrentDirection(new int[]{0,1});
         creatureList=new ArrayList<CPUCreature>();
         creatureList.add(c1);
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
+    }
+
+    @Test
+    public void scoreBoosterInteractTest(){
+        newBoard.getGameObject(3,3).interact(myController.getGameController().getGame());
+        assert (myController.getGame().getScore()==100);
     }
 }
