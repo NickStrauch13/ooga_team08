@@ -1,15 +1,16 @@
 package ooga.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Set;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+/**
+ * Produces a JSON file using the user input data from the UI screen
+ * Author: Neil Mosca
+ */
 public class JSONBuilder {
 
     private final String FILE_PATH = "./data/boardBuilderBoards/output.json";
@@ -23,6 +24,11 @@ public class JSONBuilder {
     private  Map<Integer, String> myCreatureMap;
     private String[][] fileBoard;
 
+    /**
+     * Initializes the maps that are added to the file so the file can recognize the objects
+     * that are added to the board
+     * @param myController
+     */
     public JSONBuilder(ViewerControllerInterface myController) {
         myObjectMap = myController.createGameObjectMap();
         myCreatureMap = myController.createCreatureMap();
@@ -46,6 +52,11 @@ public class JSONBuilder {
         }
     }
 
+    /**
+     * Constructs a 2d array of the gameObjects that were added to the gameBoard
+     * so that they can be read into the file
+     * @param userAdded
+     */
     public void compileBoard(ArrayList<String> userAdded) {
         int row, col;
         String className;
@@ -63,6 +74,12 @@ public class JSONBuilder {
     }
 
 
+    /**
+     * Gets the integer value that corresponds to a gameObject  or creatureObject
+     * @param className
+     * @param myMap
+     * @return
+     */
     private String classToInt(String className, Map<Integer, String> myMap) {
         for (Map.Entry<Integer, String> myClass : myMap.entrySet())
         {
@@ -73,6 +90,10 @@ public class JSONBuilder {
         return classToInt(className, myCreatureMap);
     }
 
+    /**
+     * Builds the JSON array that stores the board in the JSON file
+     * @param myJSONArray
+     */
     private void compileJSONArray(JSONArray myJSONArray) {
         for (int r = 0; r < fileBoard.length; r++) {
             JSONArray newRow = new JSONArray();
@@ -89,16 +110,32 @@ public class JSONBuilder {
         }
     }
 
+    /**
+     * Gets the position of the gameObject that was added by the BoardBuilder
+     * @param id
+     * @param i
+     * @return
+     */
     public int getPosition(String id, int i ) {
         String[] position = splitId(id);
         return Integer.parseInt(position[i]);
     }
 
+    /**
+     * Gets the id of the gameObject that was added using the BoardBuilder
+     * @param id
+     * @return
+     */
     public String getIDClass(String id) {
         String[] idArray = splitId(id);
         return idArray[CLASSNAME];
     }
 
+    /**
+     *Creates an array from the id string (used by get class and position)
+     * @param id
+     * @return
+     */
     public String[] splitId(String id) {
         return id.split(",");
     }
@@ -111,6 +148,10 @@ public class JSONBuilder {
         return myCreatureMap.values().contains(className);
     }
 
+    /**
+     * returns the board path so a new game can be created with the constructed file
+     * @return
+     */
     public String getBoardPath() {
         return FILE_PATH;
     }

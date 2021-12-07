@@ -18,6 +18,10 @@ import ooga.view.gameDisplay.gamePieces.*;
 import ooga.view.home.HomeScreen;
 import java.util.*;
 
+/**
+ * Builds the buttons and their functionality for the Board Builder
+ * Author: Neil Mosca
+ */
 public class BuilderButtons {
     private ViewerControllerInterface myController;
     private Stage myStage;
@@ -33,7 +37,15 @@ public class BuilderButtons {
     private  Collection<String> classMap;
     private static final String DEFAULT_RESOURCE_PACKAGE = "ooga.view.resources.";
 
-
+    /**
+     * Constructor initializes the screen's properties
+     * @param stage
+     * @param width
+     * @param height
+     * @param controller
+     * @param boardView
+     * @param builderDisplay
+     */
     public BuilderButtons(Stage stage, int width, int height,ViewerControllerInterface controller, BoardView boardView, BuilderDisplay builderDisplay){
         myController = controller;
         myStage = stage;
@@ -47,6 +59,11 @@ public class BuilderButtons {
         classMap = myController.createCreatureMap().values();
     }
 
+    /**
+     * Adds the gameObjects to the screen so they can be used to toggle between
+     * The gameObject that will be added to the screen
+     * @return
+     */
     public HBox makeGameObjectsRow() {
         Object[] stringList = myController.createGameObjectMap().values().toArray();
         Label gameObjectText = myNodeBuilder.makeLabel(myResources.getString("GameObjects"), "powerUpTextID");
@@ -60,6 +77,11 @@ public class BuilderButtons {
         return myHbox;
     }
 
+    /**
+     * Creates the space where the selected gameObject is display. The displayed object
+     * will be the object that will be added to the screen
+     * @return
+     */
     public VBox makeSelectedVBox()  {
         Label selectedText = myNodeBuilder.makeLabel(myResources.getString("SelectedText"), "selectedTextID");
         selectedPane = new StackPane();
@@ -71,16 +93,31 @@ public class BuilderButtons {
         return myNodeBuilder.makeCol("statsFormat", selectedText, selectedPane);
     }
 
+    /**
+     * Creates the HBox which organizes all the buttons displayed in BuilderDisplay
+     * @return
+     */
     public HBox makeBottomHBox() {
         Button buildBoardButton = myNodeBuilder.makeButton("Build Board", null, "homeScreenButton", "buildBoardButton", e -> myBuilderDisplay.newGameWithBoard());
         VBox center = makeCenterVBox(makeCreatureRow(), makeGameObjectsRow());
         return myNodeBuilder.makeRow("statsHolder",makeSelectedVBox(), center, buildBoardButton);
     }
 
+    /**
+     * Creates the VBox for the two levels of Buttons in BuilderDisplay
+     * @param top
+     * @param bottom
+     * @return
+     */
     public VBox makeCenterVBox(HBox top, HBox bottom) {
         return myNodeBuilder.makeCol("statsHolder", top, bottom);
     }
 
+    /**
+     * Creates the containers that hold each gameObject button
+     * @param gamePiece
+     * @return
+     */
     public StackPane createObjectDisplay(GamePiece gamePiece) {
         StackPane objectDisplay = new StackPane();
         objectDisplay.getChildren().add(gamePiece.getPiece());
@@ -89,6 +126,10 @@ public class BuilderButtons {
         return objectDisplay;
     }
 
+    /**
+     * Updates the gameObject that will be added when the user clicks
+     * @param gamePiece
+     */
     private void changeSelected(GamePiece gamePiece) {
         selectedPane.getChildren().remove(1);
         GamePiece newGamePiece;
@@ -105,6 +146,10 @@ public class BuilderButtons {
         selected = newGamePiece;
     }
 
+    /**
+     * Makes the row of gameCreatures so they can be selected and added to the board builder
+     * @return
+     */
     public HBox makeCreatureRow() {
         Label ghostText = myNodeBuilder.makeLabel(myResources.getString("GhostText"), "ghostTextID");
         StackPane ghostDisplay =  createObjectDisplay(myBoardView.addBoardPiece(0,0,"CPUGHOST", null));
@@ -120,11 +165,20 @@ public class BuilderButtons {
         homeScreen.setMainDisplay();
     }
 
+    /**
+     * Used to produce that className string that is used in reflection to add gameObjects
+     * @param gamePiece
+     * @return
+     */
     public String getClassName(GamePiece gamePiece) {
         String className = gamePiece.getClass().getSimpleName();
         return className.substring(0, className.length()-5).toUpperCase();
     }
 
+    /**
+     * returns the object that was most recently selected by the user
+     * @return
+     */
     public GamePiece getSelected() {
         return selected;
     }
