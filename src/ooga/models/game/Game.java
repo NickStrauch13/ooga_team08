@@ -467,12 +467,6 @@ public class Game implements PickupGame {
         lives++;
     }
 
-    public void wallStateChange(boolean toSet){
-        for (int[] wall:getWallLocations()){
-            myBoard.setWallatCell(wall,toSet);
-        }
-    }
-
     private void setIsPredator() {
         if (gameSettings.get("USER_IS_PREDATOR") != null) {
             isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
