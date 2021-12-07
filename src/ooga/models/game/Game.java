@@ -78,11 +78,11 @@ public class Game implements PickupGame {
     }
 
     private void setGameSettings(){
-        setIsPredator();
-        setDifficulty();
-        setLives();
         setTimer();
-        setIsPickupsWinCondition();
+        setLives();
+        setDifficulty();
+        setIsPredator();
+        startTime=timer;
     }
 
     private void createPossibleSteps(){

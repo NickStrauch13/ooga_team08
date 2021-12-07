@@ -21,4 +21,5 @@ public abstract class Pickup extends GameObject {
     public void interact(PickupGame pickupGame){
         pickupGame.updatePickupsLeft();
     };
+    
 }

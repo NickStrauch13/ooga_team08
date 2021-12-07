@@ -47,7 +47,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-
     private final String DEFAULT_TITLE = "Game";
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
