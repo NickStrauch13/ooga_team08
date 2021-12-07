@@ -32,4 +32,5 @@ public interface CheatControllerInterface {
     public String getLanguage();
     public void setUsername(String username);
     public String getUsername();
+    void addOneMillionPoints();
 }

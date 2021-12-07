@@ -7,6 +7,7 @@ import ooga.models.creatures.userControl.UserPacman;
 import ooga.models.game.Board;
 import ooga.models.game.Game;
 import ooga.view.gameDisplay.center.BoardView;
+import ooga.view.popups.ErrorView;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -198,5 +199,13 @@ class ControllerDeprecatedTest extends DukeApplicationTest {
         assertEquals(g.isGameOver(), myController.isGameOver());
     }
 
-    
+    @Test
+    void DeprecatedGameControllerConstructor() {
+        GameController gameController = new GameController(g, "ENGLISH");
+        assertEquals(gameController.getGame(), g);
+
+        ErrorView errorView = new ErrorView("ENGLISH");
+        GameController gameController2 = new GameController(g, errorView);
+        assertEquals(gameController2.getGame(), g);
+    }
 }
