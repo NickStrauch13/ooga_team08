@@ -57,13 +57,14 @@ public class PortalTest extends DukeApplicationTest {
         g=myController.getGameController().getGame();
     }
 
-//    @Test
-//    public void portalInteractTest(){
-//        myController.getGameController().getGame().moveCreatureToCell(new int[]{2,5});
-//        //newBoard.getGameObject(2,5).interact(myController.getGameController().getGame());
-//        double newXpos = myController.getGameController().getGame().getUser().getXpos();
-//        double newYpos = myController.getGameController().getGame().getUser().getYpos();
-//
-//        assert (myController.getGameController().getGame().getCellCoordinate(newXpos)==2 && myController.getGame().getCellCoordinate(newYpos)==3);
-//    }
+    @Test
+    public void portalInteractTest(){
+        myController.getGameController().getGame().moveCreatureToCell(new int[]{2,5});
+        newBoard.getGameObject(2,5).interact(myController.getGameController().getGame());
+        double newXpos = myController.getGameController().getGame().getUser().getXpos();
+        double newYpos = myController.getGameController().getGame().getUser().getYpos();
+        System.out.println(newXpos);
+        System.out.println(newYpos);
+        assert (myController.getGameController().getGame().getCellCoordinate(newXpos)==2 && myController.getGame().getCellCoordinate(newYpos)==3);
+    }
 }
