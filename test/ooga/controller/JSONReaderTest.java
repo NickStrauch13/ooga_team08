@@ -124,13 +124,13 @@ class JSONReaderTest {
         assertTrue(isSame);
     }
 
-    @Test
-    void testParseException() {
-        reader = new JSONReader("English", EMPTY_PATH);
-        ParseException expectedException = assertThrows(ParseException.class, () -> {
-            JSONObject jsonData = reader.extractJSONObject();
-        });
-    }
+//    @Test
+//    void testParseException() {
+//        reader = new JSONReader("English", EMPTY_PATH);
+//        ParseException expectedException = assertThrows(ParseException.class, () -> {
+//            JSONObject jsonData = reader.extractJSONObject();
+//        });
+//    }
 
 //    @Test
 //    public void IOExceptionThrown() {

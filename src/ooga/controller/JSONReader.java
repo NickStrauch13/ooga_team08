@@ -51,37 +51,6 @@ public class JSONReader {
     private final List<String> INTEGER_ELEMENTS = List.of("TIMER", "LIVES", "CELL_SIZE", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION", "POWERUP_SIZE");
     private final List<String> PARSE_ELEMENTS = List.of("WALL_COLOR", "POWERUP_COLOR");
 
-
-//    private final Map<String, List<String>> SETTING_PARAMETERS =
-//             Map.ofEntries(
-//                     Map.entry("SETTINGS" ,List.of("LANGUAGE", "GAME_TITLE", "TIMER", "LIVES", "CELL_SIZE",
-//                             "CSS_FILE_NAME", "USER_IS_PREDATOR", "HARD", "IS_PICKUPS_A_VALID_WIN_CONDITION")),
-//                     Map.entry("PACMAN" , List.of("USER_IMAGE")),
-//                     Map.entry( "CPUGHOST" ,  List.of("CPU_IMAGE")),
-//                     Map.entry( "WALL" ,  List.of("WALL_COLOR")),
-//                     Map.entry("SCOREBOOSTER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry( "STATECHANGER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry( "SCOREMULTIPLIER",  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("GHOSTSLOWER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("EXTRALIFE" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("INVINCIBILITY" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("PORTAL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("SPEEDCUTTER" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE")),
-//                     Map.entry("WINLEVEL" ,  List.of("POWERUP_COLOR", "POWERUP_SIZE"))
-//                     );
-//
-//    private final Map<String, List<Integer>> OBJECT_PARAMETERS =
-//            Map.ofEntries(
-//                    Map.entry("OBJECT_MAP" ,
-//                            List.of(
-//                                    0, 1, 2, 3,
-//                                    6, 7, 8, 9,
-//                                    10, 11, 12
-//                            )
-//                    ),
-//                    Map.entry("CREATURE_MAP" ,List.of(4, 5))
-//            );
-
     private final String myPath;
     private ErrorView myErrorView;
 
