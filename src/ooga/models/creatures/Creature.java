@@ -72,9 +72,5 @@ public abstract class Creature {
         this.speed = speed;
     }
 
-    public void setImage(String image){
-        this.image=image;
-    }
-
     public Double getStandardSpeed() {return standardSpeed;}
 }

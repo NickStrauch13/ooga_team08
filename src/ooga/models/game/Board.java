@@ -25,9 +25,6 @@ public class Board {
         return portalLocations;
     }
 
-    public ArrayList<int[]> getWallLocations() {
-        return wallLocations;
-    }
 
     public Board(int numRows, int numCols){
         myBoardObjects = new GameObject[numRows][numCols];
@@ -111,10 +108,6 @@ public class Board {
         return myBoardObjects[row][col].isWall();
     }
 
-    public void setWallatCell(int[] position, boolean set){
-        myBoardObjects[position[0]][position[1]].setWall(set);
-    }
-
     public GameObject getGameObject(int row, int col){
         return myBoardObjects[row][col];
     }
@@ -134,7 +127,6 @@ public class Board {
     public UserCreature getMyUser() {
         return myUserControlled;
     }
-
 
     public CPUCreature getMyCPU(String myID) {
         for (CPUCreature cpu : activeCPUCreatures) {

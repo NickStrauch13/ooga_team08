@@ -61,6 +61,7 @@ public class Game implements PickupGame {
         startTime=timer;
         adjustGhostCollisions();
         createPossibleSteps();
+        setIsPickps();
         levelPortalLocations = (ArrayList<int[]>)myBoard.getPortalLocations().clone();
     }
 
@@ -500,6 +501,14 @@ public class Game implements PickupGame {
         }
         else {
             timer = -1;
+        }
+    }
+    private void setIsPickps() {
+        if (gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION") != null) {
+            isPickups=Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))==1;
+        }
+        else {
+            isPickups=true;
         }
     }
 }

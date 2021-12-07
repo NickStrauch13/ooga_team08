@@ -50,21 +50,21 @@ public class GameTest extends DukeApplicationTest {
 
         myController.initializeGame("data/test/vanillaTest.json");
         List<List<String>> stringBoard = container.getMyStringBoard();
-        newBoard=myController.getGame().getMyBoard();
-        myController.getGame().setLastDirection("RIGHT");
+        newBoard=myController.getGameController().getGame().getMyBoard();
+        myController.getGameController().getGame().setLastDirection("RIGHT");
        // myController.initializeBoard(numOfRows, numOfCols, gameObjectMap, stringBoard);
         numPickups = 10;
-        userPacman=(UserPacman) myController.getGame().getUser();
+        userPacman=(UserPacman) myController.getGameController().getGame().getUser();
         CPUCreature c1 = new CPUCreature(100,100);
         c1.setId("CREATURE123");
         c1.setCurrentDirection(new int[]{0,1});
         creatureList=new ArrayList<CPUCreature>();
         creatureList.add(c1);
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
     }
     @Test
     public void testGetUserControlled(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         UserCreature a = g.getUser();
         assert(a.equals(userPacman));
     }
@@ -76,26 +76,26 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testGetCPUCreatures(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         assert(g.getCPUs().size()==1);
     }
     @Test
     public void testAddScore(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.addScore(2000);
         g.addScore(200);
         assert (g.getScore()==2200);
     }
     @Test
     public void testGetScore(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.addScore(2000);
         int num=g.getScore();
         assert (num==2000);
     }
     @Test
     public void testPickupsLeft() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         for(int i=0;i<21;i++) {
             g.updatePickupsLeft();
 
@@ -106,18 +106,18 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testGetLevel() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         assert(g.getLevel()==1);
 
         for(int i=0;i<21;i++) {
             g.updatePickupsLeft();
         }
         myController.step("RIGHT");
-        assert(g.getLevel()==2);
+        assertEquals(g.getLevel(),2);
     }
     @Test
     public void testDealWithCollisionCreatureNotPoweredUp(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         CollisionManager cm = new CollisionManager();
         cm.setCollision("CREATURE123");
         g.dealWithCollision(cm);
@@ -125,7 +125,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testDealWithCollisionCreaturePoweredUp(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         userPacman.setPoweredUp(true);
         CollisionManager cm = new CollisionManager();
         cm.setCollision("CREATURE123");
@@ -134,14 +134,14 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testNextLevel(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         assertEquals(1,g.getLevel());
         g.nextLevel();
         assertEquals(2,g.getLevel());
     }
     @Test
     public void testGameOver() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         CollisionManager cm = new CollisionManager();
         for(int i=0;i<3;i++) {
             cm.setCollision("CREATURE123");
@@ -152,7 +152,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testDealWithCollisionPickup(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         userPacman.setPoweredUp(true);
         CollisionManager cm = new CollisionManager();
         cm.setCollision("3,3");
@@ -161,13 +161,13 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void resetGame(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         userPacman.setPoweredUp(true);
         CollisionManager cm = new CollisionManager();
         cm.setCollision("3,3");
         g.dealWithCollision(cm);
         myController.restartGame();
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         assert(g.getScore()==0);
         assert (g.getLives()==3);
         assert (g.getLevel()==1);
@@ -175,7 +175,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testLevel() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         assert (g.getLevel()==1);
         for(int i=0;i<21;i++) {
             g.updatePickupsLeft();
@@ -187,13 +187,13 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testSetLastDirection(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         assert (g.setLastDirection("DOWN"));
 
     }
     @Test
     public void testMove() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.setLastDirection("UP");
         myController.step("UP");
 
@@ -202,7 +202,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testMoveRight() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.setLastDirection("RIGHT");
         myController.step("RIGHT");
 
@@ -211,7 +211,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testMoveRightTwice() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.setLastDirection("RIGHT");
         for(int i=0;i<2;i++) {
             myController.step("RIGHT");
@@ -223,7 +223,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testMoveRightIntoWall() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.setLastDirection("RIGHT");
         for(int i=0;i<3;i++) {
             myController.step("RIGHT");
@@ -239,7 +239,7 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testMoveLeft() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.setLastDirection("LEFT");
         myController.step("LEFT");
 
@@ -248,7 +248,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testMoveLeftTwice() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.setLastDirection("LEFT");
         for(int i=0;i<2;i++) {
             myController.step("LEFT");
@@ -260,7 +260,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testMoveLeftThrice() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.setLastDirection("LEFT");
         for(int i=0;i<3;i++) {
             myController.step("LEFT");
@@ -272,7 +272,7 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testMoveLeftIntoWall() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         g.setLastDirection("LEFT");
         for(int i=0;i<4;i++) {
             myController.step("LEFT");
@@ -324,12 +324,12 @@ public class GameTest extends DukeApplicationTest {
     }
     @Test
     public void testGetMyBoard(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         assert (g.getMyBoard().equals(newBoard));
     }
     @Test
     public void testEndGame(){
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
         assertFalse(g.isGameOver());
         g.endGame();
         assertTrue(g.isGameOver());
