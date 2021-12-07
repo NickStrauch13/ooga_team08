@@ -51,4 +51,11 @@ class JSONContainerTest {
         container = new JSONContainer(0, 0, null, null, null, null, null);
         assertTrue(container.isMissingContent());
     }
+
+    @Test
+    void testDeprecatedConstructor() {
+        container = new JSONContainer(10, 11, null, null, null, null, "Pacman", "English");
+        assertEquals(container.getMyNumOfCols(), 11);
+        assertEquals(container.getMyNumOfRows(), 10);
+    }
 }
