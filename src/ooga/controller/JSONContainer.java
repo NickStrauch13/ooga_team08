@@ -120,14 +120,6 @@ public class JSONContainer {
         return myCreatureMap;
     }
 
-//    public String getGameType() {
-//        return gameType;
-//    }
-//    //gameTypes
-//    public String getLanguage() {
-//        return myLanguage;
-//    }
-
     public GameSettings getMyGameSettings() {
         return mySettings;
     }
