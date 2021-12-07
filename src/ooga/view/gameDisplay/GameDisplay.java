@@ -77,7 +77,7 @@ public class GameDisplay {
 
     private void setupScene(){
         root.setCenter(myBoardView.getInitialBoard());
-        root.setTop(myGameStats.makeStatLabels(myController.getTimer(), myController.getLives()));
+        root.setTop(myGameStats.makeStatLabels(myController.getTimer(), myController.getGameController().getLives()));
         root.setBottom(myGameButtons.makeButtonBox());
     }
 

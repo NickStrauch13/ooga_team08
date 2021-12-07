@@ -58,8 +58,6 @@ public class Game implements PickupGame {
         boardYSize=cellSize*board.getRows();
         gameSettings = generalSettings;
         setGameSettings();
-        adjustGhostCollisions();
-        createPossibleSteps();
         startTime=timer;
         adjustGhostCollisions();
         createPossibleSteps();

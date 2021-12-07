@@ -16,6 +16,6 @@ public class WKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.resetGhosts();
+    myController.getGameController().resetGhosts();
   }
 }
