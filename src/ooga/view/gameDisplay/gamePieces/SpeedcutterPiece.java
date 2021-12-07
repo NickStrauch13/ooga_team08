@@ -8,16 +8,15 @@ import java.util.Map;
 /**
  * Class that represents the dot pickup pieces in the view board.
  */
-public class SpeedcutterPiece extends GamePiece{
+public class SpeedcutterPiece extends GamePiece {
 
   private static final int DEFAULT_RAD = 8;
   private static final Color DEFAULT_COLOR = Color.PINK;
-  public static final String POWERUP_COLOR = "POWERUP_COLOR";
-  public static final String POWERUP_SIZE = "POWERUP_SIZE";
-  private int dotRadius;
+    private int dotRadius;
   private Color myColor;
   private static final String CSS_ID = "dotPiece";
-
+  String POWERUP_COLOR = "POWERUP_COLOR";
+  String POWERUP_SIZE = "POWERUP_SIZE";
   public SpeedcutterPiece(Integer cellSize, Map<String, String> myValues){
     super(cellSize);
     dotRadius = DEFAULT_RAD;

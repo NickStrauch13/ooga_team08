@@ -20,7 +20,7 @@ public interface PickupGame {
 
     public int getStepCounter();
 
-    public void setPowerupEndtime(int powerupEndtime);
+    public boolean setPowerupEndtime(int powerupEndtime);
 
     public ArrayList<int[]> getPortalLocations();
 
@@ -35,8 +35,6 @@ public interface PickupGame {
     public void addLife();
 
     public void setUserSpeed(double i);
-
-    public void wallStateChange(boolean toSet);
 
     public void multiplyScore(int multiplier);
 

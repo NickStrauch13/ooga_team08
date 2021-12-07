@@ -18,6 +18,6 @@ public class PKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.addOneMillionPoints();
+    myController.getGameController().addOneMillionPoints();
   }
 }

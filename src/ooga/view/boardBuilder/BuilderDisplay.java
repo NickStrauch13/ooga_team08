@@ -3,8 +3,6 @@ package ooga.view.boardBuilder;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.controller.JSONBuilder;
 import ooga.controller.ViewerControllerInterface;
@@ -13,9 +11,16 @@ import ooga.view.gameDisplay.GameDisplay;
 import ooga.view.gameDisplay.bottom.*;
 import ooga.view.gameDisplay.center.*;
 import javafx.scene.Scene;
+import ooga.view.gameDisplay.gamePieces.GamePiece;
 import ooga.view.gameDisplay.top.GameStats;
 import java.util.ResourceBundle;
 
+/**
+ * This class sets up the board builder display
+ * Uses a boardview that can be edited to produce a game board
+ * BuilderButtons adds the different GamePieces
+ * Author: Neil Mosca
+ */
 public class BuilderDisplay {
     private Stage myStage;
     private Scene myScene;
@@ -68,10 +73,9 @@ public class BuilderDisplay {
         myBoardView.getMyGrid().setVgap(SPACING);
         for (int r = 0; r < DEFAULT_BOARD_SIZE; r++) {
             for (int c = 0; c < DEFAULT_BOARD_SIZE; c++) {
-                Node gridSpace = new Rectangle(DEFAULT_CELL_SIZE,DEFAULT_CELL_SIZE, Color.LIGHTGRAY);
-                myBoardView.getMyGrid().add(gridSpace, c, r);
-                gridSpace.setId(String.format("%d,%d,%s", r, c,gridSpace.getClass().getSimpleName()));
-                gridSpace.setOnMouseClicked(e -> myBoardManager.updateGrid(gridSpace));
+                GamePiece wall = myBoardView.addBoardPiece(r, c, "WALL", null);
+                wall.getPiece().setId(String.format("%d,%d,%s", r, c,wall.getClass().getSimpleName()));
+                wall.getPiece().setOnMouseClicked(e -> myBoardManager.updateGrid(wall.getPiece()));
 
             }
         }
@@ -86,7 +90,11 @@ public class BuilderDisplay {
         root.setBottom(myBuilderButtons.makeBottomHBox());
     }
 
+    /**
+     * Starts a new game with the board that was edited by the user
+     */
     public void newGameWithBoard() {
+        myJSONBuilder.compileBoard(myBoardManager.getUserAdded());
         myController.initializeGame(String.format(myJSONBuilder.getBoardPath(), "MyBoard"));
         GameDisplay gameDisplay = new GameDisplay(myStage, (int)myScene.getWidth(),  (int)myScene.getHeight(), myController.getLanguage(), myController, myController.getBoardView());
         gameDisplay.setMainDisplay();

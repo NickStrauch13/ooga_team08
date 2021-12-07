@@ -104,7 +104,10 @@ public class BoardView {
       Class<?> clazz = Class.forName(objectName);
         gamePiece = (GamePiece) clazz.getDeclaredConstructor(Integer.class, Map.class)
                 .newInstance(myController.getCellSize(), myObjectValues);
-    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {}
+
+    }catch(NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
     return gamePiece;
   }
 

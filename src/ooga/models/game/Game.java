@@ -65,13 +65,11 @@ public class Game implements PickupGame {
     }
 
     private void setGameSettings(){
-        timer=Integer.parseInt(gameSettings.get("TIMER"));
-        lives = Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator = gameSettings.get("USER_IS_PREDATOR").equals("1");
-        isHard = gameSettings.get("HARD").equals("1");
-        lives=Integer.parseInt(gameSettings.get("LIVES"));
-        isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
-        isPickups = gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION").equals("1");
+        setTimer();
+        setLives();
+        setDifficulty();
+        setIsPredator();
+        startTime=timer;
     }
 
     private void createPossibleSteps(){
@@ -290,7 +288,7 @@ public class Game implements PickupGame {
         return myBoard.getisWallAtCell(row, col);
     }
 
-    public int getCellCoordinate(double pixels){
+    private int getCellCoordinate(double pixels){
         return ((int)pixels)/myCellSize;
     }
 
@@ -396,7 +394,7 @@ public class Game implements PickupGame {
     public void nextLevel(){
         level+=1;
         resetPortals();
-        timer= (int) (5000/Math.pow(1.1,level));
+        timer= (int) (startTime/Math.pow(1.1,level));
     }
 
     /**
@@ -431,8 +429,9 @@ public class Game implements PickupGame {
         return gameOver;
     }
 
-    public void setPowerupEndtime(int powerupEndtime) {
+    public boolean setPowerupEndtime(int powerupEndtime) {
         this.powerupEndtime = powerupEndtime;
+        return true;
     }
 
     public boolean setLastDirection(String lastDirection) {
@@ -442,10 +441,6 @@ public class Game implements PickupGame {
 
     public ArrayList<int[]> getPortalLocations(){
         return levelPortalLocations;
-    }
-
-    public ArrayList<int[]> getWallLocations(){
-        return myBoard.getWallLocations();
     }
 
     public int getStepCounter() {
@@ -472,9 +467,39 @@ public class Game implements PickupGame {
         lives++;
     }
 
-    public void wallStateChange(boolean toSet){
-        for (int[] wall:getWallLocations()){
-            myBoard.setWallatCell(wall,toSet);
+    private void setIsPredator() {
+        if (gameSettings.get("USER_IS_PREDATOR") != null) {
+            isPredator= Integer.parseInt(gameSettings.get("USER_IS_PREDATOR"))<0;
+        }
+        else {
+            isPredator = false;
+        }
+    }
+
+    private void setDifficulty() {
+        if (gameSettings.get("HARD") != null) {
+            isHard = gameSettings.get("HARD").equals("1");
+        }
+        else {
+            isHard = true;
+        }
+    }
+
+    private void setLives() {
+        if (gameSettings.get("LIVES") != null) {
+            lives = Integer.parseInt(gameSettings.get("LIVES"));
+        }
+        else {
+            lives = 3;
+        }
+    }
+
+    private void setTimer() {
+        if (gameSettings.get("TIMER") != null) {
+            timer=Integer.parseInt(gameSettings.get("TIMER"));
+        }
+        else {
+            timer = -1;
         }
     }
 }

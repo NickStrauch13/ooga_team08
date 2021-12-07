@@ -8,6 +8,10 @@ import ooga.view.gameDisplay.gamePieces.GamePiece;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Updates the board that is shown in the Board Builder Screen
+ * Author: Neil Mosca
+ */
 public class BoardManager {
     private ArrayList<String> userAdded;
     private BoardView myBoardView;
@@ -16,6 +20,12 @@ public class BoardManager {
     private static final int ROW = 0;
     private static final int COL = 1;
 
+    /**
+     * Initializes the objects required to update the Board
+     * @param controller
+     * @param boardView
+     * @param builderButtons
+     */
     public BoardManager(ViewerControllerInterface controller, BoardView boardView, BuilderButtons builderButtons) {
         myController = controller;
         myBoardView = boardView;
@@ -23,6 +33,10 @@ public class BoardManager {
         userAdded = new ArrayList<>();
     }
 
+    /**
+     * Updates the grid when a user selects a gameObject
+     * @param oldPiece
+     */
     public void updateGrid(Node oldPiece) {
         myBoardView.removeNode(oldPiece.getId());
         Collection<String> stringList = myController.createCreatureMap().values();
@@ -38,7 +52,6 @@ public class BoardManager {
         updateUserAdded(row, col, newNode);
     }
 
-
     private void updateUserAdded(int row, int col, GamePiece newNode) {
         newNode.getPiece().setId(String.format("%d,%d,%s", row, col, myBuilderButtons.getClassName(newNode)));
         if (!userAdded.contains(newNode.getPiece().getId())) {
@@ -52,11 +65,21 @@ public class BoardManager {
         temp.getStyleClass().add(temp2.getStyle());
     }
 
+    /**
+     * Gets the position (row or col) of the GameObject added
+     * @param myID
+     * @param i
+     * @return
+     */
     public int getPosition(String myID, int i ) {
         String[] position = myID.split(",");
         return Integer.parseInt(position[i]);
     }
 
+    /**
+     * Maintains a list of the objects that the user added to the board builder
+     * @return
+     */
     public ArrayList<String> getUserAdded() {
         return userAdded;
     }

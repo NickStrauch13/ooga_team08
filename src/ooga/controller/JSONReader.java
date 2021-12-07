@@ -17,6 +17,7 @@ public class JSONReader {
     // TODO: Should be placed into properties files or enum?
     private final String NUMBER_FORMAT_EXCEPTION_DIM = "Check the number format for the dimension value!";
     private final String NUMBER_FORMAT_EXCEPTION_BOARD = "Check the number format for values within the board!";
+    private final String NUMBER_FORMAT_EXCEPTION_STRING_BOARD = "Check the number format for values within the string board!";
     private final String NUMBER_FORMAT_EXCEPTION_MAP = "Check the number format for keys in the map!";
     private final String NUMBER_FORMAT_EXCEPTION_SETTING = "Check the number format for keys in the settings!";
 
@@ -206,7 +207,7 @@ public class JSONReader {
             return stringBoard;
         }
         catch (IndexOutOfBoundsException e) {myErrorView.showError(INDEX_OUT_BOUNDS_EXCEPTION);}
-        catch (NullPointerException e) {myErrorView.showError(NULL_POINTER_EXCEPTION_BOARD);}
+        catch (NullPointerException e) {myErrorView.showError(NUMBER_FORMAT_EXCEPTION_STRING_BOARD);}
         return null;
     }
 
