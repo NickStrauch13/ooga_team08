@@ -3,12 +3,12 @@ package ooga.controller;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import ooga.models.creatures.cpuControl.CPUCreature;
+import ooga.models.game.CollisionManager;
 import ooga.models.game.Game;
 import ooga.view.popups.ErrorView;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ public class GameController {
     private final String[] BLANK_ENTRY = new String[]{"", "-1"};
 
     private Game myGame;
+    private CollisionManager collisionManager;
     private CSVWriter myCSVWriter;
     private ErrorView myErrorView;
 
@@ -31,107 +32,39 @@ public class GameController {
     public GameController (Game game, String language) {
         myGame = game;
         myErrorView = new ErrorView(language);
-//        initializeCSVIO();
     }
 
+    @Deprecated
     public GameController (Game game, ErrorView errorView) {
         myGame = game;
         myErrorView = errorView;
-//        initializeCSVIO();
     }
-    /*
-    Initialize the reader and writer for the CSV IO.
-     */
-//    private void initializeCSVIO(){
-//        try {
-//            File scoreFile = new File(SCORE_PATH);
-////            myCSVReader = new CSVReader(new FileReader(scoreFile));
-//            myCSVWriter = new CSVWriter(new FileWriter(scoreFile, true), ',', CSVWriter.NO_QUOTE_CHARACTER,
-//                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-//                    CSVWriter.DEFAULT_LINE_END);
-//        }
-//        catch (IOException e){
-//            myErrorView.showError(IOE_EXCEPTION_CSV);
-//        }
-//    }
 
-//    /**
-//     * Adds a new Username:Score combo to the high score CSV file
-//     *
-//     * @param nameAndScore String array where the first element is the name and the second element is the score
-//     */
-//    public void addScoreToCSV(String[] nameAndScore) {
-//        myCSVWriter.writeNext(nameAndScore);
-//        try {
-//            myCSVWriter.close();
-//        } catch (IOException e) {
-//            //TODO
-//            myErrorView.showError(IOE_EXCEPTION_CSV);
-//        }
-//    }
-//
-//    /**
-//     * Read high score CSV and get the top ten scores.
-//     *
-//     * @return List of string arrays where each String array is a single username:score combo.
-//     */
-//    public List<String[]> getScoreData() {
-//        List allScoreData = readCSV();
-//        return findTopTenScores(allScoreData);
-//    }
-//
-//    private List<String[]> findTopTenScores(List<String[]> allScores) {
-//        List<String[]> topTen = new ArrayList<>();
-//        int numToDisplay = HIGH_SCORE_VALS;
-//        if (allScores.size() < HIGH_SCORE_VALS) {
-//            numToDisplay = allScores.size();
-//        }
-//        for (int i = 0; i < numToDisplay; i++) {
-//            topTen.add(BLANK_ENTRY);
-//        }
-//        optimizeTopTen(allScores, topTen, numToDisplay);
-//        return topTen;
-//    }
-//
-//    private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
-//        for (String[] score : allScores) {
-//            for (int i = 0; i < numToDisplay; i++) {
-//                if (Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])) {
-//                    topTen.add(i, score);
-//                    break;
-//                }
-//            }
-//        }
-//        while (topTen.size() > HIGH_SCORE_VALS) {
-//            topTen.remove(topTen.size() - 1);
-//        }
-//    }
-//
-//    /**
-//     * Returns the top score for the given username.
-//     * @return String value representing the integer score.
-//     */
-//    public String getTopScoreForUser(String username){
-//        List<String[]> scoreData = readCSV();
-//        String score = Integer.toString(0);
-//        for(int i=0; i<scoreData.size(); i++){
-//            if(Integer.parseInt(scoreData.get(i)[1]) > Integer.parseInt(score) && username.equals(scoreData.get(i)[0])){
-//                score = scoreData.get(i)[1];
-//            }
-//        }
-//        return score;
-//    }
-//
-//    private List<String[]> readCSV(){
-//        List<String[]> allCSVData = new ArrayList<>();
-//        try {
-//            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
-//            allCSVData = csvReader.readAll();
-//        } catch (IOException e) {
-//            myErrorView.showError(IOE_EXCEPTION_CSV);
-//        }
-//        return allCSVData;
-//    }
+    public GameController (Game game) {
+        myGame = game;
+        collisionManager = new CollisionManager();
+    }
+
+    /**
+     * Sends information about the collision to the backend
+     *
+     * @param nodeID
+     * @return
+     */
+    public boolean handleCollision(String nodeID) {
+        collisionManager.setCollision(nodeID);
+        return myGame.dealWithCollision(collisionManager);
+    }
+
+    /**
+     * Update and sync each frame of the game with the last direction used
+     *
+     * @param direction the string value for the direction
+     */
+    public void step(String direction) {
+        myGame.setLastDirection(direction);
+        myGame.step();
+    }
 
     /**
      * Get a game object
@@ -233,5 +166,86 @@ public class GameController {
 
     public void gameOver() {
         getGame().endGame();
+    }
+
+    /**
+     * Adds a new Username:Score combo to the high score CSV file
+     *
+     * @param nameAndScore String array where the first element is the name and the second element is the score
+     */
+    @Deprecated
+    public void addScoreToCSV(String[] nameAndScore) {
+        myCSVWriter.writeNext(nameAndScore);
+        try {
+            myCSVWriter.close();
+        } catch (IOException e) {
+            //TODO
+            myErrorView.showError(IOE_EXCEPTION_CSV);
+        }
+    }
+
+    /**
+     * Read high score CSV and get the top ten scores.
+     *
+     * @return List of string arrays where each String array is a single username:score combo.
+     */
+    @Deprecated
+    public List<String[]> getScoreData() {
+        List allScoreData = readCSV();
+        return findTopTenScores(allScoreData);
+    }
+
+    private List<String[]> findTopTenScores(List<String[]> allScores) {
+        List<String[]> topTen = new ArrayList<>();
+        int numToDisplay = HIGH_SCORE_VALS;
+        if (allScores.size() < HIGH_SCORE_VALS) {
+            numToDisplay = allScores.size();
+        }
+        for (int i = 0; i < numToDisplay; i++) {
+            topTen.add(BLANK_ENTRY);
+        }
+        optimizeTopTen(allScores, topTen, numToDisplay);
+        return topTen;
+    }
+
+    private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
+        for (String[] score : allScores) {
+            for (int i = 0; i < numToDisplay; i++) {
+                if (Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])) {
+                    topTen.add(i, score);
+                    break;
+                }
+            }
+        }
+        while (topTen.size() > HIGH_SCORE_VALS) {
+            topTen.remove(topTen.size() - 1);
+        }
+    }
+
+    /**
+     * Returns the top score for the given username.
+     * @return String value representing the integer score.
+     */
+    @Deprecated
+    public String getTopScoreForUser(String username){
+        List<String[]> scoreData = readCSV();
+        String score = Integer.toString(0);
+        for(int i=0; i<scoreData.size(); i++){
+            if(Integer.parseInt(scoreData.get(i)[1]) > Integer.parseInt(score) && username.equals(scoreData.get(i)[0])){
+                score = scoreData.get(i)[1];
+            }
+        }
+        return score;
+    }
+
+    private List<String[]> readCSV(){
+        List<String[]> allCSVData = new ArrayList<>();
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
+            allCSVData = csvReader.readAll();
+        } catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION_CSV);
+        }
+        return allCSVData;
     }
 }

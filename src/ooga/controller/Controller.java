@@ -47,7 +47,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
     private final String NO_SUCH_METHOD = "There is no such method! ";
     private final String INSTANTIATION_EXCEPTION = "Can't instantiate!";
     private final String ILLEGAL_ACCESS = "Access illegal! ";
-    
+
     private final String DEFAULT_TITLE = "Game";
     private static final int MILLION = 1000000;
     private static final int ONE_HUNDRED = 100;
@@ -63,7 +63,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
     private CollisionManager collisionManager;
     private Map<Integer, String> creatureMap;
     private JSONReader myReader;
-//    private CSVReader myCSVReader;
     private CSVWriter myCSVWriter;
     private Map<Integer, String> gameObjectMap;
     private List<List<String>> stringBoard;
@@ -101,8 +100,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
         language = myLanguages.getString(DEFAULT_LANGUAGE);
 
         myStartScreen = new HomeScreen(stage, DEFAULT_SIZE.width, DEFAULT_SIZE.height, this);
-        collisionManager = new CollisionManager();
-
         myErrorView = new ErrorView(DEFAULT_LANGUAGE);
         initializeStage(stage);
         initializeCSVIO();
@@ -186,7 +183,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
     private void activateGame() {
         myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
                 cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
-        gameController = new GameController(myGame, myErrorView);
+        gameController = new GameController(myGame);
     }
 
     /*
@@ -324,8 +321,7 @@ public class Controller implements BasicController, ViewerControllerInterface {
      * @param direction the string value for the direction
      */
     public void step(String direction) {
-        myGame.setLastDirection(direction);
-        myGame.step();
+        gameController.step(direction);
     }
 
     /**
@@ -359,18 +355,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
     public void changeToGameScreen(String filePath) {
         myStartScreen.startNewGameForViewTests(filePath);
     }
-
-    /**
-     * Sends information about the collision to the backend
-     *
-     * @param nodeID
-     * @return
-     */
-    public boolean handleCollision(String nodeID) {
-        collisionManager.setCollision(nodeID);
-        return myGame.dealWithCollision(collisionManager);
-    }
-
 
     public void loadNextLevel(BoardView boardView) {
         myGame.resetGame();
@@ -449,7 +433,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
      *
      * @param nameAndScore String array where the first element is the name and the second element is the score
      */
-//    @Deprecated
     public void addScoreToCSV(String[] nameAndScore) {
         myCSVWriter.writeNext(nameAndScore);
         try {
@@ -465,7 +448,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
      *
      * @return List of string arrays where each String array is a single username:score combo.
      */
-//    @Deprecated
     public List<String[]> getScoreData() {
         List allScoreData = readCSV();
         return findTopTenScores(allScoreData);
@@ -502,7 +484,6 @@ public class Controller implements BasicController, ViewerControllerInterface {
      * Returns the top score for the given username.
      * @return String value representing the integer score.
      */
-//    @Deprecated
     public String getTopScoreForUser(){
         List<String[]> scoreData = readCSV();
         String score = Integer.toString(0);
@@ -523,6 +504,20 @@ public class Controller implements BasicController, ViewerControllerInterface {
             myErrorView.showError(IOE_EXCEPTION_CSV);
         }
         return allCSVData;
+    }
+
+    public int getTimer() {
+        if (myGameSettings.getGeneralSettings().get("TIMER") != null) {
+            return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
+        }
+        return -1;
+    }
+
+    public String getGameType() {
+        if (myGameSettings.getGeneralSettings().get("GAME_TITLE") != null){
+            return myGameSettings.getGeneralSettings().get("GAME_TITLE");
+        }
+        return DEFAULT_TITLE;
     }
 
     @Deprecated
@@ -643,17 +638,15 @@ public class Controller implements BasicController, ViewerControllerInterface {
         getGame().endGame();
     }
 
-    public int getTimer() {
-        if (myGameSettings.getGeneralSettings().get("TIMER") != null) {
-            return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
-        }
-        return -1;
-    }
-
-    public String getGameType() {
-        if (myGameSettings.getGeneralSettings().get("GAME_TITLE") != null){
-            return myGameSettings.getGeneralSettings().get("GAME_TITLE");
-        }
-        return DEFAULT_TITLE;
+    /**
+     * Sends information about the collision to the backend
+     *
+     * @param nodeID
+     * @return
+     */
+    @Deprecated
+    public boolean handleCollision(String nodeID) {
+        collisionManager.setCollision(nodeID);
+        return myGame.dealWithCollision(collisionManager);
     }
 }

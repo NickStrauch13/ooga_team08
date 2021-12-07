@@ -21,7 +21,7 @@ public interface BasicController {
     public int[] getUserPosition();
     public int[] getGhostPosition(String nodeID);
     public void changeToGameScreen(String filePath);
-    public boolean handleCollision(String nodeID);
+//    public boolean handleCollision(String nodeID);
     public void loadNextLevel(BoardView boardView);
     public void restartGame();
     public void addScoreToCSV(String[] nameAndScore);

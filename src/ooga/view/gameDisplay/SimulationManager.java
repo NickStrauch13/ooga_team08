@@ -99,7 +99,7 @@ public class SimulationManager {
 
     private void dealWithCollisions() {
         String nodeCollision = myBoardView.getUserCollision();
-        if (myController.handleCollision(nodeCollision) && nodeCollision.contains(",")) {
+        if (myController.getGameController().handleCollision(nodeCollision) && nodeCollision.contains(",")) {
             myBoardView.removeNode(nodeCollision);
         }
     }

@@ -18,7 +18,7 @@ public interface ViewerControllerInterface {
 //    boolean isGameOver();
     void addScoreToCSV(String[] nameAndScore);
     String getUsername();
-    boolean handleCollision(String nodeID);
+//    boolean handleCollision(String nodeID);
     void loadNextLevel(BoardView boardView);
 //    boolean getIsPoweredUp();
     int[] getUserPosition();
