@@ -202,14 +202,6 @@ public class JSONReader {
         return false;
     }
 
-
-//        for (String parameter : SETTING_PARAMETERS.get(keyString)) {
-//            if (!parameterSet.contains(parameter)) {
-//                myErrorView.showError(MISSING_CONTENT);
-//                return true;
-//            }
-//        }
-
     /*
     Extract information about the translation from String values to object names
      */
