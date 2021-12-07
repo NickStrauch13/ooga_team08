@@ -26,7 +26,7 @@ import util.DukeApplicationTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest extends DukeApplicationTest {
-    private Map<String,String> map ;
+    private Map<String,String> map;
     private List<CPUCreature> creatureList;
     private Board newBoard;
     private Game g;
