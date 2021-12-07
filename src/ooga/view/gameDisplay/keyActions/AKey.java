@@ -18,6 +18,6 @@ public class AKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.addLife();
+    myController.getGameController().addLife();
   }
 }

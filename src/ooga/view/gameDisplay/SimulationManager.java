@@ -105,8 +105,8 @@ public class SimulationManager {
     }
 
     private boolean checkGameState() {
-        if (myController.isGameOver()) {
-           myController.addScoreToCSV(new String[]{myController.getUsername(),Integer.toString(myController.getScore())});
+        if (myController.getGameController().isGameOver()) {
+           myController.addScoreToCSV(new String[]{myController.getUsername(),Integer.toString(myController.getGameController().getScore())});
            myGameDisplay.showGameOverPopup();
            stopAnimation();
             return true;
@@ -115,8 +115,8 @@ public class SimulationManager {
     }
 
     private boolean checkLevel() {
-        if (myController.getLevel() > currentLevel) {
-            currentLevel = myController.getLevel();
+        if (myController.getGameController().getLevel() > currentLevel) {
+            currentLevel = myController.getGameController().getLevel();
             myAnimationRate += currentLevel/2.0;
             myAnimation.setRate(myAnimationRate);
             resetBoardView();
@@ -140,8 +140,8 @@ public class SimulationManager {
 
     private boolean makePacmanInvincible(boolean lastInvincible){
         for (MovingPiece movingPiece : myBoardView.getCreatureList()){
-            if (movingPiece==myBoardView.getUserPiece() && lastInvincible!=myController.getIsInvincible()){
-                if (myController.getIsInvincible()){
+            if (movingPiece==myBoardView.getUserPiece() && lastInvincible!=myController.getGameController().getIsInvincible()){
+                if (myController.getGameController().getIsInvincible()){
                     Image invinciblePacman = new Image(INVINCIBLE_PACMAN_PNG);
                     movingPiece.getMyCreature().setImage(invinciblePacman);
                 }
@@ -151,13 +151,13 @@ public class SimulationManager {
                 }
             }
         }
-        return myController.getIsInvincible();
+        return myController.getGameController().getIsInvincible();
     }
 
     private boolean powerUpGhosts(boolean lastPoweredUp){
         for (MovingPiece movingPiece : myBoardView.getCreatureList()) {
-            if (lastPoweredUp!= myController.getIsPoweredUp() && movingPiece!=myBoardView.getUserPiece()){
-                if (myController.getIsPoweredUp()){
+            if (lastPoweredUp!= myController.getGameController().getIsPoweredUp() && movingPiece!=myBoardView.getUserPiece()){
+                if (myController.getGameController().getIsPoweredUp()){
                     Image blueGhost = new Image(BLUE_GHOST_PNG);
                     movingPiece.getMyCreature().setImage(blueGhost);
                 }
@@ -167,7 +167,7 @@ public class SimulationManager {
                 }
             }
         }
-        return myController.getIsPoweredUp();
+        return myController.getGameController().getIsPoweredUp();
     }
 
 
@@ -188,10 +188,10 @@ public class SimulationManager {
     }
 
     private void updateStats() {
-        myGameStats.setScoreText(myController.getScore());
-        myGameStats.setLivesText(myController.getLives());
-        myGameStats.setLevelText(myController.getLevel());
-        myGameStats.setTimeText(myController.getGameTime());
+        myGameStats.setScoreText(myController.getGameController().getScore());
+        myGameStats.setLivesText(myController.getGameController().getLives());
+        myGameStats.setLevelText(myController.getGameController().getLevel());
+        myGameStats.setTimeText(myController.getGameController().getGameTime());
     }
 
     /**

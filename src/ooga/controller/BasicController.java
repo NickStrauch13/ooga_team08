@@ -11,10 +11,10 @@ import java.util.List;
 public interface BasicController {
     public void initializeGame(String path);
     public int getCellCoordinate(double pixels);
-    public int getLives();
-    public int getScore();
+//    public int getLives();
+//    public int getScore();
     public String getGameType();
-    public boolean getIsPoweredUp();
+//    public boolean getIsPoweredUp();
     public BoardView getBoardView();
     public int getCellSize();
     public void step(String direction);
@@ -26,8 +26,8 @@ public interface BasicController {
     public void restartGame();
     public void addScoreToCSV(String[] nameAndScore);
     public List<String[]> getScoreData();
-    public int getLevel();
-    public boolean isGameOver();
+//    public int getLevel();
+//    public boolean isGameOver();
     public String getLanguage();
     public void setUsername(String username);
     public String getUsername();

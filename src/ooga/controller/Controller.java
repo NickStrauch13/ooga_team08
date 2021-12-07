@@ -5,7 +5,7 @@ import com.opencsv.CSVWriter;
 import java.io.*;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
+
 import javafx.stage.Stage;
 import java.lang.Integer;
 import ooga.models.creatures.cpuControl.CPUCreature;
@@ -23,7 +23,7 @@ import java.util.List;
 
 import ooga.view.gameDisplay.gamePieces.MovingPiece;
 
-public class Controller implements CheatControllerInterface,BasicController, ViewerControllerInterface {
+public class Controller implements BasicController, ViewerControllerInterface {
 
     private final double ANIMATION_SPEED = 0.3;
     private final int HIGH_SCORE_VALS = 10;
@@ -76,6 +76,8 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
     private String UILanguage;
     private String cssFileName;
     private String cssUIFileName;
+    private GameController gameController;
+
     private final String LANGUAGE_RESOURCE_PACKAGE = "ooga.models.resources.";
     private final String DEFAULT_CSS_FILE = "Default.css";
     private final String DEFAULT_LANGUAGE = "ENGLISH";
@@ -146,6 +148,7 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         try {
             myReader = new JSONReader(language, path);
             assembleBoards();
+            activateGame();
             //TODO get lives from JSON file
         } catch (ClassNotFoundException e) {
             myErrorView.showError(CLASS_NOT_FOUND);
@@ -172,15 +175,18 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
             int numOfCols = container.getMyNumOfCols();
 
             extractInfoFromContainer(container);
-
             constructBoard(numOfRows, numOfCols);
 
             myBoardView = new BoardView(this);
             initializeBoardView(numOfRows, numOfCols, gameObjectMap, stringBoard, myBoardView);
 
-            myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
-                    cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
         }
+    }
+
+    private void activateGame() {
+        myGame = new Game(myBoard, myBoard.getNumPickupsAtStart(), myBoard.getMyUser(), myBoard.getMyCPUCreatures(),
+                cellSize, myGameSettings.getGeneralSettings()); //TODO assigning pickups manually assign from file!!
+        gameController = new GameController(myGame, myErrorView);
     }
 
     /*
@@ -253,13 +259,17 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfCols; col++) {
                 String objectName = stringBoard.get(row).get(col);
-                if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
-                    myBoard.createGameObject(row, col, objectName);
-                } else if (creatureMap.containsValue(objectName)) {
-                    myBoard.createCreature(col * cellSize + 3, row * cellSize + 3, objectName,
-                            cellSize-5);
-                }
+                addObjects(gameObjectMap, row, col, objectName);
             }
+        }
+    }
+
+    private void addObjects(Map<Integer, String> gameObjectMap, int row, int col, String objectName) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (gameObjectMap.containsValue(objectName) && !objectName.equals("EMPTY")) {
+            myBoard.createGameObject(row, col, objectName);
+        } else if (creatureMap.containsValue(objectName)) {
+            myBoard.createCreature(col * cellSize + 3, row * cellSize + 3, objectName,
+                    cellSize-5);
         }
     }
 
@@ -290,38 +300,13 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         }
     }
 
+    /**
+     * Access the coordinates of cells
+     * @param pixels
+     * @return the coordinates of cells
+     */
     public int getCellCoordinate(double pixels) {
         return ((int) pixels) / cellSize;
-    }
-
-    /**
-     * Get the number of lives remained
-     *
-     * @return the number of lives remained
-     */
-    public int getLives() {
-        return myGame.getLives(); //TODO change this to the model's get lives
-    }
-
-    public Game getGame() {
-        return myGame;
-    }
-
-    /**
-     * Get the current game scores
-     *
-     * @return the current game scores
-     */
-    public int getScore() {
-        return myGame.getScore();
-    }
-
-    public boolean getIsPoweredUp() {
-        return myGame.getUser().isPoweredUp();
-    }
-
-    public boolean getIsInvincible() {
-        return myGame.getUser().isInvincible();
     }
 
     /**
@@ -408,89 +393,6 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         initializeGame(myReader.getMostRecentPath());
     }
 
-
-    /**
-     * Adds a new Username:Score combo to the high score CSV file
-     *
-     * @param nameAndScore String array where the first element is the name and the second element is the score
-     */
-    @Deprecated
-    public void addScoreToCSV(String[] nameAndScore) {
-        myCSVWriter.writeNext(nameAndScore);
-        try {
-            myCSVWriter.close();
-        } catch (IOException e) {
-            //TODO
-            myErrorView.showError(IOE_EXCEPTION);
-        }
-    }
-
-    /**
-     * Read high score CSV and get the top ten scores.
-     *
-     * @return List of string arrays where each String array is a single username:score combo.
-     */
-    @Deprecated
-    public List<String[]> getScoreData() {
-        List allScoreData = readCSV();
-        return findTopTenScores(allScoreData);
-    }
-
-    private List<String[]> findTopTenScores(List<String[]> allScores) {
-        List<String[]> topTen = new ArrayList<>();
-        int numToDisplay = HIGH_SCORE_VALS;
-        if (allScores.size() < HIGH_SCORE_VALS) {
-            numToDisplay = allScores.size();
-        }
-        for (int i = 0; i < numToDisplay; i++) {
-            topTen.add(BLANK_ENTRY);
-        }
-        optimizeTopTen(allScores, topTen, numToDisplay);
-        return topTen;
-    }
-
-    private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
-        for (String[] score : allScores) {
-            for (int i = 0; i < numToDisplay; i++) {
-                if (Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])) {
-                    topTen.add(i, score);
-                    break;
-                }
-            }
-        }
-        while (topTen.size() > HIGH_SCORE_VALS) {
-            topTen.remove(topTen.size() - 1);
-        }
-    }
-
-    /**
-     * Returns the top score for the given username.
-     * @return String value representing the integer score.
-     */
-    @Deprecated
-    public String getTopScoreForUser(){
-        List<String[]> scoreData = readCSV();
-        String score = Integer.toString(0);
-        for(int i=0; i<scoreData.size(); i++){
-            if(Integer.parseInt(scoreData.get(i)[1]) > Integer.parseInt(score) && myUsername.equals(scoreData.get(i)[0])){
-                score = scoreData.get(i)[1];
-            }
-        }
-        return score;
-    }
-
-    private List<String[]> readCSV(){
-        List<String[]> allCSVData = new ArrayList<>();
-        try {
-            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
-            allCSVData = csvReader.readAll();
-        } catch (IOException e) {
-            myErrorView.showError(IOE_EXCEPTION_CSV);
-        }
-        return allCSVData;
-    }
-
-
     /**
      * Returns the language of the game. If the user has input a language from the dropdown, it has priority.
      * @return String representing language name.
@@ -546,6 +448,125 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
      */
     public void setViewMode(String cssName){
         cssUIFileName = String.format(CSS_FILE_EXTENSION, cssName);
+    }
+
+    public GameController getGameController() {
+        return gameController;
+    }
+    /**
+     * Adds a new Username:Score combo to the high score CSV file
+     *
+     * @param nameAndScore String array where the first element is the name and the second element is the score
+     */
+//    @Deprecated
+    public void addScoreToCSV(String[] nameAndScore) {
+        myCSVWriter.writeNext(nameAndScore);
+        try {
+            myCSVWriter.close();
+        } catch (IOException e) {
+            //TODO
+            myErrorView.showError(IOE_EXCEPTION);
+        }
+    }
+
+    /**
+     * Read high score CSV and get the top ten scores.
+     *
+     * @return List of string arrays where each String array is a single username:score combo.
+     */
+//    @Deprecated
+    public List<String[]> getScoreData() {
+        List allScoreData = readCSV();
+        return findTopTenScores(allScoreData);
+    }
+
+    private List<String[]> findTopTenScores(List<String[]> allScores) {
+        List<String[]> topTen = new ArrayList<>();
+        int numToDisplay = HIGH_SCORE_VALS;
+        if (allScores.size() < HIGH_SCORE_VALS) {
+            numToDisplay = allScores.size();
+        }
+        for (int i = 0; i < numToDisplay; i++) {
+            topTen.add(BLANK_ENTRY);
+        }
+        optimizeTopTen(allScores, topTen, numToDisplay);
+        return topTen;
+    }
+
+    private void optimizeTopTen(List<String[]> allScores, List<String[]> topTen, int numToDisplay) {
+        for (String[] score : allScores) {
+            for (int i = 0; i < numToDisplay; i++) {
+                if (Integer.parseInt(score[1]) > Integer.parseInt(topTen.get(i)[1])) {
+                    topTen.add(i, score);
+                    break;
+                }
+            }
+        }
+        while (topTen.size() > HIGH_SCORE_VALS) {
+            topTen.remove(topTen.size() - 1);
+        }
+    }
+
+    /**
+     * Returns the top score for the given username.
+     * @return String value representing the integer score.
+     */
+//    @Deprecated
+    public String getTopScoreForUser(){
+        List<String[]> scoreData = readCSV();
+        String score = Integer.toString(0);
+        for(int i=0; i<scoreData.size(); i++){
+            if(Integer.parseInt(scoreData.get(i)[1]) > Integer.parseInt(score) && myUsername.equals(scoreData.get(i)[0])){
+                score = scoreData.get(i)[1];
+            }
+        }
+        return score;
+    }
+
+    private List<String[]> readCSV(){
+        List<String[]> allCSVData = new ArrayList<>();
+        try {
+            CSVReader csvReader = new CSVReader(new FileReader(new File(SCORE_PATH)));
+            allCSVData = csvReader.readAll();
+        } catch (IOException e) {
+            myErrorView.showError(IOE_EXCEPTION_CSV);
+        }
+        return allCSVData;
+    }
+
+    @Deprecated
+    public Game getGame() {
+        return myGame;
+    }
+
+    /**
+     * Get the number of lives remained
+     *
+     * @return the number of lives remained
+     */
+    @Deprecated
+    public int getLives() {
+        return myGame.getLives(); //TODO change this to the model's get lives
+    }
+
+    /**
+     * Get the current game scores
+     *
+     * @return the current game scores
+     */
+    @Deprecated
+    public int getScore() {
+        return myGame.getScore();
+    }
+
+    @Deprecated
+    public boolean getIsPoweredUp() {
+        return myGame.getUser().isPoweredUp();
+    }
+
+    @Deprecated
+    public boolean getIsInvincible() {
+        return myGame.getUser().isInvincible();
     }
 
     @Deprecated
@@ -631,15 +652,11 @@ public class Controller implements CheatControllerInterface,BasicController, Vie
         getGame().endGame();
     }
 
-    @Deprecated
     public int getTimer() {
         return Integer.parseInt(myGameSettings.getGeneralSettings().get("TIMER"));
     }
 
-    @Deprecated
     public String getGameType() {
         return myGameSettings.getGeneralSettings().get("GAME_TITLE");
     }
-
-
 }

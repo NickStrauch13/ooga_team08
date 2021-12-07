@@ -18,7 +18,7 @@ public class SKey extends KeyViewAction {
    */
   @Override
   public void doAction(){
-    myController.RemoveOneMillionPoints();
+    myController.getGameController().RemoveOneMillionPoints();
   }
 }
 
