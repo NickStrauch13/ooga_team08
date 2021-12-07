@@ -36,8 +36,6 @@ public interface PickupGame {
 
     public void setUserSpeed(double i);
 
-    public void wallStateChange(boolean toSet);
-
     public void multiplyScore(int multiplier);
 
     public void setCPUSpeed(double v);

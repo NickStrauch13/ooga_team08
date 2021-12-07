@@ -289,7 +289,7 @@ public class Game implements PickupGame {
         return myBoard.getisWallAtCell(row, col);
     }
 
-    public int getCellCoordinate(double pixels){
+    private int getCellCoordinate(double pixels){
         return ((int)pixels)/myCellSize;
     }
 
@@ -395,7 +395,7 @@ public class Game implements PickupGame {
     public void nextLevel(){
         level+=1;
         resetPortals();
-        timer= (int) (5000/Math.pow(1.1,level));
+        timer= (int) (startTime/Math.pow(1.1,level));
     }
 
     /**
@@ -443,10 +443,6 @@ public class Game implements PickupGame {
         return levelPortalLocations;
     }
 
-    public ArrayList<int[]> getWallLocations(){
-        return myBoard.getWallLocations();
-    }
-
     public int getStepCounter() {
         return stepCounter;
     }
@@ -471,9 +467,4 @@ public class Game implements PickupGame {
         lives++;
     }
 
-    public void wallStateChange(boolean toSet){
-        for (int[] wall:getWallLocations()){
-            myBoard.setWallatCell(wall,toSet);
-        }
-    }
 }

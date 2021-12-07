@@ -1,6 +1,8 @@
 package ooga.view.popups;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 import javafx.scene.control.Alert;
@@ -26,6 +28,13 @@ public class ErrorView {
    */
   public void showError(String message) {
     LOGGER.log(Level.WARNING, message);
+    try {
+      FileHandler fh=new FileHandler("logs/default.log", true);
+
+      LOGGER.addHandler(fh);
+    }catch(IOException ioException){
+
+    }
     Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle(myResources.getString(ERROR_TITLE));
     alert.setContentText(message);
