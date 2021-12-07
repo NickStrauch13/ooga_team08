@@ -210,11 +210,4 @@ public class Board {
         return portalLocations;
     }
 
-    /**
-     * Gets list of all wall locations on board
-     * @return list of all wall locations on board
-     */
-    public ArrayList<int[]> getWallLocations() {
-        return wallLocations;
     }
-}

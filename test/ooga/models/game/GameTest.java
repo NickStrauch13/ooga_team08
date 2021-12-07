@@ -171,6 +171,24 @@ public class GameTest extends DukeApplicationTest {
         assert(g.getScore()==0);
         assert (g.getLives()==3);
         assert (g.getLevel()==1);
+        g.resetGame();
+        assertEquals(g.getCPUs().get(0).getHomeX(),g.getCPUs().get(0).getXpos());
+
+    }
+    @Test
+    public void resetGame2(){
+        g=myController.getGameController().getGame();
+        userPacman.setPoweredUp(true);
+        CollisionManager cm = new CollisionManager();
+        cm.setCollision("3,3");
+        g.dealWithCollision(cm);
+        myController.restartGame();
+        g=myController.getGameController().getGame();
+        assert(g.getScore()==0);
+        assert (g.getLives()==3);
+        assert (g.getLevel()==1);
+        g.resetGame();
+        assertEquals(g.getCPUs().get(0).getHomeY(),g.getCPUs().get(0).getYpos());
 
     }
     @Test

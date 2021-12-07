@@ -5,8 +5,6 @@ import ooga.models.creatures.Creature;
 import ooga.models.creatures.cpuControl.CPUCreature;
 import ooga.models.creatures.userControl.UserCreature;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 
 
@@ -74,7 +72,7 @@ public class Game implements PickupGame {
         startTime=timer;
         adjustGhostCollisions();
         createPossibleSteps();
-        setIsPickps();
+        setIsPickups();
         levelPortalLocations = (ArrayList<int[]>)myBoard.getPortalLocations().clone();
     }
 
@@ -621,7 +619,7 @@ public class Game implements PickupGame {
             timer = -1;
         }
     }
-    private void setIsPickps() {
+    private void setIsPickups() {
         if (gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION") != null) {
             isPickups=Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))==1;
         }
