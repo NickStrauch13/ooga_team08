@@ -16,7 +16,7 @@ public class JSONContainer {
 
     private GameSettings mySettings;
 
-//    @Deprecated
+    @Deprecated
     /**
      * @deprecated The constructor of a JSON Reader object that holds all info from the json configuration file
      * @param rows number of rows of the board
@@ -24,16 +24,16 @@ public class JSONContainer {
      * @param boardInfo A 2-d list that contains a status value for each cell
      * @param stringBoard A 2-d list that contains a string value for each cell
      */
-//    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, String type, String language) {
-//        myNumOfRows = rows;
-//        myNumOfCols = cols;
-//        myInfo = boardInfo;
-//        myStringBoard = stringBoard;
-//        myConversionMap = conversionMap;
-//        myCreatureMap = creatureMap;
-//        gameType = type;
-//        myLanguage = language;
-//    }
+    public JSONContainer(int rows, int cols, List<List<Integer>> boardInfo, List<List<String>> stringBoard, Map<Integer, String> conversionMap, Map<Integer, String> creatureMap, String type, String language) {
+        myNumOfRows = rows;
+        myNumOfCols = cols;
+        myInfo = boardInfo;
+        myStringBoard = stringBoard;
+        myConversionMap = conversionMap;
+        myCreatureMap = creatureMap;
+        gameType = type;
+        myLanguage = language;
+    }
 
     /**
      * The constructor of a JSON Reader object that holds all info from the json configuration file
