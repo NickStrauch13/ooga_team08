@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PickupTest extends DukeApplicationTest {
+public class InvincibilityTest extends DukeApplicationTest {
     private Map<String,String> map;
     private List<CPUCreature> creatureList;
     private Board newBoard;
@@ -54,6 +54,12 @@ public class PickupTest extends DukeApplicationTest {
         c1.setCurrentDirection(new int[]{0,1});
         creatureList=new ArrayList<CPUCreature>();
         creatureList.add(c1);
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
+    }
+
+    @Test
+    public void invincibilityInteractTest(){
+        newBoard.getGameObject(1,3).interact(myController.getGame());
+        assert (myController.getGameController().getGame().getUser().isInvincible());
     }
 }

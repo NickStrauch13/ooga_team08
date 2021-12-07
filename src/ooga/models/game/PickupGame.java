@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface PickupGame {
+
     /**
      * gets user controlled object in the game
      * @return user controlled object in the game
@@ -101,4 +102,5 @@ public interface PickupGame {
      * @param multiplier value to multiply current CPU speed by
      */
     void setCPUSpeed(double multiplier);
+
 }

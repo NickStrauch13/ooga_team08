@@ -82,6 +82,7 @@ public class Game implements PickupGame {
         setLives();
         setDifficulty();
         setIsPredator();
+        setIsPickupsWinCondition();
         startTime=timer;
     }
 
@@ -327,12 +328,14 @@ public class Game implements PickupGame {
         return myBoard.getisWallAtCell(row, col);
     }
 
+
     /**
      * gets cell coordinate based on pixel value
      * @param pixels pixel value
      * @return cell coordinate at a certain pixel value
      */
     public int getCellCoordinate(double pixels){return ((int)pixels)/myCellSize;}
+
 
     private boolean checkPickUps(){return pickUpsLeft ==0;}
 
@@ -462,7 +465,7 @@ public class Game implements PickupGame {
     public void nextLevel(){
         level+=1;
         resetPortals();
-        timer= (int) (5000/Math.pow(1.1,level));
+        timer= (int) (startTime/Math.pow(1.1,level));
     }
 
     /**
@@ -507,11 +510,15 @@ public class Game implements PickupGame {
      */
     public boolean isGameOver() {return gameOver;}
 
+
     /**
      * sets the end time for a powerup
      * @param powerupEndtime
      */
     public void setPowerupEndtime(int powerupEndtime) {this.powerupEndtime = powerupEndtime;}
+
+
+
 
     /**
      * sets the last direction of user creature
@@ -522,6 +529,7 @@ public class Game implements PickupGame {
         this.lastDirection = lastDirection;
         return true;
     }
+
 
     /**
      * gets remaining portal locations on current level
@@ -534,6 +542,7 @@ public class Game implements PickupGame {
      * @return number of times step has been run
      */
     public int getStepCounter() {return stepCounter;}
+
 
     /**
      * removes all portals from board
@@ -565,6 +574,7 @@ public class Game implements PickupGame {
         lives++;
     }
 
+
     private void setIsPickupsWinCondition() {
         if (gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION") != null) {
             isPickups = Integer.parseInt(gameSettings.get("IS_PICKUPS_A_VALID_WIN_CONDITION"))<0;
@@ -573,6 +583,7 @@ public class Game implements PickupGame {
             isPickups = false;
         }
     }
+
 
     private void setIsPredator() {
         if (gameSettings.get("USER_IS_PREDATOR") != null) {
