@@ -8,35 +8,99 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface PickupGame {
-    public UserCreature getUser();
 
-    public GameObject getGameObject(int row, int col);
+    /**
+     * gets user controlled object in the game
+     * @return user controlled object in the game
+     */
+    UserCreature getUser();
 
-    public List<CPUCreature> getCPUs();
+    /**
+     * Gets game object out at certain position
+     * @param row row index of desired game object
+     * @param col col index of desired game object
+     * @return game object at row,col position
+     */
+    GameObject getGameObject(int row, int col);
 
-    public void addScore(int score);
+    /**
+     * Gets list of all CPU creatures in the game
+     * @return list of all CPU creatures objects
+     */
+    List<CPUCreature> getCPUs();
 
-    public void updatePickupsLeft();
+    /**
+     * Adds points to the score which is housed in this class.
+     * @param score score to be added
+     */
+    void addScore(int score);
 
-    public int getStepCounter();
+    /**
+     * decreases the number of pickups left by 1
+     */
+    void updatePickupsLeft();
 
-    public boolean setPowerupEndtime(int powerupEndtime);
+    /**
+     * gets the number of times step has been run
+     * @return number of times step has been run
+     */
+    int getStepCounter();
 
-    public ArrayList<int[]> getPortalLocations();
+    /**
+     * sets the end time for a powerup
+     * @param powerupEndtime
+     */
+    void setPowerupEndtime(int powerupEndtime);
 
-    public void setPortalsGone();
+    /**
+     * gets remaining portal locations on current level
+     * @return remaining portal locations on current level
+     */
+    ArrayList<int[]> getPortalLocations();
 
-    public void removePortal(int[] portalLocations);
+    /**
+     * removes all portals from board
+     */
+    void setPortalsGone();
 
-    public void moveCreatureToCell(int[] cellIndex);
+    /**
+     * removes one portal from board
+     * @param portalLocation location of portal to be removed
+     */
+    void removePortal(int[] portalLocation);
 
-    public void nextLevel();
+    /**
+     * moves creature to a certain cell on board
+     * @param cellIndex index of cell (equal to row index*numCols+ col index)
+     */
+    void moveCreatureToCell(int[] cellIndex);
 
-    public void addLife();
+    /**
+     * Increments the level.
+     */
+    void nextLevel();
 
-    public void setUserSpeed(double i);
+    /**
+     * adds one life
+     */
+    void addLife();
 
-    public void multiplyScore(int multiplier);
+    /**
+     * Sets new speed for the user controlled creature
+     * @param newSpeed desired new speed of user controlled creature
+     */
+    void setUserSpeed(double newSpeed);
 
-    public void setCPUSpeed(double v);
+    /**
+     * Multiply score by certain variable
+     * @param multiplier value to multiply score by
+     */
+    void multiplyScore(int multiplier);
+
+    /**
+     * alters CPU speed by inputted multiplier
+     * @param multiplier value to multiply current CPU speed by
+     */
+    void setCPUSpeed(double multiplier);
+
 }

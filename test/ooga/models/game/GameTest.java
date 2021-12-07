@@ -349,10 +349,7 @@ public class GameTest extends DukeApplicationTest {
         g.addLives(9);
         assertEquals(g.getLives(),13);
     }
-    @Test
-    public void testSetPoweredEndTime(){
-        assertEquals(true, g.setPowerupEndtime(0));
-    }
+
 
 
 

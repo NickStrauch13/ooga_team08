@@ -5,9 +5,12 @@ import ooga.controller.Controller;
 import ooga.controller.JSONContainer;
 import ooga.controller.JSONReader;
 import ooga.models.creatures.cpuControl.CPUCreature;
+import ooga.models.creatures.userControl.UserCreature;
 import ooga.models.creatures.userControl.UserPacman;
 import ooga.models.game.Board;
 import ooga.models.game.Game;
+import ooga.models.game.PickupGame;
+import ooga.models.gameObjects.GameObject;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PickupTest extends DukeApplicationTest {
+public class ExtraLifeTest extends DukeApplicationTest {
     private Map<String,String> map;
     private List<CPUCreature> creatureList;
     private Board newBoard;
@@ -54,6 +57,12 @@ public class PickupTest extends DukeApplicationTest {
         c1.setCurrentDirection(new int[]{0,1});
         creatureList=new ArrayList<CPUCreature>();
         creatureList.add(c1);
-        g=myController.getGame();
+        g=myController.getGameController().getGame();
+    }
+
+    @Test
+    public void extraLifeInteractTest(){
+        newBoard.getGameObject(9,3).interact(myController.getGameController().getGame());
+        assert (myController.getGame().getLives()==4);
     }
 }
