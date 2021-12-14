@@ -31,7 +31,10 @@
 
 Our design, on a high-level, is demonstrative of the classic MVC package tree. We have a models package that handles all computational logic, a controller to handle
 the beginnings and game flow, and a view to handle all input and output to the user themselves. The design of our code starts with the controller, which initializes
-the game board and game, all based on an input JSON file. This JSON file contains the initial position of all the objects on the board, with a map of ints and their 
+the game board and game, all based on an input JSON file. The Controller initializes
+a JSONReader object that tries to catch all incorrect data formats from the input file 
+and pop up alert windows to remind users to check potential erros in the file. When having an exception, the controller will stop other executions until the user reupload 
+a working JSON file. This JSON file contains the initial position of all the objects on the board, with a map of ints and their 
 corresponding objects, each of which are child classes of the abstract gameObject class. The same type of hierarchy exists with the creatures, all of the moving objects 
 within the game. Creating the board allows for the instantiation of a Game, complete with the game setting from the input data file. Additionally, the SimulationManager
 and gameDisplay classes create the initial display UI that prompts the user to input a new game file to start the process of initialization. The SimulationManager also handles
@@ -42,7 +45,14 @@ Additionally, at each step the front end checks its nodes for intersections betw
 Once the ID has been sent, an instance of a collisionManager with the collided Node ID is created and passed to the game class which actually handles the collision itself by calling on the
 interact method of the object at the position defined by that instance of collisionManager. Once the collision is handled, a boolean is passed to our controller
 which then indicates to the view that the pickup must be removed from the screen. This process continues on as the game flows, with data being passed from back to front end and vice versa
-through the controller. This is how our game design controls game flow and connects the core classes within the models, views and controller packages.
+through the controller. 
+
+Additionally, we also have a "Board Builder" feature which 
+allows users to design their customized games by simply clicking on the GUI so that 
+a BuilderDisplay class will read all the mouse input actions from users and use a JSONBuilder object
+to transfer and store the information into a JSON file. Users can play this customized game and upload the file to play the game later. 
+
+This is how our game design controls game flow and connects the core classes within the models, views and controller packages.
 
 #### Core Classes
 
