@@ -61,6 +61,14 @@ WALL- Child class of GAMEOBJECT, children are different types of walls in the ga
 
 CONTROLLER
 
+CONTROLLER: class that connects the frontend and backend and launch the entire game.\
+GAMECONTROLLER: class that serves as the engine and specifically processes information from backend `Game`.\
+GAMESETTINGS: class that stores all the information extracted from the configuration file specifically regarding the game 
+settings including the general settings and settings for particular objects like ghosts.\
+JSONBUILDER: class that builds a playable JSON file based on users' inputs.\
+JSONCONTAINER: class that stores the general information extracted from the configuration file regarding the game layout and various game settings.\
+JSONREADER: class that parses the JSON configuration file and extracts all the information into `JSONCONTAINER`.\
+
 FRONTEND
 
 PACMANDISPLAY- sets up display of application\
@@ -78,7 +86,7 @@ PREYVIEW- extends CREATUREVIEW for prey
   * Assume that no more than 2 portals are introduced
   * Assume that no more than 1 UserCreature is placed in the initial board
   * Assume that all numbers in the array are mapped to preexisting gameObjects using the gameObject Map
-
+  * Assume when users construct a game, basic game elements (walls, ghosts, and pacmans) still exist 
 
 ## Significant differences from Original Plan
   * The original plan had the backend checking for not only the moving objects' cellular location, but also the moving objects' pixel location. We later changed from this because we realized that the backend does not need to know where 
