@@ -57,7 +57,7 @@ BOARD- grid of cell objects where each will have a state corresponding to wall, 
 GAME- class dictates the running/starting/endgame of the game, has step function to update moving creatures\
 GAMEOBJECT- Abstract to be implemented by child classes containing all stationary object within the game.\
 PICKUP- Child class of GAMEOBJECT, children are all pickups (non-wall) stationary objects in the game.\
-WALL- Child class of GAMEOBJECT, children are different types of walls in the game.\
+WALL- Child class of GAMEOBJECT, children are different types of walls in the game.
 
 CONTROLLER
 
@@ -67,7 +67,7 @@ GAMESETTINGS: class that stores all the information extracted from the configura
 settings including the general settings and settings for particular objects like ghosts.\
 JSONBUILDER: class that builds a playable JSON file based on users' inputs.\
 JSONCONTAINER: class that stores the general information extracted from the configuration file regarding the game layout and various game settings.\
-JSONREADER: class that parses the JSON configuration file and extracts all the information into `JSONCONTAINER`.\
+JSONREADER: class that parses the JSON configuration file and extracts all the information into `JSONCONTAINER`.
 
 FRONTEND
 
