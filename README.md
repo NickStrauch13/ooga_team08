@@ -1,4 +1,4 @@
-ooga
+Object Oriented Programming - Pacman Project
 ====
 
 This project implements a player for multiple related games.
