@@ -12,7 +12,7 @@ import org.json.simple.parser.ParseException;
 
 /**
  * This is our Pacman Project
- * Authors: Abhinav Ratnagiri, David Wu, Neil Mosca, Nick Conterno, and Nick Conterno
+ * Authors: Abhinav Ratnagiri, David Wu, Neil Mosca, Nick Strauch, and Nick Conterno
  */
 public class Main extends Application {
 
